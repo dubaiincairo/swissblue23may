@@ -1,9 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #ff7a45;
-  --primary-light: #feece4;
-  --primary-hover: #d16538;
+  --primary: #2b6fe8;
+  --primary-light: #eaf2ff;
+  --primary-hover: #1f5fd0;
+  --bluehost-deep: #1246a8;
+  --bluehost: #2b6fe8;
+  --bluehost-soft: #dbe9ff;
+  --bluehost-foam: #f4f8ff;
+  --sand: #fff8eb;
   --success: #059669;
   --warning: #ce8300;
   --error: #e8493d;
@@ -13,29 +18,29 @@
   --text-tertiary: #9ea3aa;
   --text-on-primary: #ffffff;
   --text-on-dark: #ffffff;
-  --background: #f9fafb;
+  --background: #f7faff;
   --background-card: #ffffff;
-  --background-subtle: #f3f6f9;
-  --background-promo-soft: #fff7ec;
-  --background-dark: #111827;
+  --background-subtle: #eef5ff;
+  --background-promo-soft: #f4f8ff;
+  --background-dark: #1246a8;
   --border: #e5e7eb;
   --border-form: #dce0e6;
   --border-strong: #9ca3af;
   --foreground: var(--text-primary);
-  --shadow-card: 0 1px 2px rgba(17, 24, 39, 0.04), 0 12px 32px rgba(17, 24, 39, 0.08);
+  --shadow-card: 0 1px 2px rgba(18, 70, 168, 0.05), 0 14px 36px rgba(18, 70, 168, 0.1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-arabic-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-arabic-sans), Arial, Helvetica, sans-serif;
 }
 
 html {
@@ -97,11 +102,265 @@ button {
   display: inline-flex;
   font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   line-height: 1.5;
-  text-transform: uppercase;
 }
 
 .text-balance {
   text-wrap: balance;
+}
+
+.hotel-hero {
+  background: var(--bluehost-deep);
+}
+
+.hero-kicker {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.86);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+  padding: 10px 14px;
+}
+
+.btn-hero {
+  min-height: 52px;
+  padding-inline: 20px;
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  min-height: 52px;
+  padding-inline: 20px;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.booking-bar {
+  align-items: stretch;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
+  box-shadow: 0 24px 70px rgba(8, 28, 70, 0.22);
+  color: var(--text-primary);
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(180px, 0.8fr);
+  overflow: hidden;
+  padding: 8px;
+}
+
+.booking-field {
+  background: var(--bluehost-foam);
+  border-radius: 12px;
+  min-height: 72px;
+  padding: 14px 16px;
+}
+
+.booking-field span {
+  color: var(--text-tertiary);
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.booking-field strong {
+  display: block;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+.stat-tile {
+  background: white;
+  border: 1px solid rgba(43, 111, 232, 0.12);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+}
+
+.section-heading {
+  max-width: 790px;
+}
+
+.section-heading h2 {
+  font-size: clamp(2rem, 4vw, 3.35rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.05;
+  margin-top: 14px;
+}
+
+.section-heading p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.8;
+  margin-top: 16px;
+  max-width: 720px;
+}
+
+.property-card,
+.stay-card,
+.offer-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.brand-band {
+  background:
+    linear-gradient(135deg, rgba(18, 70, 168, 0.98), rgba(43, 111, 232, 0.94)),
+    var(--bluehost-deep);
+}
+
+.brand-point {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  min-height: 104px;
+  padding: 20px;
+}
+
+.stay-card {
+  min-height: 250px;
+  padding: 24px;
+}
+
+.stay-card span {
+  color: var(--primary);
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.stay-card h3,
+.offer-card h3 {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-top: 22px;
+}
+
+.stay-card p,
+.offer-card p,
+.feature-panel p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  margin-top: 14px;
+}
+
+.feature-panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+  padding: 28px;
+}
+
+.feature-panel h2,
+.portfolio-strip h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.08;
+  margin-top: 14px;
+}
+
+.offer-card {
+  min-height: 280px;
+  padding: 24px;
+}
+
+.offer-card:nth-child(2) {
+  background: var(--primary);
+  color: white;
+}
+
+.offer-card:nth-child(2) p {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.amenity-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.amenity-pill {
+  background: white;
+  border: 1px solid rgba(43, 111, 232, 0.12);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(18, 70, 168, 0.07);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 15px 18px;
+}
+
+.portfolio-strip {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 0.74fr 1.26fr;
+  padding: 32px;
+}
+
+.portfolio-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.portfolio-list span {
+  background: var(--bluehost-foam);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 14px 16px;
+}
+
+.closing-cta > div::before {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.24), transparent 62%);
+  content: "";
+  height: 420px;
+  position: absolute;
+  left: -90px;
+  top: -160px;
+  width: 420px;
+}
+
+@media (max-width: 1023px) {
+  .booking-bar,
+  .portfolio-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .booking-bar {
+    border-radius: 16px;
+  }
+
+  .amenity-grid,
+  .portfolio-list {
+    grid-template-columns: 1fr;
+  }
 }

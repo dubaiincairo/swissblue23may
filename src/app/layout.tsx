@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Noto_Kufi_Arabic } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const arabicSans = Noto_Kufi_Arabic({
+  variable: "--font-arabic-sans",
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const geistMono = Geist_Mono({
@@ -13,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Swiss Blue Hotels | Rooms, Suites and Serviced Apartments",
+  title: "فنادق سويس بلو | غرف وأجنحة وشقق فندقية",
   description:
-    "A polished homepage concept for Swiss Blue Hotels, featuring hotels and serviced apartments, room category strategy, amenities, destination experiences, and booking-focused inventory.",
+    "تصميم صفحة رئيسية عربية لفنادق سويس بلو تعرض الفنادق والشقق الفندقية وفئات الغرف والخدمات وتجربة الحجز.",
 };
 
 export default function RootLayout({
@@ -25,8 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="ar"
+      dir="rtl"
+      className={`${arabicSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

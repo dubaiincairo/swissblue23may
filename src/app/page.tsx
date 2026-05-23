@@ -3,662 +3,397 @@ import Image from "next/image";
 const BOOKING_URL =
   "https://letsbook.me/booking/yanoljacloudsolution?checkin=2026-05-19&checkout=2026-05-20&adults=2&children=0";
 
-const stats = [
-  { value: "282", label: "Rooms and apartments mapped" },
-  { value: "6", label: "Properties in the portfolio" },
-  { value: "3", label: "Saudi city markets" },
-  { value: "6mo", label: "Category review cycle" },
-];
-
-const hotels = [
+const featuredProperties = [
   {
-    title: "SwissBlue Hotel Jeddah",
-    units: "76 units",
+    title: "فندق سويس بلو جدة",
+    location: "جدة",
+    units: "76 غرفة وجناح",
+    image:
+      "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-saad-alaiyadhi-131639221-10141408-scaled.jpg",
     description:
-      "A full hotel inventory with Superior, Deluxe, Junior Suite, Executive Suite, and Presidential Suite categories.",
+      "عنوان فندقي عصري لرحلات العمل والإقامات القصيرة وتجارب الأجنحة الراقية بالقرب من أجواء البحر الأحمر.",
     href: "https://swissbluehotels.com/swiss-blue-hera/",
   },
   {
-    title: "SwissBlue Apart-Hotel Jazan",
-    units: "55 units",
+    title: "سويس بلو للشقق الفندقية جازان",
+    location: "جازان",
+    units: "55 شقة فندقية",
+    image:
+      "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-jepoyous-18500929-2.jpg",
     description:
-      "Studio, one-bedroom, and two-bedroom apartments with clear city-view and family-apartment options.",
+      "استوديوهات وشقق بغرفة نوم وخيارات عائلية تمنح الضيوف راحة عملية للإقامات القصيرة والممتدة.",
     href: "https://swissbluehotels.com/04_swissblue-jazan/",
   },
   {
-    title: "Al Zahraa Serviced Apartments",
-    units: "46 units",
-    description:
-      "Serviced apartments on Prince Sultan Road, organized by studio, one-bedroom, two-bedroom, and city-view categories.",
-    href: "https://swissbluehotels.com/02_swissblue-al-zahra/",
-  },
-  {
-    title: "Al Samer Serviced Apartments",
-    units: "33 units",
-    description:
-      "Business-ready studios and apartments with premium one-bedroom and two-bedroom city-view categories.",
-    href: "https://swissbluehotels.com/03_swissblue-al-samer/",
-  },
-  {
-    title: "Vinas Riyadh Serviced Apartments",
-    units: "35 units",
-    description:
-      "A Riyadh apartment inventory with one-bedroom, two-bedroom, and three-bedroom options for longer stays.",
-    href: "https://swissbluehotels.com/",
-  },
-  {
-    title: "Tulip Alrawdah Serviced Apartments",
-    units: "37 units",
-    description:
-      "Studio, one-bedroom, and two-bedroom apartment categories with selected city-view upgrades.",
-    href: "https://swissbluehotels.com/",
-  },
-];
-
-const amenities = [
-  "Premium deluxe rooms and suites",
-  "Free and fast Wi-Fi",
-  "Breakfast buffet",
-  "Restaurant and cafe",
-  "Indoor pool",
-  "Fully equipped gym",
-  "Meeting rooms",
-  "Safe locker",
-  "Temperature control",
-  "Taxi service",
-  "Walk-in shower",
-  "Coffee, tea tray, and minibar",
-];
-
-const categoryPrinciples = [
-  {
-    title: "Marketing-first room structure",
-    description:
-      "Categories are shaped for visibility and conversion on booking platforms, not only for back-office operations.",
-  },
-  {
-    title: "Clear guest choice",
-    description:
-      "Room names separate view, bed setup, bedrooms, bathrooms, and living-room availability so guests can compare quickly.",
-  },
-  {
-    title: "Price ladder clarity",
-    description:
-      "Higher-tier categories create visible value steps, helping guests choose the stay that fits their budget and occasion.",
-  },
-];
-
-const portfolioMix = [
-  {
-    property: "SwissBlue Hotel Jeddah",
-    market: "Jeddah",
-    total: "76",
-    signature: "Hotel rooms, junior suites, executive suites, presidential suites",
-  },
-  {
-    property: "SwissBlue Apart-Hotel Jazan",
-    market: "Jazan",
-    total: "55",
-    signature: "Studios, one-bedroom apartments, family apartments",
-  },
-  {
-    property: "Al Zahraa Serviced Apartments",
-    market: "Jeddah",
-    total: "46",
-    signature: "Studios, one-bedroom apartments, two-bedroom city-view apartments",
-  },
-  {
-    property: "Al Samer Serviced Apartments",
-    market: "Jeddah",
-    total: "33",
-    signature: "Business studios, premium one-bedroom, two-bedroom city-view apartments",
-  },
-  {
-    property: "Vinas Riyadh Serviced Apartments",
-    market: "Riyadh",
-    total: "35",
-    signature: "One-bedroom, two-bedroom, and three-bedroom apartment layouts",
-  },
-  {
-    property: "Tulip Alrawdah Serviced Apartments",
-    market: "Riyadh",
-    total: "37",
-    signature: "Studios, one-bedroom stays, and city-view two-bedroom apartments",
-  },
-];
-
-const roomHighlights = [
-  {
-    title: "Superior and Deluxe Rooms",
-    detail:
-      "King and twin configurations for short stays, business trips, and value-focused city visits.",
-  },
-  {
-    title: "Junior and Executive Suites",
-    detail:
-      "One- and two-bedroom suite options with living-room space for longer or more comfortable stays.",
-  },
-  {
-    title: "Serviced Apartments",
-    detail:
-      "Studios, one-bedroom, two-bedroom, and selected three-bedroom layouts for families and extended stays.",
-  },
-  {
-    title: "City-View Upgrades",
-    detail:
-      "Dedicated city-view categories give premium rooms and apartments a stronger identity on booking pages.",
-  },
-];
-
-const guestPaths = [
-  {
-    title: "Business trip",
-    description:
-      "Choose a Superior or Deluxe room with fast Wi-Fi, direct access to city routes, and essential workday comfort.",
-    tags: ["King or twin beds", "Short stays", "Airport access"],
-  },
-  {
-    title: "Extended city stay",
-    description:
-      "Book a serviced apartment with a living room, kitchenette-style comfort, and more breathing space for longer visits.",
-    tags: ["Living room", "One bedroom", "Serviced apartment"],
-  },
-  {
-    title: "Family stay",
-    description:
-      "Select two-bedroom family apartments with Super King and twin-bed configurations for group comfort.",
-    tags: ["Two bedrooms", "Family layout", "More privacy"],
-  },
-  {
-    title: "Premium view",
-    description:
-      "Move into Deluxe, Premium, or city-view categories when the location and outlook matter most.",
-    tags: ["City view", "Higher tier", "Clear value step"],
-  },
-];
-
-const experiences = [
-  {
-    title: "Jeddah city stays",
+    title: "شقق الزهراء الفندقية",
+    location: "جدة",
+    units: "46 شقة",
     image:
       "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-abdullah-alallah-314142096-28506330.jpg",
-  },
-  {
-    title: "Red Sea moments",
-    image:
-      "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-saad-alaiyadhi-131639221-10141408-scaled.jpg",
-  },
-  {
-    title: "Jazan business access",
-    image:
-      "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-jepoyous-18500929-2.jpg",
+    description:
+      "خيار شقق فندقية على طريق الأمير سلطان للضيوف الذين يبحثون عن المساحة وسهولة الوصول وإطلالات المدينة.",
+    href: "https://swissbluehotels.com/02_swissblue-al-zahra/",
   },
 ];
 
-const reviews = [
+const portfolio = [
+  "فندق سويس بلو جدة",
+  "سويس بلو للشقق الفندقية جازان",
+  "شقق الزهراء الفندقية",
+  "شقق السامر الفندقية",
+  "شقق فيناس الرياض الفندقية",
+  "شقق توليب الروضة الفندقية",
+];
+
+const stayTypes = [
   {
-    quote:
-      "Immaculate suites, friendly 24-hour staff and unbeatable location near the Red Sea Mall.",
-    name: "Ahmed A.",
-    city: "Riyadh",
+    title: "الغرف",
+    subtitle: "سوبيريور وديلوكس",
+    description:
+      "أساسيات راقية لرحلات العمل وزيارات المدينة والإقامات السريعة التي تحتاج إلى راحة واضحة وسهولة في الاختيار.",
   },
   {
-    quote:
-      "Having a kitchenette and washing machine made our two-week family stay so easy.",
-    name: "Sara K.",
-    city: "Dubai",
+    title: "الأجنحة",
+    subtitle: "جونيور إلى رئاسي",
+    description:
+      "مساحات أوسع وتجربة أكثر تميزا للضيوف الذين يبحثون عن إقامة بمستوى أعلى وخصوصية أكبر.",
   },
   {
-    quote: "Fast Wi-Fi and free parking were perfect for my business meetings.",
-    name: "Thomas L.",
-    city: "Geneva",
+    title: "الشقق الفندقية",
+    subtitle: "استوديو إلى ثلاث غرف",
+    description:
+      "راحة سكنية بخدمات فندقية للعائلات والإقامات الطويلة والضيوف الذين يفضلون المساحة والمرونة.",
   },
+  {
+    title: "إطلالات المدينة",
+    subtitle: "فئات مختارة ومميزة",
+    description:
+      "مسارات ترقية واضحة للضيوف الذين يقدرون الإطلالة والموقع وتجربة الإقامة الأكثر حضورا.",
+  },
+];
+
+const services = [
+  "بوفيه إفطار",
+  "إنترنت عالي السرعة",
+  "مطعم ومقهى",
+  "مسبح داخلي",
+  "نادي رياضي مجهز",
+  "قاعات اجتماعات",
+  "خدمة الغرف",
+  "خدمة سيارات الأجرة",
+  "خزنة آمنة",
+  "قهوة وشاي وميني بار",
+];
+
+const offers = [
+  {
+    title: "إقامة أعمال",
+    description:
+      "وصول سريع، غرف متصلة، مساحات اجتماعات، وخدمات عملية تساعد الضيف على إنجاز يومه بثقة.",
+  },
+  {
+    title: "إقامة عائلية",
+    description:
+      "شقق متعددة الغرف ومساحات معيشة وخدمات فندقية تمنح العائلة خصوصية وراحة خلال الزيارات الطويلة.",
+  },
+  {
+    title: "عطلة البحر الأحمر",
+    description:
+      "إقامة قريبة من حيوية جدة وتجارب الساحل والمطاعم والتسوق وخطط نهاية الأسبوع.",
+  },
+];
+
+const highlights = [
+  { value: "6", label: "وجهات فندقية" },
+  { value: "282", label: "غرفة وشقة" },
+  { value: "3", label: "مدن سعودية" },
+  { value: "24", label: "ساعة لخدمة الضيوف" },
 ];
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
-      <nav className="sticky top-0 z-30 border-b border-[var(--border)] bg-white/92 backdrop-blur">
+      <nav className="sticky top-0 z-40 border-b border-[var(--border)] bg-white/94 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           <a
             className="flex items-center gap-3"
             href="#top"
-            aria-label="Swiss Blue Hotels home"
+            aria-label="الرئيسية لفنادق سويس بلو"
           >
             <Image
               className="h-10 w-auto"
               src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
-              alt="Swiss Blue Hotels"
+              alt="فنادق سويس بلو"
               width={190}
               height={80}
               priority
             />
           </a>
-          <div className="hidden items-center gap-6 text-sm font-medium text-[var(--text-secondary)] md:flex">
-            <a className="transition hover:text-[var(--primary)]" href="#hotels">
-              Hotels
+          <div className="hidden items-center gap-7 text-sm font-semibold text-[var(--text-secondary)] lg:flex">
+            <a className="transition hover:text-[var(--primary)]" href="#properties">
+              الفنادق
             </a>
-            <a className="transition hover:text-[var(--primary)]" href="#amenities">
-              Amenities
+            <a className="transition hover:text-[var(--primary)]" href="#stays">
+              الغرف والأجنحة
             </a>
-            <a className="transition hover:text-[var(--primary)]" href="#destination">
-              Destination
+            <a className="transition hover:text-[var(--primary)]" href="#offers">
+              العروض
+            </a>
+            <a className="transition hover:text-[var(--primary)]" href="#services">
+              الخدمات
             </a>
           </div>
-          <a
-            className="btn btn-primary"
-            href={BOOKING_URL}
-          >
-            Book now
+          <a className="btn btn-primary" href={BOOKING_URL}>
+            احجز الآن
           </a>
         </div>
       </nav>
 
-      <section
-        id="top"
-        className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[1.04fr_0.96fr] lg:px-8 lg:py-8"
-      >
-        <div className="card flex min-h-[560px] flex-col justify-between overflow-hidden p-6 sm:p-8 lg:p-10">
-          <div>
-            <span className="eyebrow">Hotels and serviced apartments</span>
-            <h1 className="mt-5 max-w-3xl text-[40px] font-bold leading-[1.08] text-balance sm:text-[56px] lg:text-[68px]">
-              A clearer way to choose your Swiss Blue stay.
+      <section id="top" className="hotel-hero relative overflow-hidden">
+        <Image
+          className="absolute inset-0 h-full w-full object-cover"
+          src="https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-saad-alaiyadhi-131639221-10141408-scaled.jpg"
+          alt="إطلالة ساحلية على البحر الأحمر بالقرب من وجهات سويس بلو"
+          fill
+          priority
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(8,28,70,0.82),rgba(18,70,168,0.5)_48%,rgba(8,28,70,0.08))]" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
+
+        <div className="relative mx-auto flex min-h-[760px] max-w-7xl flex-col justify-between px-4 pb-8 pt-24 sm:px-6 lg:px-8">
+          <div className="max-w-3xl pt-10 text-white">
+            <span className="hero-kicker">فنادق سويس بلو</span>
+            <h1 className="mt-5 text-[42px] font-bold leading-[1.12] text-balance sm:text-[64px] lg:text-[76px]">
+              إقامة راقية في قلب وجهات المملكة.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--text-secondary)] sm:text-lg">
-              Swiss Blue brings together hotels and serviced apartments across
-              Jeddah, Jazan, Riyadh, and Alrawdah, with room categories designed
-              to make every stay easier to compare, book, and enjoy.
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/84 sm:text-xl">
+              فنادق وأجنحة وشقق فندقية مصممة لرحلات العمل والإقامات العائلية
+              وعطلات المدينة والزيارات الطويلة في جدة وجازان والرياض.
             </p>
-
-            <div className="mt-8 rounded-[16px] border border-[var(--border)] bg-white p-4 shadow-sm">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div>
-                  <span className="eyebrow">Quick booking</span>
-                  <h2 className="mt-2 text-xl font-bold">
-                    Reserve your Swiss Blue stay
-                  </h2>
-                </div>
-                <a className="btn btn-primary justify-center" href={BOOKING_URL}>
-                  Book now
-                </a>
-              </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-[12px] bg-[var(--background-subtle)] p-3">
-                  <div className="text-xs font-bold uppercase text-[var(--text-tertiary)]">
-                    Check-in
-                  </div>
-                  <div className="mt-1 font-semibold">19 May 2026</div>
-                </div>
-                <div className="rounded-[12px] bg-[var(--background-subtle)] p-3">
-                  <div className="text-xs font-bold uppercase text-[var(--text-tertiary)]">
-                    Check-out
-                  </div>
-                  <div className="mt-1 font-semibold">20 May 2026</div>
-                </div>
-                <div className="rounded-[12px] bg-[var(--background-subtle)] p-3">
-                  <div className="text-xs font-bold uppercase text-[var(--text-tertiary)]">
-                    Guests
-                  </div>
-                  <div className="mt-1 font-semibold">2 adults</div>
-                </div>
-              </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
+                احجز إقامتك
+              </a>
+              <a className="btn btn-glass" href="#properties">
+                استكشف الوجهات
+              </a>
             </div>
           </div>
 
-          <div className="mt-10 grid gap-3 sm:grid-cols-2">
-            {stats.map((stat) => (
-              <div
-                className="rounded-[16px] border border-[var(--border)] bg-[var(--background-subtle)] p-4"
-                key={stat.label}
-              >
-                <div className="font-mono text-2xl font-bold tabular-nums text-[var(--primary)]">
-                  {stat.value}
-                </div>
-                <div className="mt-1 text-sm text-[var(--text-secondary)]">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid gap-6">
-          <figure className="card overflow-hidden">
-            <Image
-              className="h-[420px] w-full object-cover sm:h-[520px]"
-              src="https://swissbluehotels.com/wp-content/uploads/2025/07/little-john-482458-unsplash_s.jpg"
-              alt="Comfortable Swiss Blue Hotels guest room"
-              width={1024}
-              height={680}
-              priority
-            />
-          </figure>
-          <div className="card grid gap-4 p-5 sm:grid-cols-[1fr_auto] sm:items-center">
-            <div>
-              <span className="eyebrow">Rooms and suites</span>
-              <p className="mt-2 text-lg font-semibold">
-                A richer booking experience built around views, bed types,
-                living spaces, bedrooms, and stay purpose.
-              </p>
+          <div className="booking-bar">
+            <div className="booking-field">
+              <span>الوجهة</span>
+              <strong>المملكة العربية السعودية</strong>
             </div>
-            <a
-              className="btn btn-secondary justify-self-start sm:justify-self-end"
-              href="#hotels"
-            >
-              Explore hotels
+            <div className="booking-field">
+              <span>تاريخ الوصول</span>
+              <strong>19 مايو 2026</strong>
+            </div>
+            <div className="booking-field">
+              <span>تاريخ المغادرة</span>
+              <strong>20 مايو 2026</strong>
+            </div>
+            <div className="booking-field">
+              <span>الضيوف</span>
+              <strong>بالغان</strong>
+            </div>
+            <a className="btn btn-primary min-h-[54px] justify-center" href={BOOKING_URL}>
+              تحقق من التوفر
             </a>
           </div>
         </div>
       </section>
 
-      <section id="hotels" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <span className="eyebrow">Portfolio inventory</span>
-            <h2 className="mt-3 text-3xl font-bold sm:text-[40px]">
-              Six properties, one clearer category system.
-            </h2>
-          </div>
-          <p className="max-w-xl text-sm leading-6 text-[var(--text-secondary)]">
-            The new classification translates the full room and apartment
-            inventory into guest-friendly choices, improving separation between
-            categories and strengthening how each unit type appears online.
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-4 md:grid-cols-4">
+          {highlights.map((item) => (
+            <div className="stat-tile" key={item.label}>
+              <div className="font-mono text-3xl font-bold text-[var(--primary)]">
+                {item.value}
+              </div>
+              <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
+                {item.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section
+        id="properties"
+        className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"
+      >
+        <div className="section-heading">
+          <span className="eyebrow">فنادق مختارة</span>
+          <h2>اختر الإقامة التي تناسب رحلتك.</h2>
+          <p>
+            محفظة حديثة من الغرف الفندقية والأجنحة الراقية والشقق المخدومة،
+            منظمة بطريقة تساعد الضيوف على مقارنة الموقع والمساحة ونمط الإقامة
+            بثقة وسهولة.
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {hotels.map((hotel, index) => (
-            <article className="card flex flex-col p-5" key={hotel.title}>
-              <div className="mb-8 flex items-center justify-between gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--primary-light)] font-mono text-sm font-bold text-[var(--primary)]">
-                  {String(index + 1).padStart(2, "0")}
+        <div className="mt-8 grid gap-5 lg:grid-cols-3">
+          {featuredProperties.map((hotel) => (
+            <article className="property-card" key={hotel.title}>
+              <figure className="relative h-72 overflow-hidden">
+                <Image
+                  className="object-cover transition duration-500 hover:scale-105"
+                  src={hotel.image}
+                  alt={hotel.title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                />
+              </figure>
+              <div className="p-5">
+                <div className="flex items-center justify-between gap-4 text-xs font-bold text-[var(--primary)]">
+                  <span>{hotel.location}</span>
+                  <span>{hotel.units}</span>
                 </div>
-                <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs font-bold text-[var(--text-secondary)]">
-                  {hotel.units}
-                </span>
+                <h3 className="mt-4 text-2xl font-bold">{hotel.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                  {hotel.description}
+                </p>
+                <a className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]" href={hotel.href}>
+                  عرض الفندق
+                </a>
               </div>
-              <h3 className="text-xl font-semibold">{hotel.title}</h3>
-              <p className="mt-3 flex-1 text-sm leading-6 text-[var(--text-secondary)]">
-                {hotel.description}
-              </p>
-              <a className="mt-6 text-sm font-bold text-[var(--primary)]" href={hotel.href}>
-                Discover hotel
-              </a>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="card overflow-hidden">
-          <div className="grid gap-0 lg:grid-cols-[0.78fr_1.22fr]">
-            <div className="bg-[var(--background-dark)] p-6 text-white sm:p-8 lg:p-10">
-              <span className="eyebrow text-white/70">Room category strategy</span>
-              <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[40px]">
-                Built to improve visibility, choice, and conversion.
-              </h2>
-              <p className="mt-4 text-sm leading-6 text-white/70">
-                The classification separates room and apartment types by the
-                details guests care about most, creating a stronger booking page
-                with more meaningful options.
-              </p>
-            </div>
-            <div className="grid gap-4 p-5 sm:grid-cols-3">
-              {categoryPrinciples.map((principle) => (
-                <article className="rounded-[16px] border border-[var(--border)] bg-white p-5" key={principle.title}>
-                  <h3 className="text-lg font-bold">{principle.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
-                    {principle.description}
-                  </p>
-                </article>
-              ))}
-            </div>
+      <section className="brand-band">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
+          <div>
+            <span className="eyebrow text-white/72">ميزة سويس بلو</span>
+            <h2 className="mt-4 text-3xl font-bold leading-tight text-white sm:text-[46px]">
+              ضيافة واضحة بروح سلاسل الفنادق الحديثة.
+            </h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              "فئات غرف سهلة الفهم للضيوف",
+              "فنادق وشقق فندقية ضمن محفظة واحدة",
+              "مستويات قيمة واضحة من القياسي إلى الفاخر",
+              "مراجعة دورية تعزز الأداء والمبيعات",
+            ].map((item) => (
+              <div className="brand-point" key={item}>
+                {item}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <span className="eyebrow">Portfolio at a glance</span>
-            <h2 className="mt-3 text-3xl font-bold sm:text-[40px]">
-              Every property has a sharper commercial role.
-            </h2>
-          </div>
-          <p className="max-w-xl text-sm leading-6 text-[var(--text-secondary)]">
-            The document turns operational inventory into a sales-ready
-            portfolio map, making it easier to position each property by
-            location, unit count, and signature stay type.
+      <section id="stays" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="section-heading">
+          <span className="eyebrow">غرف وأجنحة وشقق</span>
+          <h2>كل فئة تحمل وعدا واضحا للضيف.</h2>
+          <p>
+            من الغرف العملية إلى الشقق المطلة على المدينة، صممت فئات الإقامة
+            حول ما يبحث عنه الضيف فعليا: المساحة، الإطلالة، مدة الإقامة،
+            الخصوصية، وهدف الرحلة.
           </p>
         </div>
 
-        <div className="card overflow-hidden">
-          <div className="hidden grid-cols-[1.1fr_0.55fr_0.35fr_1.2fr] gap-4 border-b border-[var(--border)] bg-[var(--background-subtle)] px-5 py-3 text-xs font-bold uppercase text-[var(--text-tertiary)] md:grid">
-            <span>Property</span>
-            <span>Market</span>
-            <span>Units</span>
-            <span>Signature inventory</span>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {stayTypes.map((stay) => (
+            <article className="stay-card" key={stay.title}>
+              <span>{stay.subtitle}</span>
+              <h3>{stay.title}</h3>
+              <p>{stay.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="offers" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
+          <div className="feature-panel">
+            <span className="eyebrow">العروض والمناسبات</span>
+            <h2>احجز الإقامة حسب سبب الرحلة.</h2>
+            <p>
+              الصفحة الرئيسية الفندقية الناجحة تقود الضيف من نيته إلى الخيار
+              المناسب. لذلك تظهر الرحلات بطريقة تجعل المحفظة أسهل في التصفح
+              وأكثر وضوحا تجاريا.
+            </p>
+            <a className="btn btn-primary mt-8" href={BOOKING_URL}>
+              استعرض الإقامات المتاحة
+            </a>
           </div>
-          <div className="divide-y divide-[var(--border)]">
-            {portfolioMix.map((item) => (
-              <article
-                className="grid gap-3 px-5 py-4 text-sm md:grid-cols-[1.1fr_0.55fr_0.35fr_1.2fr] md:items-center"
-                key={item.property}
-              >
-                <h3 className="font-bold">{item.property}</h3>
-                <span className="text-[var(--text-secondary)]">{item.market}</span>
-                <span className="font-mono font-bold text-[var(--primary)]">
-                  {item.total}
-                </span>
-                <p className="leading-6 text-[var(--text-secondary)]">
-                  {item.signature}
-                </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            {offers.map((offer) => (
+              <article className="offer-card" key={offer.title}>
+                <h3>{offer.title}</h3>
+                <p>{offer.description}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <span className="eyebrow">Stay categories</span>
-            <h2 className="mt-3 text-3xl font-bold sm:text-[40px]">
-              From efficient rooms to family apartments.
-            </h2>
-          </div>
-          <p className="max-w-xl text-sm leading-6 text-[var(--text-secondary)]">
-            Category names now tell a fuller story: Superior, Deluxe, Premium,
-            Junior Suite, Executive Suite, Presidential Suite, and family
-            apartments each carry a clearer promise.
-          </p>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {roomHighlights.map((room) => (
-            <article className="card p-5" key={room.title}>
-              <h3 className="text-xl font-semibold">{room.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
-                {room.detail}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="card overflow-hidden">
-          <div className="grid gap-0 lg:grid-cols-[0.74fr_1.26fr]">
-            <div className="bg-[var(--background-promo-soft)] p-6 sm:p-8 lg:p-10">
-              <span className="eyebrow">Find the right stay</span>
-              <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[40px]">
-                Categories that answer real guest intent.
-              </h2>
-              <p className="mt-4 text-sm leading-6 text-[var(--text-secondary)]">
-                Instead of making guests decode room numbers or internal
-                labels, the classification turns inventory features into clear
-                booking reasons: trip length, view, bed setup, living space, and
-                family needs.
-              </p>
-              <a className="btn btn-primary mt-8" href={BOOKING_URL}>
-                Compare available stays
-              </a>
-            </div>
-            <div className="grid gap-4 p-5 sm:grid-cols-2">
-              {guestPaths.map((path) => (
-                <article className="rounded-[16px] border border-[var(--border)] bg-white p-5" key={path.title}>
-                  <h3 className="text-xl font-bold">{path.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
-                    {path.description}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {path.tags.map((tag) => (
-                      <span
-                        className="rounded-full bg-[var(--primary-light)] px-3 py-1 text-xs font-bold text-[var(--primary)]"
-                        key={tag}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section
-        id="amenities"
-        className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8"
+        id="services"
+        className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8"
       >
-        <div className="card bg-[var(--background-dark)] p-6 text-white sm:p-8 lg:p-10">
-          <span className="eyebrow text-white/70">Services and facilities</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[40px]">
-            Exceptional amenities for a memorable stay.
+        <div>
+          <span className="eyebrow">الخدمات والمرافق</span>
+          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
+            تفاصيل الراحة التي يتوقعها الضيوف من علامة فندقية موثوقة.
           </h2>
-          <p className="mt-4 text-sm leading-6 text-white/70">
-            Across the portfolio, each stay is supported by practical hotel
-            essentials: breakfast, wellness, meeting rooms, room service,
-            parking, secure storage, and connected comfort for short or extended
-            visits.
+          <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
+            تجمع التجربة بين أساسيات الفندق ومرونة الشقق الفندقية، لتمنح
+            الضيف راحة عملية سواء كانت الإقامة ليلة واحدة أو عدة أسابيع.
           </p>
-          <a
-            className="btn btn-primary mt-8"
-            href={BOOKING_URL}
-          >
-            Book your room and suite
-          </a>
         </div>
-
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {amenities.map((amenity) => (
-            <div
-              className="rounded-[16px] border border-[var(--border)] bg-white p-4 text-sm font-semibold shadow-sm"
-              key={amenity}
-            >
-              {amenity}
+        <div className="amenity-grid">
+          {services.map((service) => (
+            <div className="amenity-pill" key={service}>
+              {service}
             </div>
           ))}
         </div>
       </section>
 
-      <section id="destination" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="card overflow-hidden">
-          <div className="grid gap-0 lg:grid-cols-[0.82fr_1.18fr]">
-            <div className="bg-[var(--background-promo-soft)] p-6 sm:p-8 lg:p-10">
-              <span className="eyebrow">Discover Jeddah</span>
-              <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[40px]">
-                Stay close to city energy, Red Sea experiences, and airport
-                access.
-              </h2>
-              <p className="mt-4 text-sm leading-6 text-[var(--text-secondary)]">
-                The Swiss Blue site features Jeddah experiences including scuba
-                diving, city tours, and snorkeling, alongside Jazan access for
-                commercial travelers.
-              </p>
-            </div>
-            <div className="grid gap-0 sm:grid-cols-3">
-              {experiences.map((experience) => (
-                <figure
-                  className="group relative min-h-[280px] overflow-hidden"
-                  key={experience.title}
-                >
-                  <Image
-                    className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    src={experience.image}
-                    alt={experience.title}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 100vw"
-                  />
-                  <figcaption className="absolute inset-x-3 bottom-3 rounded-[14px] bg-white/92 p-3 text-sm font-semibold shadow-sm backdrop-blur">
-                    {experience.title}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="portfolio-strip">
+          <div>
+            <span className="eyebrow">المحفظة الكاملة</span>
+            <h2>ست وجهات في جدة وجازان والرياض.</h2>
           </div>
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
-        <div className="card p-6 sm:p-8">
-          <span className="eyebrow">Guest reviews</span>
-          <h2 className="mt-3 text-3xl font-bold sm:text-[40px]">
-            Comfort guests remember.
-          </h2>
-          <div className="mt-6 grid gap-4">
-            {reviews.map((review) => (
-              <blockquote
-                className="rounded-[16px] border border-[var(--border)] bg-[var(--background-subtle)] p-4"
-                key={review.name}
-              >
-                <p className="text-sm leading-6 text-[var(--text-secondary)]">
-                  &ldquo;{review.quote}&rdquo;
-                </p>
-                <footer className="mt-3 text-sm font-bold">
-                  {review.name}
-                  <span className="font-normal text-[var(--text-tertiary)]">
-                    {" "}
-                    / {review.city}
-                  </span>
-                </footer>
-              </blockquote>
+          <div className="portfolio-list">
+            {portfolio.map((property) => (
+              <span key={property}>{property}</span>
             ))}
           </div>
         </div>
+      </section>
 
-        <div className="card bg-[var(--background-promo-soft)] p-6 sm:p-8">
-          <span className="eyebrow">Visit us</span>
-          <h2 className="mt-3 text-2xl font-bold">Head Office</h2>
-          <p className="mt-4 text-sm leading-6 text-[var(--text-secondary)]">
-            Albawadi District, Hira Street, Jeddah 23421, Saudi Arabia.
-          </p>
-          <div className="mt-6 space-y-3 text-sm">
-            <a className="block font-bold text-[var(--primary)]" href="tel:+966126129000">
-              +966 (12) 612-9000
-            </a>
-            <a
-              className="block font-bold text-[var(--primary)]"
-              href="mailto:info@swissbluehotels.com"
-            >
-              info@swissbluehotels.com
+      <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14">
+          <div className="relative max-w-3xl">
+            <span className="eyebrow text-white/72">جاهزون لاستقبالكم</span>
+            <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">
+              اعثر على إقامتك القادمة مع سويس بلو.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
+              قارن بين الغرف والأجنحة والشقق الفندقية ضمن تجربة حجز واضحة
+              تليق بضيوف الضيافة الحديثة.
+            </p>
+            <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
+              احجز الآن
             </a>
           </div>
-          <a
-            className="btn btn-primary mt-8 w-full justify-center"
-            href={BOOKING_URL}
-          >
-            Check availability
-          </a>
         </div>
       </section>
 
-      <footer className="mt-10 border-t border-[var(--border)] bg-white">
+      <footer className="border-t border-[var(--border)] bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 text-sm text-[var(--text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>Swiss Blue Hotels content draft - website and room classification document</p>
+          <p>تصور الصفحة الرئيسية لفنادق سويس بلو</p>
           <a className="font-semibold text-[var(--primary)]" href="https://swissbluehotels.com/">
-            Source website
+            الموقع المصدر
           </a>
         </div>
       </footer>
