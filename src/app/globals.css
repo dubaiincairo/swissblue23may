@@ -114,6 +114,10 @@ button {
   background: var(--bluehost-deep);
 }
 
+.subpage-hero {
+  background: var(--bluehost-deep);
+}
+
 .hero-kicker {
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
@@ -208,12 +212,29 @@ button {
 
 .property-card,
 .stay-card,
-.offer-card {
+.offer-card,
+.content-card {
   background: white;
   border: 1px solid var(--border);
   border-radius: 20px;
   box-shadow: var(--shadow-card);
   overflow: hidden;
+}
+
+.content-card {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.8;
+  min-height: 120px;
+  padding: 24px;
+}
+
+.content-card li {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.8;
 }
 
 .brand-band {

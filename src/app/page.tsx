@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const BOOKING_URL =
   "https://letsbook.me/booking/yanoljacloudsolution?checkin=2026-05-19&checkout=2026-05-20&adults=2&children=0";
@@ -13,6 +14,7 @@ const featuredProperties = [
     description:
       "عنوان فندقي عصري لرحلات العمل والإقامات القصيرة وتجارب الأجنحة الراقية بالقرب من أجواء البحر الأحمر.",
     href: "https://swissbluehotels.com/swiss-blue-hera/",
+    internalHref: "/hotels/swiss-blue-jeddah",
   },
   {
     title: "سويس بلو للشقق الفندقية جازان",
@@ -23,6 +25,7 @@ const featuredProperties = [
     description:
       "استوديوهات وشقق بغرفة نوم وخيارات عائلية تمنح الضيوف راحة عملية للإقامات القصيرة والممتدة.",
     href: "https://swissbluehotels.com/04_swissblue-jazan/",
+    internalHref: "/hotels/swiss-blue-jazan",
   },
   {
     title: "شقق الزهراء الفندقية",
@@ -33,6 +36,7 @@ const featuredProperties = [
     description:
       "خيار شقق فندقية على طريق الأمير سلطان للضيوف الذين يبحثون عن المساحة وسهولة الوصول وإطلالات المدينة.",
     href: "https://swissbluehotels.com/02_swissblue-al-zahra/",
+    internalHref: "/hotels/al-zahraa-serviced-apartments",
   },
 ];
 
@@ -130,22 +134,27 @@ export default function Home() {
             />
           </a>
           <div className="hidden items-center gap-7 text-sm font-semibold text-[var(--text-secondary)] lg:flex">
-            <a className="transition hover:text-[var(--primary)]" href="#properties">
+            <Link className="transition hover:text-[var(--primary)]" href="/hotels">
               الفنادق
-            </a>
-            <a className="transition hover:text-[var(--primary)]" href="#stays">
+            </Link>
+            <Link className="transition hover:text-[var(--primary)]" href="/rooms-suites">
               الغرف والأجنحة
-            </a>
-            <a className="transition hover:text-[var(--primary)]" href="#offers">
+            </Link>
+            <Link className="transition hover:text-[var(--primary)]" href="/offers">
               العروض
-            </a>
-            <a className="transition hover:text-[var(--primary)]" href="#services">
+            </Link>
+            <Link className="transition hover:text-[var(--primary)]" href="/amenities-services">
               الخدمات
+            </Link>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link className="text-sm font-bold text-[var(--primary)]" href="/en">
+              English
+            </Link>
+            <a className="btn btn-primary" href={BOOKING_URL}>
+              احجز الآن
             </a>
           </div>
-          <a className="btn btn-primary" href={BOOKING_URL}>
-            احجز الآن
-          </a>
         </div>
       </nav>
 
@@ -175,9 +184,9 @@ export default function Home() {
               <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
                 احجز إقامتك
               </a>
-              <a className="btn btn-glass" href="#properties">
+              <Link className="btn btn-glass" href="/hotels">
                 استكشف الوجهات
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -255,9 +264,9 @@ export default function Home() {
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                   {hotel.description}
                 </p>
-                <a className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]" href={hotel.href}>
+                <Link className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]" href={hotel.internalHref}>
                   عرض الفندق
-                </a>
+                </Link>
               </div>
             </article>
           ))}
@@ -392,9 +401,9 @@ export default function Home() {
       <footer className="border-t border-[var(--border)] bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 text-sm text-[var(--text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>تصور الصفحة الرئيسية لفنادق سويس بلو</p>
-          <a className="font-semibold text-[var(--primary)]" href="https://swissbluehotels.com/">
-            الموقع المصدر
-          </a>
+          <Link className="font-semibold text-[var(--primary)]" href="/contact">
+            تواصل معنا
+          </Link>
         </div>
       </footer>
     </main>
