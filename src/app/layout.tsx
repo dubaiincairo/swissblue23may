@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WD Group Website",
-  description: "WD Group website powered by Vercel and Sanity.",
+  title: "Swiss Blue Hotels | Rooms, Suites and Serviced Apartments",
+  description:
+    "A polished homepage concept for Swiss Blue Hotels, featuring hotels and serviced apartments, room category strategy, amenities, destination experiences, and booking-focused inventory.",
 };
 
 export default function RootLayout({
