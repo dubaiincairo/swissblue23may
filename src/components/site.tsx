@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BOOKING_URL, navItems } from "@/lib/content";
+import { BOOKING_URL, footerContact, footerSections, navItems } from "@/lib/content";
 
 export function SiteHeader() {
   return (
@@ -20,10 +20,10 @@ export function SiteHeader() {
             priority
           />
         </Link>
-        <div className="hidden items-center gap-4 text-xs font-semibold text-[var(--text-secondary)] xl:flex">
+        <div className="hidden items-center gap-3 text-[11px] font-semibold text-[var(--text-secondary)] xl:flex">
           {navItems.map((item) => (
             <Link
-              className="transition hover:text-[var(--primary)]"
+              className="whitespace-nowrap transition hover:text-[var(--primary)]"
               href={item.href}
               key={item.href}
             >
@@ -73,28 +73,68 @@ export function LanguageToggle({
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[var(--border)] bg-white">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1fr_1.4fr_auto] lg:items-start lg:px-8">
+    <footer className="site-footer border-t border-[var(--border)] bg-white">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
         <div>
-          <p className="font-bold text-[var(--text-primary)]">فنادق سويس بلو</p>
-          <p className="mt-2 leading-6">
-            فنادق وأجنحة وشقق فندقية لاختيارات أوضح وإقامات أريح في المملكة.
+          <Image
+            className="h-12 w-auto"
+            src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
+            alt="فنادق سويس بلو"
+            width={190}
+            height={80}
+          />
+          <p className="mt-5 max-w-sm leading-7">
+            فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة
+            للضيوف الأفراد والشركات والإقامات الطويلة.
           </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <span className="footer-badge">جدة</span>
+            <span className="footer-badge">الرياض</span>
+            <span className="footer-badge">جازان</span>
+          </div>
         </div>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {navItems.map((item) => (
-            <Link
-              className="font-semibold transition hover:text-[var(--primary)]"
-              href={item.href}
-              key={item.href}
-            >
-              {item.label}
-            </Link>
+
+        <div className="grid gap-8 sm:grid-cols-3">
+          {footerSections.map((section) => (
+            <div key={section.title}>
+              <h2 className="text-sm font-bold text-[var(--text-primary)]">
+                {section.title}
+              </h2>
+              <div className="mt-4 grid gap-3">
+                {section.links.map((item) => (
+                  <Link
+                    className="font-semibold leading-5 transition hover:text-[var(--primary)]"
+                    href={item.href}
+                    key={`${section.title}-${item.href}`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
-        <a className="btn btn-secondary justify-center" href={BOOKING_URL}>
-          تحقق من التوفر
-        </a>
+
+        <div className="footer-contact">
+          <h2 className="text-sm font-bold text-[var(--text-primary)]">الدعم والحجز</h2>
+          <ul className="mt-4 grid gap-3">
+            {footerContact.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <a className="btn btn-primary mt-6 justify-center" href={BOOKING_URL}>
+            تحقق من التوفر
+          </a>
+          <Link className="btn btn-secondary mt-3 justify-center" href="/contact">
+            تواصل معنا
+          </Link>
+        </div>
+      </div>
+      <div className="border-t border-[var(--border)]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs font-semibold text-[var(--text-tertiary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p>© 2026 SwissBlue Hotels. جميع الحقوق محفوظة.</p>
+          <p>حجز مباشر | ضيافة سعودية | إقامة للشركات والعائلات</p>
+        </div>
       </div>
     </footer>
   );

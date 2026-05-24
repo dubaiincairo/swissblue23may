@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LanguageToggle } from "@/components/site";
+import { SiteFooter, SiteHeader } from "@/components/site";
 import {
   BOOKING_URL,
   accommodationCategories,
@@ -21,47 +21,7 @@ const highlights = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
-      <nav className="sticky top-0 z-40 border-b border-[var(--border)] bg-white/94 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <a
-            className="flex items-center gap-3"
-            href="#top"
-            aria-label="الرئيسية لفنادق سويس بلو"
-          >
-            <Image
-              className="h-10 w-auto"
-              src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
-              alt="فنادق سويس بلو"
-              width={190}
-              height={80}
-              priority
-            />
-          </a>
-          <div className="hidden items-center gap-7 text-sm font-semibold text-[var(--text-secondary)] lg:flex">
-            <Link className="transition hover:text-[var(--primary)]" href="/hotels">
-              الفنادق
-            </Link>
-            <Link className="transition hover:text-[var(--primary)]" href="/offers">
-              العروض
-            </Link>
-            <Link className="transition hover:text-[var(--primary)]" href="/meetings-events">
-              الشركات
-            </Link>
-            <Link className="transition hover:text-[var(--primary)]" href="/destinations">
-              الوجهات
-            </Link>
-            <Link className="transition hover:text-[var(--primary)]" href="/dining">
-              المطاعم
-            </Link>
-          </div>
-          <div className="flex items-center gap-3">
-            <LanguageToggle current="ar" />
-            <a className="btn btn-primary" href={BOOKING_URL}>
-              احجز الآن
-            </a>
-          </div>
-        </div>
-      </nav>
+      <SiteHeader />
 
       <section id="top" className="hotel-hero relative overflow-hidden">
         <Image
@@ -136,7 +96,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading">
-          <span className="eyebrow">محفظة سويس بلو</span>
+          <span className="eyebrow">منشآت الضيافة</span>
           <h2>ست وجهات، ولكل إقامة سبب واضح للاختيار.</h2>
           <p>
             صممت بطاقات الفنادق لتساعد الضيف على مقارنة المدينة، نوع الإقامة،
@@ -297,14 +257,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-[var(--border)] bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 text-sm text-[var(--text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>فنادق سويس بلو</p>
-          <Link className="font-semibold text-[var(--primary)]" href="/contact">
-            تواصل معنا
-          </Link>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

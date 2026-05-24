@@ -268,6 +268,34 @@ button {
   line-height: 1.8;
 }
 
+.site-footer {
+  box-shadow: 0 -18px 48px rgba(18, 70, 168, 0.05);
+}
+
+.footer-badge {
+  background: var(--bluehost-foam);
+  border: 1px solid rgba(43, 111, 232, 0.12);
+  border-radius: 999px;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 8px 12px;
+}
+
+.footer-contact {
+  background: var(--bluehost-foam);
+  border: 1px solid rgba(43, 111, 232, 0.12);
+  border-radius: 18px;
+  padding: 22px;
+}
+
+.footer-contact li {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
 .brand-band {
   background:
     linear-gradient(135deg, rgba(18, 70, 168, 0.98), rgba(43, 111, 232, 0.94)),
@@ -413,6 +441,77 @@ button {
   min-height: 420px;
 }
 
+.unit-table-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.unit-table-header {
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 22px 24px;
+}
+
+.unit-table-header h3 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 8px;
+}
+
+.unit-table-header strong {
+  background: var(--primary);
+  border-radius: 999px;
+  color: white;
+  flex: 0 0 auto;
+  font-size: 13px;
+  padding: 10px 14px;
+}
+
+.unit-table-scroll {
+  overflow-x: auto;
+}
+
+.unit-table {
+  border-collapse: collapse;
+  min-width: 1120px;
+  width: 100%;
+}
+
+.unit-table th {
+  background: var(--bluehost-foam);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 14px 16px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.unit-table td {
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.7;
+  padding: 16px;
+  vertical-align: top;
+}
+
+.unit-table td strong {
+  color: var(--text-primary);
+}
+
+.room-numbers {
+  max-width: 320px;
+}
+
 .closing-cta > div::before {
   background: radial-gradient(circle, rgba(255, 255, 255, 0.24), transparent 62%);
   content: "";
@@ -439,5 +538,10 @@ button {
   .amenity-grid,
   .portfolio-list {
     grid-template-columns: 1fr;
+  }
+
+  .unit-table-header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

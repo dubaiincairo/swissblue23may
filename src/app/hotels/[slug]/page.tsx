@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { BOOKING_URL, hotels } from "@/lib/content";
+import { BOOKING_URL, hotels, roomClassifications } from "@/lib/content";
 
 export function generateStaticParams() {
   return hotels.map((hotel) => ({ slug: hotel.slug }));
@@ -14,6 +14,9 @@ export default async function HotelDetailPage({
 }) {
   const { slug } = await params;
   const hotel = hotels.find((item) => item.slug === slug);
+  const classification = roomClassifications.find(
+    (item) => item.property === hotel?.title,
+  );
 
   if (!hotel) {
     notFound();
@@ -80,11 +83,20 @@ export default async function HotelDetailPage({
           </p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {hotel.unitTypes.map((unit) => (
-            <article className="unit-card" key={unit.title}>
-              <span>{unit.count}</span>
-              <h3>{unit.title}</h3>
-              <p>{unit.description}</p>
+          {(classification?.rows ?? hotel.unitTypes).map((unit) => (
+            <article
+              className="unit-card"
+              key={"type" in unit ? `${unit.type}-${unit.rooms}` : unit.title}
+            >
+              <span>
+                {"totalUnits" in unit ? `${unit.totalUnits} وحدة` : unit.count}
+              </span>
+              <h3>{"type" in unit ? unit.type : unit.title}</h3>
+              <p>
+                {"type" in unit
+                  ? `${unit.bedrooms} غرفة نوم | ${unit.bedConfig} | ${unit.view} | أرقام الغرف: ${unit.rooms}`
+                  : unit.description}
+              </p>
             </article>
           ))}
         </div>
