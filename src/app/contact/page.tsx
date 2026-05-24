@@ -1,45 +1,39 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { BOOKING_URL, jeddahImage } from "@/lib/content";
-
-const contactTopics = [
-  "الحجوزات",
-  "حجوزات الشركات",
-  "الاجتماعات والمناسبات",
-  "استفسارات الإقامة الطويلة",
-  "المكتب الرئيسي",
-  "تواصل مع كل وجهة",
-];
+import { BOOKING_URL, contactChannels, jeddahImage } from "@/lib/content";
 
 export default function ContactPage() {
   return (
     <PageShell>
       <PageHero
         eyebrow="تواصل معنا"
-        title="فريق الحجوزات جاهز لمساعدتك."
-        text="فرق الحجوزات ودعم الضيوف جاهزة لمساعدتك في اختيار الفندق أو الغرفة أو الجناح أو الشقة الفندقية المناسبة."
+        title="قنوات واضحة للحجز، الشركات، وخدمة الضيوف."
+        text="يمكنك بدء الحجز مباشرة، أو التواصل مع نظام الحجز المركزي، أو طلب دعم مختص صفقات الشركات، أو استخدام مساعد SwissBlue Concierge AI لتوجيهك بسرعة."
         image={jeddahImage}
       />
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
-        <div className="grid gap-4 sm:grid-cols-2">
-          {contactTopics.map((topic) => (
-            <div className="content-card" key={topic}>
-              {topic}
-            </div>
+      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
+        <div className="grid gap-4 sm:grid-cols-3">
+          {contactChannels.map((channel) => (
+            <article className="content-card" key={channel.title}>
+              <span className="eyebrow">{channel.title}</span>
+              <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
+                {channel.text}
+              </p>
+            </article>
           ))}
         </div>
         <div className="feature-panel">
           <span className="eyebrow">الحجز المباشر</span>
           <h2>ابدأ بطلب التوفر.</h2>
           <p>
-            يمكن للضيوف التحقق من التوفر والحجز مباشرة، كما يمكن للشركات
-            والمجموعات استخدام نموذج التواصل لتنسيق احتياجاتهم.
+            رابط الحجز المباشر هو أسرع مسار للضيوف الأفراد، بينما تدعم قنوات
+            التواصل طلبات الشركات والمجموعات والأسئلة التفصيلية.
           </p>
           <a className="btn btn-primary mt-8" href={BOOKING_URL}>
             تحقق من التوفر
           </a>
         </div>
       </section>
-      <CtaBand title="اختر إقامتك أو تواصل معنا." cta="احجز الآن" />
+      <CtaBand title="اختر المسار الأنسب، وسنساعدك في الخطوة التالية." cta="احجز الآن" />
     </PageShell>
   );
 }

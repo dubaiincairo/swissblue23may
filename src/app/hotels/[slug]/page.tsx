@@ -1,6 +1,7 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { hotels, services } from "@/lib/content";
+import { BOOKING_URL, hotels } from "@/lib/content";
 
 export function generateStaticParams() {
   return hotels.map((hotel) => ({ slug: hotel.slug }));
@@ -21,34 +22,47 @@ export default async function HotelDetailPage({
   return (
     <PageShell>
       <PageHero
-        eyebrow={hotel.city}
+        eyebrow={`${hotel.city} | ${hotel.type}`}
         title={hotel.title}
         text={hotel.summary}
         image={hotel.image}
       />
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
         <div className="feature-panel">
-          <span className="eyebrow">نظرة عامة</span>
+          <span className="eyebrow">تموضع الوجهة</span>
           <h2>{hotel.title}</h2>
-          <p>{hotel.overview}</p>
-          <a className="btn btn-primary mt-8" href={hotel.source}>
-            زيارة صفحة الفندق
+          <p>{hotel.positioning}</p>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            <div className="stat-tile">
+              <div className="text-2xl font-bold text-[var(--primary)]">{hotel.units}</div>
+              <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
+                إجمالي الوحدات
+              </div>
+            </div>
+            <div className="stat-tile">
+              <div className="text-2xl font-bold text-[var(--primary)]">{hotel.city}</div>
+              <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
+                المدينة
+              </div>
+            </div>
+          </div>
+          <a className="btn btn-primary mt-8" href={BOOKING_URL}>
+            تحقق من التوفر
           </a>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+
+        <div className="grid gap-4">
           <div className="content-card">
-            <span className="eyebrow">فئات الإقامة</span>
-            <ul className="mt-4 space-y-3">
-              {hotel.stayTypes.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            <span className="eyebrow">إبراز الموقع</span>
+            <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
+              {hotel.locationHighlight}
+            </p>
           </div>
           <div className="content-card">
-            <span className="eyebrow">قريب من</span>
-            <ul className="mt-4 space-y-3">
-              {hotel.nearby.map((item) => (
+            <span className="eyebrow">معالم قريبة</span>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {hotel.landmarks.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -58,19 +72,65 @@ export default async function HotelDetailPage({
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading">
-          <span className="eyebrow">الخدمات</span>
-          <h2>راحة عملية تدعم كل إقامة.</h2>
+          <span className="eyebrow">أنواع الوحدات</span>
+          <h2>فئات إقامة واضحة مع عدد الوحدات لكل فئة.</h2>
+          <p>
+            تساعد هذه الفئات الضيف أو مسؤول الحجز على اختيار المساحة المناسبة
+            حسب مدة الإقامة وعدد الضيوف وسبب الرحلة.
+          </p>
         </div>
-        <div className="amenity-grid mt-8">
-          {services.slice(0, 10).map((service) => (
-            <div className="amenity-pill" key={service}>
-              {service}
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {hotel.unitTypes.map((unit) => (
+            <article className="unit-card" key={unit.title}>
+              <span>{unit.count}</span>
+              <h3>{unit.title}</h3>
+              <p>{unit.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
+        <div>
+          <span className="eyebrow">المرافق والخدمات</span>
+          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
+            ما يحتاجه الضيف داخل هذه الوجهة.
+          </h2>
+          <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
+            تعرض كل صفحة فندق الخدمات المتوقعة في الوجهة نفسها حتى تصبح
+            المقارنة بين الفنادق والشقق أكثر وضوحا.
+          </p>
+        </div>
+        <div className="amenity-grid">
+          {hotel.amenities.map((amenity) => (
+            <div className="amenity-pill" key={amenity}>
+              {amenity}
             </div>
           ))}
         </div>
       </section>
 
-      <CtaBand title="احجز إقامتك في هذه الوجهة." cta="تحقق من التوفر" />
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="section-heading">
+          <span className="eyebrow">معرض الصور</span>
+          <h2>لمحة بصرية عن تجربة الإقامة.</h2>
+        </div>
+        <div className="gallery-grid mt-8">
+          {hotel.gallery.map((image, index) => (
+            <figure className="relative overflow-hidden" key={`${image}-${index}`}>
+              <Image
+                className="object-cover"
+                src={image}
+                alt={`${hotel.title} صورة ${index + 1}`}
+                fill
+                sizes="(min-width: 1024px) 33vw, 100vw"
+              />
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <CtaBand title={`احجز إقامتك في ${hotel.title}.`} cta="تحقق من التوفر" />
     </PageShell>
   );
 }
