@@ -18,6 +18,21 @@ const highlights = [
   { value: "24", label: "ساعة لخدمة الضيوف" },
 ];
 
+const homeOfferCards = [
+  {
+    title: "إقامة أعمال",
+    text: "راحة يومية، إنترنت سريع، دعم للاجتماعات، ومواقع عملية داخل المدن لرحلات أكثر إنتاجية.",
+  },
+  {
+    title: "إقامة عائلية في شقة",
+    text: "مساحات متعددة الغرف، خصوصية أعلى، وراحة الشقق المخدومة لزيارات عائلية أسهل.",
+  },
+  {
+    title: "إقامة شهرية",
+    text: "قيمة أفضل للضيوف الذين يحتاجون إلى قاعدة إقامة موثوقة لفترة طويلة في جدة أو جازان أو الرياض.",
+  },
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
@@ -196,6 +211,30 @@ export default function Home() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
+          <div className="feature-panel">
+            <span className="eyebrow">العروض والمناسبات</span>
+            <h2>احجز الإقامة حسب سبب الرحلة.</h2>
+            <p>
+              ساعد الضيوف على الانتقال من نية السفر إلى الخيار المناسب، من
+              رحلات الأعمال إلى الإقامة العائلية والإقامة الشهرية.
+            </p>
+            <Link className="btn btn-primary mt-8" href="/offers">
+              عرض العروض
+            </Link>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {homeOfferCards.map((offer) => (
+              <article className="offer-card" key={offer.title}>
+                <h3>{offer.title}</h3>
+                <p>{offer.text}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
