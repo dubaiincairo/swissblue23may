@@ -32,15 +32,42 @@ export function SiteHeader() {
           ))}
         </div>
         <div className="flex items-center gap-3">
-          <Link className="text-sm font-bold text-[var(--primary)]" href="/en">
-            English
-          </Link>
+          <LanguageToggle current="ar" />
           <a className="btn btn-primary" href={BOOKING_URL}>
             احجز الآن
           </a>
         </div>
       </div>
     </nav>
+  );
+}
+
+export function LanguageToggle({
+  current,
+}: {
+  current: "ar" | "en";
+}) {
+  return (
+    <div
+      className="language-toggle"
+      aria-label="تبديل اللغة"
+      dir="ltr"
+    >
+      <Link
+        className={current === "ar" ? "active" : ""}
+        href="/"
+        aria-current={current === "ar" ? "page" : undefined}
+      >
+        AR
+      </Link>
+      <Link
+        className={current === "en" ? "active" : ""}
+        href="/en"
+        aria-current={current === "en" ? "page" : undefined}
+      >
+        EN
+      </Link>
+    </div>
   );
 }
 

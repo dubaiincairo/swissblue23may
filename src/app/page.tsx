@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LanguageToggle } from "@/components/site";
 
 const BOOKING_URL =
   "https://letsbook.me/booking/yanoljacloudsolution?checkin=2026-05-19&checkout=2026-05-20&adults=2&children=0";
@@ -148,9 +149,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex items-center gap-3">
-            <Link className="text-sm font-bold text-[var(--primary)]" href="/en">
-              English
-            </Link>
+            <LanguageToggle current="ar" />
             <a className="btn btn-primary" href={BOOKING_URL}>
               احجز الآن
             </a>

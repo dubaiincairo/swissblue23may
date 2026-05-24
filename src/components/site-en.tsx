@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BOOKING_URL, navItemsEn } from "@/lib/content-en";
+import { LanguageToggle } from "@/components/site";
 
 export function SiteHeaderEn() {
   return (
@@ -24,9 +25,7 @@ export function SiteHeaderEn() {
           ))}
         </div>
         <div className="flex items-center gap-3">
-          <Link className="text-sm font-bold text-[var(--primary)]" href="/">
-            العربية
-          </Link>
+          <LanguageToggle current="en" />
           <a className="btn btn-primary" href={BOOKING_URL}>
             Book now
           </a>

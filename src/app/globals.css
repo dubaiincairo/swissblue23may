@@ -97,6 +97,36 @@ button {
   background: var(--primary-light);
 }
 
+.language-toggle {
+  align-items: center;
+  background: var(--bluehost-foam);
+  border: 1px solid rgba(43, 111, 232, 0.18);
+  border-radius: 999px;
+  display: inline-grid;
+  gap: 2px;
+  grid-template-columns: repeat(2, minmax(34px, 1fr));
+  padding: 3px;
+}
+
+.language-toggle a {
+  align-items: center;
+  border-radius: 999px;
+  color: var(--primary);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 800;
+  justify-content: center;
+  min-height: 32px;
+  padding: 6px 10px;
+  text-decoration: none;
+}
+
+.language-toggle a.active {
+  background: var(--primary);
+  box-shadow: 0 8px 18px rgba(18, 70, 168, 0.2);
+  color: white;
+}
+
 .eyebrow {
   color: var(--primary);
   display: inline-flex;
