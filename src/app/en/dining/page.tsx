@@ -1,13 +1,35 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { jeddahImage } from "@/lib/content-en";
-
-const diningItemsEn = [
-  { title: "Breakfast", text: "Start the day with a practical breakfast experience for business and family stays." },
-  { title: "Restaurant and cafe", text: "Easy on-property options for a comfortable meal or quick meeting during the day." },
-  { title: "Room service", text: "Added convenience for guests who prefer in-room dining where the service is available." },
-  { title: "Meeting refreshments", text: "Practical refreshments and hospitality support for groups and business meetings." },
-];
+import { diningOptionsEn, jeddahImage } from "@/lib/content-en";
 
 export default function DiningPageEn() {
-  return <PageShellEn><PageHeroEn eyebrow="Dining" title="Dining made comfortable." text="Start the day with breakfast, enjoy convenient cafe and restaurant options, and make your stay easier with practical dining services across selected Swiss Blue properties." image={jeddahImage} /><section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8"><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">{diningItemsEn.map((item) => <article className="stay-card" key={item.title}><span>Dining</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></section><CtaBandEn title="Make your stay more comfortable." cta="Book your stay" /></PageShellEn>;
+  return (
+    <PageShellEn>
+      <PageHeroEn
+        eyebrow="Dining and food services"
+        title="Practical dining options throughout the stay."
+        text="From breakfast to the cafe, restaurant, and room service, Swiss Blue offers convenient dining experiences for business guests, families, and longer-stay guests."
+        image={jeddahImage}
+      />
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="section-heading">
+          <span className="eyebrow">Dining experience</span>
+          <h2>Every food service has a clear role in the guest journey.</h2>
+          <p>
+            Some services vary by property, but the content clarifies what to
+            expect and makes the stay feel more complete and professional.
+          </p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {diningOptionsEn.map((item) => (
+            <article className="stay-card" key={item.title}>
+              <span>Food service</span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <CtaBandEn title="Choose a stay that makes your day easier." cta="Book your stay" />
+    </PageShellEn>
+  );
 }
