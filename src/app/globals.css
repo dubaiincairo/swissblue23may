@@ -127,6 +127,83 @@ button {
   color: white;
 }
 
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-parent {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 6px;
+  min-height: 38px;
+  padding: 9px 12px;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.nav-parent:hover,
+.nav-dropdown:focus-within .nav-parent,
+.nav-dropdown:hover .nav-parent {
+  background: var(--bluehost-foam);
+  color: var(--primary);
+}
+
+.nav-parent span {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.nav-menu {
+  background: white;
+  border: 1px solid rgba(43, 111, 232, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 18px 42px rgba(18, 70, 168, 0.14);
+  display: grid;
+  gap: 4px;
+  min-width: 220px;
+  opacity: 0;
+  padding: 8px;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  transform: translateY(6px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+  z-index: 60;
+}
+
+[dir="ltr"] .nav-menu {
+  left: 0;
+  right: auto;
+}
+
+.nav-menu a {
+  border-radius: 11px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.35;
+  padding: 11px 12px;
+  white-space: nowrap;
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus-visible {
+  background: var(--bluehost-foam);
+  color: var(--primary);
+}
+
+.nav-dropdown:focus-within .nav-menu,
+.nav-dropdown:hover .nav-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
 .eyebrow {
   color: var(--primary);
   display: inline-flex;

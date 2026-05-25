@@ -14,12 +14,54 @@ export const navItemsEn = [
   { label: "Hospitality Properties", href: "/en/hotels" },
   { label: "Rooms & Suites", href: "/en/rooms-suites" },
   { label: "Offers & Discounts", href: "/en/offers" },
+  { label: "Loyalty Program", href: "/en/loyalty" },
   { label: "Services", href: "/en/amenities-services" },
   { label: "Destinations / Cities", href: "/en/destinations" },
   { label: "Dining Experience", href: "/en/dining" },
-  { label: "Corporate Deals", href: "/en/meetings-events" },
+  { label: "Corporate Deals", href: "/en/corporate-deals" },
+  { label: "Group Bookings", href: "/en/group-bookings" },
   { label: "About Us", href: "/en/about" },
   { label: "Contact Us", href: "/en/contact" },
+];
+
+export const navGroupsEn = [
+  {
+    label: "Stay",
+    links: [
+      { label: "Hospitality Properties", href: "/en/hotels" },
+      { label: "Rooms & Suites", href: "/en/rooms-suites" },
+    ],
+  },
+  {
+    label: "Experience",
+    links: [
+      { label: "Services", href: "/en/amenities-services" },
+      { label: "Dining Experience", href: "/en/dining" },
+      { label: "Destinations / Cities", href: "/en/destinations" },
+    ],
+  },
+  {
+    label: "Offers",
+    links: [
+      { label: "Offers & Discounts", href: "/en/offers" },
+      { label: "Loyalty Program", href: "/en/loyalty" },
+    ],
+  },
+  {
+    label: "Business",
+    links: [
+      { label: "Corporate Deals", href: "/en/corporate-deals" },
+      { label: "Group Bookings", href: "/en/group-bookings" },
+      { label: "Meetings & Events", href: "/en/meetings-events" },
+    ],
+  },
+  {
+    label: "About",
+    links: [
+      { label: "About Us", href: "/en/about" },
+      { label: "Contact Us", href: "/en/contact" },
+    ],
+  },
 ];
 
 export const footerSectionsEn = [
@@ -29,6 +71,7 @@ export const footerSectionsEn = [
       { label: "Hospitality Properties", href: "/en/hotels" },
       { label: "Rooms & Suites", href: "/en/rooms-suites" },
       { label: "Offers & Discounts", href: "/en/offers" },
+      { label: "Loyalty Program", href: "/en/loyalty" },
       { label: "Destinations / Cities", href: "/en/destinations" },
     ],
   },
@@ -37,7 +80,8 @@ export const footerSectionsEn = [
     links: [
       { label: "Services & Amenities", href: "/en/amenities-services" },
       { label: "Dining Experience", href: "/en/dining" },
-      { label: "Corporate Deals", href: "/en/meetings-events" },
+      { label: "Corporate Deals", href: "/en/corporate-deals" },
+      { label: "Group Bookings", href: "/en/group-bookings" },
       { label: "FAQ", href: "/en/faq" },
     ],
   },

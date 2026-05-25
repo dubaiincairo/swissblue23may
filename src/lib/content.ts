@@ -14,12 +14,54 @@ export const navItems = [
   { label: "منشآت الضيافة", href: "/hotels" },
   { label: "الغرف والأجنحة", href: "/rooms-suites" },
   { label: "العروض والتخفيضات", href: "/offers" },
+  { label: "برنامج الولاء", href: "/loyalty" },
   { label: "الخدمات", href: "/amenities-services" },
   { label: "الوجهات / المدن", href: "/destinations" },
   { label: "تجربة الطعام", href: "/dining" },
-  { label: "تعاقدات الشركات", href: "/meetings-events" },
+  { label: "تعاقدات الشركات", href: "/corporate-deals" },
+  { label: "حجوزات المجموعات", href: "/group-bookings" },
   { label: "من نحن؟", href: "/about" },
   { label: "تواصل معنا", href: "/contact" },
+];
+
+export const navGroups = [
+  {
+    label: "الإقامة",
+    links: [
+      { label: "منشآت الضيافة", href: "/hotels" },
+      { label: "الغرف والأجنحة", href: "/rooms-suites" },
+    ],
+  },
+  {
+    label: "التجربة",
+    links: [
+      { label: "الخدمات", href: "/amenities-services" },
+      { label: "تجربة الطعام", href: "/dining" },
+      { label: "الوجهات / المدن", href: "/destinations" },
+    ],
+  },
+  {
+    label: "العروض",
+    links: [
+      { label: "العروض والتخفيضات", href: "/offers" },
+      { label: "برنامج الولاء", href: "/loyalty" },
+    ],
+  },
+  {
+    label: "الشركات",
+    links: [
+      { label: "تعاقدات الشركات", href: "/corporate-deals" },
+      { label: "حجوزات المجموعات", href: "/group-bookings" },
+      { label: "الاجتماعات والمناسبات", href: "/meetings-events" },
+    ],
+  },
+  {
+    label: "عن سويس بلو",
+    links: [
+      { label: "من نحن؟", href: "/about" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
+  },
 ];
 
 export const footerSections = [
@@ -29,6 +71,7 @@ export const footerSections = [
       { label: "منشآت الضيافة", href: "/hotels" },
       { label: "الغرف والأجنحة", href: "/rooms-suites" },
       { label: "العروض والتخفيضات", href: "/offers" },
+      { label: "برنامج الولاء", href: "/loyalty" },
       { label: "الوجهات / المدن", href: "/destinations" },
     ],
   },
@@ -37,7 +80,8 @@ export const footerSections = [
     links: [
       { label: "الخدمات والمرافق", href: "/amenities-services" },
       { label: "تجربة الطعام", href: "/dining" },
-      { label: "تعاقدات الشركات", href: "/meetings-events" },
+      { label: "تعاقدات الشركات", href: "/corporate-deals" },
+      { label: "حجوزات المجموعات", href: "/group-bookings" },
       { label: "الأسئلة الشائعة", href: "/faq" },
     ],
   },

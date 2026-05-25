@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BOOKING_URL, footerContact, footerSections, navItems } from "@/lib/content";
+import { BOOKING_URL, footerContact, footerSections, navGroups } from "@/lib/content";
 
 export function SiteHeader() {
   return (
@@ -20,15 +20,21 @@ export function SiteHeader() {
             priority
           />
         </Link>
-        <div className="hidden items-center gap-3 text-[11px] font-semibold text-[var(--text-secondary)] xl:flex">
-          {navItems.map((item) => (
-            <Link
-              className="whitespace-nowrap transition hover:text-[var(--primary)]"
-              href={item.href}
-              key={item.href}
-            >
-              {item.label}
-            </Link>
+        <div className="hidden items-center gap-2 text-xs font-bold text-[var(--text-secondary)] xl:flex">
+          {navGroups.map((group) => (
+            <div className="nav-dropdown" key={group.label}>
+              <button className="nav-parent" type="button">
+                {group.label}
+                <span aria-hidden="true">⌄</span>
+              </button>
+              <div className="nav-menu">
+                {group.links.map((item) => (
+                  <Link href={item.href} key={`${group.label}-${item.href}`}>
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
         <div className="flex items-center gap-3">
