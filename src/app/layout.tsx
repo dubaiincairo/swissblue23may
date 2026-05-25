@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Noto_Kufi_Arabic } from "next/font/google";
+import { ChatbaseWidget } from "@/components/chatbase-widget";
 import "./globals.css";
 
 const arabicSans = Noto_Kufi_Arabic({
@@ -30,7 +31,10 @@ export default function RootLayout({
       dir="rtl"
       className={`${arabicSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <ChatbaseWidget />
+      </body>
     </html>
   );
 }
