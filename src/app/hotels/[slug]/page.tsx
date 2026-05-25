@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { BOOKING_URL, hotels, roomClassifications } from "@/lib/content";
+import { propertyFaqs } from "@/lib/faq-content";
 
 export function generateStaticParams() {
   return hotels.map((hotel) => ({ slug: hotel.slug }));
@@ -140,6 +142,14 @@ export default async function HotelDetailPage({
             </figure>
           ))}
         </div>
+      </section>
+
+      <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="rtl">
+        <div className="faq-heading">
+          <span className="eyebrow">أسئلة هذا الفرع</span>
+          <h2>معلومات مهمة عن {hotel.title}.</h2>
+        </div>
+        <FaqAccordion items={propertyFaqs} />
       </section>
 
       <CtaBand title={`احجز إقامتك في ${hotel.title}.`} cta="تحقق من التوفر" />

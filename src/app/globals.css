@@ -1268,51 +1268,86 @@ button {
   text-transform: none;
 }
 
-.faq-list {
-  border-top: 1px solid var(--text-primary);
+.faq-category-list {
+  display: grid;
+  gap: 34px;
 }
 
-.faq-list details {
-  border-bottom: 1px solid var(--text-primary);
+.faq-category {
+  display: grid;
+  gap: 16px;
 }
 
-.faq-list summary {
+.faq-category h2 {
+  color: var(--text-primary);
+  font-size: clamp(1.35rem, 2.6vw, 2.15rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.faq-bubble-list {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-bubble-list details {
+  background: white;
+  border: 1px solid rgba(18, 70, 168, 0.16);
+  border-radius: 8px;
+  box-shadow: 0 14px 36px rgba(18, 42, 83, 0.06);
+  overflow: hidden;
+}
+
+.faq-bubble-list summary {
   align-items: center;
   cursor: pointer;
   display: flex;
-  gap: 20px;
+  gap: 18px;
   justify-content: space-between;
   list-style: none;
-  padding: 30px 0;
+  padding: 20px 22px;
 }
 
-.faq-list summary::-webkit-details-marker {
+.faq-bubble-list summary::-webkit-details-marker {
   display: none;
 }
 
-.faq-list summary span {
-  font-size: clamp(1rem, 2vw, 1.35rem);
-  font-weight: 500;
+.faq-bubble-list summary span {
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  font-weight: 850;
   line-height: 1.5;
 }
 
-.faq-list summary strong {
-  color: var(--text-primary);
-  font-size: 30px;
+.faq-bubble-list summary strong {
+  align-items: center;
+  background: var(--bluehost-foam);
+  border-radius: 50%;
+  color: var(--primary);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 22px;
+  height: 34px;
+  justify-content: center;
   line-height: 1;
   transition: transform 160ms ease;
+  width: 34px;
 }
 
-.faq-list details[open] summary strong {
+.faq-bubble-list details[open] summary strong {
   transform: rotate(180deg);
 }
 
-.faq-list details p {
+.faq-bubble-list details p {
+  border-top: 1px solid rgba(18, 70, 168, 0.1);
   color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.9;
-  max-width: 780px;
-  padding: 0 0 28px;
+  padding: 0 22px 22px;
+}
+
+.faq-bubble-list details[open] p {
+  padding-top: 18px;
 }
 
 .closing-cta > div::before {

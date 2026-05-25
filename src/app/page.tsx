@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import HomepageGallery from "@/components/homepage-gallery";
 import { BOOKING_URL, getEditableContent, heroImage } from "@/lib/editable-content";
+import { homepageFaqs } from "@/lib/faq-content";
 
 export const dynamic = "force-dynamic";
 
@@ -240,6 +242,14 @@ export default async function Home() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="rtl">
+        <div className="faq-heading">
+          <span className="eyebrow">الأسئلة الشائعة</span>
+          <h2>إجابات مختصرة قبل الحجز.</h2>
+        </div>
+        <FaqAccordion items={homepageFaqs} />
       </section>
 
       <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">

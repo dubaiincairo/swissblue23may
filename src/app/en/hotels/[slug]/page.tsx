@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { BOOKING_URL, hotelsEn, roomClassificationsEn } from "@/lib/content-en";
+import { propertyFaqsEn } from "@/lib/faq-content-en";
 
 export function generateStaticParams() {
   return hotelsEn.map((hotel) => ({ slug: hotel.slug }));
@@ -140,6 +142,14 @@ export default async function HotelDetailPageEn({
             </figure>
           ))}
         </div>
+      </section>
+
+      <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="ltr">
+        <div className="faq-heading">
+          <span className="eyebrow">Property FAQ</span>
+          <h2>Important information about {hotel.title}.</h2>
+        </div>
+        <FaqAccordion items={propertyFaqsEn} />
       </section>
 
       <CtaBandEn title={`Book your stay at ${hotel.title}.`} cta="Check availability" />
