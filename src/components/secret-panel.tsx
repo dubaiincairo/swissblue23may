@@ -434,7 +434,6 @@ function FieldEditor({
                 className="admin-array-item"
                 draggable
                 key={`${path.join(".")}-${index}`}
-                open={index === 0 || value.length <= 3}
                 onDragStart={() => setDragIndex(index)}
                 onDragOver={(event) => event.preventDefault()}
                 onDrop={() => {
