@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import HomepageGallery from "@/components/homepage-gallery";
-import SwissBlueConcierge from "@/components/swissblue-concierge";
 import { BOOKING_URL, getEditableContent, heroImage } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -261,7 +260,6 @@ export default async function Home() {
       </section>
 
       <SiteFooter />
-      <SwissBlueConcierge locale="ar" />
     </main>
   );
 }
