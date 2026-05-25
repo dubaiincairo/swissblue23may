@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "@/components/site";
+import HomepageGallery from "@/components/homepage-gallery";
+import SwissBlueConcierge from "@/components/swissblue-concierge";
 import { BOOKING_URL, getEditableContent, heroImage } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -147,6 +149,8 @@ export default async function Home() {
         </div>
       </section>
 
+      <HomepageGallery locale="ar" />
+
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading">
           <span className="eyebrow">{home.destinations.eyebrow}</span>
@@ -257,6 +261,7 @@ export default async function Home() {
       </section>
 
       <SiteFooter />
+      <SwissBlueConcierge locale="ar" />
     </main>
   );
 }

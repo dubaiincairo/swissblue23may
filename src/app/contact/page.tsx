@@ -1,7 +1,14 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
+import ContactHandoff from "@/components/contact-handoff";
 import { BOOKING_URL, contactChannels, jeddahImage } from "@/lib/content";
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const query = await searchParams;
+
   return (
     <PageShell>
       <PageHero
@@ -10,6 +17,7 @@ export default function ContactPage() {
         text="يمكنك بدء الحجز مباشرة، أو التواصل مع نظام الحجز المركزي، أو طلب دعم مختص صفقات الشركات، أو استخدام مساعد SwissBlue Concierge AI لتوجيهك بسرعة."
         image={jeddahImage}
       />
+      <ContactHandoff locale="ar" source={query.source} message={query.message} />
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
         <div className="grid gap-4 sm:grid-cols-3">
           {contactChannels.map((channel) => (

@@ -10,15 +10,22 @@ export default function FaqPage() {
         text="تعرف على أهم المعلومات حول أنواع الإقامة والحجز المباشر والخدمات والإقامات الطويلة وخيارات الشركات."
         image={heroImage}
       />
-      <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-4">
+      <section className="faq-section mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="faq-heading">
+          <span className="eyebrow">Swiss Blue FAQ</span>
+          <h2>الأسئلة الأكثر شيوعا</h2>
+        </div>
+        <div className="faq-list">
           {faqs.map((faq) => (
-            <article className="content-card" key={faq.question}>
-              <h2 className="text-xl font-bold">{faq.question}</h2>
-              <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+            <details key={faq.question}>
+              <summary>
+                <span>{faq.question}</span>
+                <strong aria-hidden="true">⌄</strong>
+              </summary>
+              <p>
                 {faq.answer}
               </p>
-            </article>
+            </details>
           ))}
         </div>
       </section>

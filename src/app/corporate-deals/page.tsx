@@ -1,4 +1,5 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
+import CorporateDealForm from "@/components/corporate-deal-form";
 import { corporateDeals, heroImage } from "@/lib/content";
 
 const requiredDocuments = [
@@ -59,6 +60,7 @@ export default function CorporateDealsPage() {
           ))}
         </div>
       </section>
+      <CorporateDealForm locale="ar" />
       <CtaBand title="اطلب عرضا للشركات أو المجموعات." cta="تواصل مع المختص" />
     </PageShell>
   );

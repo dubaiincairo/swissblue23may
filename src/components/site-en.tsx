@@ -4,6 +4,7 @@ import { BOOKING_URL } from "@/lib/content-en";
 import { LanguageToggle } from "@/components/site";
 import { getEditableContent } from "@/lib/editable-content";
 import LiveContentRefresh from "@/components/live-content-refresh";
+import SwissBlueConcierge from "@/components/swissblue-concierge";
 
 export async function SiteHeaderEn() {
   const { en } = await getEditableContent();
@@ -181,6 +182,7 @@ export function PageShellEn({ children }: { children: React.ReactNode }) {
       <SiteHeaderEn />
       {children}
       <SiteFooterEn />
+      <SwissBlueConcierge locale="en" />
     </main>
   );
 }

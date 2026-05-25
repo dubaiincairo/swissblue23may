@@ -496,9 +496,39 @@ export const apartmentBenefitsEn = [
 
 export const faqsEn = [
   {
-    question: "What types of accommodation does Swiss Blue offer?",
+    question: "What are the check-in and check-out times at Swiss Blue Hotels?",
     answer:
-      "Swiss Blue offers hotels, apart-hotels, and serviced apartments in Jeddah, Jazan, and Riyadh.",
+      "Times can vary by property. The reservations team can confirm the most suitable arrival and departure timing when you choose your hotel or apartment.",
+  },
+  {
+    question: "Does Swiss Blue allow pets?",
+    answer:
+      "Pet policies may vary by property and unit type. Please confirm with the reservations team before completing your booking.",
+  },
+  {
+    question: "What parking options are available at Swiss Blue properties?",
+    answer:
+      "Parking and access services vary by property. The team can confirm parking details for your selected hotel or serviced apartment.",
+  },
+  {
+    question: "What property amenities are available at Swiss Blue?",
+    answer:
+      "Amenities may include high-speed Wi-Fi, breakfast, restaurant or cafe service, room service, guest support, meeting rooms, and selected fitness or pool facilities depending on the property.",
+  },
+  {
+    question: "Does Swiss Blue have in-room Wi-Fi?",
+    answer:
+      "Yes. Swiss Blue is designed around practical connectivity, with Wi-Fi available in rooms and apartments according to each property setup.",
+  },
+  {
+    question: "What is the closest airport near Swiss Blue properties?",
+    answer:
+      "It depends on the city: King Abdulaziz International Airport for Jeddah, King Khalid International Airport for Riyadh, and King Abdullah Airport for Jazan.",
+  },
+  {
+    question: "Does Swiss Blue offer airport shuttle support?",
+    answer:
+      "The reservations or guest support team can help arrange taxi or transfer options depending on the city and availability.",
   },
   {
     question: "Can I request monthly stays or corporate rates?",

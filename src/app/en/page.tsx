@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PageShellEn } from "@/components/site-en";
+import HomepageGallery from "@/components/homepage-gallery";
 import { BOOKING_URL, getEditableContent, heroImage } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -141,6 +142,8 @@ export default async function EnglishHomePage() {
           </div>
         </div>
       </section>
+
+      <HomepageGallery locale="en" />
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading">

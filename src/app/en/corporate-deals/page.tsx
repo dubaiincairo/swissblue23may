@@ -1,4 +1,5 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
+import CorporateDealForm from "@/components/corporate-deal-form";
 import { corporateDealsEn, heroImage } from "@/lib/content-en";
 
 const requiredDocumentsEn = [
@@ -60,6 +61,7 @@ export default function CorporateDealsPageEn() {
           ))}
         </div>
       </section>
+      <CorporateDealForm locale="en" />
       <CtaBandEn title="Request a corporate or group proposal." cta="Contact specialist" />
     </PageShellEn>
   );

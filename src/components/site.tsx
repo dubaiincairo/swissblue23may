@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BOOKING_URL } from "@/lib/content";
 import { getEditableContent } from "@/lib/editable-content";
 import LiveContentRefresh from "@/components/live-content-refresh";
+import SwissBlueConcierge from "@/components/swissblue-concierge";
 
 export async function SiteHeader() {
   const { ar } = await getEditableContent();
@@ -229,6 +230,7 @@ export function PageShell({ children }: { children: React.ReactNode }) {
       <SiteHeader />
       {children}
       <SiteFooter />
+      <SwissBlueConcierge locale="ar" />
     </main>
   );
 }
