@@ -1,50 +1,57 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BOOKING_URL, footerContact, footerSections, navGroups } from "@/lib/content";
+import { BOOKING_URL } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
+import LiveContentRefresh from "@/components/live-content-refresh";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const { ar } = await getEditableContent();
+
   return (
-    <nav className="sticky top-0 z-40 border-b border-[var(--border)] bg-white/94 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Link
-          className="flex items-center gap-3"
-          href="/"
-          aria-label="الرئيسية لفنادق سويس بلو"
-        >
-          <Image
-            className="h-10 w-auto"
-            src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
-            alt="فنادق سويس بلو"
-            width={190}
-            height={80}
-            priority
-          />
-        </Link>
-        <div className="hidden items-center gap-2 text-xs font-bold text-[var(--text-secondary)] xl:flex">
-          {navGroups.map((group) => (
-            <div className="nav-dropdown" key={group.label}>
-              <button className="nav-parent" type="button">
-                {group.label}
-                <span aria-hidden="true">⌄</span>
-              </button>
-              <div className="nav-menu">
-                {group.links.map((item) => (
-                  <Link href={item.href} key={`${group.label}-${item.href}`}>
-                    {item.label}
-                  </Link>
-                ))}
+    <>
+      <LiveContentRefresh />
+      <nav className="sticky top-0 z-40 border-b border-[var(--border)] bg-white/94 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+          <Link
+            className="flex items-center gap-3"
+            href="/"
+            aria-label="الرئيسية لفنادق سويس بلو"
+          >
+            <Image
+              className="h-10 w-auto"
+              src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
+              alt="فنادق سويس بلو"
+              width={190}
+              height={80}
+              priority
+            />
+          </Link>
+          <div className="hidden items-center gap-2 text-xs font-bold text-[var(--text-secondary)] xl:flex">
+            {ar.navGroups.map((group) => (
+              <div className="nav-dropdown" key={group.label}>
+                <button className="nav-parent" type="button">
+                  {group.label}
+                  <span aria-hidden="true">⌄</span>
+                </button>
+                <div className="nav-menu">
+                  {group.links.map((item) => (
+                    <Link href={item.href} key={`${group.label}-${item.href}`}>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="flex items-center gap-3">
+            <LanguageToggle current="ar" />
+            <a className="btn btn-primary" href={BOOKING_URL}>
+              احجز الآن
+            </a>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          <LanguageToggle current="ar" />
-          <a className="btn btn-primary" href={BOOKING_URL}>
-            احجز الآن
-          </a>
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
 
@@ -78,6 +85,12 @@ export function LanguageToggle({
 }
 
 export function SiteFooter() {
+  return <SiteFooterContent />;
+}
+
+async function SiteFooterContent() {
+  const { ar } = await getEditableContent();
+
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
@@ -101,7 +114,7 @@ export function SiteFooter() {
         </div>
 
         <div className="grid gap-8 sm:grid-cols-3">
-          {footerSections.map((section) => (
+          {ar.footerSections.map((section) => (
             <div key={section.title}>
               <h2 className="text-sm font-bold text-[var(--text-primary)]">
                 {section.title}
@@ -124,7 +137,7 @@ export function SiteFooter() {
         <div className="footer-contact">
           <h2 className="text-sm font-bold text-[var(--text-primary)]">الدعم والحجز</h2>
           <ul className="mt-4 grid gap-3">
-            {footerContact.map((item) => (
+            {ar.footerContact.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>

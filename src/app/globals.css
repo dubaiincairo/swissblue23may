@@ -589,6 +589,218 @@ button {
   max-width: 320px;
 }
 
+.admin-shell {
+  background: var(--background);
+  color: var(--text-primary);
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  background: white;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 28px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-kicker {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.admin-sidebar h1,
+.admin-editor-head h2 {
+  font-size: 32px;
+  font-weight: 850;
+  line-height: 1.1;
+  margin-top: 8px;
+}
+
+.admin-sidebar p,
+.admin-editor-head p {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-top: 10px;
+}
+
+.admin-language {
+  background: var(--bluehost-foam);
+  border: 1px solid rgba(43, 111, 232, 0.14);
+  border-radius: 14px;
+  display: grid;
+  gap: 6px;
+  grid-template-columns: 1fr 1fr;
+  padding: 5px;
+}
+
+.admin-language button,
+.admin-section-list button,
+.admin-array-head button,
+.admin-array-item button,
+.admin-save {
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  min-height: 38px;
+  padding: 9px 12px;
+}
+
+.admin-language button.active,
+.admin-section-list button.active {
+  background: var(--primary);
+  color: white;
+}
+
+.admin-section-list {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-section-list button {
+  background: var(--bluehost-foam);
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.admin-save {
+  background: var(--primary);
+  color: white;
+  margin-top: auto;
+}
+
+.admin-status {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-editor {
+  padding: 32px;
+}
+
+.admin-editor-head {
+  align-items: end;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin: 0 auto 24px;
+  max-width: 1180px;
+}
+
+.admin-editor-head p {
+  max-width: 420px;
+}
+
+.admin-group,
+.admin-array {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+  margin: 0 auto 16px;
+  max-width: 1180px;
+  padding: 20px;
+}
+
+.admin-group h3,
+.admin-array-head h4 {
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.admin-group-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.admin-field {
+  display: grid;
+  gap: 7px;
+}
+
+.admin-field span,
+.admin-check span {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.admin-field input,
+.admin-field textarea {
+  background: var(--bluehost-foam);
+  border: 1px solid rgba(43, 111, 232, 0.14);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 12px 14px;
+  width: 100%;
+}
+
+.admin-field textarea {
+  resize: vertical;
+}
+
+.admin-check {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.admin-array-head,
+.admin-drag-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.admin-array-head button,
+.admin-array-item button {
+  background: var(--bluehost-foam);
+  color: var(--primary);
+}
+
+.admin-array-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.admin-array-item {
+  background: var(--background);
+  border: 1px dashed rgba(43, 111, 232, 0.28);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.admin-drag-handle {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--primary);
+  cursor: grab;
+  font-size: 11px;
+  font-weight: 850;
+  padding: 7px 10px;
+}
+
+.admin-drag-row strong {
+  flex: 1;
+  font-size: 13px;
+}
+
 .closing-cta > div::before {
   background: radial-gradient(circle, rgba(255, 255, 255, 0.24), transparent 62%);
   content: "";
@@ -604,6 +816,20 @@ button {
   .portfolio-strip,
   .gallery-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    height: auto;
+    position: relative;
+  }
+
+  .admin-editor-head {
+    align-items: start;
+    flex-direction: column;
   }
 }
 

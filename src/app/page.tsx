@@ -1,39 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "@/components/site";
-import {
-  BOOKING_URL,
-  accommodationCategories,
-  destinations,
-  heroImage,
-  hotels,
-  loyaltyProgram,
-  services,
-} from "@/lib/content";
+import { BOOKING_URL, getEditableContent, heroImage } from "@/lib/editable-content";
 
-const highlights = [
-  { value: "6", label: "وجهات فندقية" },
-  { value: "282", label: "غرفة وشقة" },
-  { value: "3", label: "مدن سعودية" },
-  { value: "24", label: "ساعة لخدمة الضيوف" },
-];
+export const dynamic = "force-dynamic";
 
-const homeOfferCards = [
-  {
-    title: "إقامة أعمال",
-    text: "راحة يومية، إنترنت سريع، دعم للاجتماعات، ومواقع عملية داخل المدن لرحلات أكثر إنتاجية.",
-  },
-  {
-    title: "إقامة عائلية في شقة",
-    text: "مساحات متعددة الغرف، خصوصية أعلى، وراحة الشقق المخدومة لزيارات عائلية أسهل.",
-  },
-  {
-    title: "إقامة شهرية",
-    text: "قيمة أفضل للضيوف الذين يحتاجون إلى قاعدة إقامة موثوقة لفترة طويلة في جدة أو جازان أو الرياض.",
-  },
-];
+export default async function Home() {
+  const { ar } = await getEditableContent();
+  const home = ar.homepage;
 
-export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <SiteHeader />
@@ -52,20 +27,19 @@ export default function Home() {
 
         <div className="relative mx-auto flex min-h-[760px] max-w-7xl flex-col justify-between px-4 pb-8 pt-24 sm:px-6 lg:px-8">
           <div className="max-w-3xl pt-10 text-white">
-            <span className="hero-kicker">فنادق وشقق فندقية في السعودية</span>
+            <span className="hero-kicker">{home.hero.eyebrow}</span>
             <h1 className="mt-5 text-[42px] font-bold leading-[1.12] text-balance sm:text-[64px] lg:text-[76px]">
-              سويس بلو، إقامة أوضح لكل رحلة.
+              {home.hero.title}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/84 sm:text-xl">
-              محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة
-              وجازان والرياض، مصممة للأعمال والعائلات والإقامات الشهرية.
+              {home.hero.text}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
-                احجز إقامتك
+                {home.hero.primaryCta}
               </a>
-              <Link className="btn btn-glass" href="/hotels">
-                استكشف الفنادق
+              <Link className="btn btn-glass" href={home.hero.secondaryHref}>
+                {home.hero.secondaryCta}
               </Link>
             </div>
           </div>
@@ -73,7 +47,7 @@ export default function Home() {
           <div className="booking-bar">
             <div className="booking-field">
               <span>الوجهة</span>
-              <strong>جدة، الرياض، جازان</strong>
+              <strong>{home.hero.destination}</strong>
             </div>
             <div className="booking-field">
               <span>تاريخ الوصول</span>
@@ -96,7 +70,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-4 md:grid-cols-4">
-          {highlights.map((item) => (
+          {home.highlights.map((item) => (
             <div className="stat-tile" key={item.label}>
               <div className="font-mono text-3xl font-bold text-[var(--primary)]">
                 {item.value}
@@ -111,16 +85,13 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading">
-          <span className="eyebrow">منشآت الضيافة</span>
-          <h2>ست وجهات، ولكل إقامة سبب واضح للاختيار.</h2>
-          <p>
-            صممت بطاقات الفنادق لتساعد الضيف على مقارنة المدينة، نوع الإقامة،
-            وعدد الوحدات بسرعة قبل الانتقال إلى صفحة الفندق التفصيلية.
-          </p>
+          <span className="eyebrow">{home.properties.eyebrow}</span>
+          <h2>{home.properties.title}</h2>
+          <p>{home.properties.text}</p>
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {hotels.map((hotel) => (
+          {home.properties.items.map((hotel) => (
             <article className="property-card" key={hotel.slug}>
               <figure className="relative h-72 overflow-hidden">
                 <Image
@@ -158,16 +129,16 @@ export default function Home() {
       <section className="brand-band">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
           <div>
-            <span className="eyebrow text-white/72">{loyaltyProgram.subtitle}</span>
+            <span className="eyebrow text-white/72">{home.loyalty.subtitle}</span>
             <h2 className="mt-4 text-3xl font-bold leading-tight text-white sm:text-[46px]">
-              {loyaltyProgram.title}
+              {home.loyalty.title}
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/76">
-              {loyaltyProgram.description}
+              {home.loyalty.description}
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            {loyaltyProgram.benefits.map((benefit) => (
+            {home.loyalty.benefits.map((benefit) => (
               <div className="brand-point" key={benefit}>
                 {benefit}
               </div>
@@ -178,15 +149,12 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading">
-          <span className="eyebrow">الوجهات</span>
-          <h2>اختر المدينة التي تناسب رحلتك.</h2>
-          <p>
-            تقدم سويس بلو حضورها في مدن تجمع بين الأعمال، الترفيه، الزيارات
-            العائلية، والإقامات الطويلة.
-          </p>
+          <span className="eyebrow">{home.destinations.eyebrow}</span>
+          <h2>{home.destinations.title}</h2>
+          <p>{home.destinations.text}</p>
         </div>
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {destinations.map((destination) => (
+          {home.destinations.items.map((destination) => (
             <article className="property-card" key={destination.title}>
               <figure className="relative h-64 overflow-hidden">
                 <Image
@@ -217,18 +185,15 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
           <div className="feature-panel">
-            <span className="eyebrow">العروض والمناسبات</span>
-            <h2>احجز الإقامة حسب سبب الرحلة.</h2>
-            <p>
-              ساعد الضيوف على الانتقال من نية السفر إلى الخيار المناسب، من
-              رحلات الأعمال إلى الإقامة العائلية والإقامة الشهرية.
-            </p>
-            <Link className="btn btn-primary mt-8" href="/offers">
-              عرض العروض
+            <span className="eyebrow">{home.offers.eyebrow}</span>
+            <h2>{home.offers.title}</h2>
+            <p>{home.offers.text}</p>
+            <Link className="btn btn-primary mt-8" href={home.offers.href}>
+              {home.offers.cta}
             </Link>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
-            {homeOfferCards.map((offer) => (
+            {home.offers.items.map((offer) => (
               <article className="offer-card" key={offer.title}>
                 <h3>{offer.title}</h3>
                 <p>{offer.text}</p>
@@ -240,17 +205,16 @@ export default function Home() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
         <div>
-          <span className="eyebrow">الخدمات</span>
+          <span className="eyebrow">{home.services.eyebrow}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
-            تفاصيل يومية تجعل الإقامة أسهل.
+            {home.services.title}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
-            تختلف بعض الخدمات حسب الوجهة، لكن التجربة مصممة حول أساسيات الراحة:
-            الحجز الواضح، الضيافة اليومية، الاتصال السريع، والدعم العملي.
+            {home.services.text}
           </p>
         </div>
         <div className="amenity-grid">
-          {services.map((service) => (
+          {home.services.items.map((service) => (
             <div className="amenity-pill" key={service}>
               {service}
             </div>
@@ -260,15 +224,12 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading">
-          <span className="eyebrow">فئات الإقامة</span>
-          <h2>الفرق بين الفندق، الشقق الفندقية، والشقق المخدومة.</h2>
-          <p>
-            هذا التقسيم يجعل قرار الحجز أكثر وضوحا للضيف، ويساعد فرق الشركات
-            والعائلات على اختيار الفئة المناسبة لمدة الإقامة وطبيعة الرحلة.
-          </p>
+          <span className="eyebrow">{home.categories.eyebrow}</span>
+          <h2>{home.categories.title}</h2>
+          <p>{home.categories.text}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {accommodationCategories.map((category) => (
+          {home.categories.items.map((category) => (
             <article className="stay-card" key={category.title}>
               <span>فئة إقامة</span>
               <h3>{category.title}</h3>
@@ -281,16 +242,15 @@ export default function Home() {
       <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14">
           <div className="relative max-w-3xl">
-            <span className="eyebrow text-white/72">جاهزون لاستقبالكم</span>
+            <span className="eyebrow text-white/72">{home.cta.eyebrow}</span>
             <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">
-              اعثر على إقامتك القادمة مع سويس بلو.
+              {home.cta.title}
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
-              قارن بين الفنادق والشقق الفندقية والشقق المخدومة، ثم انتقل إلى
-              الحجز المباشر بخطوة واحدة.
+              {home.cta.text}
             </p>
             <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
-              احجز الآن
+              {home.cta.button}
             </a>
           </div>
         </div>

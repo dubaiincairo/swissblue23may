@@ -1,25 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CtaBandEn, PageShellEn } from "@/components/site-en";
-import {
-  BOOKING_URL,
-  accommodationCategoriesEn,
-  destinationsEn,
-  heroImage,
-  hotelsEn,
-  loyaltyProgramEn,
-  offersEn,
-  servicesEn,
-} from "@/lib/content-en";
+import { PageShellEn } from "@/components/site-en";
+import { BOOKING_URL, getEditableContent, heroImage } from "@/lib/editable-content";
 
-const highlightsEn = [
-  { value: "6", label: "Hospitality properties" },
-  { value: "282", label: "Rooms and apartments" },
-  { value: "3", label: "Saudi cities" },
-  { value: "24h", label: "Guest support" },
-];
+export const dynamic = "force-dynamic";
 
-export default function EnglishHomePage() {
+export default async function EnglishHomePage() {
+  const { en } = await getEditableContent();
+  const home = en.homepage;
+
   return (
     <PageShellEn>
       <section className="hotel-hero relative overflow-hidden">
@@ -35,28 +24,26 @@ export default function EnglishHomePage() {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
         <div className="relative mx-auto flex min-h-[760px] max-w-7xl flex-col justify-between px-4 pb-8 pt-24 sm:px-6 lg:px-8">
           <div className="max-w-3xl pt-10 text-white">
-            <span className="hero-kicker">Hotels and apart-hotels in Saudi Arabia</span>
+            <span className="hero-kicker">{home.hero.eyebrow}</span>
             <h1 className="mt-5 text-[42px] font-bold leading-[1.02] text-balance sm:text-[68px] lg:text-[82px]">
-              Swiss Blue, a clearer stay for every journey.
+              {home.hero.title}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/82 sm:text-xl">
-              A hospitality portfolio of hotels, apart-hotels, and serviced
-              apartments in Jeddah, Jazan, and Riyadh, designed for business,
-              families, and monthly stays.
+              {home.hero.text}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
-                Book your stay
+                {home.hero.primaryCta}
               </a>
-              <Link className="btn btn-glass" href="/en/hotels">
-                Explore properties
+              <Link className="btn btn-glass" href={home.hero.secondaryHref}>
+                {home.hero.secondaryCta}
               </Link>
             </div>
           </div>
           <div className="booking-bar">
             <div className="booking-field">
               <span>Destination</span>
-              <strong>Jeddah, Riyadh, Jazan</strong>
+              <strong>{home.hero.destination}</strong>
             </div>
             <div className="booking-field">
               <span>Check-in</span>
@@ -79,7 +66,7 @@ export default function EnglishHomePage() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-4 md:grid-cols-4">
-          {highlightsEn.map((item) => (
+          {home.highlights.map((item) => (
             <div className="stat-tile" key={item.label}>
               <div className="font-mono text-3xl font-bold text-[var(--primary)]">
                 {item.value}
@@ -94,15 +81,12 @@ export default function EnglishHomePage() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading">
-          <span className="eyebrow">Hospitality properties</span>
-          <h2>Six destinations, each with a clear reason to book.</h2>
-          <p>
-            Property cards help guests compare the city, stay type, and unit
-            count before moving into the detailed property page.
-          </p>
+          <span className="eyebrow">{home.properties.eyebrow}</span>
+          <h2>{home.properties.title}</h2>
+          <p>{home.properties.text}</p>
         </div>
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {hotelsEn.map((hotel) => (
+          {home.properties.items.map((hotel) => (
             <article className="property-card" key={hotel.slug}>
               <figure className="relative h-72 overflow-hidden">
                 <Image
@@ -140,16 +124,16 @@ export default function EnglishHomePage() {
       <section className="brand-band">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
           <div>
-            <span className="eyebrow text-white/72">{loyaltyProgramEn.subtitle}</span>
+            <span className="eyebrow text-white/72">{home.loyalty.subtitle}</span>
             <h2 className="mt-4 text-3xl font-bold leading-tight text-white sm:text-[46px]">
-              {loyaltyProgramEn.title}
+              {home.loyalty.title}
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/76">
-              {loyaltyProgramEn.description}
+              {home.loyalty.description}
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            {loyaltyProgramEn.benefits.map((benefit) => (
+            {home.loyalty.benefits.map((benefit) => (
               <div className="brand-point" key={benefit}>
                 {benefit}
               </div>
@@ -160,15 +144,12 @@ export default function EnglishHomePage() {
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading">
-          <span className="eyebrow">Destinations</span>
-          <h2>Choose the city that fits your trip.</h2>
-          <p>
-            Swiss Blue is present in cities shaped by business, leisure, family
-            visits, and longer stays.
-          </p>
+          <span className="eyebrow">{home.destinations.eyebrow}</span>
+          <h2>{home.destinations.title}</h2>
+          <p>{home.destinations.text}</p>
         </div>
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {destinationsEn.map((destination) => (
+          {home.destinations.items.map((destination) => (
             <article className="property-card" key={destination.title}>
               <figure className="relative h-64 overflow-hidden">
                 <Image
@@ -199,18 +180,15 @@ export default function EnglishHomePage() {
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
           <div className="feature-panel">
-            <span className="eyebrow">Offers and occasions</span>
-            <h2>Book the stay around the reason for travel.</h2>
-            <p>
-              Guide guests from travel intent to the right choice, from business
-              trips to family apartment stays and monthly stays.
-            </p>
-            <Link className="btn btn-primary mt-8" href="/en/offers">
-              View offers
+            <span className="eyebrow">{home.offers.eyebrow}</span>
+            <h2>{home.offers.title}</h2>
+            <p>{home.offers.text}</p>
+            <Link className="btn btn-primary mt-8" href={home.offers.href}>
+              {home.offers.cta}
             </Link>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
-            {offersEn.slice(0, 3).map((offer) => (
+            {home.offers.items.map((offer) => (
               <article className="offer-card" key={offer.title}>
                 <h3>{offer.title}</h3>
                 <p>{offer.text}</p>
@@ -222,18 +200,16 @@ export default function EnglishHomePage() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
         <div>
-          <span className="eyebrow">Services</span>
+          <span className="eyebrow">{home.services.eyebrow}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
-            Everyday details that make the stay easier.
+            {home.services.title}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
-            Some services vary by property, but the experience is built around
-            clear booking, daily hospitality, fast connectivity, and practical
-            guest support.
+            {home.services.text}
           </p>
         </div>
         <div className="amenity-grid">
-          {servicesEn.map((service) => (
+          {home.services.items.map((service) => (
             <div className="amenity-pill" key={service}>
               {service}
             </div>
@@ -243,16 +219,12 @@ export default function EnglishHomePage() {
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading">
-          <span className="eyebrow">Stay categories</span>
-          <h2>The difference between hotels, apart-hotels, and serviced apartments.</h2>
-          <p>
-            This comparison makes booking clearer for guests and helps
-            companies and families choose the right category for trip purpose and
-            stay length.
-          </p>
+          <span className="eyebrow">{home.categories.eyebrow}</span>
+          <h2>{home.categories.title}</h2>
+          <p>{home.categories.text}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {accommodationCategoriesEn.map((category) => (
+          {home.categories.items.map((category) => (
             <article className="stay-card" key={category.title}>
               <span>Stay category</span>
               <h3>{category.title}</h3>
@@ -262,11 +234,22 @@ export default function EnglishHomePage() {
         </div>
       </section>
 
-      <CtaBandEn
-        title="Find your next Swiss Blue stay."
-        text="Compare hotels, apart-hotels, and serviced apartments, then move to direct booking in one step."
-        cta="Book now"
-      />
+      <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8" dir="ltr">
+        <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14">
+          <div className="relative max-w-3xl">
+            <span className="eyebrow text-white/72">{home.cta.eyebrow}</span>
+            <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">
+              {home.cta.title}
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
+              {home.cta.text}
+            </p>
+            <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
+              {home.cta.button}
+            </a>
+          </div>
+        </div>
+      </section>
     </PageShellEn>
   );
 }
