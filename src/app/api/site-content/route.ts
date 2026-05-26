@@ -21,7 +21,26 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  const body = await request.json();
+  let body: { content?: typeof defaultSiteContent };
+
+  try {
+    const text = await request.text();
+
+    if (!text.trim()) {
+      return NextResponse.json(
+        { error: "Save request did not include content." },
+        { status: 400 },
+      );
+    }
+
+    body = JSON.parse(text);
+  } catch {
+    return NextResponse.json(
+      { error: "Save request content was not valid JSON." },
+      { status: 400 },
+    );
+  }
+
   const content = body?.content ?? defaultSiteContent;
 
   await saveEditableContent(content);

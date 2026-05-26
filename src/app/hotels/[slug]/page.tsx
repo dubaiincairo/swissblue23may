@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { BOOKING_URL, hotels, roomClassifications } from "@/lib/content";
-import { propertyFaqs } from "@/lib/faq-content";
+import { getEditableContent } from "@/lib/editable-content";
 
 export function generateStaticParams() {
   return hotels.map((hotel) => ({ slug: hotel.slug }));
@@ -15,7 +15,8 @@ export default async function HotelDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const hotel = hotels.find((item) => item.slug === slug);
+  const { ar } = await getEditableContent();
+  const hotel = ar.homepage.properties.items.find((item) => item.slug === slug);
   const classification = roomClassifications.find(
     (item) => item.property === hotel?.title,
   );
@@ -149,7 +150,7 @@ export default async function HotelDetailPage({
           <span className="eyebrow">أسئلة هذا الفرع</span>
           <h2>معلومات مهمة عن {hotel.title}.</h2>
         </div>
-        <FaqAccordion items={propertyFaqs} />
+        <FaqAccordion items={ar.faq.property} />
       </section>
 
       <CtaBand title={`احجز إقامتك في ${hotel.title}.`} cta="تحقق من التوفر" />

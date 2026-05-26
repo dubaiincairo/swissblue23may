@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { destinations, heroImage } from "@/lib/content";
+import { heroImage } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function DestinationsPage() {
+export default async function DestinationsPage() {
+  const { ar } = await getEditableContent();
+  const destinations = ar.homepage.destinations.items;
+
   return (
     <PageShell>
       <PageHero

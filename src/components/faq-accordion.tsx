@@ -15,9 +15,11 @@ export function FaqAccordion({ items }: { items: readonly FaqItem[] }) {
         <details key={faq.question}>
           <summary>
             <span>{faq.question}</span>
-            <strong aria-hidden="true">⌄</strong>
+            <strong aria-hidden="true" />
           </summary>
-          <p>{faq.answer}</p>
+          <div>
+            <p>{faq.answer}</p>
+          </div>
         </details>
       ))}
     </div>

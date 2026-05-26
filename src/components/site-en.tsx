@@ -1,46 +1,65 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BOOKING_URL } from "@/lib/content-en";
+import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content-en";
 import { LanguageToggle } from "@/components/site";
-import { getEditableContent } from "@/lib/editable-content";
-import LiveContentRefresh from "@/components/live-content-refresh";
+import { defaultLogoImage, getEditableContent } from "@/lib/editable-content";
+
+function resolveMediaImage(
+  image: string,
+  media: Awaited<ReturnType<typeof getEditableContent>>["en"]["media"],
+) {
+  if (image === heroImage) {
+    return media.mainHero;
+  }
+
+  if (image === jeddahImage) {
+    return media.jeddah;
+  }
+
+  if (image === jazanImage) {
+    return media.jazan;
+  }
+
+  return image;
+}
 
 export async function SiteHeaderEn() {
-  const { en } = await getEditableContent();
+  const { ar, en } = await getEditableContent();
+  const logo = en.media.logo === defaultLogoImage ? ar.media.logo : en.media.logo;
 
   return (
     <>
-      <LiveContentRefresh />
-      <nav className="sticky top-0 z-40 border-b border-[var(--border)] bg-white/94 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <Link className="flex items-center gap-3" href="/en" aria-label="Swiss Blue Hotels home">
+      <nav className="site-nav">
+        <div className="nav-shell">
+          <Link className="nav-logo" href="/en" aria-label="Swiss Blue Hotels home">
             <Image
-              className="h-10 w-auto"
-              src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
+              className="h-10 w-auto object-contain"
+              src={logo}
               alt="Swiss Blue Hotels"
-              width={190}
-              height={80}
+              width={210}
+              height={88}
               priority
             />
           </Link>
-          <div className="hidden items-center gap-2 text-xs font-bold text-[var(--text-secondary)] xl:flex">
-            {en.navGroups.map((group) => (
-              <div className="nav-dropdown" key={group.label}>
-                <button className="nav-parent" type="button">
-                  {group.label}
-                  <span aria-hidden="true">⌄</span>
-                </button>
-                <div className="nav-menu">
-                  {group.links.map((item) => (
-                    <Link href={item.href} key={`${group.label}-${item.href}`}>
-                      {item.label}
-                    </Link>
-                  ))}
+          <div className="nav-side">
+            <div className="nav-group-row">
+              {en.navGroups.map((group) => (
+                <div className="nav-dropdown" key={group.label}>
+                  <button className="nav-parent" type="button">
+                    {group.label}
+                  </button>
+                  <div className="nav-menu">
+                    {group.links.map((item) => (
+                      <Link href={item.href} key={`${group.label}-${item.href}`}>
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="nav-actions">
             <LanguageToggle current="en" />
             <a className="btn btn-primary" href={BOOKING_URL}>
               Book now
@@ -57,7 +76,8 @@ export function SiteFooterEn() {
 }
 
 async function SiteFooterEnContent() {
-  const { en } = await getEditableContent();
+  const { ar, en } = await getEditableContent();
+  const logo = en.media.logo === defaultLogoImage ? ar.media.logo : en.media.logo;
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">
@@ -65,7 +85,7 @@ async function SiteFooterEnContent() {
         <div>
           <Image
             className="h-12 w-auto"
-            src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
+            src={logo}
             alt="Swiss Blue Hotels"
             width={190}
             height={80}
@@ -124,7 +144,7 @@ async function SiteFooterEnContent() {
   );
 }
 
-export function PageHeroEn({
+export async function PageHeroEn({
   eyebrow,
   title,
   text,
@@ -135,9 +155,11 @@ export function PageHeroEn({
   text: string;
   image: string;
 }) {
+  const { en } = await getEditableContent();
+
   return (
     <section className="subpage-hero relative overflow-hidden" dir="ltr">
-      <Image className="absolute inset-0 h-full w-full object-cover" src={image} alt="" fill priority sizes="100vw" />
+      <Image className="absolute inset-0 h-full w-full object-cover" src={resolveMediaImage(image, en.media)} alt="" fill priority sizes="100vw" />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.84),rgba(18,70,168,0.56)_52%,rgba(8,28,70,0.14))]" />
       <div className="relative mx-auto max-w-7xl px-4 py-24 text-white sm:px-6 lg:px-8 lg:py-32">
         <span className="hero-kicker"> {eyebrow}</span>

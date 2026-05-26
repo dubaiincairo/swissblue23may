@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { destinationsEn, heroImage } from "@/lib/content-en";
+import { heroImage } from "@/lib/content-en";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function DestinationsPageEn() {
+export default async function DestinationsPageEn() {
+  const { en } = await getEditableContent();
+  const destinationsEn = en.homepage.destinations.items;
+
   return (
     <PageShellEn>
       <PageHeroEn

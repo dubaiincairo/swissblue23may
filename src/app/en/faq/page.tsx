@@ -1,9 +1,11 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { FaqCategoryList } from "@/components/faq-accordion";
 import { heroImage } from "@/lib/content-en";
-import { faqCategoriesEn } from "@/lib/faq-content-en";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function FaqPageEn() {
+export default async function FaqPageEn() {
+  const { en } = await getEditableContent();
+
   return (
     <PageShellEn>
       <PageHeroEn
@@ -17,7 +19,7 @@ export default function FaqPageEn() {
           <span className="eyebrow">Swiss Blue FAQ</span>
           <h2>Frequently Asked Questions by Category</h2>
         </div>
-        <FaqCategoryList categories={faqCategoriesEn} />
+        <FaqCategoryList categories={en.faq.categories} />
       </section>
       <CtaBandEn title="Still need help?" cta="Contact us" />
     </PageShellEn>

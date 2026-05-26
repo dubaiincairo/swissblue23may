@@ -1,9 +1,11 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { FaqCategoryList } from "@/components/faq-accordion";
 import { heroImage } from "@/lib/content";
-import { faqCategories } from "@/lib/faq-content";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  const { ar } = await getEditableContent();
+
   return (
     <PageShell>
       <PageHero
@@ -17,7 +19,7 @@ export default function FaqPage() {
           <span className="eyebrow">أسئلة سويس بلو</span>
           <h2>الأسئلة الشائعة حسب التصنيف</h2>
         </div>
-        <FaqCategoryList categories={faqCategories} />
+        <FaqCategoryList categories={ar.faq.categories} />
       </section>
       <CtaBand title="ما زلت تحتاج إلى مساعدة؟" cta="تواصل معنا" />
     </PageShell>

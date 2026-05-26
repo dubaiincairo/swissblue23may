@@ -1,9 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { heroImage, hotelsEn } from "@/lib/content-en";
+import { heroImage } from "@/lib/content-en";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function HotelsPageEn() {
+export default async function HotelsPageEn() {
+  const { en } = await getEditableContent();
+  const hotelsEn = en.homepage.properties.items;
+
   return (
     <PageShellEn>
       <PageHeroEn eyebrow="Our hotels and serviced apartments" title="A clear hospitality portfolio in Jeddah, Jazan, and Riyadh." text="Explore Swiss Blue destinations across Saudi Arabia, from business-ready city hotels to serviced apartments for families and extended stays." image={heroImage} />

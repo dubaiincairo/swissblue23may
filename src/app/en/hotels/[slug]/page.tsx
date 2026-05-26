@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { BOOKING_URL, hotelsEn, roomClassificationsEn } from "@/lib/content-en";
-import { propertyFaqsEn } from "@/lib/faq-content-en";
+import { getEditableContent } from "@/lib/editable-content";
 
 export function generateStaticParams() {
   return hotelsEn.map((hotel) => ({ slug: hotel.slug }));
@@ -15,7 +15,8 @@ export default async function HotelDetailPageEn({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const hotel = hotelsEn.find((item) => item.slug === slug);
+  const { en } = await getEditableContent();
+  const hotel = en.homepage.properties.items.find((item) => item.slug === slug);
   const classification = roomClassificationsEn.find(
     (item) => item.property === hotel?.title,
   );
@@ -149,7 +150,7 @@ export default async function HotelDetailPageEn({
           <span className="eyebrow">Property FAQ</span>
           <h2>Important information about {hotel.title}.</h2>
         </div>
-        <FaqAccordion items={propertyFaqsEn} />
+        <FaqAccordion items={en.faq.property} />
       </section>
 
       <CtaBandEn title={`Book your stay at ${hotel.title}.`} cta="Check availability" />

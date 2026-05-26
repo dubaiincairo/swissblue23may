@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaqAccordion } from "@/components/faq-accordion";
+import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { PageShellEn } from "@/components/site-en";
 import HomepageGallery from "@/components/homepage-gallery";
-import { BOOKING_URL, getEditableContent, heroImage } from "@/lib/editable-content";
-import { homepageFaqsEn } from "@/lib/faq-content-en";
+import { BOOKING_URL, getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
@@ -15,17 +15,14 @@ export default async function EnglishHomePage() {
   return (
     <PageShellEn>
       <section className="hotel-hero relative overflow-hidden">
-        <Image
-          className="absolute inset-0 h-full w-full object-cover"
-          src={heroImage}
-          alt="Red Sea coastline near Swiss Blue Hotels"
-          fill
-          priority
-          sizes="100vw"
+        <HeroMediaCarousel
+          slides={en.media.mainHeroSlides}
+          fallbackImage={en.media.mainHero}
+          fallbackAlt="Red Sea coastline near Swiss Blue Hotels"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.78),rgba(18,70,168,0.46)_48%,rgba(8,28,70,0.1))]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
-        <div className="relative mx-auto flex min-h-[760px] max-w-7xl flex-col justify-between px-4 pb-8 pt-24 sm:px-6 lg:px-8">
+        <div className="relative mx-auto flex min-h-[760px] max-w-7xl flex-col justify-between gap-16 px-4 pb-8 pt-24 sm:px-6 lg:px-8">
           <div className="max-w-3xl pt-10 text-white">
             <span className="hero-kicker">{home.hero.eyebrow}</span>
             <h1 className="mt-5 text-[42px] font-bold leading-[1.02] text-balance sm:text-[68px] lg:text-[82px]">
@@ -145,7 +142,7 @@ export default async function EnglishHomePage() {
         </div>
       </section>
 
-      <HomepageGallery locale="en" />
+      <HomepageGallery images={en.media.gallery} locale="en" />
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading">
@@ -244,7 +241,7 @@ export default async function EnglishHomePage() {
           <span className="eyebrow">FAQ</span>
           <h2>Quick answers before you book.</h2>
         </div>
-        <FaqAccordion items={homepageFaqsEn} />
+        <FaqAccordion items={en.faq.homepage} />
       </section>
 
       <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8" dir="ltr">

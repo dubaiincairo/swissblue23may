@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Noto_Kufi_Arabic } from "next/font/google";
+import LiveContentRefresh from "@/components/live-content-refresh";
 import "./globals.css";
 
 const arabicSans = Noto_Kufi_Arabic({
@@ -14,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "فنادق سويس بلو | غرف وأجنحة وشقق فندقية",
+  title: "Swiss Blue Hotels | Rooms, Suites, and Serviced Apartments",
   description:
-    "تصميم صفحة رئيسية عربية لفنادق سويس بلو تعرض الفنادق والشقق الفندقية وفئات الغرف والخدمات وتجربة الحجز.",
+    "Swiss Blue Hotels website for hotels, suites, serviced apartments, direct booking, destinations, and guest services.",
 };
 
 export default function RootLayout({
@@ -26,11 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="ar"
-      dir="rtl"
+      lang="en"
+      dir="ltr"
       className={`${arabicSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <LiveContentRefresh />
+        {children}
+      </body>
     </html>
   );
 }

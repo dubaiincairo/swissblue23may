@@ -1,49 +1,81 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BOOKING_URL } from "@/lib/content";
-import { getEditableContent } from "@/lib/editable-content";
-import LiveContentRefresh from "@/components/live-content-refresh";
+import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
+import { defaultLogoImage, getEditableContent } from "@/lib/editable-content";
+
+function resolveMediaImage(
+  image: string,
+  media: Awaited<ReturnType<typeof getEditableContent>>["ar"]["media"],
+) {
+  if (image === heroImage) {
+    return media.mainHero;
+  }
+
+  if (image === jeddahImage) {
+    return media.jeddah;
+  }
+
+  if (image === jazanImage) {
+    return media.jazan;
+  }
+
+  return image;
+}
+
+function arabicHref(href: string) {
+  if (href === "/") {
+    return "/ar";
+  }
+
+  if (href.startsWith("/ar") || href.startsWith("/en") || href.startsWith("http")) {
+    return href;
+  }
+
+  return `/ar${href}`;
+}
 
 export async function SiteHeader() {
-  const { ar } = await getEditableContent();
+  const { ar, en } = await getEditableContent();
+  const sharedLogo = ar.media.logo === defaultLogoImage ? en.media.logo : ar.media.logo;
+  const logo = ar.media.arabicLogo === defaultLogoImage ? sharedLogo : ar.media.arabicLogo;
 
   return (
     <>
-      <LiveContentRefresh />
-      <nav className="sticky top-0 z-40 border-b border-[var(--border)] bg-white/94 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <nav className="site-nav">
+        <div className="nav-shell">
           <Link
-            className="flex items-center gap-3"
-            href="/"
+            className="nav-logo"
+            href="/ar"
             aria-label="الرئيسية لفنادق سويس بلو"
           >
             <Image
-              className="h-10 w-auto"
-              src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
+              className="h-10 w-auto object-contain"
+              src={logo}
               alt="فنادق سويس بلو"
-              width={190}
-              height={80}
+              width={210}
+              height={88}
               priority
             />
           </Link>
-          <div className="hidden items-center gap-2 text-xs font-bold text-[var(--text-secondary)] xl:flex">
-            {ar.navGroups.map((group) => (
-              <div className="nav-dropdown" key={group.label}>
-                <button className="nav-parent" type="button">
-                  {group.label}
-                  <span aria-hidden="true">⌄</span>
-                </button>
-                <div className="nav-menu">
-                  {group.links.map((item) => (
-                    <Link href={item.href} key={`${group.label}-${item.href}`}>
-                      {item.label}
-                    </Link>
-                  ))}
+          <div className="nav-side">
+            <div className="nav-group-row">
+              {ar.navGroups.map((group) => (
+                <div className="nav-dropdown" key={group.label}>
+                  <button className="nav-parent" type="button">
+                    {group.label}
+                  </button>
+                  <div className="nav-menu">
+                    {group.links.map((item) => (
+                      <Link href={arabicHref(item.href)} key={`${group.label}-${item.href}`}>
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="nav-actions">
             <LanguageToggle current="ar" />
             <a className="btn btn-primary" href={BOOKING_URL}>
               احجز الآن
@@ -68,7 +100,7 @@ export function LanguageToggle({
     >
       <Link
         className={current === "ar" ? "active" : ""}
-        href="/"
+        href="/ar"
         aria-current={current === "ar" ? "page" : undefined}
       >
         AR
@@ -89,7 +121,9 @@ export function SiteFooter() {
 }
 
 async function SiteFooterContent() {
-  const { ar } = await getEditableContent();
+  const { ar, en } = await getEditableContent();
+  const sharedLogo = ar.media.logo === defaultLogoImage ? en.media.logo : ar.media.logo;
+  const logo = ar.media.arabicLogo === defaultLogoImage ? sharedLogo : ar.media.arabicLogo;
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">
@@ -97,7 +131,7 @@ async function SiteFooterContent() {
         <div>
           <Image
             className="h-12 w-auto"
-            src="https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png"
+            src={logo}
             alt="فنادق سويس بلو"
             width={190}
             height={80}
@@ -123,7 +157,7 @@ async function SiteFooterContent() {
                 {section.links.map((item) => (
                   <Link
                     className="font-semibold leading-5 transition hover:text-[var(--primary)]"
-                    href={item.href}
+                    href={arabicHref(item.href)}
                     key={`${section.title}-${item.href}`}
                   >
                     {item.label}
@@ -144,7 +178,7 @@ async function SiteFooterContent() {
           <a className="btn btn-primary mt-6 justify-center" href={BOOKING_URL}>
             تحقق من التوفر
           </a>
-          <Link className="btn btn-secondary mt-3 justify-center" href="/contact">
+          <Link className="btn btn-secondary mt-3 justify-center" href="/ar/contact">
             تواصل معنا
           </Link>
         </div>
@@ -159,7 +193,7 @@ async function SiteFooterContent() {
   );
 }
 
-export function PageHero({
+export async function PageHero({
   eyebrow,
   title,
   text,
@@ -170,11 +204,13 @@ export function PageHero({
   text: string;
   image: string;
 }) {
+  const { ar } = await getEditableContent();
+
   return (
     <section className="subpage-hero relative overflow-hidden">
       <Image
         className="absolute inset-0 h-full w-full object-cover"
-        src={image}
+        src={resolveMediaImage(image, ar.media)}
         alt=""
         fill
         priority
@@ -225,7 +261,7 @@ export function CtaBand({
 
 export function PageShell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
+    <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]" dir="rtl">
       <SiteHeader />
       {children}
       <SiteFooter />

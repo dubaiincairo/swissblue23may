@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaqAccordion } from "@/components/faq-accordion";
+import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import HomepageGallery from "@/components/homepage-gallery";
-import { BOOKING_URL, getEditableContent, heroImage } from "@/lib/editable-content";
-import { homepageFaqs } from "@/lib/faq-content";
+import { BOOKING_URL, getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
@@ -13,22 +13,19 @@ export default async function Home() {
   const home = ar.homepage;
 
   return (
-    <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
+    <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]" dir="rtl">
       <SiteHeader />
 
       <section id="top" className="hotel-hero relative overflow-hidden">
-        <Image
-          className="absolute inset-0 h-full w-full object-cover"
-          src={heroImage}
-          alt="إطلالة ساحلية على البحر الأحمر بالقرب من وجهات سويس بلو"
-          fill
-          priority
-          sizes="100vw"
+        <HeroMediaCarousel
+          slides={ar.media.mainHeroSlides}
+          fallbackImage={ar.media.mainHero}
+          fallbackAlt="إطلالة ساحلية على البحر الأحمر بالقرب من وجهات سويس بلو"
         />
         <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(8,28,70,0.86),rgba(18,70,168,0.58)_48%,rgba(8,28,70,0.12))]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
 
-        <div className="relative mx-auto flex min-h-[760px] max-w-7xl flex-col justify-between px-4 pb-8 pt-24 sm:px-6 lg:px-8">
+        <div className="relative mx-auto flex min-h-[760px] max-w-7xl flex-col justify-between gap-16 px-4 pb-8 pt-24 sm:px-6 lg:px-8">
           <div className="max-w-3xl pt-10 text-white">
             <span className="hero-kicker">{home.hero.eyebrow}</span>
             <h1 className="mt-5 text-[42px] font-bold leading-[1.12] text-balance sm:text-[64px] lg:text-[76px]">
@@ -150,7 +147,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <HomepageGallery locale="ar" />
+      <HomepageGallery images={ar.media.gallery} locale="ar" />
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading">
@@ -249,7 +246,7 @@ export default async function Home() {
           <span className="eyebrow">الأسئلة الشائعة</span>
           <h2>إجابات مختصرة قبل الحجز.</h2>
         </div>
-        <FaqAccordion items={homepageFaqs} />
+        <FaqAccordion items={ar.faq.homepage} />
       </section>
 
       <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">

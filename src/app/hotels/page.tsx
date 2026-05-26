@@ -1,9 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { heroImage, hotels } from "@/lib/content";
+import { heroImage } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function HotelsPage() {
+export default async function HotelsPage() {
+  const { ar } = await getEditableContent();
+  const hotels = ar.homepage.properties.items;
+
   return (
     <PageShell>
       <PageHero
