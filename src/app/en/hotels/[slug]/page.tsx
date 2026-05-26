@@ -1,6 +1,7 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
+import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
+import PropertyMap from "@/components/property-map";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { BOOKING_URL, hotelsEn, roomClassificationsEn } from "@/lib/content-en";
 import { getEditableContent } from "@/lib/editable-content";
@@ -125,23 +126,22 @@ export default async function HotelDetailPageEn({
         </div>
       </section>
 
+      <PropertyMap city={hotel.city} locale="en" query={hotel.mapQuery} title={hotel.title} />
+
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading">
           <span className="eyebrow">Photo gallery</span>
           <h2>A visual glimpse of the stay experience.</h2>
         </div>
-        <div className="gallery-grid mt-8">
-          {hotel.gallery.map((image, index) => (
-            <figure className="relative overflow-hidden" key={`${image}-${index}`}>
-              <Image
-                className="object-cover"
-                src={image}
-                alt={`${hotel.title} image ${index + 1}`}
-                fill
-                sizes="(min-width: 1024px) 33vw, 100vw"
-              />
-            </figure>
-          ))}
+        <div className="mt-8">
+          <PhotoGalleryLightbox
+            images={hotel.gallery.map((image, index) => ({
+              image,
+              title: `${hotel.title} image ${index + 1}`,
+            }))}
+            locale="en"
+            variant="property"
+          />
         </div>
       </section>
 

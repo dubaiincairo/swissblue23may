@@ -38,8 +38,15 @@ const adminSections: AdminSection[] = [
     id: "media",
     group: "Website structure",
     label: "Website photos",
-    description: "Logo, hero photos, city photos, and gallery images.",
+    description: "Logo, the three hero slides, city photos, and shared images.",
     path: ["media"],
+  },
+  {
+    id: "hospitalityGallery",
+    group: "Website structure",
+    label: "Hospitality gallery",
+    description: "Homepage hospitality gallery photos and captions.",
+    path: ["media", "gallery"],
   },
   {
     id: "hero",
@@ -150,7 +157,12 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   media: {
     group: "هيكل الموقع",
     label: "صور الموقع",
-    description: "الشعار، صور البانر، صور المدن، وصور المعرض.",
+    description: "الشعار، شرائح البانر الثلاث، صور المدن، والصور المشتركة.",
+  },
+  hospitalityGallery: {
+    group: "هيكل الموقع",
+    label: "معرض الضيافة",
+    description: "صور معرض الضيافة في الصفحة الرئيسية وعناوينها.",
   },
   hero: {
     group: "الصفحة الرئيسية",
@@ -249,8 +261,9 @@ const fieldLabels: Record<string, string> = {
   links: "Links",
   logo: "Logo",
   locationHighlight: "Location highlight",
-  mainHero: "Main hero photo",
-  mainHeroSlides: "Main hero banner slides",
+  mainHero: "Hero fallback photo",
+  mainHeroSlides: "Hero photos/videos",
+  mapQuery: "Google Maps search",
   media: "Website photos",
   primaryCta: "Primary button",
   positioning: "Positioning paragraph",
@@ -295,8 +308,9 @@ const arabicFieldLabels: Record<string, string> = {
   links: "الروابط",
   logo: "الشعار",
   locationHighlight: "ميزة الموقع",
-  mainHero: "صورة البانر الرئيسية",
-  mainHeroSlides: "شرائح البانر الرئيسية",
+  mainHero: "صورة احتياطية للبانر",
+  mainHeroSlides: "صور وفيديوهات البانر",
+  mapQuery: "بحث خرائط Google",
   media: "صور الموقع",
   primaryCta: "الزر الرئيسي",
   positioning: "نص التمركز",
@@ -350,6 +364,7 @@ const fieldOrder = [
   "benefits",
   "locationHighlight",
   "landmarks",
+  "mapQuery",
   "gallery",
   "howToEnjoy",
   "links",
@@ -383,6 +398,19 @@ function orderedEntries(object: JsonObject) {
 
       return leftRank - rightRank;
     });
+}
+
+function shouldShowField(path: Array<string | number>, key: string) {
+  const isRootMediaField =
+    path.length === 2 &&
+    (path[0] === "ar" || path[0] === "en") &&
+    path[1] === "media";
+
+  if (isRootMediaField && key === "mainHero") {
+    return false;
+  }
+
+  return true;
 }
 
 function getAtPath(value: JsonValue, path: Array<string | number>): JsonValue {
@@ -879,11 +907,11 @@ function FieldEditor({
         <div className="admin-array-head">
           <div>
             <h4>{labelFor(name, language)}</h4>
-            <p>
-              {language === "ar"
-                ? `${value.length} عنصر. اسحب البطاقات لتغيير الترتيب.`
-                : `${value.length} items. Drag cards to reorder.`}
-            </p>
+              <p>
+                {language === "ar"
+                  ? `${value.length} عنصر. استخدم مقبض السحب لتغيير الترتيب.`
+                  : `${value.length} items. Use the drag handle to reorder.`}
+              </p>
           </div>
           <button type="button" onClick={() => onChange(path, [...value, cloneTemplate(value[0] ?? "")])}>
             {language === "ar" ? "إضافة عنصر" : "Add item"}
@@ -898,9 +926,7 @@ function FieldEditor({
               return (
                 <div
                   className="admin-list-row"
-                  draggable
                   key={`${path.join(".")}-${index}`}
-                  onDragStart={() => setDragIndex(index)}
                   onDragOver={(event) => event.preventDefault()}
                   onDrop={() => {
                     if (dragIndex !== null) {
@@ -909,7 +935,13 @@ function FieldEditor({
                     }
                   }}
                 >
-                  <span className="admin-drag-handle" aria-label="Drag item">
+                  <span
+                    className="admin-drag-handle"
+                    draggable
+                    aria-label={language === "ar" ? "اسحب لتغيير ترتيب العنصر" : "Drag item to reorder"}
+                    onDragStart={() => setDragIndex(index)}
+                    onDragEnd={() => setDragIndex(null)}
+                  >
                     ::
                   </span>
                   <FieldEditor
@@ -934,9 +966,7 @@ function FieldEditor({
             return (
               <details
                 className="admin-array-item"
-                draggable
                 key={`${path.join(".")}-${index}`}
-                onDragStart={() => setDragIndex(index)}
                 onDragOver={(event) => event.preventDefault()}
                 onDrop={() => {
                   if (dragIndex !== null) {
@@ -946,7 +976,14 @@ function FieldEditor({
                 }}
               >
                 <summary className="admin-item-summary">
-                  <span className="admin-drag-handle" aria-label="Drag item">
+                  <span
+                    className="admin-drag-handle"
+                    draggable
+                    aria-label={language === "ar" ? "اسحب لتغيير ترتيب العنصر" : "Drag item to reorder"}
+                    onClick={(event) => event.preventDefault()}
+                    onDragStart={() => setDragIndex(index)}
+                    onDragEnd={() => setDragIndex(null)}
+                  >
                     ::
                   </span>
                   <span>
@@ -988,7 +1025,7 @@ function FieldEditor({
       <section className={level === 0 ? "admin-object admin-object-root" : "admin-object"}>
         {level > 0 ? <h3>{labelFor(name, language)}</h3> : null}
         <div className="admin-field-grid">
-          {orderedEntries(value).map(({ key, value: item }) => (
+          {orderedEntries(value).filter(({ key }) => shouldShowField(path, key)).map(({ key, value: item }) => (
             <FieldEditor
               key={`${path.join(".")}-${key}`}
               name={key}
@@ -1008,9 +1045,8 @@ function FieldEditor({
   return null;
 }
 
-export default function SecretPanel() {
+export default function SecretPanel({ language = "en" }: { language?: Language }) {
   const [content, setContent] = useState<JsonObject | null>(null);
-  const [language, setLanguage] = useState<Language>("en");
   const [selectedId, setSelectedId] = useState("hero");
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("loading");
@@ -1112,41 +1148,39 @@ export default function SecretPanel() {
   }
 
   return (
-    <main className="admin-shell" dir="ltr">
+    <main className="admin-shell" dir={language === "ar" ? "rtl" : "ltr"}>
       <aside className="admin-sidebar">
         <div className="admin-brand">
           <span className="admin-brand-mark">SB</span>
           <div>
-            <p>Swiss Blue CMS</p>
-            <h1>Content Studio</h1>
+            <p>{language === "ar" ? "إدارة سويس بلو" : "Swiss Blue CMS"}</p>
+            <h1>{language === "ar" ? "استوديو المحتوى" : "Content Studio"}</h1>
           </div>
         </div>
 
-        <div className="admin-language" aria-label="Content language">
-          {(Object.keys(languages) as Language[]).map((item) => (
-            <button
-              className={language === item ? "active" : ""}
-              key={item}
-              type="button"
-              onClick={() => setLanguage(item)}
-            >
-              <span>{languages[item].short}</span>
-              {languages[item].label}
-            </button>
-          ))}
+        <div className="admin-mode-card">
+          <span>{language === "ar" ? "لوحة عربية" : "English panel"}</span>
+          <p>
+            {language === "ar"
+              ? "هذه اللوحة مخصصة لتعديل النسخة العربية فقط."
+              : "This panel edits the English website only."}
+          </p>
+          <a href={language === "ar" ? "/secretpanel" : "/secretpanel/ar"}>
+            {language === "ar" ? "الانتقال للوحة الإنجليزية" : "Switch to Arabic panel"}
+          </a>
         </div>
 
         <label className="admin-search">
-          <span>Search sections</span>
+          <span>{language === "ar" ? "البحث في الأقسام" : "Search sections"}</span>
           <input
             type="search"
             value={query}
-            placeholder="Find homepage, footer, offers..."
+            placeholder={language === "ar" ? "ابحث عن الرئيسية، الفوتر، العروض..." : "Find homepage, footer, offers..."}
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>
 
-        <nav className="admin-section-list" aria-label="CMS sections">
+        <nav className="admin-section-list" aria-label={language === "ar" ? "أقسام لوحة الإدارة" : "CMS sections"}>
           {Object.entries(groupedSections).map(([group, sections]) => (
             <div className="admin-nav-group" key={group}>
               <p>{group}</p>
@@ -1223,9 +1257,9 @@ export default function SecretPanel() {
             <p className="admin-kicker">{language === "ar" ? "دليل التحرير" : "Editing guide"}</p>
             <h3>{language === "ar" ? "طريقة العمل" : "Workflow"}</h3>
             <ul>
-              <li>{language === "ar" ? "اختر اللغة أولا." : "Select the language first."}</li>
+              <li>{language === "ar" ? "استخدم اللوحة المناسبة للنسخة التي تريد تعديلها." : "Use the panel that matches the website version you want to edit."}</li>
               <li>{language === "ar" ? "اختر القسم من القائمة الجانبية." : "Choose a section from the sidebar."}</li>
-              <li>{language === "ar" ? "اسحب البطاقات المتكررة لتغيير ترتيبها." : "Drag repeated cards to reorder them."}</li>
+              <li>{language === "ar" ? "استخدم مقبض السحب فقط لتغيير ترتيب البطاقات." : "Use the drag handle only to reorder repeated cards."}</li>
               <li>{language === "ar" ? "احفظ بعد الانتهاء من مجموعة التعديلات." : "Save once you finish a group of edits."}</li>
             </ul>
             <div>

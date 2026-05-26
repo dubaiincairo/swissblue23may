@@ -1,6 +1,7 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
+import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
+import PropertyMap from "@/components/property-map";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { BOOKING_URL, hotels, roomClassifications } from "@/lib/content";
 import { getEditableContent } from "@/lib/editable-content";
@@ -125,23 +126,22 @@ export default async function HotelDetailPage({
         </div>
       </section>
 
+      <PropertyMap city={hotel.city} locale="ar" query={hotel.mapQuery} title={hotel.title} />
+
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading">
           <span className="eyebrow">معرض الصور</span>
           <h2>لمحة بصرية عن تجربة الإقامة.</h2>
         </div>
-        <div className="gallery-grid mt-8">
-          {hotel.gallery.map((image, index) => (
-            <figure className="relative overflow-hidden" key={`${image}-${index}`}>
-              <Image
-                className="object-cover"
-                src={image}
-                alt={`${hotel.title} صورة ${index + 1}`}
-                fill
-                sizes="(min-width: 1024px) 33vw, 100vw"
-              />
-            </figure>
-          ))}
+        <div className="mt-8">
+          <PhotoGalleryLightbox
+            images={hotel.gallery.map((image, index) => ({
+              image,
+              title: `${hotel.title} صورة ${index + 1}`,
+            }))}
+            locale="ar"
+            variant="property"
+          />
         </div>
       </section>
 

@@ -138,6 +138,7 @@ export const hotelsEn = [
       "A practical Jeddah location connecting guests to business routes, shopping, dining, and Red Sea destinations.",
     landmarks: ["Jeddah Corniche", "Historic Jeddah Al Balad", "Red Sea Mall", "King Abdulaziz International Airport"],
     gallery: [heroImage, jeddahImage, jazanImage],
+    mapQuery: "Swiss Blue Hotel Heraa Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/swiss-blue-hera/",
   },
   {
@@ -161,6 +162,7 @@ export const hotelsEn = [
       "A location that supports business movement and regional visits in Jazan, with convenient access to daily services.",
     landmarks: ["Jazan Waterfront", "Jazan Airport", "Business areas", "Markets and restaurants"],
     gallery: [jazanImage, heroImage, jeddahImage],
+    mapQuery: "Swiss Blue Jazan Saudi Arabia",
     source: "https://swissbluehotels.com/04_swissblue-jazan/",
   },
   {
@@ -184,6 +186,7 @@ export const hotelsEn = [
       "A Prince Sultan Road location near shopping, dining, and key daily services in Jeddah.",
     landmarks: ["Prince Sultan Road", "Red Sea Mall", "Waterfront", "Restaurants and cafes"],
     gallery: [jeddahImage, heroImage, jazanImage],
+    mapQuery: "Swiss Blue Al Zahra Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/02_swissblue-al-zahra/",
   },
   {
@@ -207,6 +210,7 @@ export const hotelsEn = [
       "A convenient Jeddah base for moving across residential districts and daily-service areas.",
     landmarks: ["Main Jeddah roads", "Daily service areas", "Restaurants", "Shopping centers"],
     gallery: [heroImage, jeddahImage, jazanImage],
+    mapQuery: "Swiss Blue Al Samer Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/03_swissblue-al-samer/",
   },
   {
@@ -230,6 +234,7 @@ export const hotelsEn = [
       "A practical Riyadh location for access to business districts, lifestyle areas, and daily services.",
     landmarks: ["Business districts", "Main Riyadh roads", "Shopping centers", "Restaurants and cafes"],
     gallery: [jeddahImage, heroImage, jazanImage],
+    mapQuery: "Vinas Serviced Apartments Riyadh Saudi Arabia",
     source: "https://swissbluehotels.com/",
   },
   {
@@ -253,6 +258,7 @@ export const hotelsEn = [
       "A practical Riyadh location near active neighborhoods, daily services, and main movement routes.",
     landmarks: ["Riyadh neighborhoods", "Business areas", "Restaurants and cafes", "Daily services"],
     gallery: [jazanImage, jeddahImage, heroImage],
+    mapQuery: "Tulip Al Rawdah Riyadh Saudi Arabia",
     source: "https://swissbluehotels.com/",
   },
 ];

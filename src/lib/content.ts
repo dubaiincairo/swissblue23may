@@ -166,6 +166,7 @@ export const hotels = [
       "موقع عملي في جدة يربط الضيوف بمناطق الأعمال والتسوق والمطاعم ووجهات البحر الأحمر.",
     landmarks: ["كورنيش جدة", "جدة التاريخية البلد", "رد سي مول", "مطار الملك عبدالعزيز"],
     gallery: [heroImage, jeddahImage, jazanImage],
+    mapQuery: "Swiss Blue Hotel Heraa Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/swiss-blue-hera/",
   },
   {
@@ -210,6 +211,7 @@ export const hotels = [
       "موقع يخدم حركة الأعمال والزيارات الإقليمية في جازان، مع وصول مريح للخدمات اليومية.",
     landmarks: ["واجهة جازان البحرية", "مطار جازان", "مراكز الأعمال", "الأسواق والمطاعم"],
     gallery: [jazanImage, heroImage, jeddahImage],
+    mapQuery: "Swiss Blue Jazan Saudi Arabia",
     source: "https://swissbluehotels.com/04_swissblue-jazan/",
   },
   {
@@ -254,6 +256,7 @@ export const hotels = [
       "موقع على طريق الأمير سلطان بالقرب من وجهات التسوق والمطاعم والخدمات الحيوية في جدة.",
     landmarks: ["طريق الأمير سلطان", "رد سي مول", "الواجهة البحرية", "المطاعم والمقاهي"],
     gallery: [jeddahImage, heroImage, jazanImage],
+    mapQuery: "Swiss Blue Al Zahra Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/02_swissblue-al-zahra/",
   },
   {
@@ -298,6 +301,7 @@ export const hotels = [
       "موقع مناسب للتنقل داخل جدة والوصول إلى الأحياء السكنية والخدمات اليومية.",
     landmarks: ["طرق جدة الرئيسية", "مناطق الخدمات اليومية", "المطاعم", "مراكز التسوق"],
     gallery: [heroImage, jeddahImage, jazanImage],
+    mapQuery: "Swiss Blue Al Samer Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/03_swissblue-al-samer/",
   },
   {
@@ -336,6 +340,7 @@ export const hotels = [
       "موقع يخدم التنقل داخل الرياض والوصول إلى مناطق الأعمال ونمط الحياة والخدمات اليومية.",
     landmarks: ["مناطق الأعمال", "طرق الرياض الرئيسية", "مراكز التسوق", "المطاعم والمقاهي"],
     gallery: [jeddahImage, heroImage, jazanImage],
+    mapQuery: "Vinas Serviced Apartments Riyadh Saudi Arabia",
     source: "https://swissbluehotels.com/",
   },
   {
@@ -380,6 +385,7 @@ export const hotels = [
       "موقع عملي داخل الرياض بالقرب من الأحياء النشطة والخدمات اليومية ومناطق الحركة الرئيسية.",
     landmarks: ["أحياء الرياض", "مناطق الأعمال", "المطاعم والمقاهي", "الخدمات اليومية"],
     gallery: [jazanImage, jeddahImage, heroImage],
+    mapQuery: "Tulip Al Rawdah Riyadh Saudi Arabia",
     source: "https://swissbluehotels.com/",
   },
 ];

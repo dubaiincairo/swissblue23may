@@ -43,10 +43,10 @@ export async function PUT(request: Request) {
 
   const content = body?.content ?? defaultSiteContent;
 
-  await saveEditableContent(content);
+  const savedContent = await saveEditableContent(content);
 
   return NextResponse.json({
     ok: true,
-    content,
+    content: savedContent,
   });
 }

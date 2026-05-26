@@ -11,14 +11,21 @@ const fieldText = {
     title: "Send a corporate accommodation request.",
     text: "Share the business need, expected dates, units, and documentation status. The corporate team can use this information to prepare a more accurate proposal.",
     company: "Company name",
+    sector: "Company sector",
     contact: "Contact person",
+    jobTitle: "Job title",
     email: "Business email",
     phone: "Mobile number",
     city: "Preferred city",
+    propertyType: "Preferred property type",
     requestType: "Request type",
-    units: "Expected rooms or apartments",
-    dates: "Expected dates",
+    guests: "Expected guests",
+    units: "Rooms or apartments",
+    arrival: "Expected arrival",
+    departure: "Expected departure",
+    budget: "Target budget",
     documents: "Documents available",
+    preferredContact: "Preferred contact method",
     message: "Additional requirements",
     submit: "Send business request",
     success: "Request prepared. A corporate specialist can now follow up with the submitted details.",
@@ -28,14 +35,21 @@ const fieldText = {
     title: "أرسل طلب إقامة أو تعاقد للشركات.",
     text: "شاركنا احتياج الجهة، التواريخ المتوقعة، عدد الوحدات، وحالة المستندات ليتمكن فريق الشركات من تجهيز عرض أدق.",
     company: "اسم الشركة أو الجهة",
+    sector: "قطاع الشركة",
     contact: "اسم المسؤول",
+    jobTitle: "المسمى الوظيفي",
     email: "البريد الرسمي",
     phone: "رقم الجوال",
     city: "المدينة المفضلة",
+    propertyType: "نوع المنشأة المفضل",
     requestType: "نوع الطلب",
-    units: "عدد الغرف أو الشقق المتوقع",
-    dates: "التواريخ المتوقعة",
+    guests: "عدد الضيوف المتوقع",
+    units: "عدد الغرف أو الشقق",
+    arrival: "تاريخ الوصول المتوقع",
+    departure: "تاريخ المغادرة المتوقع",
+    budget: "الميزانية المستهدفة",
     documents: "المستندات المتوفرة",
+    preferredContact: "طريقة التواصل المفضلة",
     message: "متطلبات إضافية",
     submit: "إرسال الطلب",
     success: "تم تجهيز الطلب. يمكن لمختص الشركات متابعة التفاصيل المرسلة.",
@@ -60,6 +74,11 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
           <span className="eyebrow">{t.eyebrow}</span>
           <h2>{t.title}</h2>
           <p>{t.text}</p>
+          <ul className="b2b-form-steps">
+            <li>{isArabic ? "تحديد الاحتياج وعدد الضيوف" : "Define the stay need and guest volume"}</li>
+            <li>{isArabic ? "مراجعة المستندات والتفاصيل التجارية" : "Review documents and business details"}</li>
+            <li>{isArabic ? "تجهيز عرض مناسب للمراجعة والاعتماد" : "Prepare a proposal for review and approval"}</li>
+          </ul>
           <div className="b2b-form-note">
             {isArabic
               ? "مناسب للجهات الحكومية، الشركات، الوفود، الإقامات الشهرية، والاجتماعات."
@@ -73,8 +92,23 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
             <input name="company" required />
           </label>
           <label>
+            <span>{t.sector}</span>
+            <select name="sector" required>
+              <option value="">{isArabic ? "اختر القطاع" : "Select sector"}</option>
+              <option>{isArabic ? "جهة حكومية" : "Government entity"}</option>
+              <option>{isArabic ? "شركة خاصة" : "Private company"}</option>
+              <option>{isArabic ? "وكالة سفر أو منظم فعاليات" : "Travel agency or event organizer"}</option>
+              <option>{isArabic ? "منظمة غير ربحية" : "Non-profit organization"}</option>
+              <option>{isArabic ? "قطاع آخر" : "Other sector"}</option>
+            </select>
+          </label>
+          <label>
             <span>{t.contact}</span>
             <input name="contact" required />
+          </label>
+          <label>
+            <span>{t.jobTitle}</span>
+            <input name="jobTitle" placeholder={isArabic ? "مثال: مدير الموارد البشرية" : "Example: HR manager"} />
           </label>
           <label>
             <span>{t.email}</span>
@@ -95,6 +129,16 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
             </select>
           </label>
           <label>
+            <span>{t.propertyType}</span>
+            <select name="propertyType" required>
+              <option value="">{isArabic ? "اختر نوع المنشأة" : "Select property type"}</option>
+              <option>{isArabic ? "فندق" : "Hotel"}</option>
+              <option>{isArabic ? "شقق فندقية" : "Apart-hotel"}</option>
+              <option>{isArabic ? "شقق مخدومة" : "Serviced apartments"}</option>
+              <option>{isArabic ? "مرونة حسب العرض" : "Flexible by proposal"}</option>
+            </select>
+          </label>
+          <label>
             <span>{t.requestType}</span>
             <select name="requestType" required>
               <option value="">{isArabic ? "اختر" : "Select"}</option>
@@ -105,19 +149,39 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
             </select>
           </label>
           <label>
+            <span>{t.guests}</span>
+            <input name="guests" type="number" min="1" placeholder={isArabic ? "مثال: 45" : "Example: 45"} />
+          </label>
+          <label>
             <span>{t.units}</span>
             <input name="units" placeholder={isArabic ? "مثال: 20 غرفة" : "Example: 20 rooms"} />
           </label>
           <label>
-            <span>{t.dates}</span>
-            <input name="dates" placeholder={isArabic ? "مثال: 10-20 يونيو 2026" : "Example: 10-20 June 2026"} />
+            <span>{t.arrival}</span>
+            <input name="arrival" type="date" />
           </label>
-          <label className="span-2">
+          <label>
+            <span>{t.departure}</span>
+            <input name="departure" type="date" />
+          </label>
+          <label>
+            <span>{t.budget}</span>
+            <input name="budget" placeholder={isArabic ? "مثال: 450 ريال لليلة" : "Example: SAR 450 per night"} />
+          </label>
+          <label>
             <span>{t.documents}</span>
             <select name="documents">
               <option>{isArabic ? "السجل التجاري وخطاب التفويض متوفران" : "Commercial registration and authorization letter are available"}</option>
               <option>{isArabic ? "بعض المستندات متوفرة" : "Some documents are available"}</option>
               <option>{isArabic ? "نحتاج إلى قائمة المتطلبات" : "We need the document checklist"}</option>
+            </select>
+          </label>
+          <label>
+            <span>{t.preferredContact}</span>
+            <select name="preferredContact">
+              <option>{isArabic ? "مكالمة هاتفية" : "Phone call"}</option>
+              <option>{isArabic ? "واتساب" : "WhatsApp"}</option>
+              <option>{isArabic ? "بريد إلكتروني" : "Email"}</option>
             </select>
           </label>
           <label className="span-2">

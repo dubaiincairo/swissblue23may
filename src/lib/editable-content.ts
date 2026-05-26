@@ -46,17 +46,49 @@ const homeOffers = [
 ];
 
 const highlights = [
-  { value: "6", label: "وجهات فندقية" },
-  { value: "282", label: "غرفة وشقة" },
-  { value: "3", label: "مدن سعودية" },
-  { value: "24", label: "ساعة لخدمة الضيوف" },
+  {
+    value: "+10",
+    label: "سنوات خبرة",
+    text: "خبراء في تشغيل وإدارة الفنادق والشقق الفندقية داخل السوق السعودي",
+  },
+  {
+    value: "+852",
+    label: "ضيف يوميًا",
+    text: "طاقة تقديرية لاستقبال أكثر من ثمانمائة وخمسين ضيفًا في وقت واحد",
+  },
+  {
+    value: "24/7",
+    label: "استقبال دائم",
+    text: "فريق استقبال وخدمة أمتعة لمساعدة الضيوف طوال اليوم والليلة",
+  },
+  {
+    value: "+50",
+    label: "موظف لخدمتك",
+    text: "فريق تشغيلي وإداري يضمن منظومة فندقية أكثر احترافية وراحة",
+  },
 ];
 
 const highlightsEn = [
-  { value: "6", label: "Hospitality properties" },
-  { value: "282", label: "Rooms and apartments" },
-  { value: "3", label: "Saudi cities" },
-  { value: "24h", label: "Guest support" },
+  {
+    value: "+10",
+    label: "Years Experience",
+    text: "Experts in operating hotels and serviced apartments across Saudi Arabia",
+  },
+  {
+    value: "+852",
+    label: "Daily Guests",
+    text: "Estimated capacity to host over eight hundred guests at once",
+  },
+  {
+    value: "24/7",
+    label: "Guest Reception",
+    text: "Reception and luggage support to help guests day and night",
+  },
+  {
+    value: "+50",
+    label: "Service Team",
+    text: "Operational and admin teams deliver more professional guest comfort",
+  },
 ];
 
 export const defaultLogoImage =
@@ -382,6 +414,21 @@ function syncHeroSlides(
   };
 }
 
+function heroFallbackFromSlides(
+  slides: EditableSiteContent["ar"]["media"]["mainHeroSlides"],
+  fallback: string,
+) {
+  const imageSlide = slides.find((slide) => {
+    if (!slide.source) {
+      return false;
+    }
+
+    return slide.kind === "image" || !/\.(mp4|mov|webm)(\?|$)/i.test(slide.source);
+  });
+
+  return imageSlide?.source ?? fallback;
+}
+
 function syncPropertyImages(
   arProperties: EditableSiteContent["ar"]["homepage"]["properties"]["items"],
   enProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
@@ -399,19 +446,21 @@ function syncPropertyImages(
       return property;
     }
 
+    const arGallery = property.gallery ?? arDefault.gallery;
+    const enGallery = enProperty.gallery ?? enDefault.gallery;
     const [image] = sharedImageValue(property.image, enProperty.image, arDefault.image, enDefault.image);
-    const gallery = property.gallery.map((galleryImage, index) => {
+    const gallery = arGallery.map((galleryImage, index) => {
       const [nextImage] = sharedImageValue(
         galleryImage,
-        enProperty.gallery[index] ?? galleryImage,
+        enGallery[index] ?? galleryImage,
         arDefault.gallery[index] ?? galleryImage,
-        enDefault.gallery[index] ?? enProperty.gallery[index] ?? galleryImage,
+        enDefault.gallery[index] ?? enGallery[index] ?? galleryImage,
       );
 
       return nextImage;
     });
 
-    return { ...property, image, gallery };
+    return { ...arDefault, ...property, image, gallery };
   });
 
   const arBySlug = new Map(arProperties.map((property) => [property.slug, property]));
@@ -424,19 +473,21 @@ function syncPropertyImages(
       return property;
     }
 
+    const arGallery = arProperty.gallery ?? arDefault.gallery;
+    const enGallery = property.gallery ?? enDefault.gallery;
     const [, image] = sharedImageValue(arProperty.image, property.image, arDefault.image, enDefault.image);
-    const gallery = property.gallery.map((galleryImage, index) => {
+    const gallery = enGallery.map((galleryImage, index) => {
       const [, nextImage] = sharedImageValue(
-        arProperty.gallery[index] ?? galleryImage,
+        arGallery[index] ?? galleryImage,
         galleryImage,
-        arDefault.gallery[index] ?? arProperty.gallery[index] ?? galleryImage,
+        arDefault.gallery[index] ?? arGallery[index] ?? galleryImage,
         enDefault.gallery[index] ?? galleryImage,
       );
 
       return nextImage;
     });
 
-    return { ...property, image, gallery };
+    return { ...enDefault, ...property, image, gallery };
   });
 
   return { ar, en };
@@ -476,6 +527,21 @@ function syncDestinationImages(
       return { ...enItem, image };
     }).filter(Boolean) as EditableSiteContent["en"]["homepage"]["destinations"]["items"],
   };
+}
+
+function normalizeHighlights(
+  items: EditableSiteContent["ar"]["homepage"]["highlights"],
+  defaults: EditableSiteContent["ar"]["homepage"]["highlights"],
+) {
+  return defaults.map((defaultItem, index) => {
+    const item = items[index];
+
+    if (!item || !("text" in item) || !item.text) {
+      return defaultItem;
+    }
+
+    return item;
+  });
 }
 
 function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
@@ -524,7 +590,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         ...content.ar.media,
         logo: logoAr,
         arabicLogo: content.ar.media.arabicLogo,
-        mainHero: mainHeroAr,
+        mainHero: heroFallbackFromSlides(syncedHeroSlides.ar, mainHeroAr),
         mainHeroSlides: syncedHeroSlides.ar,
         jeddah: jeddahAr,
         jazan: jazanAr,
@@ -532,6 +598,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
       },
       homepage: {
         ...content.ar.homepage,
+        highlights: normalizeHighlights(content.ar.homepage.highlights, defaultSiteContent.ar.homepage.highlights),
         properties: {
           ...content.ar.homepage.properties,
           items: syncedProperties.ar,
@@ -547,7 +614,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
       media: {
         ...content.en.media,
         logo: logoEn,
-        mainHero: mainHeroEn,
+        mainHero: heroFallbackFromSlides(syncedHeroSlides.en, mainHeroEn),
         mainHeroSlides: syncedHeroSlides.en,
         jeddah: jeddahEn,
         jazan: jazanEn,
@@ -555,6 +622,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
       },
       homepage: {
         ...content.en.homepage,
+        highlights: normalizeHighlights(content.en.homepage.highlights, defaultSiteContent.en.homepage.highlights),
         properties: {
           ...content.en.homepage.properties,
           items: syncedProperties.en,
@@ -665,13 +733,17 @@ export async function saveEditableContent(content: EditableSiteContent) {
     throw new Error("Sanity write client is not configured.");
   }
 
-  return client.createOrReplace({
+  const normalizedContent = syncSharedImages(content);
+
+  await client.createOrReplace({
     _id: documentId,
     _type: "siteContent",
     title: "Swiss Blue Website Content",
-    content,
+    content: normalizedContent,
     updatedAt: new Date().toISOString(),
   });
+
+  return normalizedContent;
 }
 
 export { BOOKING_URL, heroImage };

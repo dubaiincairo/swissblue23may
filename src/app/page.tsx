@@ -69,16 +69,15 @@ export default async function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="insight-grid">
           {home.highlights.map((item) => (
-            <div className="stat-tile" key={item.label}>
-              <div className="font-mono text-3xl font-bold text-[var(--primary)]">
-                {item.value}
+            <article className="insight-card" key={item.label}>
+              <div>
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
               </div>
-              <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
-                {item.label}
-              </div>
-            </div>
+              <p>{item.text}</p>
+            </article>
           ))}
         </div>
       </section>

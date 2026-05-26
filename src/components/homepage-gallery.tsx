@@ -1,4 +1,4 @@
-import Image from "next/image";
+import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 
 type GalleryImage = {
   readonly image: string;
@@ -68,19 +68,8 @@ export default function HomepageGallery({
         </p>
       </div>
 
-      <div className="hotel-showcase-grid mt-8">
-        {galleryImages.map((image, index) => (
-          <figure className={index === 0 ? "feature" : ""} key={`${image.image}-${index}`}>
-            <Image
-              className="object-cover"
-              src={image.image}
-              alt={image.title}
-              fill
-              sizes={index === 0 ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 1024px) 25vw, 100vw"}
-            />
-            <figcaption>{image.title}</figcaption>
-          </figure>
-        ))}
+      <div className="mt-8">
+        <PhotoGalleryLightbox images={galleryImages} locale={locale} />
       </div>
     </section>
   );
