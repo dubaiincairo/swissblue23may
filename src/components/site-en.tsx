@@ -8,11 +8,13 @@ import LiveContentRefresh from "@/components/live-content-refresh";
 export async function SiteHeaderEn() {
   const { en } = await getEditableContent();
 
+  const navLinks = en.navGroups.flatMap((group) => group.links);
+
   return (
     <>
       <LiveContentRefresh />
-      <nav className="sticky top-0 z-40 border-b border-[var(--border)] bg-white/94 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <nav className="site-nav">
+        <div className="site-nav-inner mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-3 sm:px-6 lg:px-8">
           <Link className="flex items-center gap-3" href="/en" aria-label="Swiss Blue Hotels home">
             <Image
               className="h-10 w-auto"
@@ -23,26 +25,16 @@ export async function SiteHeaderEn() {
               priority
             />
           </Link>
-          <div className="hidden items-center gap-2 text-xs font-bold text-[var(--text-secondary)] xl:flex">
-            {en.navGroups.map((group) => (
-              <div className="nav-dropdown" key={group.label}>
-                <button className="nav-parent" type="button">
-                  {group.label}
-                  <span aria-hidden="true">⌄</span>
-                </button>
-                <div className="nav-menu">
-                  {group.links.map((item) => (
-                    <Link href={item.href} key={`${group.label}-${item.href}`}>
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
+          <div className="site-nav-links hidden xl:flex">
+            {navLinks.map((item) => (
+              <Link className="nav-link" href={item.href} key={item.href}>
+                {item.label}
+              </Link>
             ))}
           </div>
           <div className="flex items-center gap-3">
             <LanguageToggle current="en" />
-            <a className="btn btn-primary" href={BOOKING_URL}>
+            <a className="btn btn-primary site-nav-cta" href={BOOKING_URL}>
               Book now
             </a>
           </div>
