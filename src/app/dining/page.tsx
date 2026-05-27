@@ -1,4 +1,6 @@
+import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
+import { diningGalleryPhotos } from "@/lib/content";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +37,21 @@ export default async function DiningPage() {
           ))}
         </div>
       </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">معرض الطعام</span>
+          <h2>أجواء الطعام في فنادق سويس بلو.</h2>
+          <p>
+            صور توضح طبيعة الإفطار والمطعم والمقهى وخدمة الغرف عبر منشآتنا،
+            لتكوين توقعات واقعية قبل الحجز.
+          </p>
+        </div>
+        <div className="mt-8">
+          <PhotoGalleryLightbox images={[...diningGalleryPhotos]} locale="ar" />
+        </div>
+      </section>
+
       <CtaBand title="اختر إقامة تجعل يومك أسهل." cta="احجز إقامتك" />
     </PageShell>
   );

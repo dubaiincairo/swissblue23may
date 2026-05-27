@@ -330,24 +330,98 @@ export const corporateDealsEn = [
   },
 ];
 
+const jeddahPhotosEn = [
+  "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1581359338492-d6b59e0fde85?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1578895101408-1a36b834405b?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1604018996850-44c79b35dd5b?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1614956793980-0fcc8b96e88d?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1591631013402-d8e8a7c8c01b?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
+];
+
+const riyadhPhotosEn = [
+  "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1583066722055-aa3f4f8c6f9b?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1606854083942-5e1f99d92a92?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1577116610894-d3b3d6c1dcdd?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1564769625392-651b2c8b1f4f?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1612392061787-2d078b3e573e?auto=format&fit=crop&w=1400&q=80",
+];
+
+const jazanPhotosEn = [
+  "https://images.unsplash.com/photo-1493305401554-9f48be0cfca8?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1551918120-9739cb430c6d?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1583077874340-79db6564672e?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1564769625392-651b2c8b1f4f?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1612392061787-2d078b3e573e?auto=format&fit=crop&w=1400&q=80",
+];
+
 export const destinationsEn = [
   {
     title: "Jeddah",
     text: "The Red Sea city that brings together business, shopping, dining, the waterfront, and Historic Jeddah. Ideal for weekends, family visits, and business travel.",
     howToEnjoy: ["Visit Jeddah Corniche and the waterfront", "Explore Historic Jeddah Al Balad", "Try restaurants and cafes", "Shop in modern malls"],
     image: heroImage,
+    photos: jeddahPhotosEn,
+    badge: "Red Sea gateway",
+    stats: [
+      { label: "Properties", value: "4 properties" },
+      { label: "Nearest airport", value: "KAIA" },
+      { label: "Best season", value: "Oct – Mar" },
+    ],
   },
   {
     title: "Riyadh",
     text: "The region's fast-growing capital for business, events, modern lifestyle, long stays, and corporate bookings.",
     howToEnjoy: ["Visit Boulevard Riyadh and entertainment destinations", "Plan business meetings", "Discover premium restaurants", "Choose monthly stays for corporate assignments"],
     image: jeddahImage,
+    photos: riyadhPhotosEn,
+    badge: "Capital and business hub",
+    stats: [
+      { label: "Properties", value: "2 properties" },
+      { label: "Nearest airport", value: "RUH" },
+      { label: "Best season", value: "Nov – Apr" },
+    ],
   },
   {
     title: "Jazan",
     text: "A lively southern city for regional visits, business travel, and quieter stays, close to the sea, nature, and daily services.",
     howToEnjoy: ["Visit the waterfront", "Explore local markets", "Plan regional business visits", "Choose an apart-hotel for longer stays"],
     image: jazanImage,
+    photos: jazanPhotosEn,
+    badge: "Southern gateway",
+    stats: [
+      { label: "Properties", value: "1 property" },
+      { label: "Nearest airport", value: "GIZ" },
+      { label: "Best season", value: "Nov – Mar" },
+    ],
+  },
+];
+
+export const diningGalleryPhotosEn = [
+  {
+    image: "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1400&q=80",
+    title: "Breakfast buffet",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=80",
+    title: "Restaurant atmosphere",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1400&q=80",
+    title: "Lobby café",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=80",
+    title: "Dinner experiences",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=80",
+    title: "Room service",
   },
 ];
 

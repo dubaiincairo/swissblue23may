@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
-import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
+import { FeatureChipGrid } from "@/components/feature-chip";
+import { PropertyGallery } from "@/components/property-gallery";
 import PropertyMap from "@/components/property-map";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { hotelsEn } from "@/lib/content-en";
@@ -120,17 +121,7 @@ export default async function HotelDetailPageEn({
             hotels and apartments stays clear.
           </p>
         </div>
-        <div className="amenity-grid">
-          {hotel.amenities.map((amenity, index) => (
-            <div
-              className="amenity-pill reveal-elastic-pop"
-              key={amenity}
-              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
-            >
-              {amenity}
-            </div>
-          ))}
-        </div>
+        <FeatureChipGrid items={hotel.amenities} variant="check" columns={2} />
       </section>
 
       <PropertyMap city={hotel.city} locale="en" query={hotel.mapQuery} title={hotel.title} />
@@ -141,13 +132,12 @@ export default async function HotelDetailPageEn({
           <h2>A visual glimpse of the stay experience.</h2>
         </div>
         <div className="mt-8">
-          <PhotoGalleryLightbox
+          <PropertyGallery
             images={hotel.gallery.map((image, index) => ({
               image,
               title: `${hotel.title} image ${index + 1}`,
             }))}
             locale="en"
-            variant="property"
           />
         </div>
       </section>

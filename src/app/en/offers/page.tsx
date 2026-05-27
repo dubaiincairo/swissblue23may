@@ -1,4 +1,5 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
+import { FeatureChipGrid } from "@/components/feature-chip";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -45,17 +46,7 @@ export default async function OffersPageEn() {
             {content.benefitsIntro.text}
           </p>
         </div>
-        <div className="amenity-grid">
-          {content.benefits.map((benefit, index) => (
-            <div
-              className="amenity-pill reveal-elastic-pop"
-              key={benefit}
-              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
-            >
-              {benefit}
-            </div>
-          ))}
-        </div>
+        <FeatureChipGrid items={content.benefits} variant="sparkle" columns={2} />
       </section>
       <CtaBandEn title="Start with the offer that fits your trip." cta="View availability" />
     </PageShellEn>

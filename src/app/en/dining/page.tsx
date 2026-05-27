@@ -1,4 +1,6 @@
+import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
+import { diningGalleryPhotosEn } from "@/lib/content-en";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -35,7 +37,23 @@ export default async function DiningPageEn() {
           ))}
         </div>
       </section>
-      <CtaBandEn title="Choose a stay that makes your day easier." cta="Book your stay" />
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">Dining gallery</span>
+          <h2>A taste of the Swiss Blue dining mood.</h2>
+          <p>
+            Scenes from breakfast, restaurants, lobby cafés, and in-room dining
+            across our properties — a quick way to set the right expectation
+            before booking.
+          </p>
+        </div>
+        <div className="mt-8">
+          <PhotoGalleryLightbox images={[...diningGalleryPhotosEn]} locale="en" />
+        </div>
+      </section>
+
+      <CtaBandEn title="Pick a stay that makes the day easier." cta="Book your stay" />
     </PageShellEn>
   );
 }

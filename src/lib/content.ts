@@ -964,24 +964,98 @@ export const corporateDeals = [
   },
 ];
 
+const jeddahPhotos = [
+  "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1581359338492-d6b59e0fde85?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1578895101408-1a36b834405b?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1604018996850-44c79b35dd5b?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1614956793980-0fcc8b96e88d?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1591631013402-d8e8a7c8c01b?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
+];
+
+const riyadhPhotos = [
+  "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1583066722055-aa3f4f8c6f9b?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1606854083942-5e1f99d92a92?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1577116610894-d3b3d6c1dcdd?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1564769625392-651b2c8b1f4f?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1612392061787-2d078b3e573e?auto=format&fit=crop&w=1400&q=80",
+];
+
+const jazanPhotos = [
+  "https://images.unsplash.com/photo-1493305401554-9f48be0cfca8?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1551918120-9739cb430c6d?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1583077874340-79db6564672e?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1564769625392-651b2c8b1f4f?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1612392061787-2d078b3e573e?auto=format&fit=crop&w=1400&q=80",
+];
+
 export const destinations = [
   {
     title: "جدة",
     text: "مدينة البحر الأحمر، تجمع بين الأعمال والتسوق والمطاعم والواجهة البحرية وجدة التاريخية. مناسبة لعطلات نهاية الأسبوع، الزيارات العائلية، ورحلات الأعمال.",
     howToEnjoy: ["زيارة كورنيش جدة والواجهة البحرية", "اكتشاف البلد التاريخية", "تجربة المطاعم والمقاهي", "التسوق في المراكز الحديثة"],
     image: heroImage,
+    photos: jeddahPhotos,
+    badge: "وجهة البحر الأحمر",
+    stats: [
+      { label: "فنادق وشقق", value: "4 منشآت" },
+      { label: "أقرب مطار", value: "KAIA" },
+      { label: "أفضل موسم", value: "أكتوبر – مارس" },
+    ],
   },
   {
     title: "الرياض",
     text: "العاصمة الأسرع نموا في المنطقة، وجهة للأعمال والفعاليات ونمط الحياة الحديث، ومناسبة للإقامات الطويلة وحجوزات الشركات.",
     howToEnjoy: ["زيارة بوليفارد الرياض والوجهات الترفيهية", "تنظيم اجتماعات الأعمال", "اكتشاف المطاعم الراقية", "الإقامة الشهرية للمهام المؤسسية"],
     image: jeddahImage,
+    photos: riyadhPhotos,
+    badge: "العاصمة وعاصمة الأعمال",
+    stats: [
+      { label: "فنادق وشقق", value: "2 منشأة" },
+      { label: "أقرب مطار", value: "RUH" },
+      { label: "أفضل موسم", value: "نوفمبر – أبريل" },
+    ],
   },
   {
     title: "جازان",
     text: "مدينة جنوبية نابضة بالحياة، مناسبة للزيارات الإقليمية ورحلات الأعمال والإقامات الهادئة، مع قرب من البحر والطبيعة والخدمات اليومية.",
     howToEnjoy: ["زيارة الواجهة البحرية", "استكشاف الأسواق المحلية", "تنظيم زيارات الأعمال الإقليمية", "اختيار شقة فندقية لإقامة أطول"],
     image: jazanImage,
+    photos: jazanPhotos,
+    badge: "بوابة الجنوب",
+    stats: [
+      { label: "فنادق وشقق", value: "منشأة واحدة" },
+      { label: "أقرب مطار", value: "GIZ" },
+      { label: "أفضل موسم", value: "نوفمبر – مارس" },
+    ],
+  },
+];
+
+export const diningGalleryPhotos = [
+  {
+    image: "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1400&q=80",
+    title: "بوفيه إفطار",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=80",
+    title: "أجواء المطعم",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1400&q=80",
+    title: "مقهى لوبي",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=80",
+    title: "تجارب عشاء",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=80",
+    title: "خدمة الغرف",
   },
 ];
 
