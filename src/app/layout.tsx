@@ -4,6 +4,8 @@ import LiveContentRefresh from "@/components/live-content-refresh";
 import ScrollObserver from "@/components/scroll-observer";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+
 const arabicSans = Noto_Kufi_Arabic({
   variable: "--font-arabic-sans",
   subsets: ["arabic"],
