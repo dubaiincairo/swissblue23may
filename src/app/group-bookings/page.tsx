@@ -18,7 +18,7 @@ export default function GroupBookingsPage() {
         image={heroImage}
       />
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
-        <div className="feature-panel">
+        <div className="feature-panel reveal-scale-up">
           <span className="eyebrow">للشركات والوفود</span>
           <h2>حجز مجموعة واحدة يحتاج إلى تفاصيل واضحة.</h2>
           <p>
@@ -27,8 +27,12 @@ export default function GroupBookingsPage() {
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {groupBookingItems.map((item) => (
-            <article className="content-card" key={item}>
+          {groupBookingItems.map((item, index) => (
+            <article
+              className="content-card reveal-slide-up"
+              key={item}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
               {item}
             </article>
           ))}

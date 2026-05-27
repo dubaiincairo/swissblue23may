@@ -18,7 +18,7 @@ export default async function HotelsPage() {
       />
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="section-heading">
+        <div className="section-heading reveal-slide-up">
           <span className="eyebrow">اختر وجهتك</span>
           <h2>كل وجهة مصممة حول احتياج واضح للضيف.</h2>
           <p>
@@ -28,8 +28,12 @@ export default async function HotelsPage() {
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {hotels.map((hotel) => (
-            <article className="property-card" key={hotel.slug}>
+          {hotels.map((hotel, index) => (
+            <article
+              className="property-card reveal-slide-up"
+              key={hotel.slug}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
               <figure className="relative h-72 overflow-hidden">
                 <Image
                   className="object-cover transition duration-500 hover:scale-105"

@@ -11,7 +11,7 @@ export default function DiningPage() {
         image={jeddahImage}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="section-heading">
+        <div className="section-heading reveal-slide-up">
           <span className="eyebrow">تجربة الطعام</span>
           <h2>كل خدمة طعام لها دور واضح في رحلة الضيف.</h2>
           <p>
@@ -20,8 +20,12 @@ export default function DiningPage() {
           </p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {diningOptions.map((item) => (
-            <article className="stay-card" key={item.title}>
+          {diningOptions.map((item, index) => (
+            <article
+              className="stay-card reveal-slide-up"
+              key={item.title}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
               <span>خدمة طعام</span>
               <h3>{item.title}</h3>
               <p>{item.text}</p>

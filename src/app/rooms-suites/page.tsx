@@ -19,7 +19,7 @@ export default function RoomsSuitesPage() {
       />
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.76fr_1.24fr] lg:px-8">
-        <div className="feature-panel">
+        <div className="feature-panel reveal-scale-up">
           <span className="eyebrow">منهجية التصنيف</span>
           <h2>تصنيف تسويقي لتحسين البيع والظهور.</h2>
           <p>
@@ -29,8 +29,12 @@ export default function RoomsSuitesPage() {
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {principles.map((item) => (
-            <div className="content-card" key={item}>
+          {principles.map((item, index) => (
+            <div
+              className="content-card reveal-slide-up"
+              key={item}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
               {item}
             </div>
           ))}
@@ -38,7 +42,7 @@ export default function RoomsSuitesPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="section-heading">
+        <div className="section-heading reveal-slide-up">
           <span className="eyebrow">تفاصيل الوحدات</span>
           <h2>الفئات المعتمدة لكل منشأة.</h2>
           <p>
@@ -48,8 +52,12 @@ export default function RoomsSuitesPage() {
         </div>
 
         <div className="mt-8 grid gap-8">
-          {roomClassifications.map((property) => (
-            <section className="unit-table-card" key={property.property}>
+          {roomClassifications.map((property, index) => (
+            <section
+              className="unit-table-card reveal-slide-up"
+              key={property.property}
+              style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
+            >
               <div className="unit-table-header">
                 <div>
                   <span className="eyebrow">تصنيف الوحدات</span>

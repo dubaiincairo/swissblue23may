@@ -15,7 +15,7 @@ export default async function FaqPageEn() {
         image={heroImage}
       />
       <section className="faq-section mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8" dir="ltr">
-        <div className="faq-heading">
+        <div className="faq-heading reveal-slide-up">
           <span className="eyebrow">Swiss Blue FAQ</span>
           <h2>Frequently Asked Questions by Category</h2>
         </div>

@@ -18,7 +18,7 @@ export default function OffersPageEn() {
         image={heroImage}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="section-heading">
+        <div className="section-heading reveal-slide-up">
           <span className="eyebrow">Main offers</span>
           <h2>Clear paths for different guest needs.</h2>
           <p>
@@ -28,8 +28,12 @@ export default function OffersPageEn() {
           </p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {offersEn.slice(0, 3).map((offer) => (
-            <article className="offer-card" key={offer.title}>
+          {offersEn.slice(0, 3).map((offer, index) => (
+            <article
+              className="offer-card reveal-slide-up"
+              key={offer.title}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
               <h3>{offer.title}</h3>
               <p>{offer.text}</p>
             </article>
@@ -38,7 +42,7 @@ export default function OffersPageEn() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
-        <div>
+        <div className="reveal-slide-up">
           <span className="eyebrow">Direct booking benefits</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
             Clearer value when guests start with Swiss Blue channels.
@@ -49,8 +53,12 @@ export default function OffersPageEn() {
           </p>
         </div>
         <div className="amenity-grid">
-          {bookingBenefitsEn.map((benefit) => (
-            <div className="amenity-pill" key={benefit}>
+          {bookingBenefitsEn.map((benefit, index) => (
+            <div
+              className="amenity-pill reveal-elastic-pop"
+              key={benefit}
+              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
+            >
               {benefit}
             </div>
           ))}

@@ -18,7 +18,7 @@ export default function OffersPage() {
         image={heroImage}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="section-heading">
+        <div className="section-heading reveal-slide-up">
           <span className="eyebrow">العروض الرئيسية</span>
           <h2>ثلاثة مسارات واضحة للضيف.</h2>
           <p>
@@ -27,8 +27,12 @@ export default function OffersPage() {
           </p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {offers.map((offer) => (
-            <article className="offer-card" key={offer.title}>
+          {offers.map((offer, index) => (
+            <article
+              className="offer-card reveal-slide-up"
+              key={offer.title}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
               <h3>{offer.title}</h3>
               <p>{offer.text}</p>
             </article>
@@ -37,7 +41,7 @@ export default function OffersPage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
-        <div>
+        <div className="reveal-slide-up">
           <span className="eyebrow">مزايا الحجز المباشر</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
             قيمة أوضح عندما تبدأ من قنوات سويس بلو.
@@ -48,8 +52,12 @@ export default function OffersPage() {
           </p>
         </div>
         <div className="amenity-grid">
-          {bookingBenefits.map((benefit) => (
-            <div className="amenity-pill" key={benefit}>
+          {bookingBenefits.map((benefit, index) => (
+            <div
+              className="amenity-pill reveal-elastic-pop"
+              key={benefit}
+              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
+            >
               {benefit}
             </div>
           ))}

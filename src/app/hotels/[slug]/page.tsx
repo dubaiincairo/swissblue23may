@@ -36,7 +36,7 @@ export default async function HotelDetailPage({
       />
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
-        <div className="feature-panel">
+        <div className="feature-panel reveal-scale-up">
           <span className="eyebrow">تموضع الوجهة</span>
           <h2>{hotel.title}</h2>
           <p>{hotel.positioning}</p>
@@ -60,13 +60,13 @@ export default async function HotelDetailPage({
         </div>
 
         <div className="grid gap-4">
-          <div className="content-card">
+          <div className="content-card reveal-slide-up" style={{ "--delay": "100ms" } as React.CSSProperties}>
             <span className="eyebrow">إبراز الموقع</span>
             <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
               {hotel.locationHighlight}
             </p>
           </div>
-          <div className="content-card">
+          <div className="content-card reveal-slide-up" style={{ "--delay": "200ms" } as React.CSSProperties}>
             <span className="eyebrow">معالم قريبة</span>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {hotel.landmarks.map((item) => (
@@ -78,7 +78,7 @@ export default async function HotelDetailPage({
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="section-heading">
+        <div className="section-heading reveal-slide-up">
           <span className="eyebrow">أنواع الوحدات</span>
           <h2>فئات إقامة واضحة مع عدد الوحدات لكل فئة.</h2>
           <p>
@@ -87,10 +87,11 @@ export default async function HotelDetailPage({
           </p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {(classification?.rows ?? hotel.unitTypes).map((unit) => (
+          {(classification?.rows ?? hotel.unitTypes).map((unit, index) => (
             <article
-              className="unit-card"
+              className="unit-card reveal-slide-up"
               key={"type" in unit ? `${unit.type}-${unit.rooms}` : unit.title}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
               <span>
                 {"totalUnits" in unit ? `${unit.totalUnits} وحدة` : unit.count}
@@ -107,7 +108,7 @@ export default async function HotelDetailPage({
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
-        <div>
+        <div className="reveal-slide-up">
           <span className="eyebrow">المرافق والخدمات</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
             ما يحتاجه الضيف داخل هذه الوجهة.
@@ -118,8 +119,12 @@ export default async function HotelDetailPage({
           </p>
         </div>
         <div className="amenity-grid">
-          {hotel.amenities.map((amenity) => (
-            <div className="amenity-pill" key={amenity}>
+          {hotel.amenities.map((amenity, index) => (
+            <div
+              className="amenity-pill reveal-elastic-pop"
+              key={amenity}
+              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
+            >
               {amenity}
             </div>
           ))}
@@ -129,7 +134,7 @@ export default async function HotelDetailPage({
       <PropertyMap city={hotel.city} locale="ar" query={hotel.mapQuery} title={hotel.title} />
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="section-heading">
+        <div className="section-heading reveal-slide-up">
           <span className="eyebrow">معرض الصور</span>
           <h2>لمحة بصرية عن تجربة الإقامة.</h2>
         </div>
@@ -146,7 +151,7 @@ export default async function HotelDetailPage({
       </section>
 
       <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="rtl">
-        <div className="faq-heading">
+        <div className="faq-heading reveal-slide-up">
           <span className="eyebrow">أسئلة هذا الفرع</span>
           <h2>معلومات مهمة عن {hotel.title}.</h2>
         </div>

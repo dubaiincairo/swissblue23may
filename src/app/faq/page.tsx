@@ -15,7 +15,7 @@ export default async function FaqPage() {
         image={heroImage}
       />
       <section className="faq-section mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8" dir="rtl">
-        <div className="faq-heading">
+        <div className="faq-heading reveal-slide-up">
           <span className="eyebrow">أسئلة سويس بلو</span>
           <h2>الأسئلة الشائعة حسب التصنيف</h2>
         </div>

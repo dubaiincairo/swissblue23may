@@ -12,8 +12,12 @@ export default function ContactPage() {
       />
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
         <div className="grid gap-4 sm:grid-cols-3">
-          {contactChannels.map((channel) => (
-            <article className="content-card" key={channel.title}>
+          {contactChannels.map((channel, index) => (
+            <article
+              className="content-card reveal-slide-up"
+              key={channel.title}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
               <span className="eyebrow">{channel.title}</span>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
                 {channel.text}
@@ -21,7 +25,7 @@ export default function ContactPage() {
             </article>
           ))}
         </div>
-        <div className="feature-panel">
+        <div className="feature-panel reveal-scale-up">
           <span className="eyebrow">الحجز المباشر</span>
           <h2>ابدأ بطلب التوفر.</h2>
           <p>

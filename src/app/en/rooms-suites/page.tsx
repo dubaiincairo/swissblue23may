@@ -19,7 +19,7 @@ export default function RoomsSuitesPageEn() {
       />
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.76fr_1.24fr] lg:px-8">
-        <div className="feature-panel">
+        <div className="feature-panel reveal-scale-up">
           <span className="eyebrow">Classification method</span>
           <h2>A marketing classification for better sales and visibility.</h2>
           <p>
@@ -30,8 +30,12 @@ export default function RoomsSuitesPageEn() {
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {principlesEn.map((item) => (
-            <div className="content-card" key={item}>
+          {principlesEn.map((item, index) => (
+            <div
+              className="content-card reveal-slide-up"
+              key={item}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
               {item}
             </div>
           ))}
@@ -39,7 +43,7 @@ export default function RoomsSuitesPageEn() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="section-heading">
+        <div className="section-heading reveal-slide-up">
           <span className="eyebrow">Unit details</span>
           <h2>Approved categories for each property.</h2>
           <p>
@@ -49,8 +53,12 @@ export default function RoomsSuitesPageEn() {
         </div>
 
         <div className="mt-8 grid gap-8">
-          {roomClassificationsEn.map((property) => (
-            <section className="unit-table-card" key={property.property}>
+          {roomClassificationsEn.map((property, index) => (
+            <section
+              className="unit-table-card reveal-slide-up"
+              key={property.property}
+              style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
+            >
               <div className="unit-table-header">
                 <div>
                   <span className="eyebrow">Unit classification</span>

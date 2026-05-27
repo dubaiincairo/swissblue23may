@@ -12,8 +12,12 @@ export default function AmenitiesServicesPage() {
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="amenity-grid">
-          {services.map((service) => (
-            <div className="amenity-pill" key={service}>
+          {services.map((service, index) => (
+            <div
+              className="amenity-pill reveal-elastic-pop"
+              key={service}
+              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
+            >
               {service}
             </div>
           ))}
