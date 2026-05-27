@@ -1,14 +1,20 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { jazanImage, services } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function AmenitiesServicesPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AmenitiesServicesPage() {
+  const { ar } = await getEditableContent();
+  const content = ar.subpages.amenitiesServices;
+  const services = ar.homepage.services.items;
+
   return (
     <PageShell>
       <PageHero
-        eyebrow="الخدمات والمرافق"
-        title="خدمات مصممة حول راحتك."
-        text="تدعم كل إقامة في سويس بلو مجموعة من الخدمات الأساسية التي تجعل السفر أسهل وأكثر راحة وموثوقية."
-        image={jazanImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="amenity-grid">

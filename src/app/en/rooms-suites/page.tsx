@@ -1,36 +1,29 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { heroImage, roomClassificationsEn } from "@/lib/content-en";
+import { getEditableContent } from "@/lib/editable-content";
 
-const principlesEn = [
-  "A marketing classification that improves category clarity on booking platforms",
-  "Stronger separation between categories by view, layout, bedding, and value",
-  "Clearer price diversity that supports upgrades to higher categories",
-  "A classification to be reviewed after 6 months based on performance and demand",
-];
+export const dynamic = "force-dynamic";
 
-export default function RoomsSuitesPageEn() {
+export default async function RoomsSuitesPageEn() {
+  const { en } = await getEditableContent();
+  const content = en.subpages.roomsSuites;
+
   return (
     <PageShellEn>
       <PageHeroEn
-        eyebrow="Rooms and suites"
-        title="Unit classification by property."
-        text="This page presents the approved marketing classification for rooms, suites, and apartments in each property, including unit counts, room numbers, views, bedding, bathrooms, and living rooms."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.76fr_1.24fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">Classification method</span>
-          <h2>A marketing classification for better sales and visibility.</h2>
-          <p>
-            The classification highlights meaningful differences between
-            categories, including view, bedroom count, bed configuration, and
-            living rooms, helping guests choose the right unit and helping
-            properties manage pricing more clearly.
-          </p>
+          <span className="eyebrow">{content.intro.eyebrow}</span>
+          <h2>{content.intro.title}</h2>
+          <p>{content.intro.text}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {principlesEn.map((item, index) => (
+          {content.principles.map((item, index) => (
             <div
               className="content-card reveal-slide-up"
               key={item}
@@ -44,16 +37,13 @@ export default function RoomsSuitesPageEn() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">Unit details</span>
-          <h2>Approved categories for each property.</h2>
-          <p>
-            Each table shows category name, bedrooms, bed configuration, view,
-            bathrooms, living rooms, total units, and room numbers.
-          </p>
+          <span className="eyebrow">{content.detailsIntro.eyebrow}</span>
+          <h2>{content.detailsIntro.title}</h2>
+          <p>{content.detailsIntro.text}</p>
         </div>
 
         <div className="mt-8 grid gap-8">
-          {roomClassificationsEn.map((property, index) => (
+          {content.classifications.map((property, index) => (
             <section
               className="unit-table-card reveal-slide-up"
               key={property.property}

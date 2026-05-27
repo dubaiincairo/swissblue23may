@@ -1,33 +1,28 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { heroImage } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-const groupBookingItems = [
-  "تنسيق قوائم الضيوف وتواريخ الوصول والمغادرة",
-  "توزيع أنواع الغرف والشقق حسب احتياج المجموعة",
-  "دعم حجوزات الوفود والفرق والزيارات الرسمية",
-  "إمكانية ربط الإقامة بالاجتماعات أو الضيافة عند الحاجة",
-];
+export const dynamic = "force-dynamic";
 
-export default function GroupBookingsPage() {
+export default async function GroupBookingsPage() {
+  const { ar } = await getEditableContent();
+  const content = ar.subpages.groupBookings;
+
   return (
     <PageShell>
       <PageHero
-        eyebrow="حجوزات المجموعات"
-        title="تنسيق احترافي لإقامة الفرق والوفود."
-        text="مسار مخصص لتنظيم حجوزات المجموعات في منشآت سويس بلو، من اختيار المدينة والفئات المناسبة إلى تأكيد التواريخ واحتياجات الضيوف."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">للشركات والوفود</span>
-          <h2>حجز مجموعة واحدة يحتاج إلى تفاصيل واضحة.</h2>
-          <p>
-            يساعد فريق سويس بلو في تنظيم احتياج المجموعة، مقارنة المنشآت، وتأكيد
-            فئات الإقامة بطريقة مهنية وسهلة المتابعة.
-          </p>
+          <span className="eyebrow">{content.intro.eyebrow}</span>
+          <h2>{content.intro.title}</h2>
+          <p>{content.intro.text}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {groupBookingItems.map((item, index) => (
+          {content.items.map((item, index) => (
             <article
               className="content-card reveal-slide-up"
               key={item}

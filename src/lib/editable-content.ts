@@ -12,6 +12,10 @@ import {
   loyaltyProgram,
   navGroups,
   services,
+  diningOptions,
+  contactChannels,
+  roomClassifications,
+  corporateDeals,
 } from "@/lib/content";
 import {
   accommodationCategoriesEn,
@@ -23,6 +27,10 @@ import {
   navGroupsEn,
   offersEn,
   servicesEn,
+  diningOptionsEn,
+  contactChannelsEn,
+  roomClassificationsEn,
+  corporateDealsEn,
 } from "@/lib/content-en";
 import { faqCategories, homepageFaqs, propertyFaqs } from "@/lib/faq-content";
 import { faqCategoriesEn, homepageFaqsEn, propertyFaqsEn } from "@/lib/faq-content-en";
@@ -219,6 +227,234 @@ export const defaultSiteContent = {
         button: "احجز الآن",
       },
     },
+    subpages: {
+      about: {
+        hero: {
+          eyebrow: "من نحن",
+          title: "محفظة ضيافة سعودية بخيارات واضحة.",
+          text: "سويس بلو للفنادق هي محفظة ضيافة تقدم فنادق وشققا فندقية في وجهات حضرية رئيسية، للضيوف الذين يقدرون وضوح الاختيار والراحة العملية والخدمة الودية.",
+          image: heroImage,
+        },
+        philosophy: {
+          eyebrow: "فلسفة العلامة",
+          title: "إقامة مفهومة من أول لحظة.",
+          text: "تركز سويس بلو على تحويل خيارات الغرف والشقق إلى فئات سهلة الفهم والحجز، مع خدمات عملية تناسب رحلات العمل والعائلات والإقامات الطويلة.",
+        },
+        pillars: [
+          "فئات إقامة واضحة",
+          "مواقع قريبة من المدينة",
+          "راحة لرجال الأعمال والعائلات",
+          "مرونة الشقق الفندقية",
+          "ثقة في الحجز المباشر",
+        ],
+      },
+      dining: {
+        hero: {
+          eyebrow: "المطاعم وخدمات الطعام",
+          title: "خيارات طعام عملية طوال الإقامة.",
+          text: "من الإفطار إلى المقهى والمطعم وخدمة الغرف، تقدم سويس بلو تجربة طعام مريحة تخدم ضيف الأعمال والعائلة والضيف المقيم لفترة أطول.",
+          image: jeddahImage,
+        },
+        intro: {
+          eyebrow: "تجربة الطعام",
+          title: "كل خدمة طعام لها دور واضح في رحلة الضيف.",
+          text: "تختلف بعض الخدمات حسب الوجهة، لكن المحتوى يوضح ما يمكن توقعه ويجعل تجربة الإقامة أكثر اكتمالا واحترافية.",
+        },
+        options: diningOptions,
+      },
+      roomsSuites: {
+        hero: {
+          eyebrow: "الغرف والأجنحة",
+          title: "تصنيف الوحدات حسب كل منشأة.",
+          text: "تعرض هذه الصفحة التصنيف التسويقي المعتمد للغرف والأجنحة والشقق في كل منشأة، مع عدد الوحدات وأرقام الغرف والفروقات الأساسية بين الفئات.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "منهجية التصنيف",
+          title: "تصنيف تسويقي لتحسين البيع والظهور.",
+          text: "يعتمد التصنيف على إظهار الفروق بين الفئات، مثل الإطلالة، عدد غرف النوم، تكوين الأسرّة، وغرف المعيشة، بما يساعد الضيف على اختيار الوحدة الأنسب ويساعد المنشآت على إدارة الأسعار بشكل أوضح.",
+        },
+        principles: [
+          "تصنيف تسويقي يعزز وضوح الفئات على منصات الحجز",
+          "فصل أكبر بين الفئات لإبراز الإطلالة والتجهيزات والقيمة",
+          "تعدد سعري يدعم ترقية الضيف إلى فئات أعلى",
+          "مراجعة التصنيف بعد 6 أشهر بناء على الأداء والطلب",
+        ],
+        detailsIntro: {
+          eyebrow: "تفاصيل الوحدات",
+          title: "الفئات المعتمدة لكل منشأة.",
+          text: "كل جدول يوضح اسم الفئة، عدد غرف النوم، تكوين الأسرّة، الإطلالة، دورات المياه، غرف المعيشة، إجمالي الوحدات، وأرقام الغرف.",
+        },
+        classifications: roomClassifications,
+      },
+      servicedApartments: {
+        hero: {
+          eyebrow: "الشقق الفندقية",
+          title: "شقق فندقية لإقامات أطول وأسهل.",
+          text: "تعد شقق سويس بلو خيارا مثاليا للعائلات وانتقالات العمل والزيارات الطويلة والضيوف الذين يفضلون مساحة أكبر مع خدمات فندقية.",
+          image: jeddahImage,
+        },
+        benefits: [
+          "شقق فندقية واسعة مع مطبخ وغسالة ملابس ومساحة معيشة",
+          "مساحة معيشة ممتازة للعائلات وللإقامات الطويلة",
+          "راحة عملية مع خدمات فندقية متكاملة",
+          "حضور في مواقع حيوية في جدة والرياض وجازان",
+          "مناسبة لتعاقدات الشركات والانتقال المؤقت والإقامة الشهرية",
+          "خصوصية أعلى مع دعم حجز مباشر مخصص",
+        ],
+      },
+      amenitiesServices: {
+        hero: {
+          eyebrow: "الخدمات والمرافق",
+          title: "خدمات مصممة حول راحتك.",
+          text: "تدعم كل إقامة في سويس بلو مجموعة من الخدمات الأساسية التي تجعل السفر أسهل وأكثر راحة وموثوقية.",
+          image: jazanImage,
+        },
+      },
+      loyaltyPage: {
+        hero: {
+          eyebrow: "برنامج الولاء",
+          title: "مزايا مباشرة لضيوف سويس بلو الدائمين.",
+          text: "برنامج ولاء يربط الضيوف المتكررين بعروض الحجز المباشر، أولوية الترقية عند توفرها، ودعم أسرع من فريق الحجوزات.",
+          image: heroImage,
+        },
+      },
+      meetingsEvents: {
+        hero: {
+          eyebrow: "صفقات الشركات",
+          title: "حلول إقامة وتعاقد للشركات والمجموعات.",
+          text: "مسار مهني لحجوزات الفرق والوفود والاجتماعات والإقامات الشهرية، مع تواصل واضح ومتطلبات توثيق تساعد على إنجاز التعاقد بثقة.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "للشركات والجهات الرسمية",
+          title: "من طلب العرض إلى تأكيد الحجز.",
+          text: "يساعد فريق صفقات الشركات في تنظيم الاحتياج، مقارنة الوجهات، تحديد فئات الوحدات، وتجهيز عرض مهني قابل للمراجعة والاعتماد الداخلي.",
+        },
+        deals: corporateDeals,
+        documentsIntro: {
+          eyebrow: "المستندات المطلوبة",
+          title: "متطلبات واضحة قبل التعاقد الرسمي.",
+          text: "وجود المستندات من البداية يسرع التسعير، الاعتماد، وإصدار التأكيدات للفريق أو الوفد.",
+        },
+        documents: [
+          "السجل التجاري أو بيانات المنشأة الرسمية",
+          "شهادة ضريبة القيمة المضافة عند الحاجة",
+          "خطاب تفويض للممثل المعتمد",
+          "بيانات الفوترة وشروط الدفع",
+          "قائمة الضيوف وتواريخ الوصول والمغادرة",
+          "متطلبات الاجتماعات والضيافة إن وجدت",
+        ],
+      },
+      corporateDealsPage: {
+        hero: {
+          eyebrow: "تعاقدات الشركات",
+          title: "حلول إقامة وتعاقد للشركات والمجموعات.",
+          text: "مسار مهني لحجوزات الفرق والوفود والاجتماعات والإقامات الشهرية، مع تواصل واضح ومتطلبات توثيق تساعد على إنجاز التعاقد بثقة.",
+          image: heroImage,
+        },
+      },
+      groupBookings: {
+        hero: {
+          eyebrow: "حجوزات المجموعات",
+          title: "تنسيق احترافي لإقامة الفرق والوفود.",
+          text: "مسار مخصص لتنظيم حجوزات المجموعات في منشآت سويس بلو، من اختيار المدينة والفئات المناسبة إلى تأكيد التواريخ واحتياجات الضيوف.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "للشركات والوفود",
+          title: "حجز مجموعة واحدة يحتاج إلى تفاصيل واضحة.",
+          text: "يساعد فريق سويس بلو في تنظيم احتياج المجموعة، مقارنة المنشآت، وتأكيد فئات الإقامة بطريقة مهنية وسهلة المتابعة.",
+        },
+        items: [
+          "تنسيق قوائم الضيوف وتواريخ الوصول والمغادرة",
+          "توزيع أنواع الغرف والشقق حسب احتياج المجموعة",
+          "دعم حجوزات الوفود والفرق والزيارات الرسمية",
+          "إمكانية ربط الإقامة بالاجتماعات أو الضيافة عند الحاجة",
+        ],
+      },
+      contact: {
+        hero: {
+          eyebrow: "تواصل معنا",
+          title: "قنوات واضحة للحجز، الشركات، وخدمة الضيوف.",
+          text: "يمكنك بدء الحجز مباشرة، أو التواصل مع نظام الحجز المركزي، أو طلب دعم مختص صفقات الشركات، أو التواصل مع فريق خدمة الضيوف.",
+          image: jeddahImage,
+        },
+        channels: contactChannels,
+        bookingIntro: {
+          eyebrow: "الحجز المباشر",
+          title: "ابدأ بطلب التوفر.",
+          text: "رابط الحجز المباشر هو أسرع مسار للضيوف الأفراد، بينما تدعم قنوات التواصل طلبات الشركات والمجموعات والأسئلة التفصيلية.",
+        },
+      },
+      offersPage: {
+        hero: {
+          eyebrow: "العروض والخصومات الخاصة",
+          title: "عروض مصممة حول سبب الإقامة.",
+          text: "صفحة العروض تجمع الإقامة العائلية، الإقامة الشهرية، ومزايا الحجز المباشر بطريقة تسهل على الضيف اختيار العرض المناسب والتواصل بثقة.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "العروض الرئيسية",
+          title: "ثلاثة مسارات واضحة للضيف.",
+          text: "بدلا من عروض عامة، توضح الصفحة الاحتياج الفعلي: عائلة تحتاج مساحة، ضيف يحتاج إقامة شهرية، أو عميل يريد مزايا الحجز المباشر.",
+        },
+        offers: [
+          {
+            title: "إقامة عائلية",
+            text: "خيارات شقق متعددة الغرف، مساحة معيشة أفضل، وراحة فندقية تجعل زيارة العائلة أكثر سهولة وخصوصية.",
+          },
+          {
+            title: "إقامة شهرية",
+            text: "حلول إقامة طويلة في جدة وجازان والرياض، مناسبة للموظفين والانتقالات وضيوف الشركات.",
+          },
+          {
+            title: "مزايا الحجز المباشر",
+            text: "أسعار أوضح، دعم مباشر من فريق الحجوزات، وأولوية في اختيار الفئة المناسبة عند توفرها.",
+          },
+        ],
+        benefitsIntro: {
+          eyebrow: "مزايا الحجز المباشر",
+          title: "قيمة أوضح عندما تبدأ من قنوات سويس بلو.",
+          text: "هذه المزايا تساعد الموقع على تحويل الزائر من التصفح إلى الحجز أو التواصل دون إرباك أو عروض غير واضحة.",
+        },
+        benefits: [
+          "وضوح أكبر في الفئة والسعر قبل تأكيد الحجز",
+          "دعم مباشر من فريق الحجوزات",
+          "أولوية في تلبية طلبات الضيف حسب التوفر",
+          "مسار مناسب للعائلات والإقامات الشهرية",
+        ],
+      },
+      faqPage: {
+        hero: {
+          eyebrow: "الأسئلة الشائعة",
+          title: "معلومات واضحة قبل الحجز والإقامة.",
+          text: "تغطي الأسئلة الشائعة تفاصيل الحجز، سياسات الدخول والخروج، الخدمات المتوفرة، والخيارات المناسبة للشركات والعائلات.",
+          image: heroImage,
+        },
+      },
+      hotelsPage: {
+        hero: {
+          eyebrow: "فنادقنا وشققنا الفندقية",
+          title: "محفظة ضيافة واضحة في جدة وجازان والرياض.",
+          text: "استكشف وجهات سويس بلو في المملكة العربية السعودية، من الفنادق المناسبة لرحلات العمل إلى الشقق الفندقية للعائلات والإقامات الممتدة.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "اختر وجهتك",
+          title: "كل وجهة مصممة حول احتياج واضح للضيف.",
+          text: "تساعد فئات الفنادق والشقق الضيوف على مقارنة المدينة ونوع الإقامة والمساحة المناسبة قبل الانتقال إلى الحجز.",
+        },
+      },
+      destinationsPage: {
+        hero: {
+          eyebrow: "الوجهات",
+          title: "جدة، الرياض، وجازان ضمن تجربة واحدة.",
+          text: "تعرف على طبيعة كل مدينة، أفضل طرق الاستمتاع بها، ونوع الإقامة الأنسب لرحلتك سواء كانت للأعمال أو العائلة أو الإقامة الطويلة.",
+          image: heroImage,
+        },
+      },
+    },
   },
   en: {
     navGroups: navGroupsEn,
@@ -286,6 +522,234 @@ export const defaultSiteContent = {
         title: "Find your next Swiss Blue stay.",
         text: "Compare hotels, apart-hotels, and serviced apartments, then move to direct booking in one step.",
         button: "Book now",
+      },
+    },
+    subpages: {
+      about: {
+        hero: {
+          eyebrow: "About Us",
+          title: "A Saudi hospitality portfolio with clear choices.",
+          text: "Swiss Blue Hotels is a hospitality portfolio offering hotels and serviced apartments in major urban destinations, built for guests who value clarity, practical comfort, and friendly service.",
+          image: heroImage,
+        },
+        philosophy: {
+          eyebrow: "Brand Philosophy",
+          title: "An understandable stay from the first moment.",
+          text: "Swiss Blue focuses on translating room and apartment choices into easy-to-understand and book categories, with practical services that suit business trips, families, and long stays.",
+        },
+        pillars: [
+          "Clear accommodation categories",
+          "Locations close to the city hubs",
+          "Comfort for business and families",
+          "Flexibility of serviced apartments",
+          "Confidence in booking direct",
+        ],
+      },
+      dining: {
+        hero: {
+          eyebrow: "Dining & Food Services",
+          title: "Practical dining choices throughout your stay.",
+          text: "From breakfast to the café, restaurant, and room service, Swiss Blue offers a convenient dining experience that serves business guests, families, and long-stay residents.",
+          image: jeddahImage,
+        },
+        intro: {
+          eyebrow: "Dining Experience",
+          title: "Every food service has a clear role in the guest journey.",
+          text: "Some services vary by destination, but the content explains what to expect, making the stay experience complete and professional.",
+        },
+        options: diningOptionsEn,
+      },
+      roomsSuites: {
+        hero: {
+          eyebrow: "Rooms & Suites",
+          title: "Unit classifications for each property.",
+          text: "This page displays the approved marketing classification for rooms, suites, and apartments at each property, with unit counts, room numbers, and key differences.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "Classification Methodology",
+          title: "A marketing classification to improve sales and visibility.",
+          text: "The classification relies on highlighting category differences, such as view, number of bedrooms, bed configuration, and living rooms, helping guests choose the best unit and helping properties manage rates clearly.",
+        },
+        principles: [
+          "Marketing classification that improves category clarity on booking platforms",
+          "Stronger separation between categories by view, layout, bedding, and value",
+          "Price hierarchy that supports guest upgrades to higher tiers",
+          "Reviewing classifications after 6 months based on demand and performance",
+        ],
+        detailsIntro: {
+          eyebrow: "Unit Details",
+          title: "Approved categories for each property.",
+          text: "Each table displays category name, bedrooms, bed setup, view, bathrooms, living rooms, total units, and room numbers.",
+        },
+        classifications: roomClassificationsEn,
+      },
+      servicedApartments: {
+        hero: {
+          eyebrow: "Serviced Apartments",
+          title: "Apartment space with hotel comfort.",
+          text: "Swiss Blue serviced apartments are the ideal choice for families, corporate relocations, long stays, and guests who prefer extra living space with daily hotel services.",
+          image: jeddahImage,
+        },
+        benefits: [
+          "Studio, one-bedroom, two-bedroom, and selected three-bedroom layouts",
+          "Living space for families and longer stays",
+          "Practical comfort with hotel services",
+          "Locations in Jeddah, Jazan, and Riyadh",
+          "Suitable for business relocation and monthly stays",
+          "More privacy with direct booking support",
+        ],
+      },
+      amenitiesServices: {
+        hero: {
+          eyebrow: "Amenities & Services",
+          title: "Services designed around your comfort.",
+          text: "Every stay at Swiss Blue is supported by a selection of core services that make travel easier, comfortable, and reliable.",
+          image: jazanImage,
+        },
+      },
+      loyaltyPage: {
+        hero: {
+          eyebrow: "Loyalty Program",
+          title: "Direct benefits for Swiss Blue regular guests.",
+          text: "A loyalty program linking repeat guests to direct booking offers, priority upgrade when available, and faster reservations support.",
+          image: heroImage,
+        },
+      },
+      meetingsEvents: {
+        hero: {
+          eyebrow: "Corporate Deals",
+          title: "Stay and contracting solutions for companies and groups.",
+          text: "A professional path for team stays, delegations, meetings, and monthly accommodation, with clear communication and documentation requirements.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "For companies and official entities",
+          title: "From proposal request to booking confirmation.",
+          text: "The corporate deals team helps define requirements, compare properties, select unit categories, and prepare a professional proposal for internal review and approval.",
+        },
+        deals: corporateDealsEn,
+        documentsIntro: {
+          eyebrow: "Required Documents",
+          title: "Clear requirements before official contracting.",
+          text: "Having documents ready early speeds up pricing, approvals, and confirmation issuance for your team or delegation.",
+        },
+        documents: [
+          "Commercial registration or official company details",
+          "VAT certificate when required",
+          "Authorization letter for the approved representative",
+          "Billing details and payment terms",
+          "Guest list with arrival and departure dates",
+          "Meeting and hospitality requirements if applicable",
+        ],
+      },
+      corporateDealsPage: {
+        hero: {
+          eyebrow: "Corporate deals",
+          title: "Stay and contracting solutions for companies and groups.",
+          text: "A professional path for team stays, delegations, meetings, and monthly accommodation, with clear communication and documentation requirements.",
+          image: heroImage,
+        },
+      },
+      groupBookings: {
+        hero: {
+          eyebrow: "Group Bookings",
+          title: "Professional coordination for teams and delegations.",
+          text: "A dedicated path for organizing group bookings across Swiss Blue properties, from city and category selection to dates and guest requirements.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "For companies and delegations",
+          title: "Group stays need clear coordination.",
+          text: "The Swiss Blue team helps organize group needs, compare properties, and confirm room categories in a professional and easy-to-track manner.",
+        },
+        items: [
+          "Guest list coordination with arrival and departure dates",
+          "Room and apartment type allocation by group need",
+          "Support for delegations, teams, and official visits",
+          "Ability to connect accommodation with meetings or hospitality when needed",
+        ],
+      },
+      contact: {
+        hero: {
+          eyebrow: "Contact Us",
+          title: "Clear channels for booking, corporate, and guest support.",
+          text: "You can book directly online, call our central reservations desk, request a corporate sales expert, or reach out to property guest service teams.",
+          image: jeddahImage,
+        },
+        channels: contactChannelsEn,
+        bookingIntro: {
+          eyebrow: "Direct Booking",
+          title: "Start by checking availability.",
+          text: "Our booking link is the fastest route for individual guests, while direct communication channels support corporate inquiries, group stays, and detailed questions.",
+        },
+      },
+      offersPage: {
+        hero: {
+          eyebrow: "Offers and special discounts",
+          title: "Offers built around the reason for stay.",
+          text: "The offers page brings together family stays, monthly stays, and direct-booking benefits in a way that helps guests choose and communicate with confidence.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "Main offers",
+          title: "Clear paths for different guest needs.",
+          text: "Instead of generic offers, the page clarifies the actual need: a family that needs space, a long-stay guest, or an individual guest who wants direct-booking benefits.",
+        },
+        offers: [
+          {
+            title: "Family Stay",
+            text: "Multi-bedroom apartment options, better living space, and hotel comfort that make family visits easier and more private.",
+          },
+          {
+            title: "Monthly Stays",
+            text: "Long-stay solutions in Jeddah, Jazan, and Riyadh, suitable for corporate relocations and monthly assignments.",
+          },
+          {
+            title: "Direct Booking Benefits",
+            text: "Clearer rates, direct reservation support, and priority category assignment when available.",
+          },
+        ],
+        benefitsIntro: {
+          eyebrow: "Direct Booking Benefits",
+          title: "Better value when you start from Swiss Blue channels.",
+          text: "These benefits help our site convert visitors into bookings or direct inquiries without confusion or complex terms.",
+        },
+        benefits: [
+          "Clearer category and rate before confirming the booking",
+          "Direct support from the reservations team",
+          "Priority handling of guest requests when available",
+          "A useful path for families and monthly stays",
+        ],
+      },
+      faqPage: {
+        hero: {
+          eyebrow: "Frequently Asked Questions",
+          title: "Clear information before you book and stay.",
+          text: "Our FAQ covers reservation details, check-in/out policies, amenities, and corporate or family stay options.",
+          image: heroImage,
+        },
+      },
+      hotelsPage: {
+        hero: {
+          eyebrow: "Our Hotels & Apart-hotels",
+          title: "A clear hospitality portfolio in Jeddah, Jazan, and Riyadh.",
+          text: "Explore Swiss Blue destinations in Saudi Arabia, from hotels designed for business trips to apart-hotels for families and extended stays.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "Choose Your Destination",
+          title: "Every destination is built around a clear guest need.",
+          text: "Category pages help guests compare the city, stay type, and unit count before moving into the detailed property page.",
+        },
+      },
+      destinationsPage: {
+        hero: {
+          eyebrow: "Destinations",
+          title: "Jeddah, Riyadh, and Jazan under one brand.",
+          text: "Learn about the character of each city, how to enjoy it best, and the right accommodation type for your business, family, or long-stay trip.",
+          image: heroImage,
+        },
       },
     },
   },
@@ -583,6 +1047,92 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     content.en.homepage.destinations.items,
   );
 
+  // Subpages hero image syncing
+  const [aboutHeroAr, aboutHeroEn] = sharedImageValue(
+    content.ar.subpages.about.hero.image,
+    content.en.subpages.about.hero.image,
+    defaultSiteContent.ar.subpages.about.hero.image,
+    defaultSiteContent.en.subpages.about.hero.image,
+  );
+  const [diningHeroAr, diningHeroEn] = sharedImageValue(
+    content.ar.subpages.dining.hero.image,
+    content.en.subpages.dining.hero.image,
+    defaultSiteContent.ar.subpages.dining.hero.image,
+    defaultSiteContent.en.subpages.dining.hero.image,
+  );
+  const [roomsSuitesHeroAr, roomsSuitesHeroEn] = sharedImageValue(
+    content.ar.subpages.roomsSuites.hero.image,
+    content.en.subpages.roomsSuites.hero.image,
+    defaultSiteContent.ar.subpages.roomsSuites.hero.image,
+    defaultSiteContent.en.subpages.roomsSuites.hero.image,
+  );
+  const [servicedApartmentsHeroAr, servicedApartmentsHeroEn] = sharedImageValue(
+    content.ar.subpages.servicedApartments.hero.image,
+    content.en.subpages.servicedApartments.hero.image,
+    defaultSiteContent.ar.subpages.servicedApartments.hero.image,
+    defaultSiteContent.en.subpages.servicedApartments.hero.image,
+  );
+  const [amenitiesServicesHeroAr, amenitiesServicesHeroEn] = sharedImageValue(
+    content.ar.subpages.amenitiesServices.hero.image,
+    content.en.subpages.amenitiesServices.hero.image,
+    defaultSiteContent.ar.subpages.amenitiesServices.hero.image,
+    defaultSiteContent.en.subpages.amenitiesServices.hero.image,
+  );
+  const [loyaltyPageHeroAr, loyaltyPageHeroEn] = sharedImageValue(
+    content.ar.subpages.loyaltyPage.hero.image,
+    content.en.subpages.loyaltyPage.hero.image,
+    defaultSiteContent.ar.subpages.loyaltyPage.hero.image,
+    defaultSiteContent.en.subpages.loyaltyPage.hero.image,
+  );
+  const [meetingsEventsHeroAr, meetingsEventsHeroEn] = sharedImageValue(
+    content.ar.subpages.meetingsEvents.hero.image,
+    content.en.subpages.meetingsEvents.hero.image,
+    defaultSiteContent.ar.subpages.meetingsEvents.hero.image,
+    defaultSiteContent.en.subpages.meetingsEvents.hero.image,
+  );
+  const [corporateDealsPageHeroAr, corporateDealsPageHeroEn] = sharedImageValue(
+    content.ar.subpages.corporateDealsPage.hero.image,
+    content.en.subpages.corporateDealsPage.hero.image,
+    defaultSiteContent.ar.subpages.corporateDealsPage.hero.image,
+    defaultSiteContent.en.subpages.corporateDealsPage.hero.image,
+  );
+  const [groupBookingsHeroAr, groupBookingsHeroEn] = sharedImageValue(
+    content.ar.subpages.groupBookings.hero.image,
+    content.en.subpages.groupBookings.hero.image,
+    defaultSiteContent.ar.subpages.groupBookings.hero.image,
+    defaultSiteContent.en.subpages.groupBookings.hero.image,
+  );
+  const [contactHeroAr, contactHeroEn] = sharedImageValue(
+    content.ar.subpages.contact.hero.image,
+    content.en.subpages.contact.hero.image,
+    defaultSiteContent.ar.subpages.contact.hero.image,
+    defaultSiteContent.en.subpages.contact.hero.image,
+  );
+  const [offersPageHeroAr, offersPageHeroEn] = sharedImageValue(
+    content.ar.subpages.offersPage.hero.image,
+    content.en.subpages.offersPage.hero.image,
+    defaultSiteContent.ar.subpages.offersPage.hero.image,
+    defaultSiteContent.en.subpages.offersPage.hero.image,
+  );
+  const [faqPageHeroAr, faqPageHeroEn] = sharedImageValue(
+    content.ar.subpages.faqPage.hero.image,
+    content.en.subpages.faqPage.hero.image,
+    defaultSiteContent.ar.subpages.faqPage.hero.image,
+    defaultSiteContent.en.subpages.faqPage.hero.image,
+  );
+  const [hotelsPageHeroAr, hotelsPageHeroEn] = sharedImageValue(
+    content.ar.subpages.hotelsPage.hero.image,
+    content.en.subpages.hotelsPage.hero.image,
+    defaultSiteContent.ar.subpages.hotelsPage.hero.image,
+    defaultSiteContent.en.subpages.hotelsPage.hero.image,
+  );
+  const [destinationsPageHeroAr, destinationsPageHeroEn] = sharedImageValue(
+    content.ar.subpages.destinationsPage.hero.image,
+    content.en.subpages.destinationsPage.hero.image,
+    defaultSiteContent.ar.subpages.destinationsPage.hero.image,
+    defaultSiteContent.en.subpages.destinationsPage.hero.image,
+  );
+
   return {
     ar: {
       ...content.ar,
@@ -608,6 +1158,65 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
           items: syncedDestinations.ar,
         },
       },
+      subpages: {
+        ...content.ar.subpages,
+        about: {
+          ...content.ar.subpages.about,
+          hero: { ...content.ar.subpages.about.hero, image: aboutHeroAr },
+        },
+        dining: {
+          ...content.ar.subpages.dining,
+          hero: { ...content.ar.subpages.dining.hero, image: diningHeroAr },
+        },
+        roomsSuites: {
+          ...content.ar.subpages.roomsSuites,
+          hero: { ...content.ar.subpages.roomsSuites.hero, image: roomsSuitesHeroAr },
+        },
+        servicedApartments: {
+          ...content.ar.subpages.servicedApartments,
+          hero: { ...content.ar.subpages.servicedApartments.hero, image: servicedApartmentsHeroAr },
+        },
+        amenitiesServices: {
+          ...content.ar.subpages.amenitiesServices,
+          hero: { ...content.ar.subpages.amenitiesServices.hero, image: amenitiesServicesHeroAr },
+        },
+        loyaltyPage: {
+          ...content.ar.subpages.loyaltyPage,
+          hero: { ...content.ar.subpages.loyaltyPage.hero, image: loyaltyPageHeroAr },
+        },
+        meetingsEvents: {
+          ...content.ar.subpages.meetingsEvents,
+          hero: { ...content.ar.subpages.meetingsEvents.hero, image: meetingsEventsHeroAr },
+        },
+        corporateDealsPage: {
+          ...content.ar.subpages.corporateDealsPage,
+          hero: { ...content.ar.subpages.corporateDealsPage.hero, image: corporateDealsPageHeroAr },
+        },
+        groupBookings: {
+          ...content.ar.subpages.groupBookings,
+          hero: { ...content.ar.subpages.groupBookings.hero, image: groupBookingsHeroAr },
+        },
+        contact: {
+          ...content.ar.subpages.contact,
+          hero: { ...content.ar.subpages.contact.hero, image: contactHeroAr },
+        },
+        offersPage: {
+          ...content.ar.subpages.offersPage,
+          hero: { ...content.ar.subpages.offersPage.hero, image: offersPageHeroAr },
+        },
+        faqPage: {
+          ...content.ar.subpages.faqPage,
+          hero: { ...content.ar.subpages.faqPage.hero, image: faqPageHeroAr },
+        },
+        hotelsPage: {
+          ...content.ar.subpages.hotelsPage,
+          hero: { ...content.ar.subpages.hotelsPage.hero, image: hotelsPageHeroAr },
+        },
+        destinationsPage: {
+          ...content.ar.subpages.destinationsPage,
+          hero: { ...content.ar.subpages.destinationsPage.hero, image: destinationsPageHeroAr },
+        },
+      },
     },
     en: {
       ...content.en,
@@ -630,6 +1239,65 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         destinations: {
           ...content.en.homepage.destinations,
           items: syncedDestinations.en,
+        },
+      },
+      subpages: {
+        ...content.en.subpages,
+        about: {
+          ...content.en.subpages.about,
+          hero: { ...content.en.subpages.about.hero, image: aboutHeroEn },
+        },
+        dining: {
+          ...content.en.subpages.dining,
+          hero: { ...content.en.subpages.dining.hero, image: diningHeroEn },
+        },
+        roomsSuites: {
+          ...content.en.subpages.roomsSuites,
+          hero: { ...content.en.subpages.roomsSuites.hero, image: roomsSuitesHeroEn },
+        },
+        servicedApartments: {
+          ...content.en.subpages.servicedApartments,
+          hero: { ...content.en.subpages.servicedApartments.hero, image: servicedApartmentsHeroEn },
+        },
+        amenitiesServices: {
+          ...content.en.subpages.amenitiesServices,
+          hero: { ...content.en.subpages.amenitiesServices.hero, image: amenitiesServicesHeroEn },
+        },
+        loyaltyPage: {
+          ...content.en.subpages.loyaltyPage,
+          hero: { ...content.en.subpages.loyaltyPage.hero, image: loyaltyPageHeroEn },
+        },
+        meetingsEvents: {
+          ...content.en.subpages.meetingsEvents,
+          hero: { ...content.en.subpages.meetingsEvents.hero, image: meetingsEventsHeroEn },
+        },
+        corporateDealsPage: {
+          ...content.en.subpages.corporateDealsPage,
+          hero: { ...content.en.subpages.corporateDealsPage.hero, image: corporateDealsPageHeroEn },
+        },
+        groupBookings: {
+          ...content.en.subpages.groupBookings,
+          hero: { ...content.en.subpages.groupBookings.hero, image: groupBookingsHeroEn },
+        },
+        contact: {
+          ...content.en.subpages.contact,
+          hero: { ...content.en.subpages.contact.hero, image: contactHeroEn },
+        },
+        offersPage: {
+          ...content.en.subpages.offersPage,
+          hero: { ...content.en.subpages.offersPage.hero, image: offersPageHeroEn },
+        },
+        faqPage: {
+          ...content.en.subpages.faqPage,
+          hero: { ...content.en.subpages.faqPage.hero, image: faqPageHeroEn },
+        },
+        hotelsPage: {
+          ...content.en.subpages.hotelsPage,
+          hero: { ...content.en.subpages.hotelsPage.hero, image: hotelsPageHeroEn },
+        },
+        destinationsPage: {
+          ...content.en.subpages.destinationsPage,
+          hero: { ...content.en.subpages.destinationsPage.hero, image: destinationsPageHeroEn },
         },
       },
     },
@@ -667,6 +1335,22 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
         ...defaultSiteContent.ar.homepage,
         ...(content?.ar?.homepage ?? {}),
       },
+      subpages: {
+        about: { ...defaultSiteContent.ar.subpages.about, ...(content?.ar?.subpages?.about ?? {}) },
+        dining: { ...defaultSiteContent.ar.subpages.dining, ...(content?.ar?.subpages?.dining ?? {}) },
+        roomsSuites: { ...defaultSiteContent.ar.subpages.roomsSuites, ...(content?.ar?.subpages?.roomsSuites ?? {}) },
+        servicedApartments: { ...defaultSiteContent.ar.subpages.servicedApartments, ...(content?.ar?.subpages?.servicedApartments ?? {}) },
+        amenitiesServices: { ...defaultSiteContent.ar.subpages.amenitiesServices, ...(content?.ar?.subpages?.amenitiesServices ?? {}) },
+        loyaltyPage: { ...defaultSiteContent.ar.subpages.loyaltyPage, ...(content?.ar?.subpages?.loyaltyPage ?? {}) },
+        meetingsEvents: { ...defaultSiteContent.ar.subpages.meetingsEvents, ...(content?.ar?.subpages?.meetingsEvents ?? {}) },
+        corporateDealsPage: { ...defaultSiteContent.ar.subpages.corporateDealsPage, ...(content?.ar?.subpages?.corporateDealsPage ?? {}) },
+        groupBookings: { ...defaultSiteContent.ar.subpages.groupBookings, ...(content?.ar?.subpages?.groupBookings ?? {}) },
+        contact: { ...defaultSiteContent.ar.subpages.contact, ...(content?.ar?.subpages?.contact ?? {}) },
+        offersPage: { ...defaultSiteContent.ar.subpages.offersPage, ...(content?.ar?.subpages?.offersPage ?? {}) },
+        faqPage: { ...defaultSiteContent.ar.subpages.faqPage, ...(content?.ar?.subpages?.faqPage ?? {}) },
+        hotelsPage: { ...defaultSiteContent.ar.subpages.hotelsPage, ...(content?.ar?.subpages?.hotelsPage ?? {}) },
+        destinationsPage: { ...defaultSiteContent.ar.subpages.destinationsPage, ...(content?.ar?.subpages?.destinationsPage ?? {}) },
+      },
     },
     en: {
       ...defaultSiteContent.en,
@@ -682,6 +1366,22 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
       homepage: {
         ...defaultSiteContent.en.homepage,
         ...(content?.en?.homepage ?? {}),
+      },
+      subpages: {
+        about: { ...defaultSiteContent.en.subpages.about, ...(content?.en?.subpages?.about ?? {}) },
+        dining: { ...defaultSiteContent.en.subpages.dining, ...(content?.en?.subpages?.dining ?? {}) },
+        roomsSuites: { ...defaultSiteContent.en.subpages.roomsSuites, ...(content?.en?.subpages?.roomsSuites ?? {}) },
+        servicedApartments: { ...defaultSiteContent.en.subpages.servicedApartments, ...(content?.en?.subpages?.servicedApartments ?? {}) },
+        amenitiesServices: { ...defaultSiteContent.en.subpages.amenitiesServices, ...(content?.en?.subpages?.amenitiesServices ?? {}) },
+        loyaltyPage: { ...defaultSiteContent.en.subpages.loyaltyPage, ...(content?.en?.subpages?.loyaltyPage ?? {}) },
+        meetingsEvents: { ...defaultSiteContent.en.subpages.meetingsEvents, ...(content?.en?.subpages?.meetingsEvents ?? {}) },
+        corporateDealsPage: { ...defaultSiteContent.en.subpages.corporateDealsPage, ...(content?.en?.subpages?.corporateDealsPage ?? {}) },
+        groupBookings: { ...defaultSiteContent.en.subpages.groupBookings, ...(content?.en?.subpages?.groupBookings ?? {}) },
+        contact: { ...defaultSiteContent.en.subpages.contact, ...(content?.en?.subpages?.contact ?? {}) },
+        offersPage: { ...defaultSiteContent.en.subpages.offersPage, ...(content?.en?.subpages?.offersPage ?? {}) },
+        faqPage: { ...defaultSiteContent.en.subpages.faqPage, ...(content?.en?.subpages?.faqPage ?? {}) },
+        hotelsPage: { ...defaultSiteContent.en.subpages.hotelsPage, ...(content?.en?.subpages?.hotelsPage ?? {}) },
+        destinationsPage: { ...defaultSiteContent.en.subpages.destinationsPage, ...(content?.en?.subpages?.destinationsPage ?? {}) },
       },
     },
   });

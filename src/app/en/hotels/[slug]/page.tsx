@@ -3,8 +3,10 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import PropertyMap from "@/components/property-map";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { BOOKING_URL, hotelsEn, roomClassificationsEn } from "@/lib/content-en";
-import { getEditableContent } from "@/lib/editable-content";
+import { hotelsEn } from "@/lib/content-en";
+import { getEditableContent, BOOKING_URL } from "@/lib/editable-content";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return hotelsEn.map((hotel) => ({ slug: hotel.slug }));
@@ -18,7 +20,7 @@ export default async function HotelDetailPageEn({
   const { slug } = await params;
   const { en } = await getEditableContent();
   const hotel = en.homepage.properties.items.find((item) => item.slug === slug);
-  const classification = roomClassificationsEn.find(
+  const classification = en.subpages.roomsSuites.classifications.find(
     (item) => item.property === hotel?.title,
   );
 
@@ -43,13 +45,13 @@ export default async function HotelDetailPageEn({
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <div className="stat-tile">
               <div className="text-2xl font-bold text-[var(--primary)]">{hotel.units}</div>
-              <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
+              <div className="stat-tile-label mt-1 text-sm font-semibold text-[var(--text-secondary)]">
                 Total inventory
               </div>
             </div>
             <div className="stat-tile">
               <div className="text-2xl font-bold text-[var(--primary)]">{hotel.city}</div>
-              <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
+              <div className="stat-tile-label mt-1 text-sm font-semibold text-[var(--text-secondary)]">
                 City
               </div>
             </div>

@@ -1,14 +1,20 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { heroImage, loyaltyProgram } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function LoyaltyPage() {
+export const dynamic = "force-dynamic";
+
+export default async function LoyaltyPage() {
+  const { ar } = await getEditableContent();
+  const pageContent = ar.subpages.loyaltyPage;
+  const loyaltyProgram = ar.homepage.loyalty;
+
   return (
     <PageShell>
       <PageHero
-        eyebrow="برنامج الولاء"
-        title="مزايا مباشرة لضيوف سويس بلو الدائمين."
-        text="برنامج ولاء يربط الضيوف المتكررين بعروض الحجز المباشر، أولوية الترقية عند توفرها، ودعم أسرع من فريق الحجوزات."
-        image={heroImage}
+        eyebrow={pageContent.hero.eyebrow}
+        title={pageContent.hero.title}
+        text={pageContent.hero.text}
+        image={pageContent.hero.image}
       />
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">

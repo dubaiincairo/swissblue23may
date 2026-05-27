@@ -1,21 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { heroImage } from "@/lib/content-en";
 import { getEditableContent } from "@/lib/editable-content";
+
+export const dynamic = "force-dynamic";
 
 export default async function HotelsPageEn() {
   const { en } = await getEditableContent();
+  const content = en.subpages.hotelsPage;
   const hotelsEn = en.homepage.properties.items;
 
   return (
     <PageShellEn>
-      <PageHeroEn eyebrow="Our hotels and serviced apartments" title="A clear hospitality portfolio in Jeddah, Jazan, and Riyadh." text="Explore Swiss Blue destinations across Saudi Arabia, from business-ready city hotels to serviced apartments for families and extended stays." image={heroImage} />
+      <PageHeroEn
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
+      />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">Choose your destination</span>
-          <h2>Every property serves a clear guest need.</h2>
-          <p>Compare city, stay type, space, and purpose before moving into the booking journey.</p>
+          <span className="eyebrow">{content.intro.eyebrow}</span>
+          <h2>{content.intro.title}</h2>
+          <p>{content.intro.text}</p>
         </div>
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
           {hotelsEn.map((hotel, index) => (

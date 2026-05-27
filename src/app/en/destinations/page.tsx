@@ -1,19 +1,21 @@
 import Image from "next/image";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { heroImage } from "@/lib/content-en";
 import { getEditableContent } from "@/lib/editable-content";
+
+export const dynamic = "force-dynamic";
 
 export default async function DestinationsPageEn() {
   const { en } = await getEditableContent();
+  const content = en.subpages.destinationsPage;
   const destinationsEn = en.homepage.destinations.items;
 
   return (
     <PageShellEn>
       <PageHeroEn
-        eyebrow="Destinations"
-        title="Jeddah, Riyadh, and Jazan in one hospitality experience."
-        text="Learn about each city, the best ways to enjoy it, and the stay type that fits your trip, whether for business, family, or long-stay travel."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-6">

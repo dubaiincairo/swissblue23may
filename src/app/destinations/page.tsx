@@ -1,19 +1,21 @@
 import Image from "next/image";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { heroImage } from "@/lib/content";
 import { getEditableContent } from "@/lib/editable-content";
+
+export const dynamic = "force-dynamic";
 
 export default async function DestinationsPage() {
   const { ar } = await getEditableContent();
+  const content = ar.subpages.destinationsPage;
   const destinations = ar.homepage.destinations.items;
 
   return (
     <PageShell>
       <PageHero
-        eyebrow="الوجهات"
-        title="جدة، الرياض، وجازان ضمن تجربة واحدة."
-        text="تعرف على طبيعة كل مدينة، أفضل طرق الاستمتاع بها، ونوع الإقامة الأنسب لرحلتك سواء كانت للأعمال أو العائلة أو الإقامة الطويلة."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-6">

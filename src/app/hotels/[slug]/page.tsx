@@ -3,8 +3,10 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import PropertyMap from "@/components/property-map";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { BOOKING_URL, hotels, roomClassifications } from "@/lib/content";
-import { getEditableContent } from "@/lib/editable-content";
+import { hotels } from "@/lib/content";
+import { getEditableContent, BOOKING_URL } from "@/lib/editable-content";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return hotels.map((hotel) => ({ slug: hotel.slug }));
@@ -18,7 +20,7 @@ export default async function HotelDetailPage({
   const { slug } = await params;
   const { ar } = await getEditableContent();
   const hotel = ar.homepage.properties.items.find((item) => item.slug === slug);
-  const classification = roomClassifications.find(
+  const classification = ar.subpages.roomsSuites.classifications.find(
     (item) => item.property === hotel?.title,
   );
 

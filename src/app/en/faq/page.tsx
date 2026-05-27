@@ -1,18 +1,20 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { FaqCategoryList } from "@/components/faq-accordion";
-import { heroImage } from "@/lib/content-en";
 import { getEditableContent } from "@/lib/editable-content";
+
+export const dynamic = "force-dynamic";
 
 export default async function FaqPageEn() {
   const { en } = await getEditableContent();
+  const content = en.subpages.faqPage;
 
   return (
     <PageShellEn>
       <PageHeroEn
-        eyebrow="FAQ"
-        title="Quick answers before you book."
-        text="Find useful information about accommodation types, direct booking, services, long stays, and corporate options."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="faq-section mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8" dir="ltr">
         <div className="faq-heading reveal-slide-up">

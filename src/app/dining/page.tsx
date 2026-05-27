@@ -1,26 +1,28 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { diningOptions, jeddahImage } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function DiningPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DiningPage() {
+  const { ar } = await getEditableContent();
+  const content = ar.subpages.dining;
+
   return (
     <PageShell>
       <PageHero
-        eyebrow="المطاعم وخدمات الطعام"
-        title="خيارات طعام عملية طوال الإقامة."
-        text="من الإفطار إلى المقهى والمطعم وخدمة الغرف، تقدم سويس بلو تجربة طعام مريحة تخدم ضيف الأعمال والعائلة والضيف المقيم لفترة أطول."
-        image={jeddahImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">تجربة الطعام</span>
-          <h2>كل خدمة طعام لها دور واضح في رحلة الضيف.</h2>
-          <p>
-            تختلف بعض الخدمات حسب الوجهة، لكن المحتوى يوضح ما يمكن توقعه ويجعل
-            تجربة الإقامة أكثر اكتمالا واحترافية.
-          </p>
+          <span className="eyebrow">{content.intro.eyebrow}</span>
+          <h2>{content.intro.title}</h2>
+          <p>{content.intro.text}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {diningOptions.map((item, index) => (
+          {content.options.map((item, index) => (
             <article
               className="stay-card reveal-slide-up"
               key={item.title}

@@ -1,18 +1,23 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { BOOKING_URL, contactChannelsEn, jeddahImage } from "@/lib/content-en";
+import { getEditableContent, BOOKING_URL } from "@/lib/editable-content";
 
-export default function ContactPageEn() {
+export const dynamic = "force-dynamic";
+
+export default async function ContactPageEn() {
+  const { en } = await getEditableContent();
+  const content = en.subpages.contact;
+
   return (
     <PageShellEn>
       <PageHeroEn
-        eyebrow="Contact us"
-        title="Clear channels for booking, companies, and guest support."
-        text="Start direct booking, contact the central reservation system, request support from the corporate deals specialist, or speak with the guest service team."
-        image={jeddahImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
         <div className="grid gap-4 sm:grid-cols-3">
-          {contactChannelsEn.map((channel, index) => (
+          {content.channels.map((channel, index) => (
             <article
               className="content-card reveal-slide-up"
               key={channel.title}
@@ -26,13 +31,9 @@ export default function ContactPageEn() {
           ))}
         </div>
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">Direct booking</span>
-          <h2>Start by checking availability.</h2>
-          <p>
-            The direct booking link is the fastest path for individual guests,
-            while contact channels support corporate, group, and detailed
-            requests.
-          </p>
+          <span className="eyebrow">{content.bookingIntro.eyebrow}</span>
+          <h2>{content.bookingIntro.title}</h2>
+          <p>{content.bookingIntro.text}</p>
           <a className="btn btn-primary mt-8" href={BOOKING_URL}>
             Check availability
           </a>

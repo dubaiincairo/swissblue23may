@@ -1,33 +1,28 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { heroImage, offers } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-const bookingBenefits = [
-  "وضوح أكبر في الفئة والسعر قبل تأكيد الحجز",
-  "دعم مباشر من فريق الحجوزات",
-  "أولوية في تلبية طلبات الضيف حسب التوفر",
-  "مسار مناسب للعائلات والإقامات الشهرية",
-];
+export const dynamic = "force-dynamic";
 
-export default function OffersPage() {
+export default async function OffersPage() {
+  const { ar } = await getEditableContent();
+  const content = ar.subpages.offersPage;
+
   return (
     <PageShell>
       <PageHero
-        eyebrow="العروض والخصومات الخاصة"
-        title="عروض مصممة حول سبب الإقامة."
-        text="صفحة العروض تجمع الإقامة العائلية، الإقامة الشهرية، ومزايا الحجز المباشر بطريقة تسهل على الضيف اختيار العرض المناسب والتواصل بثقة."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">العروض الرئيسية</span>
-          <h2>ثلاثة مسارات واضحة للضيف.</h2>
-          <p>
-            بدلا من عروض عامة، توضح الصفحة الاحتياج الفعلي: عائلة تحتاج مساحة،
-            ضيف يحتاج إقامة شهرية، أو عميل يريد مزايا الحجز المباشر.
-          </p>
+          <span className="eyebrow">{content.intro.eyebrow}</span>
+          <h2>{content.intro.title}</h2>
+          <p>{content.intro.text}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {offers.map((offer, index) => (
+          {content.offers.map((offer, index) => (
             <article
               className="offer-card reveal-slide-up"
               key={offer.title}
@@ -42,17 +37,16 @@ export default function OffersPage() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
         <div className="reveal-slide-up">
-          <span className="eyebrow">مزايا الحجز المباشر</span>
+          <span className="eyebrow">{content.benefitsIntro.eyebrow}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
-            قيمة أوضح عندما تبدأ من قنوات سويس بلو.
+            {content.benefitsIntro.title}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
-            هذه المزايا تساعد الموقع على تحويل الزائر من التصفح إلى الحجز أو
-            التواصل دون إرباك أو عروض غير واضحة.
+            {content.benefitsIntro.text}
           </p>
         </div>
         <div className="amenity-grid">
-          {bookingBenefits.map((benefit, index) => (
+          {content.benefits.map((benefit, index) => (
             <div
               className="amenity-pill reveal-elastic-pop"
               key={benefit}

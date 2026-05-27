@@ -1,34 +1,28 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { heroImage } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-const pillars = [
-  "فئات إقامة واضحة",
-  "مواقع قريبة من المدينة",
-  "راحة لرجال الأعمال والعائلات",
-  "مرونة الشقق الفندقية",
-  "ثقة في الحجز المباشر",
-];
+export const dynamic = "force-dynamic";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { ar } = await getEditableContent();
+  const content = ar.subpages.about;
+
   return (
     <PageShell>
       <PageHero
-        eyebrow="من نحن"
-        title="محفظة ضيافة سعودية بخيارات واضحة."
-        text="سويس بلو للفنادق هي محفظة ضيافة تقدم فنادق وشققا فندقية في وجهات حضرية رئيسية، للضيوف الذين يقدرون وضوح الاختيار والراحة العملية والخدمة الودية."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
         <div className="feature-panel reveal-slide-right">
-          <span className="eyebrow">فلسفة العلامة</span>
-          <h2>إقامة مفهومة من أول لحظة.</h2>
-          <p>
-            تركز سويس بلو على تحويل خيارات الغرف والشقق إلى فئات سهلة الفهم
-            والحجز، مع خدمات عملية تناسب رحلات العمل والعائلات والإقامات الطويلة.
-          </p>
+          <span className="eyebrow">{content.philosophy.eyebrow}</span>
+          <h2>{content.philosophy.title}</h2>
+          <p>{content.philosophy.text}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {pillars.map((pillar, index) => (
+          {content.pillars.map((pillar, index) => (
             <div
               className="content-card reveal-slide-up"
               key={pillar}

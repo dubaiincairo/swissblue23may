@@ -1,30 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { heroImage } from "@/lib/content";
 import { getEditableContent } from "@/lib/editable-content";
+
+export const dynamic = "force-dynamic";
 
 export default async function HotelsPage() {
   const { ar } = await getEditableContent();
+  const content = ar.subpages.hotelsPage;
   const hotels = ar.homepage.properties.items;
 
   return (
     <PageShell>
       <PageHero
-        eyebrow="فنادقنا وشققنا الفندقية"
-        title="محفظة ضيافة واضحة في جدة وجازان والرياض."
-        text="استكشف وجهات سويس بلو في المملكة العربية السعودية، من الفنادق المناسبة لرحلات العمل إلى الشقق الفندقية للعائلات والإقامات الممتدة."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">اختر وجهتك</span>
-          <h2>كل وجهة مصممة حول احتياج واضح للضيف.</h2>
-          <p>
-            تساعد فئات الفنادق والشقق الضيوف على مقارنة المدينة ونوع الإقامة
-            والمساحة المناسبة قبل الانتقال إلى الحجز.
-          </p>
+          <span className="eyebrow">{content.intro.eyebrow}</span>
+          <h2>{content.intro.title}</h2>
+          <p>{content.intro.text}</p>
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-3">

@@ -1,18 +1,24 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { jazanImage, servicesEn } from "@/lib/content-en";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function AmenitiesServicesPageEn() {
+export const dynamic = "force-dynamic";
+
+export default async function AmenitiesServicesPageEn() {
+  const { en } = await getEditableContent();
+  const content = en.subpages.amenitiesServices;
+  const services = en.homepage.services.items;
+
   return (
     <PageShellEn>
       <PageHeroEn
-        eyebrow="Services and amenities"
-        title="Services designed around your stay."
-        text="Every Swiss Blue stay is supported by essential services that make travel easier, more comfortable, and more reliable."
-        image={jazanImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="amenity-grid">
-          {servicesEn.map((service, index) => (
+          {services.map((service, index) => (
             <div
               className="amenity-pill reveal-elastic-pop"
               key={service}

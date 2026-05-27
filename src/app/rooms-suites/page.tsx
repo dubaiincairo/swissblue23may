@@ -1,35 +1,29 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { heroImage, roomClassifications } from "@/lib/content";
+import { getEditableContent } from "@/lib/editable-content";
 
-const principles = [
-  "تصنيف تسويقي يعزز وضوح الفئات على منصات الحجز",
-  "فصل أكبر بين الفئات لإبراز الإطلالة والتجهيزات والقيمة",
-  "تعدد سعري يدعم ترقية الضيف إلى فئات أعلى",
-  "مراجعة التصنيف بعد 6 أشهر بناء على الأداء والطلب",
-];
+export const dynamic = "force-dynamic";
 
-export default function RoomsSuitesPage() {
+export default async function RoomsSuitesPage() {
+  const { ar } = await getEditableContent();
+  const content = ar.subpages.roomsSuites;
+
   return (
     <PageShell>
       <PageHero
-        eyebrow="الغرف والأجنحة"
-        title="تصنيف الوحدات حسب كل منشأة."
-        text="تعرض هذه الصفحة التصنيف التسويقي المعتمد للغرف والأجنحة والشقق في كل منشأة، مع عدد الوحدات وأرقام الغرف والفروقات الأساسية بين الفئات."
-        image={heroImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.76fr_1.24fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">منهجية التصنيف</span>
-          <h2>تصنيف تسويقي لتحسين البيع والظهور.</h2>
-          <p>
-            يعتمد التصنيف على إظهار الفروق بين الفئات، مثل الإطلالة، عدد غرف
-            النوم، تكوين الأسرّة، وغرف المعيشة، بما يساعد الضيف على اختيار
-            الوحدة الأنسب ويساعد المنشآت على إدارة الأسعار بشكل أوضح.
-          </p>
+          <span className="eyebrow">{content.intro.eyebrow}</span>
+          <h2>{content.intro.title}</h2>
+          <p>{content.intro.text}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {principles.map((item, index) => (
+          {content.principles.map((item, index) => (
             <div
               className="content-card reveal-slide-up"
               key={item}
@@ -43,16 +37,13 @@ export default function RoomsSuitesPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">تفاصيل الوحدات</span>
-          <h2>الفئات المعتمدة لكل منشأة.</h2>
-          <p>
-            كل جدول يوضح اسم الفئة، عدد غرف النوم، تكوين الأسرّة، الإطلالة،
-            دورات المياه، غرف المعيشة، إجمالي الوحدات، وأرقام الغرف.
-          </p>
+          <span className="eyebrow">{content.detailsIntro.eyebrow}</span>
+          <h2>{content.detailsIntro.title}</h2>
+          <p>{content.detailsIntro.text}</p>
         </div>
 
         <div className="mt-8 grid gap-8">
-          {roomClassifications.map((property, index) => (
+          {content.classifications.map((property, index) => (
             <section
               className="unit-table-card reveal-slide-up"
               key={property.property}
@@ -103,7 +94,7 @@ export default function RoomsSuitesPage() {
         </div>
       </section>
 
-      <CtaBand title="قارن الفئات واحجز الوحدة الأنسب." cta="احجز وحدتك" />
+      <CtaBand title="اختر فئتك واحجز وحدتك المفضلة مباشرة." cta="احجز وحدتك" />
     </PageShell>
   );
 }

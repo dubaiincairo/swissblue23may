@@ -1,18 +1,23 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { apartmentBenefitsEn, jeddahImage } from "@/lib/content-en";
+import { getEditableContent } from "@/lib/editable-content";
 
-export default function ServicedApartmentsPageEn() {
+export const dynamic = "force-dynamic";
+
+export default async function ServicedApartmentsPageEn() {
+  const { en } = await getEditableContent();
+  const content = en.subpages.servicedApartments;
+
   return (
     <PageShellEn>
       <PageHeroEn
-        eyebrow="Serviced apartments"
-        title="Serviced apartments for longer, easier stays."
-        text="Swiss Blue serviced apartments are ideal for families, business relocation, extended city visits, and guests who prefer more space with hotel support."
-        image={jeddahImage}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        text={content.hero.text}
+        image={content.hero.image}
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {apartmentBenefitsEn.map((benefit, index) => (
+          {content.benefits.map((benefit, index) => (
             <div
               className="content-card reveal-slide-up"
               key={benefit}
