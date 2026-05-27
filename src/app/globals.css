@@ -373,21 +373,11 @@ button {
 
 .hero-media-slide {
   opacity: 0;
-  transition: opacity 1400ms cubic-bezier(0.4, 0, 0.2, 1) 1400ms;
-  z-index: 1;
+  transition: opacity 700ms ease;
 }
 
 .hero-media-slide.active {
   opacity: 1;
-  transition: opacity 1400ms cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 2;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-media-slide,
-  .hero-media-slide.active {
-    transition: opacity 0ms;
-  }
 }
 
 .hero-carousel-dots button {
@@ -396,20 +386,23 @@ button {
 
 .hero-carousel-dots {
   align-items: center;
-  backdrop-filter: blur(14px);
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 999px;
   bottom: 156px;
   box-shadow: 0 18px 45px rgba(8, 28, 70, 0.2);
   display: flex;
   gap: 7px;
   justify-content: center;
-  left: 50%;
-  padding: 7px 11px;
+  left: max(24px, calc((100vw - 1280px) / 2 + 32px));
+  padding: 6px 9px;
   position: absolute;
-  transform: translateX(-50%);
   z-index: 12;
+}
+
+[dir="rtl"] .hero-carousel-dots {
+  left: auto;
+  right: max(24px, calc((100vw - 1280px) / 2 + 32px));
 }
 
 .hero-carousel-dots button {
@@ -417,8 +410,8 @@ button {
   border-radius: 999px;
   height: 6px;
   transition:
-    background-color 220ms cubic-bezier(0.4, 0, 0.2, 1),
-    width 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    background-color 160ms ease,
+    width 160ms ease;
   width: 6px;
 }
 
