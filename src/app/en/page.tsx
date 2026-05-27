@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatedCounter } from "@/components/animated-counter";
 import { FaqAccordion } from "@/components/faq-accordion";
 import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { PageShellEn } from "@/components/site-en";
 import HomepageGallery from "@/components/homepage-gallery";
 import { PartnersSection } from "@/components/partners-section";
+import { ServiceTiles } from "@/components/service-tiles";
 import { BOOKING_URL, getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -74,7 +76,9 @@ export default async function EnglishHomePage() {
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
               <div>
-                <strong>{item.value}</strong>
+                <strong>
+                  <AnimatedCounter value={item.value} />
+                </strong>
                 <span>{item.label}</span>
               </div>
               <p>{item.text}</p>
@@ -230,17 +234,7 @@ export default async function EnglishHomePage() {
             {home.services.text}
           </p>
         </div>
-        <div className="amenity-grid">
-          {home.services.items.map((service, index) => (
-            <div
-              className="amenity-pill reveal-elastic-pop"
-              key={service}
-              style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
-            >
-              {service}
-            </div>
-          ))}
-        </div>
+        <ServiceTiles items={home.services.items} locale="en" />
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
