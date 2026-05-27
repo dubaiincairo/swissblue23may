@@ -54,7 +54,7 @@ export default function HeroMediaCarousel({
           >
             {isVideo ? (
               <video
-                className="h-full w-full object-cover"
+                className={`h-full w-full object-cover ${isActive ? "kenburns-active" : ""}`}
                 src={slide.source}
                 autoPlay={isActive}
                 loop
@@ -64,7 +64,7 @@ export default function HeroMediaCarousel({
               />
             ) : (
               <Image
-                className="object-cover"
+                className={`object-cover ${isActive ? "kenburns-active" : ""}`}
                 src={slide.source}
                 alt={slide.alt || fallbackAlt}
                 fill

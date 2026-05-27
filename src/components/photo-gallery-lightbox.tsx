@@ -68,7 +68,11 @@ export default function PhotoGalleryLightbox({
     <>
       <div className={galleryClass}>
         {images.map((image, index) => (
-          <figure className={variant === "homepage" && index === 0 ? "feature" : ""} key={`${image.image}-${index}`}>
+          <figure
+            className={`${variant === "homepage" && index === 0 ? "feature" : ""} reveal-scale-up`}
+            style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            key={`${image.image}-${index}`}
+          >
             <button
               className="gallery-open-button"
               type="button"

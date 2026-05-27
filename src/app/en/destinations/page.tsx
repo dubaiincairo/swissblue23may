@@ -17,14 +17,15 @@ export default async function DestinationsPageEn() {
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-6">
-          {destinationsEn.map((destination) => (
+          {destinationsEn.map((destination, index) => (
             <article
-              className="property-card grid overflow-hidden lg:grid-cols-[0.86fr_1.14fr]"
+              className="property-card grid overflow-hidden lg:grid-cols-[0.86fr_1.14fr] reveal-slide-up"
               key={destination.title}
+              style={{ "--delay": `${index * 120}ms` } as React.CSSProperties}
             >
               <figure className="relative min-h-[320px] overflow-hidden">
                 <Image
-                  className="object-cover transition duration-500 hover:scale-105"
+                  className="object-cover"
                   src={destination.image}
                   alt={destination.title}
                   fill
@@ -40,8 +41,12 @@ export default async function DestinationsPageEn() {
                 <div className="mt-6">
                   <h3 className="text-lg font-bold">How to enjoy the city?</h3>
                   <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                    {destination.howToEnjoy.map((item) => (
-                      <li className="amenity-pill" key={item}>
+                    {destination.howToEnjoy.map((item, idx) => (
+                      <li
+                        className="amenity-pill reveal-elastic-pop"
+                        key={item}
+                        style={{ "--delay": `${idx * 60}ms` } as React.CSSProperties}
+                      >
                         {item}
                       </li>
                     ))}

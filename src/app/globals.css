@@ -2166,3 +2166,132 @@ button {
     flex-direction: column;
   }
 }
+
+/* ==========================================
+   PREMIUM ANIMATION SYSTEM
+   ========================================== */
+
+:root {
+  --transition-reveal: 850ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reveal base transitions */
+.reveal-fade,
+.reveal-slide-up,
+.reveal-slide-right,
+.reveal-slide-left,
+.reveal-scale-up,
+.reveal-elastic-pop {
+  opacity: 0;
+  transition: opacity var(--transition-reveal), transform var(--transition-reveal);
+  transition-delay: var(--delay, 0ms);
+  will-change: transform, opacity;
+}
+
+.reveal-slide-up {
+  transform: translateY(28px);
+}
+
+.reveal-slide-right {
+  transform: translateX(28px);
+}
+
+.reveal-slide-left {
+  transform: translateX(-28px);
+}
+
+.reveal-scale-up {
+  transform: scale(0.96) translateY(12px);
+}
+
+.reveal-elastic-pop {
+  transform: scale(0.8);
+  transition: opacity 600ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: var(--delay, 0ms);
+}
+
+/* Reveal active states (intersected) */
+.reveal-fade.in-view,
+.reveal-slide-up.in-view,
+.reveal-slide-right.in-view,
+.reveal-slide-left.in-view,
+.reveal-scale-up.in-view,
+.reveal-elastic-pop.in-view {
+  opacity: 1;
+  transform: translate(0) scale(1);
+}
+
+/* Premium Card & Element Hover micro-interactions */
+.property-card,
+.stay-card,
+.unit-card,
+.offer-card,
+.insight-card,
+.brand-point,
+.amenity-pill {
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              color 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.property-card:hover,
+.stay-card:hover,
+.unit-card:hover,
+.offer-card:hover,
+.insight-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(18, 70, 168, 0.12);
+  border-color: rgba(43, 111, 232, 0.24);
+}
+
+.brand-point:hover {
+  transform: translateY(-4px) scale(1.02);
+  background-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.amenity-pill:hover {
+  transform: translateY(-2px);
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 8px 20px rgba(43, 111, 232, 0.25);
+}
+
+/* Image zoom hover effect */
+.property-card figure img {
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.property-card:hover figure img {
+  transform: scale(1.06);
+}
+
+/* FAQ slide height transition (using CSS Grid row transition) */
+.faq-accordion-item-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms ease-in-out, opacity 300ms ease-in-out;
+  opacity: 0;
+}
+
+.faq-accordion-item-content.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+/* Ken Burns slow panning active state */
+.kenburns-active {
+  animation: keyframe-kenburns 12s infinite alternate ease-in-out;
+}
+
+@keyframes keyframe-kenburns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.06);
+  }
+}

@@ -209,7 +209,7 @@ export async function PageHero({
   return (
     <section className="subpage-hero relative overflow-hidden">
       <Image
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover kenburns-active"
         src={resolveMediaImage(image, ar.media)}
         alt=""
         fill
@@ -218,11 +218,11 @@ export async function PageHero({
       />
       <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(8,28,70,0.84),rgba(18,70,168,0.56)_52%,rgba(8,28,70,0.14))]" />
       <div className="relative mx-auto max-w-7xl px-4 py-24 text-white sm:px-6 lg:px-8 lg:py-32">
-        <span className="hero-kicker">{eyebrow}</span>
-        <h1 className="mt-5 max-w-4xl text-[38px] font-bold leading-[1.15] text-balance sm:text-[58px]">
+        <span className="hero-kicker reveal-slide-down">{eyebrow}</span>
+        <h1 className="mt-5 max-w-4xl text-[38px] font-bold leading-[1.15] text-balance sm:text-[58px] reveal-slide-up">
           {title}
         </h1>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 sm:text-lg">
+        <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 sm:text-lg reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
           {text}
         </p>
       </div>
@@ -241,7 +241,7 @@ export function CtaBand({
 }) {
   return (
     <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14">
+      <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
         <div className="relative max-w-3xl">
           <span className="eyebrow text-white/72">احجز مباشرة</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">

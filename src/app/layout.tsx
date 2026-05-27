@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Noto_Kufi_Arabic } from "next/font/google";
 import LiveContentRefresh from "@/components/live-content-refresh";
+import ScrollObserver from "@/components/scroll-observer";
 import "./globals.css";
 
 const arabicSans = Noto_Kufi_Arabic({
@@ -33,6 +34,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <LiveContentRefresh />
+        <ScrollObserver />
         {children}
       </body>
     </html>
