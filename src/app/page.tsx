@@ -4,6 +4,7 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import HomepageGallery from "@/components/homepage-gallery";
+import { PartnersSection } from "@/components/partners-section";
 import { BOOKING_URL, getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -267,6 +268,8 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      <PartnersSection content={home.partners} locale="ar" />
 
       <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="rtl">
         <div className="faq-heading reveal-slide-right">

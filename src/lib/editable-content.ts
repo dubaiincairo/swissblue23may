@@ -53,6 +53,466 @@ const homeOffers = [
   },
 ];
 
+const otas = [
+  {
+    name: "Booking.com",
+    accent: "#003580",
+    weight: "800",
+    note: "أكبر منصة حجز فندقي في العالم",
+  },
+  {
+    name: "Expedia",
+    accent: "#fdcc09",
+    weight: "800",
+    note: "شبكة سفر عالمية رائدة",
+  },
+  {
+    name: "Agoda",
+    accent: "#ee2e24",
+    weight: "800",
+    note: "حضور قوي في الشرق الأوسط وآسيا",
+  },
+  {
+    name: "Almosafer",
+    accent: "#7e22ce",
+    weight: "700",
+    note: "أكبر وكالة سفر رقمية سعودية",
+  },
+  {
+    name: "Wego",
+    accent: "#e94e35",
+    weight: "800",
+    note: "محرك السفر الأول في الخليج",
+  },
+  {
+    name: "Trip.com",
+    accent: "#287dfa",
+    weight: "800",
+    note: "منصة سفر عالمية متكاملة",
+  },
+  {
+    name: "Hotels.com",
+    accent: "#d32f2f",
+    weight: "800",
+    note: "خدمة دولية متخصصة في الفنادق",
+  },
+  {
+    name: "Tajawal",
+    accent: "#0e9f8f",
+    weight: "800",
+    note: "وكالة سفر عربية مفضلة",
+  },
+  {
+    name: "Trivago",
+    accent: "#e7363f",
+    weight: "800",
+    note: "مقارنة فورية بين أسعار الفنادق",
+  },
+  {
+    name: "Airbnb",
+    accent: "#ff385c",
+    weight: "800",
+    note: "خيار شائع لإقامات الشقق الفندقية",
+  },
+];
+
+const otasEn = [
+  {
+    name: "Booking.com",
+    accent: "#003580",
+    weight: "800",
+    note: "The world's largest hotel booking platform",
+  },
+  {
+    name: "Expedia",
+    accent: "#fdcc09",
+    weight: "800",
+    note: "A leading global travel network",
+  },
+  {
+    name: "Agoda",
+    accent: "#ee2e24",
+    weight: "800",
+    note: "Strong reach across the Middle East and Asia",
+  },
+  {
+    name: "Almosafer",
+    accent: "#7e22ce",
+    weight: "700",
+    note: "Saudi Arabia's largest digital travel agency",
+  },
+  {
+    name: "Wego",
+    accent: "#e94e35",
+    weight: "800",
+    note: "The GCC's go-to travel search engine",
+  },
+  {
+    name: "Trip.com",
+    accent: "#287dfa",
+    weight: "800",
+    note: "A truly global travel marketplace",
+  },
+  {
+    name: "Hotels.com",
+    accent: "#d32f2f",
+    weight: "800",
+    note: "A worldwide hotel-focused booking site",
+  },
+  {
+    name: "Tajawal",
+    accent: "#0e9f8f",
+    weight: "800",
+    note: "A trusted Arab world travel agency",
+  },
+  {
+    name: "Trivago",
+    accent: "#e7363f",
+    weight: "800",
+    note: "Instant hotel price comparison",
+  },
+  {
+    name: "Airbnb",
+    accent: "#ff385c",
+    weight: "800",
+    note: "A popular pick for apartment-style stays",
+  },
+];
+
+const partnersSection = {
+  eyebrow: "حضور رقمي موثوق",
+  title: "اعثر على سويس بلو في أهم منصات الحجز العالمية والإقليمية.",
+  text: "نتعاون مع أبرز منصات السفر الرقمية في المملكة العربية السعودية والخليج، لنضمن وضوح الأسعار وسهولة الحجز للضيف، أينما اختار قناة الحجز المفضلة لديه.",
+  badge: "+10 وكلاء سفر معتمدين",
+  footnote: "للحصول على أفضل سعر مضمون، ننصح بالحجز المباشر من موقع سويس بلو الرسمي.",
+  cta: "احجز مباشرة الآن",
+  items: otas,
+};
+
+const partnersSectionEn = {
+  eyebrow: "Trusted digital presence",
+  title: "Find Swiss Blue across leading global and regional booking platforms.",
+  text: "We partner with the most reputable online travel agencies in Saudi Arabia and the GCC, so guests get clear rates and a smooth booking experience on the channel they prefer.",
+  badge: "+10 verified travel partners",
+  footnote: "For the best available rate, we always recommend booking direct on the official Swiss Blue website.",
+  cta: "Book direct now",
+  items: otasEn,
+};
+
+const hotelPolicyAr = {
+  hero: {
+    eyebrow: "سياسة الفنادق",
+    title: "سياسات واضحة لإقامة أكثر اطمئنانًا.",
+    text: "تجمع هذه الصفحة سياسات الإقامة المعتمدة عبر فنادق سويس بلو والشقق الفندقية والشقق المخدومة، لضمان وضوح كامل قبل الحجز وأثناء الإقامة، بما يتماشى مع أعلى معايير الضيافة في المملكة العربية السعودية والخليج.",
+    image: heroImage,
+  },
+  intro: {
+    eyebrow: "تجربة ضيافة مهنية",
+    title: "إطار سياسات متناسق عبر كافة فنادقنا وشققنا الفندقية.",
+    text: "صُممت سياسات سويس بلو لتغطي الفنادق والشقق الفندقية والشقق المخدومة على حدٍّ سواء، مع مرونة عملية تلبي احتياج ضيوف الأعمال والعائلات وضيوف الإقامة الطويلة. تُراجَع هذه السياسات بشكل دوري بما يتوافق مع الأنظمة السعودية ومعايير هيئة السياحة.",
+  },
+  principles: [
+    "شفافية كاملة في الأسعار والشروط قبل تأكيد الحجز",
+    "احترام خصوصية الضيف وسرية بياناته الشخصية",
+    "التزام بمعايير النظافة والسلامة والأمان على مدار الساعة",
+    "مرونة في الخدمات تتناسب مع طبيعة الإقامة القصيرة والطويلة",
+    "تطبيق متوازن للسياسات بما يحفظ راحة جميع الضيوف",
+  ],
+  sections: [
+    {
+      title: "الحجز وتأكيد الإقامة",
+      items: [
+        "يتم تأكيد الحجز فور إتمام عملية الدفع أو ضمان البطاقة الائتمانية بحسب نوع السعر المختار.",
+        "يحق للفندق طلب وثيقة هوية سارية المفعول وبيانات تواصل صحيحة لإتمام الحجز.",
+        "تخضع جميع الحجوزات لتوفر الوحدات وقد تطبق شروط خاصة على فترات المواسم والمناسبات.",
+        "يمكن طلب تعديل الحجز قبل 48 ساعة من تاريخ الوصول وفق التوفر والسياسة التسعيرية.",
+      ],
+    },
+    {
+      title: "الدخول والمغادرة",
+      items: [
+        "يبدأ تسجيل الوصول من الساعة 3:00 عصرًا، وتسجيل المغادرة حتى الساعة 12:00 ظهرًا.",
+        "يمكن طلب وصول مبكر أو مغادرة متأخرة حسب التوفر، وقد تطبق رسوم إضافية.",
+        "يُلزم الضيف بإبراز هوية وطنية سارية أو جواز سفر عند تسجيل الوصول.",
+        "للحجوزات التي تصل بعد منتصف الليل، يرجى إبلاغ فريق الاستقبال لضمان جاهزية الوحدة.",
+      ],
+    },
+    {
+      title: "الإلغاء وعدم الحضور",
+      items: [
+        "يمكن إلغاء الحجوزات القياسية مجانًا قبل 48 ساعة من تاريخ الوصول.",
+        "تُحتسب رسوم ليلة واحدة في حال الإلغاء المتأخر أو عدم الحضور دون إشعار.",
+        "السياسات الترويجية والأسعار غير القابلة للاسترداد لها شروط مستقلة موضحة عند الحجز.",
+        "لحجوزات الشركات والمجموعات، تُطبَّق شروط الاتفاقية الرسمية الموقعة.",
+      ],
+    },
+    {
+      title: "الدفع والفوترة",
+      items: [
+        "نقبل الدفع عبر مدى، فيزا، ماستركارد، أمريكان إكسبريس، ومحافظ آبل باي والمحافظ الرقمية المعتمدة.",
+        "تشمل الأسعار المعروضة ضريبة القيمة المضافة 15% ورسوم البلدية حسب الأنظمة المعمول بها.",
+        "قد يُطلب مبلغ تأمين قابل للاسترداد عند تسجيل الوصول لتغطية أي استهلاك إضافي.",
+        "تُصدر الفواتير الضريبية رسميًا عند المغادرة، ويمكن إرسالها إلكترونيًا عند الطلب.",
+      ],
+    },
+    {
+      title: "الأطفال والأسرّة الإضافية",
+      items: [
+        "نرحب بالأطفال من جميع الأعمار في فنادقنا وشققنا الفندقية.",
+        "يقيم الأطفال دون سن السادسة مجانًا عند استخدام الأسرّة الموجودة في الوحدة.",
+        "تتوفر أسرّة أطفال (مهد) مجانية حسب التوفر وعند الطلب المسبق.",
+        "تُطبق رسوم رمزية على السرير الإضافي للأطفال من سن 6 إلى 12 سنة.",
+      ],
+    },
+    {
+      title: "الحيوانات الأليفة",
+      items: [
+        "لا يُسمح باصطحاب الحيوانات الأليفة داخل الفنادق والشقق الفندقية حفاظًا على راحة جميع الضيوف.",
+        "يُستثنى من ذلك الكلاب المدربة لمرافقة ذوي الإعاقة مع إبراز الوثائق الرسمية.",
+        "يمكن لفريق الكونسيرج مساعدتكم في ترتيب خدمات إيواء الحيوانات في مرافق قريبة معتمدة.",
+      ],
+    },
+    {
+      title: "التدخين",
+      items: [
+        "جميع غرف وأجنحة وشقق سويس بلو هي مناطق غير مدخنين بالكامل.",
+        "تتوفر مناطق مخصصة للتدخين في الأماكن الخارجية أو الشرفات في وجهات مختارة.",
+        "تطبق رسوم تنظيف عميق لا تقل عن 500 ريال سعودي في حال التدخين داخل الوحدة.",
+        "يشمل ذلك جميع أنواع التدخين بما فيها الشيشة والسجائر الإلكترونية.",
+      ],
+    },
+    {
+      title: "الزوار والتجمعات",
+      items: [
+        "يُسمح للضيوف باستقبال زوارهم في المساحات العامة بالفندق فقط.",
+        "يحق للفندق طلب تسجيل بيانات الزائر لدى الاستقبال لأسباب أمنية.",
+        "لا يُسمح بالتجمعات أو الحفلات داخل الوحدات السكنية حفاظًا على راحة الجيران.",
+        "للمناسبات الخاصة، يمكن حجز قاعات الاجتماعات والصالات بترتيب مسبق.",
+      ],
+    },
+    {
+      title: "السلامة والأمن",
+      items: [
+        "مراقبة أمنية على مدار 24 ساعة في المداخل والمساحات العامة.",
+        "نظام كشف دخان ورشاشات إطفاء حريق في جميع الوحدات والممرات.",
+        "خزائن آمنة داخل كل وحدة لحفظ الأشياء الثمينة والمستندات.",
+        "خطط إخلاء واضحة موضحة داخل كل غرفة باللغتين العربية والإنجليزية.",
+      ],
+    },
+    {
+      title: "الخصوصية وحماية البيانات",
+      items: [
+        "نلتزم بنظام حماية البيانات الشخصية في المملكة العربية السعودية (PDPL).",
+        "تُستخدم بياناتك فقط لأغراض الحجز وتحسين تجربة الإقامة.",
+        "لا تُشارك بيانات الضيف مع أي طرف ثالث دون موافقة صريحة باستثناء الجهات الرسمية.",
+        "يحق للضيف طلب الوصول إلى بياناته أو تعديلها أو حذفها بالتواصل مع فريق الخصوصية.",
+      ],
+    },
+    {
+      title: "النظافة والصيانة",
+      items: [
+        "خدمة تنظيف يومية للغرف الفندقية، وخدمة تنظيف دورية للشقق المخدومة.",
+        "تغيير المفروشات والمناشف وفق جدول معتمد يراعي الاستدامة وراحة الضيف.",
+        "بروتوكولات تعقيم متقدمة بعد كل مغادرة باستخدام مواد آمنة ومعتمدة.",
+        "خدمة صيانة طارئة 24/7 عبر فريق الاستقبال أو الكونسيرج.",
+      ],
+    },
+    {
+      title: "الإقامات الطويلة والشقق المخدومة",
+      items: [
+        "تتوفر باقات شهرية وفصلية للضيوف الذين يحتاجون إلى إقامات ممتدة.",
+        "خدمات تنظيف أسبوعية أو نصف أسبوعية حسب طبيعة العقد.",
+        "إمكانية تخصيص الوحدة بإضافات معتمدة عند التنسيق مع إدارة الفندق.",
+        "فواتير شهرية منتظمة ودعم مخصص من فريق إدارة الحسابات.",
+      ],
+    },
+    {
+      title: "إمكانية الوصول والاحتياجات الخاصة",
+      items: [
+        "تتوفر وحدات مهيأة لذوي الإعاقة في وجهات مختارة، يرجى الإشارة لذلك عند الحجز.",
+        "مداخل ومصاعد بمعايير الوصول الشامل، وممرات بعرض مناسب للكراسي المتحركة.",
+        "خدمات دعم خاصة عند الطلب: ترتيبات وجبات، نقل، أو ترتيبات وصول إضافية.",
+        "فريق ضيافة مدرب على التعامل مع متطلبات الوصول والاحتياجات الخاصة.",
+      ],
+    },
+    {
+      title: "المسؤولية والأضرار",
+      items: [
+        "يتحمل الضيف مسؤولية أي ضرر يلحق بمحتويات الوحدة أو مرافق الفندق.",
+        "يُعفى الفندق من مسؤولية الأشياء الثمينة غير المودعة في الخزائن المخصصة.",
+        "يمكن الإبلاغ عن المفقودات لدى الاستقبال، وتُحفظ المقتنيات لمدة 30 يومًا.",
+        "تخضع كافة المعاملات لأنظمة المملكة العربية السعودية وتختص محاكمها بأي نزاع.",
+      ],
+    },
+    {
+      title: "الاستدامة والممارسات المسؤولة",
+      items: [
+        "برنامج ترشيد استهلاك المياه والطاقة في كافة منشآتنا.",
+        "خيار للضيف بإعادة استخدام المناشف والمفروشات لتقليل الأثر البيئي.",
+        "مواد تجميل وتنظيف صديقة للبيئة في الوحدات والمرافق العامة.",
+        "دعم المنتجات المحلية السعودية في تجارب الطعام والضيافة.",
+      ],
+    },
+  ],
+};
+
+const hotelPolicyEn = {
+  hero: {
+    eyebrow: "Hotel Policy",
+    title: "Clear policies for a confident stay.",
+    text: "This page brings together the operating policies that apply across Swiss Blue hotels, apart-hotels, and serviced apartments, so guests have complete clarity before booking and during their stay, aligned with the highest hospitality standards across Saudi Arabia and the GCC.",
+    image: heroImage,
+  },
+  intro: {
+    eyebrow: "A professional hospitality experience",
+    title: "A consistent policy framework across all our hotels and serviced apartments.",
+    text: "Swiss Blue policies are designed to cover hotels, apart-hotels, and serviced apartments alike, with practical flexibility that suits business guests, families, and long-stay residents. These policies are reviewed regularly to remain aligned with Saudi regulations and the Ministry of Tourism standards.",
+  },
+  principles: [
+    "Full transparency on rates and terms before booking confirmation",
+    "Respect for guest privacy and confidentiality of personal data",
+    "Around-the-clock commitment to cleanliness, safety, and security",
+    "Service flexibility built around both short and long stays",
+    "Balanced policy enforcement that protects every guest's comfort",
+  ],
+  sections: [
+    {
+      title: "Reservation & booking confirmation",
+      items: [
+        "Reservations are confirmed once payment is completed or the credit card guarantee is captured, based on the selected rate.",
+        "The hotel may request a valid ID and accurate contact details to finalise the booking.",
+        "All bookings are subject to unit availability and may have special terms during high season and major events.",
+        "Booking modifications may be requested at least 48 hours before arrival, subject to availability and rate rules.",
+      ],
+    },
+    {
+      title: "Check-in & check-out",
+      items: [
+        "Standard check-in is from 3:00 PM and check-out is until 12:00 noon.",
+        "Early check-in or late check-out can be requested based on availability and may incur additional charges.",
+        "Guests are required to present a valid national ID or passport on arrival.",
+        "For arrivals after midnight, please notify reception in advance so the unit is ready on time.",
+      ],
+    },
+    {
+      title: "Cancellation & no-show",
+      items: [
+        "Standard reservations can be cancelled free of charge up to 48 hours before arrival.",
+        "A one-night charge applies for late cancellations or no-shows without notice.",
+        "Promotional and non-refundable rates carry their own terms, disclosed at the time of booking.",
+        "Corporate and group bookings follow the terms of the signed official agreement.",
+      ],
+    },
+    {
+      title: "Payment & invoicing",
+      items: [
+        "We accept payment via Mada, Visa, Mastercard, American Express, Apple Pay, and approved digital wallets.",
+        "Displayed rates include 15% VAT and applicable municipality fees in line with local regulations.",
+        "A refundable security deposit may be requested on check-in to cover any incidentals.",
+        "Tax invoices are issued officially at check-out and can be emailed on request.",
+      ],
+    },
+    {
+      title: "Children & extra beds",
+      items: [
+        "Children of all ages are welcome across our hotels and serviced apartments.",
+        "Children under 6 years stay free of charge when using existing bedding in the unit.",
+        "Baby cots are available on request, complimentary and subject to availability.",
+        "A nominal extra-bed fee applies for children aged 6 to 12.",
+      ],
+    },
+    {
+      title: "Pets",
+      items: [
+        "Pets are not permitted inside our hotels and serviced apartments, to protect the comfort of all guests.",
+        "Trained assistance dogs accompanying guests with disabilities are exempt with the appropriate documentation.",
+        "Our concierge team can help arrange pet care at trusted nearby facilities.",
+      ],
+    },
+    {
+      title: "Smoking",
+      items: [
+        "All Swiss Blue rooms, suites, and apartments are fully non-smoking environments.",
+        "Designated outdoor smoking areas and balconies are available at selected properties.",
+        "A deep-cleaning fee starting from SAR 500 applies if smoking is detected inside any unit.",
+        "This applies to all forms of smoking, including shisha and electronic cigarettes.",
+      ],
+    },
+    {
+      title: "Visitors & gatherings",
+      items: [
+        "Guests may receive visitors in the hotel's public areas only.",
+        "Reception may request visitor identification for security and registration purposes.",
+        "Gatherings and parties are not permitted inside the residential units to preserve neighbours' comfort.",
+        "For private events, meeting rooms and function spaces can be reserved in advance.",
+      ],
+    },
+    {
+      title: "Safety & security",
+      items: [
+        "24-hour security monitoring at all entrances and public areas.",
+        "Smoke detection systems and fire sprinklers across every unit and corridor.",
+        "In-room safes are provided to store valuables and important documents.",
+        "Clear evacuation plans are posted in every room in both Arabic and English.",
+      ],
+    },
+    {
+      title: "Privacy & data protection",
+      items: [
+        "We adhere to Saudi Arabia's Personal Data Protection Law (PDPL).",
+        "Your data is used only for reservation purposes and to improve your stay experience.",
+        "Guest data is not shared with third parties without explicit consent, except for official authorities.",
+        "Guests may request access to, correction of, or deletion of their data by contacting the privacy team.",
+      ],
+    },
+    {
+      title: "Housekeeping & maintenance",
+      items: [
+        "Daily housekeeping for hotel rooms, and scheduled cleaning for serviced apartments.",
+        "Linen and towel changes follow an approved schedule that balances sustainability and guest comfort.",
+        "Advanced sanitisation protocols are applied after every check-out using approved, safe products.",
+        "24/7 maintenance support is available via reception or the concierge desk.",
+      ],
+    },
+    {
+      title: "Long stays & serviced apartments",
+      items: [
+        "Monthly and quarterly packages are available for guests needing extended stays.",
+        "Weekly or twice-weekly housekeeping plans depending on the chosen agreement.",
+        "Optional unit customisation is possible when coordinated with hotel management.",
+        "Regular monthly invoicing with dedicated support from the account management team.",
+      ],
+    },
+    {
+      title: "Accessibility & special needs",
+      items: [
+        "Accessible units are available at selected properties; please flag this at the time of booking.",
+        "Entrances, lifts, and corridors are designed for universal access and wheelchair use.",
+        "Special support services are available on request, including meals, transport, and arrival arrangements.",
+        "Our hospitality team is trained to handle accessibility and special-needs requirements with care.",
+      ],
+    },
+    {
+      title: "Liability & damages",
+      items: [
+        "Guests are responsible for any damage to the unit's contents or hotel facilities.",
+        "The hotel is not liable for valuables that are not stored in the dedicated safes.",
+        "Lost items can be reported at reception and are kept securely for 30 days.",
+        "All matters are governed by the laws of the Kingdom of Saudi Arabia and its competent courts.",
+      ],
+    },
+    {
+      title: "Sustainability & responsible practices",
+      items: [
+        "A water and energy conservation programme is in place across all our properties.",
+        "Guests can opt to reuse towels and linens to help reduce environmental impact.",
+        "Eco-friendly amenities and cleaning materials are used in units and public areas.",
+        "We support local Saudi producers across our dining and hospitality experiences.",
+      ],
+    },
+  ],
+};
+
 const highlights = [
   {
     value: "+10",
@@ -220,6 +680,7 @@ export const defaultSiteContent = {
         text: "هذا التقسيم يجعل قرار الحجز أكثر وضوحا للضيف، ويساعد فرق الشركات والعائلات على اختيار الفئة المناسبة لمدة الإقامة وطبيعة الرحلة.",
         items: accommodationCategories,
       },
+      partners: partnersSection,
       cta: {
         eyebrow: "جاهزون لاستقبالكم",
         title: "اعثر على إقامتك القادمة مع سويس بلو.",
@@ -454,6 +915,7 @@ export const defaultSiteContent = {
           image: heroImage,
         },
       },
+      hotelPolicy: hotelPolicyAr,
     },
   },
   en: {
@@ -517,6 +979,7 @@ export const defaultSiteContent = {
         text: "This comparison makes booking clearer for guests and helps companies and families choose the right category for trip purpose and stay length.",
         items: accommodationCategoriesEn,
       },
+      partners: partnersSectionEn,
       cta: {
         eyebrow: "Book direct",
         title: "Find your next Swiss Blue stay.",
@@ -751,6 +1214,7 @@ export const defaultSiteContent = {
           image: heroImage,
         },
       },
+      hotelPolicy: hotelPolicyEn,
     },
   },
 };
@@ -1132,6 +1596,12 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     defaultSiteContent.ar.subpages.destinationsPage.hero.image,
     defaultSiteContent.en.subpages.destinationsPage.hero.image,
   );
+  const [hotelPolicyHeroAr, hotelPolicyHeroEn] = sharedImageValue(
+    content.ar.subpages.hotelPolicy.hero.image,
+    content.en.subpages.hotelPolicy.hero.image,
+    defaultSiteContent.ar.subpages.hotelPolicy.hero.image,
+    defaultSiteContent.en.subpages.hotelPolicy.hero.image,
+  );
 
   return {
     ar: {
@@ -1216,6 +1686,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
           ...content.ar.subpages.destinationsPage,
           hero: { ...content.ar.subpages.destinationsPage.hero, image: destinationsPageHeroAr },
         },
+        hotelPolicy: {
+          ...content.ar.subpages.hotelPolicy,
+          hero: { ...content.ar.subpages.hotelPolicy.hero, image: hotelPolicyHeroAr },
+        },
       },
     },
     en: {
@@ -1299,6 +1773,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
           ...content.en.subpages.destinationsPage,
           hero: { ...content.en.subpages.destinationsPage.hero, image: destinationsPageHeroEn },
         },
+        hotelPolicy: {
+          ...content.en.subpages.hotelPolicy,
+          hero: { ...content.en.subpages.hotelPolicy.hero, image: hotelPolicyHeroEn },
+        },
       },
     },
   };
@@ -1350,6 +1828,7 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
         faqPage: { ...defaultSiteContent.ar.subpages.faqPage, ...(content?.ar?.subpages?.faqPage ?? {}) },
         hotelsPage: { ...defaultSiteContent.ar.subpages.hotelsPage, ...(content?.ar?.subpages?.hotelsPage ?? {}) },
         destinationsPage: { ...defaultSiteContent.ar.subpages.destinationsPage, ...(content?.ar?.subpages?.destinationsPage ?? {}) },
+        hotelPolicy: { ...defaultSiteContent.ar.subpages.hotelPolicy, ...(content?.ar?.subpages?.hotelPolicy ?? {}) },
       },
     },
     en: {
@@ -1382,6 +1861,7 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
         faqPage: { ...defaultSiteContent.en.subpages.faqPage, ...(content?.en?.subpages?.faqPage ?? {}) },
         hotelsPage: { ...defaultSiteContent.en.subpages.hotelsPage, ...(content?.en?.subpages?.hotelsPage ?? {}) },
         destinationsPage: { ...defaultSiteContent.en.subpages.destinationsPage, ...(content?.en?.subpages?.destinationsPage ?? {}) },
+        hotelPolicy: { ...defaultSiteContent.en.subpages.hotelPolicy, ...(content?.en?.subpages?.hotelPolicy ?? {}) },
       },
     },
   });

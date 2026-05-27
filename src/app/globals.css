@@ -2074,6 +2074,388 @@ button {
   width: 420px;
 }
 
+/* ==========================================
+   PARTNERS / OTA SECTION
+   ========================================== */
+
+.partners-section {
+  position: relative;
+}
+
+.partners-shell {
+  background:
+    linear-gradient(135deg, rgba(244, 248, 255, 0.96), rgba(255, 255, 255, 0.98)),
+    white;
+  border: 1px solid rgba(43, 111, 232, 0.12);
+  border-radius: 28px;
+  box-shadow: 0 22px 60px rgba(8, 28, 70, 0.08);
+  overflow: hidden;
+  padding: 40px clamp(20px, 4vw, 48px);
+  position: relative;
+}
+
+.partners-shell-decor {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(43, 111, 232, 0.14), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(18, 70, 168, 0.1), transparent 60%);
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.partners-head {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.partners-head > div:first-child {
+  flex: 1 1 480px;
+  max-width: 720px;
+  min-width: 0;
+}
+
+.partners-title {
+  font-size: clamp(1.85rem, 3.4vw, 2.85rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.1;
+  margin-top: 12px;
+}
+
+.partners-text {
+  color: var(--text-secondary);
+  font-size: 14.5px;
+  line-height: 1.85;
+  margin-top: 14px;
+  max-width: 680px;
+}
+
+.partners-badge {
+  align-items: center;
+  background: white;
+  border: 1px solid rgba(43, 111, 232, 0.18);
+  border-radius: 999px;
+  box-shadow: 0 12px 28px rgba(18, 70, 168, 0.1);
+  color: var(--primary);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 850;
+  gap: 10px;
+  padding: 12px 18px;
+}
+
+.partners-badge-dot {
+  background: var(--primary);
+  border-radius: 999px;
+  box-shadow: 0 0 0 4px rgba(43, 111, 232, 0.16);
+  height: 8px;
+  width: 8px;
+}
+
+.partners-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  position: relative;
+  z-index: 1;
+}
+
+.partner-card {
+  align-items: flex-start;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(18, 70, 168, 0.04), 0 14px 28px rgba(18, 70, 168, 0.06);
+  display: grid;
+  gap: 10px;
+  min-height: 142px;
+  overflow: hidden;
+  padding: 20px 18px 18px;
+  position: relative;
+  transition:
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.partner-card:hover {
+  border-color: color-mix(in srgb, var(--partner-accent) 50%, transparent);
+  box-shadow: 0 22px 38px rgba(8, 28, 70, 0.14);
+  transform: translateY(-5px);
+}
+
+.partner-stripe {
+  background: var(--partner-accent);
+  display: block;
+  height: 4px;
+  inset-block-start: 0;
+  inset-inline: 0;
+  position: absolute;
+  transform: scaleX(0.4);
+  transform-origin: center;
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.partner-card:hover .partner-stripe {
+  transform: scaleX(1);
+}
+
+.partner-mark {
+  color: var(--partner-accent);
+  font-size: clamp(1.05rem, 1.35vw, 1.32rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  word-break: break-word;
+}
+
+[dir="rtl"] .partner-mark {
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-weight: 800;
+}
+
+.partner-note {
+  color: var(--text-secondary);
+  display: block;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.55;
+  margin-top: auto;
+}
+
+.partners-footer {
+  align-items: center;
+  border-top: 1px solid rgba(43, 111, 232, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-top: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+.partners-footnote {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.7;
+  max-width: 620px;
+}
+
+.partners-cta {
+  border-radius: 999px;
+  flex: 0 0 auto;
+  min-height: 46px;
+  padding-inline: 22px;
+}
+
+@media (max-width: 1023px) {
+  .partners-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .partners-shell {
+    border-radius: 22px;
+    padding: 28px 18px;
+  }
+
+  .partners-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .partner-card {
+    min-height: 130px;
+    padding: 18px 16px 14px;
+  }
+}
+
+/* ==========================================
+   HOTEL POLICY PAGE
+   ========================================== */
+
+.policy-principles {
+  background:
+    linear-gradient(135deg, rgba(244, 248, 255, 0.94), rgba(255, 255, 255, 0.98)),
+    white;
+  border: 1px solid rgba(43, 111, 232, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 18px 48px rgba(18, 70, 168, 0.08);
+  display: grid;
+  gap: 16px;
+  padding: 28px;
+}
+
+.policy-principle {
+  align-items: flex-start;
+  background: white;
+  border: 1px solid rgba(43, 111, 232, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(18, 70, 168, 0.03), 0 10px 22px rgba(18, 70, 168, 0.04);
+  color: var(--text-primary);
+  display: grid;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 14px;
+  grid-template-columns: auto minmax(0, 1fr);
+  line-height: 1.7;
+  padding: 16px 18px;
+}
+
+.policy-principle-mark {
+  align-items: center;
+  background: var(--bluehost-foam);
+  border-radius: 12px;
+  color: var(--primary);
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 900;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.policy-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.policy-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 16px;
+  padding: 26px;
+  position: relative;
+  transition:
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.policy-card:hover {
+  border-color: rgba(43, 111, 232, 0.28);
+  box-shadow: 0 22px 44px rgba(18, 70, 168, 0.12);
+  transform: translateY(-3px);
+}
+
+.policy-card-head {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.policy-card-index {
+  align-items: center;
+  background: linear-gradient(135deg, var(--primary), var(--bluehost-deep));
+  border-radius: 12px;
+  color: white;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 900;
+  height: 38px;
+  justify-content: center;
+  letter-spacing: 0;
+  min-width: 38px;
+  padding-inline: 10px;
+}
+
+.policy-card h3 {
+  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.policy-card ul {
+  display: grid;
+  gap: 12px;
+}
+
+.policy-card li {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.85;
+  padding-inline-start: 22px;
+  position: relative;
+}
+
+.policy-card li::before {
+  background: var(--primary);
+  border-radius: 999px;
+  content: "";
+  height: 7px;
+  inset-block-start: 12px;
+  inset-inline-start: 0;
+  position: absolute;
+  width: 7px;
+}
+
+.policy-note {
+  background:
+    linear-gradient(135deg, rgba(18, 70, 168, 0.96), rgba(43, 111, 232, 0.92)),
+    var(--bluehost-deep);
+  border-radius: 24px;
+  color: white;
+  padding: 32px;
+  position: relative;
+}
+
+.policy-note span {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.policy-note h2 {
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-top: 12px;
+}
+
+.policy-note p {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14.5px;
+  line-height: 1.85;
+  margin-top: 14px;
+  max-width: 720px;
+}
+
+@media (max-width: 1023px) {
+  .policy-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .policy-principles {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .policy-card {
+    padding: 22px 20px;
+  }
+
+  .policy-note {
+    padding: 26px 22px;
+  }
+}
+
 @media (max-width: 1023px) {
   .hotel-hero .hero-carousel-dots {
     bottom: 428px;
