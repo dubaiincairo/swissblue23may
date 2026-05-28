@@ -1650,12 +1650,16 @@ button {
 
 .admin-section-list {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .admin-nav-group {
   display: grid;
-  gap: 4px;
+  gap: 2px;
+}
+
+.admin-nav-group + .admin-nav-group {
+  margin-top: 6px;
 }
 
 .admin-nav-group p {
@@ -1663,43 +1667,57 @@ button {
   padding: 0 4px;
 }
 
-.admin-nav-group-toggle {
+.admin-section-list .admin-nav-group-toggle {
   align-items: center;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 8px;
-  color: var(--admin-ink);
+  color: #6d7990;
   cursor: pointer;
   display: flex;
-  font-size: 13px;
-  font-weight: 900;
-  justify-content: space-between;
-  min-height: 40px;
-  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 850;
+  gap: 6px;
+  justify-content: flex-start;
+  letter-spacing: 0.08em;
+  min-height: 34px;
+  padding: 6px 10px;
   text-align: left;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
-.admin-nav-group-toggle:hover {
+.admin-section-list .admin-nav-group-toggle > span:not(.admin-nav-group-caret) {
+  flex: 1 1 auto;
+}
+
+.admin-section-list .admin-nav-group-toggle:hover {
   background: #eef4ff;
+  color: var(--admin-ink);
 }
 
-.admin-nav-group-toggle:focus-visible {
+.admin-section-list .admin-nav-group-toggle:focus-visible {
   outline: 2px solid var(--admin-ink);
   outline-offset: 2px;
 }
 
+.admin-nav-group.is-open .admin-nav-group-toggle {
+  color: var(--admin-ink);
+}
+
 .admin-nav-group-caret {
-  color: var(--admin-muted);
-  font-size: 18px;
-  line-height: 1;
-  transform: rotate(90deg);
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  display: inline-block;
+  height: 7px;
+  margin-inline-end: 2px;
+  transform: rotate(-45deg);
   transition: transform 0.15s ease;
+  width: 7px;
 }
 
 .admin-nav-group.is-open .admin-nav-group-caret {
-  transform: rotate(-90deg);
+  transform: rotate(45deg);
+  margin-top: -3px;
 }
 
 .admin-shell[dir="rtl"] .admin-nav-group-toggle {
@@ -1707,14 +1725,14 @@ button {
 }
 
 .admin-shell[dir="rtl"] .admin-nav-group-caret {
-  transform: rotate(-90deg);
+  transform: rotate(135deg);
 }
 
 .admin-shell[dir="rtl"] .admin-nav-group.is-open .admin-nav-group-caret {
-  transform: rotate(90deg);
+  transform: rotate(45deg);
 }
 
-.admin-section-list button {
+.admin-section-list button:not(.admin-nav-group-toggle) {
   background: transparent;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -1722,15 +1740,15 @@ button {
   display: grid;
   gap: 4px;
   min-height: 58px;
-  padding: 10px 12px 10px 24px;
+  padding: 10px 12px 10px 22px;
   text-align: left;
 }
 
-.admin-shell[dir="rtl"] .admin-section-list button {
-  padding: 10px 24px 10px 12px;
+.admin-shell[dir="rtl"] .admin-section-list button:not(.admin-nav-group-toggle) {
+  padding: 10px 22px 10px 12px;
 }
 
-.admin-section-list button span {
+.admin-section-list button:not(.admin-nav-group-toggle) span {
   font-size: 13px;
   font-weight: 900;
   line-height: 1.25;
