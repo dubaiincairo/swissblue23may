@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { RichEditor } from "@/components/rich-editor";
+import { RephraseButton } from "@/components/rephrase-button";
 import { StockPhotoPicker } from "@/components/stock-photo-picker";
 import { TranslateButton } from "@/components/translate-button";
 
@@ -1255,7 +1256,10 @@ function StringFieldEditor({
         <span className="admin-field-label-row">
           <span>{labelFor(name, language)}</span>
           {!isOpaque ? (
-            <TranslateButton value={value} sourceLanguage={language} path={path} isHtml onChange={onChange} />
+            <span className="admin-field-actions">
+              <RephraseButton value={value} language={language} path={path} isHtml onChange={onChange} />
+              <TranslateButton value={value} sourceLanguage={language} path={path} isHtml onChange={onChange} />
+            </span>
           ) : null}
         </span>
         <RichEditor
@@ -1274,7 +1278,10 @@ function StringFieldEditor({
       <span className="admin-field-label-row">
         <span>{labelFor(name, language)}</span>
         {!isOpaque ? (
-          <TranslateButton value={value} sourceLanguage={language} path={path} onChange={onChange} />
+          <span className="admin-field-actions">
+            <RephraseButton value={value} language={language} path={path} onChange={onChange} />
+            <TranslateButton value={value} sourceLanguage={language} path={path} onChange={onChange} />
+          </span>
         ) : null}
       </span>
       <input
