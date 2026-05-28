@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { RichEditor } from "@/components/rich-editor";
 import { StockPhotoPicker } from "@/components/stock-photo-picker";
+import { TranslateButton } from "@/components/translate-button";
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type JsonObject = { [key: string]: JsonValue };
@@ -1213,6 +1214,7 @@ function StringFieldEditor({
   isNumber?: boolean;
 }) {
   const isUrl = ["href", "image", "secondaryHref", "source"].includes(name);
+  const isOpaque = ["slug", "type", "kind", "mapQuery"].includes(name);
 
   if (isUrl) {
     return (
@@ -1243,7 +1245,12 @@ function StringFieldEditor({
   if (isLongField(name, value)) {
     return (
       <label className="admin-field">
-        <span>{labelFor(name, language)}</span>
+        <span className="admin-field-label-row">
+          <span>{labelFor(name, language)}</span>
+          {!isOpaque ? (
+            <TranslateButton value={value} sourceLanguage={language} path={path} isHtml onChange={onChange} />
+          ) : null}
+        </span>
         <RichEditor
           value={value}
           onChange={(html) => onChange(path, html)}
@@ -1257,7 +1264,12 @@ function StringFieldEditor({
 
   return (
     <label className="admin-field">
-      <span>{labelFor(name, language)}</span>
+      <span className="admin-field-label-row">
+        <span>{labelFor(name, language)}</span>
+        {!isOpaque ? (
+          <TranslateButton value={value} sourceLanguage={language} path={path} onChange={onChange} />
+        ) : null}
+      </span>
       <input
         type="text"
         value={value}
