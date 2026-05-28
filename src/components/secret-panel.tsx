@@ -1512,7 +1512,7 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
     }, {});
   }, [filteredSections]);
 
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => new Set([selectedSection.group]));
 
   function toggleGroup(group: string) {
     setOpenGroups((current) => {
@@ -1616,7 +1616,7 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
           {Object.entries(groupedSections).map(([group, sections]) => {
             const localizedGroup = sectionCopy(sections[0], language).group;
             const isSearching = query.trim().length > 0;
-            const isOpen = isSearching || openGroups.has(group) || group === selectedSection.group;
+            const isOpen = isSearching || openGroups.has(group);
 
             return (
               <div className={`admin-nav-group${isOpen ? " is-open" : ""}`} key={group}>
@@ -1626,8 +1626,8 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
                   onClick={() => toggleGroup(group)}
                   aria-expanded={isOpen}
                 >
+                  <span className="admin-nav-group-caret" aria-hidden="true" />
                   <span>{localizedGroup}</span>
-                  <span className="admin-nav-group-caret" aria-hidden="true">›</span>
                 </button>
                 {isOpen
                   ? sections.map((section) => {
