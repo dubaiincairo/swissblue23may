@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 type Language = "ar" | "en";
 
-type Source = "unsplash" | "pexels" | "google";
+type Source = "unsplash" | "pexels";
 
 type StockResult = {
   id: string;
@@ -31,14 +31,7 @@ type ImportResponse = {
 const SOURCES: Array<{ id: Source; labelEn: string; labelAr: string }> = [
   { id: "unsplash", labelEn: "Unsplash", labelAr: "أنسبلاش" },
   { id: "pexels", labelEn: "Pexels", labelAr: "بكسلز" },
-  { id: "google", labelEn: "Google", labelAr: "جوجل" },
 ];
-
-const SOURCE_LABELS: Record<Source, string> = {
-  unsplash: "Unsplash",
-  pexels: "Pexels",
-  google: "Google",
-};
 
 const t = (language: Language, en: string, ar: string) => (language === "ar" ? ar : en);
 
@@ -251,7 +244,7 @@ export function StockPhotoPicker({
                       <a href={item.credit.url} target="_blank" rel="noopener noreferrer">
                         {item.credit.name}
                       </a>
-                      <span> · {SOURCE_LABELS[source]}</span>
+                      <span> · {source === "unsplash" ? "Unsplash" : "Pexels"}</span>
                     </p>
                   </li>
                 );
@@ -278,17 +271,11 @@ export function StockPhotoPicker({
 
         <footer className="admin-stock-foot">
           <small>
-            {source === "google"
-              ? t(
-                  language,
-                  "Google results may be copyrighted. Verify usage rights before publishing.",
-                  "قد تكون نتائج جوجل محمية بحقوق النشر. تأكّد من حقوق الاستخدام قبل النشر.",
-                )
-              : t(
-                  language,
-                  "Photos are free to use. Please keep photographer credit where possible.",
-                  "الصور مجانية الاستخدام. يُرجى الإبقاء على نسبة الصورة للمصوّر عند الإمكان.",
-                )}
+            {t(
+              language,
+              "Photos are free to use. Please keep photographer credit where possible.",
+              "الصور مجانية الاستخدام. يُرجى الإبقاء على نسبة الصورة للمصوّر عند الإمكان.",
+            )}
           </small>
         </footer>
       </div>
