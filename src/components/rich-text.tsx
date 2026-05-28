@@ -1,11 +1,35 @@
+import DOMPurify from "isomorphic-dompurify";
 import { Fragment, type ReactNode } from "react";
 
 const BOLD_REGEX = /\*\*([^*]+)\*\*/g;
+
+const SANITIZE_CONFIG = {
+  ALLOWED_TAGS: ["strong", "b", "em", "i", "u", "s", "strike", "del", "br"],
+  ALLOWED_ATTR: [],
+};
+
+const HTML_TAG_TEST = /<\/?[a-z][^>]*>/i;
+
+function htmlToInline(html: string): string {
+  return html
+    .replace(/<p[^>]*>\s*<\/p>/gi, "<br>")
+    .replace(/<\/p>\s*<p[^>]*>/gi, "<br>")
+    .replace(/^\s*<p[^>]*>/i, "")
+    .replace(/<\/p>\s*$/i, "")
+    .trim();
+}
 
 export function rich(text: string | number | null | undefined): ReactNode {
   if (text === null || text === undefined) return null;
   const str = String(text);
   if (str === "") return "";
+
+  if (HTML_TAG_TEST.test(str)) {
+    const inline = htmlToInline(str);
+    const clean = DOMPurify.sanitize(inline, SANITIZE_CONFIG);
+    return <span dangerouslySetInnerHTML={{ __html: clean }} />;
+  }
+
   if (!str.includes("\n") && !str.includes("**")) return str;
 
   const lines = str.split("\n");
