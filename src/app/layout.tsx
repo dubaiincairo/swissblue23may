@@ -5,8 +5,6 @@ import NavScrollState from "@/components/nav-scroll-state";
 import ScrollObserver from "@/components/scroll-observer";
 import "./globals.css";
 
-export const dynamic = "force-dynamic";
-
 const arabicSans = Noto_Kufi_Arabic({
   variable: "--font-arabic-sans",
   subsets: ["arabic"],
