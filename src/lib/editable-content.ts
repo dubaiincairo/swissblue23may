@@ -625,6 +625,8 @@ export const defaultSiteContent = {
     media: {
       logo: defaultLogoImage,
       arabicLogo: defaultLogoImage,
+      lightLogo: defaultLogoImage,
+      arabicLightLogo: defaultLogoImage,
       mainHero: heroImage,
       mainHeroSlides: heroSlides,
       jeddah: jeddahImage,
@@ -924,6 +926,7 @@ export const defaultSiteContent = {
     footerContact: footerContactEn,
     media: {
       logo: defaultLogoImage,
+      lightLogo: defaultLogoImage,
       mainHero: heroImage,
       mainHeroSlides: heroSlidesEn,
       jeddah: jeddahImage,
@@ -1479,6 +1482,12 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     defaultSiteContent.ar.media.logo,
     defaultSiteContent.en.media.logo,
   );
+  const [lightLogoAr, lightLogoEn] = sharedImageValue(
+    content.ar.media.lightLogo,
+    content.en.media.lightLogo,
+    defaultSiteContent.ar.media.lightLogo,
+    defaultSiteContent.en.media.lightLogo,
+  );
   const [mainHeroAr, mainHeroEn] = sharedImageValue(
     content.ar.media.mainHero,
     content.en.media.mainHero,
@@ -1610,6 +1619,8 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         ...content.ar.media,
         logo: logoAr,
         arabicLogo: content.ar.media.arabicLogo,
+        lightLogo: lightLogoAr,
+        arabicLightLogo: content.ar.media.arabicLightLogo,
         mainHero: heroFallbackFromSlides(syncedHeroSlides.ar, mainHeroAr),
         mainHeroSlides: syncedHeroSlides.ar,
         jeddah: jeddahAr,
@@ -1697,6 +1708,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
       media: {
         ...content.en.media,
         logo: logoEn,
+        lightLogo: lightLogoEn,
         mainHero: heroFallbackFromSlides(syncedHeroSlides.en, mainHeroEn),
         mainHeroSlides: syncedHeroSlides.en,
         jeddah: jeddahEn,

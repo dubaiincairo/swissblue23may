@@ -38,6 +38,10 @@ export async function SiteHeader() {
   const { ar, en } = await getEditableContent();
   const sharedLogo = ar.media.logo === defaultLogoImage ? en.media.logo : ar.media.logo;
   const logo = ar.media.arabicLogo === defaultLogoImage ? sharedLogo : ar.media.arabicLogo;
+  const sharedLight = ar.media.lightLogo === defaultLogoImage ? en.media.lightLogo : ar.media.lightLogo;
+  const lightLogo =
+    ar.media.arabicLightLogo === defaultLogoImage ? sharedLight : ar.media.arabicLightLogo;
+  const lightNeedsInvert = lightLogo === defaultLogoImage;
 
   return (
     <>
@@ -49,7 +53,17 @@ export async function SiteHeader() {
             aria-label="الرئيسية لفنادق سويس بلو"
           >
             <Image
-              className="h-10 w-auto object-contain"
+              className={`nav-logo--light h-10 w-auto object-contain${
+                lightNeedsInvert ? " nav-logo--needs-invert" : ""
+              }`}
+              src={lightLogo}
+              alt="فنادق سويس بلو"
+              width={210}
+              height={88}
+              priority
+            />
+            <Image
+              className="nav-logo--dark h-10 w-auto object-contain"
               src={logo}
               alt="فنادق سويس بلو"
               width={210}

@@ -26,6 +26,9 @@ function resolveMediaImage(
 export async function SiteHeaderEn() {
   const { ar, en } = await getEditableContent();
   const logo = en.media.logo === defaultLogoImage ? ar.media.logo : en.media.logo;
+  const lightLogo =
+    en.media.lightLogo === defaultLogoImage ? ar.media.lightLogo : en.media.lightLogo;
+  const lightNeedsInvert = lightLogo === defaultLogoImage;
 
   return (
     <>
@@ -33,7 +36,17 @@ export async function SiteHeaderEn() {
         <div className="nav-shell">
           <Link className="nav-logo" href="/en" aria-label="Swiss Blue Hotels home">
             <Image
-              className="h-10 w-auto object-contain"
+              className={`nav-logo--light h-10 w-auto object-contain${
+                lightNeedsInvert ? " nav-logo--needs-invert" : ""
+              }`}
+              src={lightLogo}
+              alt="Swiss Blue Hotels"
+              width={210}
+              height={88}
+              priority
+            />
+            <Image
+              className="nav-logo--dark h-10 w-auto object-contain"
               src={logo}
               alt="Swiss Blue Hotels"
               width={210}
