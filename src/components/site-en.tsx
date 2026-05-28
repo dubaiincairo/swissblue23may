@@ -29,33 +29,15 @@ export async function SiteHeaderEn() {
     usableLogo(en.media.logo) ||
     usableLogo(ar.media.logo) ||
     usableLogo(ar.media.arabicLogo);
-  const dedicatedLight =
-    usableLogo(en.media.lightLogo) ||
-    usableLogo(ar.media.lightLogo) ||
-    usableLogo(ar.media.arabicLightLogo);
-  const lightLogo = dedicatedLight || logo;
-  const lightNeedsInvert = !dedicatedLight;
 
   return (
     <>
       <nav className="site-nav">
         <div className="nav-shell">
           <Link className="nav-logo" href="/en" aria-label="Swiss Blue Hotels home">
-            {lightLogo ? (
-              <Image
-                className={`nav-logo--light h-10 w-auto object-contain${
-                  lightNeedsInvert ? " nav-logo--needs-invert" : ""
-                }`}
-                src={lightLogo}
-                alt="Swiss Blue Hotels"
-                width={210}
-                height={88}
-                priority
-              />
-            ) : null}
             {logo ? (
               <Image
-                className="nav-logo--dark h-10 w-auto object-contain"
+                className="nav-logo-image h-10 w-auto object-contain"
                 src={logo}
                 alt="Swiss Blue Hotels"
                 width={210}

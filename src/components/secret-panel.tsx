@@ -421,8 +421,6 @@ const fieldLabels: Record<string, string> = {
   howToEnjoy: "How to enjoy",
   image: "Photo",
   arabicLogo: "Arabic logo",
-  lightLogo: "Light logo (for transparent nav)",
-  arabicLightLogo: "Arabic light logo (for transparent nav)",
   jazan: "Jazan photo",
   jeddah: "Jeddah photo",
   items: "Cards",
@@ -493,8 +491,6 @@ const arabicFieldLabels: Record<string, string> = {
   howToEnjoy: "طريقة الاستفادة",
   image: "الصورة",
   arabicLogo: "الشعار العربي",
-  lightLogo: "الشعار الفاتح (للنّاف الشفاف)",
-  arabicLightLogo: "الشعار العربي الفاتح (للنّاف الشفاف)",
   jazan: "صورة جازان",
   jeddah: "صورة جدة",
   items: "البطاقات",
@@ -564,8 +560,6 @@ const fieldOrder = [
   "button",
   "logo",
   "arabicLogo",
-  "lightLogo",
-  "arabicLightLogo",
   "mainHero",
   "mainHeroSlides",
   "destination",
@@ -735,8 +729,6 @@ function isImageField(name: string, path: Array<string | number>, value: string)
     "image",
     "logo",
     "arabicLogo",
-    "lightLogo",
-    "arabicLightLogo",
     "mainHero",
     "jeddah",
     "jazan",
@@ -754,11 +746,7 @@ function imageGuidance(name: string, path: Array<string | number>) {
   const location = path.join(".");
 
   if (name === "logo" || name === "arabicLogo") {
-    return "Recommended: SVG or transparent PNG, around 380 x 160 px. Logo uploads automatically remove light backgrounds. Accepted: JPG, PNG, WebP, AVIF, SVG.";
-  }
-
-  if (name === "lightLogo" || name === "arabicLightLogo") {
-    return "White / light version of the logo used over the dark hero. Recommended: SVG or transparent PNG, around 380 x 160 px, white-on-transparent. Accepted: JPG, PNG, WebP, AVIF, SVG.";
+    return "Recommended: SVG or transparent PNG, around 380 x 160 px. The same logo is used everywhere; over the dark hero it is auto-inverted to white. Accepted: JPG, PNG, WebP, AVIF, SVG.";
   }
 
   if (location.includes("mainHeroSlides")) {
@@ -784,11 +772,7 @@ function localizedImageGuidance(name: string, path: Array<string | number>, lang
   const location = path.join(".");
 
   if (name === "logo" || name === "arabicLogo") {
-    return "المقاس المقترح: SVG أو PNG شفاف بحجم يقارب 380 x 160 بكسل. يتم إزالة الخلفيات الفاتحة تلقائيا عند رفع الشعار. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
-  }
-
-  if (name === "lightLogo" || name === "arabicLightLogo") {
-    return "نسخة فاتحة / بيضاء من الشعار للاستخدام فوق البانر الداكن. المقاس المقترح: SVG أو PNG شفاف بحجم يقارب 380 x 160 بكسل بلون أبيض على خلفية شفافة. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
+    return "المقاس المقترح: SVG أو PNG شفاف بحجم يقارب 380 x 160 بكسل. يتم استخدام نفس الشعار في كل مكان، ويتم قلب لونه تلقائيا إلى الأبيض فوق البانر الداكن. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
   }
 
   if (location.includes("mainHeroSlides")) {
@@ -807,12 +791,7 @@ function localizedImageGuidance(name: string, path: Array<string | number>, lang
 }
 
 function isLogoField(name: string) {
-  return (
-    name === "logo" ||
-    name === "arabicLogo" ||
-    name === "lightLogo" ||
-    name === "arabicLightLogo"
-  );
+  return name === "logo" || name === "arabicLogo";
 }
 
 function acceptsVideo(name: string, path: Array<string | number>) {

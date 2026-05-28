@@ -636,8 +636,6 @@ export const defaultSiteContent = {
     media: {
       logo: defaultLogoImage,
       arabicLogo: defaultLogoImage,
-      lightLogo: defaultLogoImage,
-      arabicLightLogo: defaultLogoImage,
       mainHero: heroImage,
       mainHeroSlides: heroSlides,
       jeddah: jeddahImage,
@@ -937,7 +935,6 @@ export const defaultSiteContent = {
     footerContact: footerContactEn,
     media: {
       logo: defaultLogoImage,
-      lightLogo: defaultLogoImage,
       mainHero: heroImage,
       mainHeroSlides: heroSlidesEn,
       jeddah: jeddahImage,
@@ -1235,6 +1232,16 @@ export const defaultSiteContent = {
 
 export type EditableSiteContent = typeof defaultSiteContent;
 
+const DEPRECATED_MEDIA_KEYS = ["lightLogo", "arabicLightLogo"] as const;
+
+function stripDeprecatedMediaKeys<T extends Record<string, unknown>>(media: T): T {
+  const next = { ...media };
+  for (const key of DEPRECATED_MEDIA_KEYS) {
+    delete next[key];
+  }
+  return next;
+}
+
 function sharedImageValue(
   left: string,
   right: string,
@@ -1493,12 +1500,6 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     defaultSiteContent.ar.media.logo,
     defaultSiteContent.en.media.logo,
   );
-  const [lightLogoAr, lightLogoEn] = sharedImageValue(
-    content.ar.media.lightLogo,
-    content.en.media.lightLogo,
-    defaultSiteContent.ar.media.lightLogo,
-    defaultSiteContent.en.media.lightLogo,
-  );
   const [mainHeroAr, mainHeroEn] = sharedImageValue(
     content.ar.media.mainHero,
     content.en.media.mainHero,
@@ -1623,15 +1624,16 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     defaultSiteContent.en.subpages.hotelPolicy.hero.image,
   );
 
+  const arMediaWithoutDeprecated = stripDeprecatedMediaKeys(content.ar.media);
+  const enMediaWithoutDeprecated = stripDeprecatedMediaKeys(content.en.media);
+
   return {
     ar: {
       ...content.ar,
       media: {
-        ...content.ar.media,
+        ...arMediaWithoutDeprecated,
         logo: logoAr,
         arabicLogo: content.ar.media.arabicLogo,
-        lightLogo: lightLogoAr,
-        arabicLightLogo: content.ar.media.arabicLightLogo,
         mainHero: heroFallbackFromSlides(syncedHeroSlides.ar, mainHeroAr),
         mainHeroSlides: syncedHeroSlides.ar,
         jeddah: jeddahAr,
@@ -1717,9 +1719,8 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     en: {
       ...content.en,
       media: {
-        ...content.en.media,
+        ...enMediaWithoutDeprecated,
         logo: logoEn,
-        lightLogo: lightLogoEn,
         mainHero: heroFallbackFromSlides(syncedHeroSlides.en, mainHeroEn),
         mainHeroSlides: syncedHeroSlides.en,
         jeddah: jeddahEn,

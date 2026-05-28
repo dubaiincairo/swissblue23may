@@ -171,35 +171,13 @@ button {
   position: relative;
 }
 
-.nav-logo--dark,
-.nav-logo--light {
-  transition: opacity 240ms ease;
-}
-
-.nav-logo--dark {
-  opacity: 0;
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.nav-logo--light {
-  opacity: 1;
-  filter: drop-shadow(0 1px 4px rgba(8, 28, 70, 0.25));
-}
-
-.nav-logo--light.nav-logo--needs-invert {
+.nav-logo-image {
   filter: brightness(0) invert(1) drop-shadow(0 1px 4px rgba(8, 28, 70, 0.25));
+  transition: filter 280ms ease;
 }
 
-[data-nav-solid="true"] .nav-logo--dark {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-[data-nav-solid="true"] .nav-logo--light {
-  opacity: 0;
-  pointer-events: none;
+[data-nav-solid="true"] .nav-logo-image {
+  filter: none;
 }
 
 .nav-side {

@@ -40,12 +40,6 @@ export async function SiteHeader() {
     usableLogo(ar.media.arabicLogo) ||
     usableLogo(ar.media.logo) ||
     usableLogo(en.media.logo);
-  const dedicatedLight =
-    usableLogo(ar.media.arabicLightLogo) ||
-    usableLogo(ar.media.lightLogo) ||
-    usableLogo(en.media.lightLogo);
-  const lightLogo = dedicatedLight || logo;
-  const lightNeedsInvert = !dedicatedLight;
 
   return (
     <>
@@ -56,21 +50,9 @@ export async function SiteHeader() {
             href="/ar"
             aria-label="الرئيسية لفنادق سويس بلو"
           >
-            {lightLogo ? (
-              <Image
-                className={`nav-logo--light h-10 w-auto object-contain${
-                  lightNeedsInvert ? " nav-logo--needs-invert" : ""
-                }`}
-                src={lightLogo}
-                alt="فنادق سويس بلو"
-                width={210}
-                height={88}
-                priority
-              />
-            ) : null}
             {logo ? (
               <Image
-                className="nav-logo--dark h-10 w-auto object-contain"
+                className="nav-logo-image h-10 w-auto object-contain"
                 src={logo}
                 alt="فنادق سويس بلو"
                 width={210}
