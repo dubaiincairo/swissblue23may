@@ -1983,6 +1983,57 @@ button {
   font-weight: 850;
 }
 
+.admin-field-label-row {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.admin-translate-button {
+  align-items: center;
+  background: white;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  color: var(--admin-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 850;
+  gap: 5px;
+  letter-spacing: 0.03em;
+  padding: 4px 8px;
+  text-transform: uppercase;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.admin-translate-button:hover:not(:disabled) {
+  background: #eef4ff;
+  border-color: #8aa4d4;
+  color: var(--admin-ink);
+}
+
+.admin-translate-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.admin-translate-button.is-loading {
+  color: var(--admin-ink);
+}
+
+.admin-translate-button.is-success {
+  background: #e6f7ec;
+  border-color: #8cc99e;
+  color: #1f6b3a;
+}
+
+.admin-translate-button.is-error {
+  background: #fdecea;
+  border-color: #f2bcb6;
+  color: #7a1f15;
+}
+
 .admin-field input,
 .admin-field textarea {
   background: white;
