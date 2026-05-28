@@ -2,24 +2,41 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type ParsedValue = {
-  readonly prefix: string;
-  readonly target: number;
-  readonly suffix: string;
-};
+type Segment =
+  | { kind: "number"; target: number }
+  | { kind: "static"; text: string };
 
-function parseValue(value: string): ParsedValue | null {
-  const match = value.match(/^(\D*)(\d+)(\D*)$/);
+function parseSegments(value: string): { segments: Segment[]; hasNumber: boolean } {
+  const segments: Segment[] = [];
+  let hasNumber = false;
 
-  if (!match) {
-    return null;
+  for (const match of value.matchAll(/(\d+)|(\D+)/g)) {
+    if (match[1] !== undefined) {
+      segments.push({ kind: "number", target: Number.parseInt(match[1], 10) });
+      hasNumber = true;
+    } else if (match[2] !== undefined) {
+      segments.push({ kind: "static", text: match[2] });
+    }
   }
 
-  return {
-    prefix: match[1] ?? "",
-    target: Number.parseInt(match[2] ?? "0", 10),
-    suffix: match[3] ?? "",
-  };
+  return { segments, hasNumber };
+}
+
+function renderProgress(segments: Segment[], progress: number) {
+  const eased = 1 - Math.pow(1 - progress, 3);
+  return segments
+    .map((segment) =>
+      segment.kind === "static"
+        ? segment.text
+        : String(Math.round(eased * segment.target)),
+    )
+    .join("");
+}
+
+function renderZero(segments: Segment[]) {
+  return segments
+    .map((segment) => (segment.kind === "static" ? segment.text : "0"))
+    .join("");
 }
 
 function prefersReducedMotion() {
@@ -39,15 +56,15 @@ export function AnimatedCounter({
   duration?: number;
   className?: string;
 }) {
-  const parsed = useMemo(() => parseValue(value), [value]);
+  const parsed = useMemo(() => parseSegments(value), [value]);
   const ref = useRef<HTMLSpanElement | null>(null);
   const animationStartedRef = useRef(false);
   const [display, setDisplay] = useState(
-    parsed ? `${parsed.prefix}0${parsed.suffix}` : value,
+    parsed.hasNumber ? renderZero(parsed.segments) : value,
   );
 
   useEffect(() => {
-    if (!parsed) {
+    if (!parsed.hasNumber) {
       return;
     }
 
@@ -60,7 +77,7 @@ export function AnimatedCounter({
     const runDuration = reduceMotion ? 600 : duration;
 
     function runAnimation() {
-      if (animationStartedRef.current || !parsed) {
+      if (animationStartedRef.current) {
         return;
       }
       animationStartedRef.current = true;
@@ -70,9 +87,7 @@ export function AnimatedCounter({
       const tick = (now: number) => {
         const elapsed = now - start;
         const progress = Math.min(elapsed / runDuration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.round(eased * parsed.target);
-        setDisplay(`${parsed.prefix}${current}${parsed.suffix}`);
+        setDisplay(renderProgress(parsed.segments, progress));
 
         if (progress < 1) {
           requestAnimationFrame(tick);
@@ -89,8 +104,6 @@ export function AnimatedCounter({
             continue;
           }
 
-          // Small delay so the user has a moment to register the "0" state
-          // before the count-up begins.
           window.setTimeout(runAnimation, 250);
           observer.disconnect();
         }
@@ -103,9 +116,7 @@ export function AnimatedCounter({
 
     observer.observe(node);
 
-    // Safety net: if for some reason the observer never fires (e.g. the
-    // element is rendered but the page is hidden), still animate after a
-    // short timeout so the counter never gets stuck on "0".
+    // Safety net: animate after a short timeout if the observer never fires.
     const fallback = window.setTimeout(runAnimation, 3500);
 
     return () => {
