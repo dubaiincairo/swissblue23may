@@ -534,6 +534,15 @@ button {
   line-height: 1.35;
 }
 
+.insight-card strong > span,
+.insight-card strong span {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
 .insight-card p {
   color: var(--text-secondary);
   font-size: 13px;
