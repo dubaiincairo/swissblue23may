@@ -19,9 +19,9 @@ export default async function SocialResponsibilityPageEn() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{content.intro.eyebrow}</span>
-          <h2>{content.intro.title}</h2>
-          <p>{content.intro.text}</p>
+          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+          <h2>{rich(content.intro.title)}</h2>
+          <p>{rich(content.intro.text)}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {content.pillars.map((item, index) => (
@@ -30,9 +30,9 @@ export default async function SocialResponsibilityPageEn() {
               key={item.title}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{item.title}</span>
+              <span className="eyebrow">{rich(item.title)}</span>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                {item.text}
+                {rich(item.text)}
               </p>
             </article>
           ))}
@@ -41,12 +41,12 @@ export default async function SocialResponsibilityPageEn() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="reveal-slide-up">
-          <span className="eyebrow">{content.initiativesIntro.eyebrow}</span>
+          <span className="eyebrow">{rich(content.initiativesIntro.eyebrow)}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {content.initiativesIntro.title}
+            {rich(content.initiativesIntro.title)}
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--text-secondary)]">
-            {content.initiativesIntro.text}
+            {rich(content.initiativesIntro.text)}
           </p>
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -56,9 +56,9 @@ export default async function SocialResponsibilityPageEn() {
               key={item.title}
               style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{item.title}</span>
+              <span className="eyebrow">{rich(item.title)}</span>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                {item.text}
+                {rich(item.text)}
               </p>
             </article>
           ))}
@@ -67,9 +67,9 @@ export default async function SocialResponsibilityPageEn() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{content.reportingIntro.eyebrow}</span>
-          <h2>{content.reportingIntro.title}</h2>
-          <p>{content.reportingIntro.text}</p>
+          <span className="eyebrow">{rich(content.reportingIntro.eyebrow)}</span>
+          <h2>{rich(content.reportingIntro.title)}</h2>
+          <p>{rich(content.reportingIntro.text)}</p>
         </div>
       </section>
 

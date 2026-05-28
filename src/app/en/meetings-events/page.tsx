@@ -2,7 +2,6 @@ import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { getEditableContent } from "@/lib/editable-content";
 
-
 export const dynamic = "force-dynamic";
 
 export default async function MeetingsEventsPageEn() {
