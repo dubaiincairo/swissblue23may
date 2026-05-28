@@ -28,38 +28,43 @@ export const navGroupsEn = [
   {
     label: "Stay",
     links: [
-      { label: "Hospitality Properties", href: "/en/hotels" },
-      { label: "Rooms & Suites", href: "/en/rooms-suites" },
+      { label: "Hospitality & Properties", href: "/en/hotels" },
+      { label: "Services & Amenities", href: "/en/amenities-services" },
     ],
   },
   {
     label: "Experience",
     links: [
-      { label: "Services", href: "/en/amenities-services" },
-      { label: "Dining Experience", href: "/en/dining" },
-      { label: "Destinations / Cities", href: "/en/destinations" },
+      { label: "Destinations & Landmarks", href: "/en/destinations" },
+      { label: "Dining", href: "/en/dining" },
     ],
   },
   {
     label: "Offers",
     links: [
-      { label: "Offers & Discounts", href: "/en/offers" },
-      { label: "Loyalty Program", href: "/en/loyalty" },
+      { label: "Special Promotions", href: "/en/offers" },
+      { label: "SwissBlue Membership", href: "/en/loyalty" },
     ],
   },
   {
     label: "Business",
     links: [
-      { label: "Corporate Deals", href: "/en/corporate-deals" },
-      { label: "Group Bookings", href: "/en/group-bookings" },
+      { label: "Groups & Corporate Deals", href: "/en/corporate-deals" },
       { label: "Meetings & Events", href: "/en/meetings-events" },
     ],
   },
   {
-    label: "About",
+    label: "Community",
     links: [
-      { label: "About Us", href: "/en/about" },
-      { label: "Contact Us", href: "/en/contact" },
+      { label: "Careers", href: "/en/about" },
+      { label: "Social Responsibility", href: "/en/about" },
+    ],
+  },
+  {
+    label: "Contact Us",
+    links: [
+      { label: "Central Reservation Office", href: "/en/contact" },
+      { label: "Complaints & Suggestions", href: "/en/contact" },
     ],
   },
 ];
