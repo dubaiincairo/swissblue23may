@@ -1,4 +1,5 @@
 import React from "react";
+import { rich } from "@/components/rich-text";
 
 const Wifi = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -244,7 +245,7 @@ export function ServiceTiles({
               <span className="service-tile-tag">
                 {locale === "ar" ? match.tag : match.tagEn}
               </span>
-              <span className="service-tile-label">{item}</span>
+              <span className="service-tile-label">{rich(item)}</span>
             </div>
           </article>
         );

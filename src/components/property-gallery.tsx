@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { rich } from "@/components/rich-text";
 
 type GalleryImage = {
   readonly image: string;
@@ -96,7 +97,7 @@ export function PropertyGallery({
                 <span>
                   {isArabic ? "الصورة" : "Photo"} {activeIndex + 1} / {images.length}
                 </span>
-                <h3>{images[activeIndex].title}</h3>
+                <h3>{rich(images[activeIndex].title)}</h3>
               </div>
               <button type="button" onClick={() => setActiveIndex(null)}>
                 {isArabic ? "إغلاق" : "Close"}

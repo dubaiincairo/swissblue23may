@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { rich } from "@/components/rich-text";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
-import { defaultLogoImage, getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, usableLogo } from "@/lib/editable-content";
 
 function resolveMediaImage(
   image: string,
@@ -36,8 +37,7 @@ function arabicHref(href: string) {
 
 export async function SiteHeader() {
   const { ar, en } = await getEditableContent();
-  const sharedLogo = ar.media.logo === defaultLogoImage ? en.media.logo : ar.media.logo;
-  const logo = ar.media.arabicLogo === defaultLogoImage ? sharedLogo : ar.media.arabicLogo;
+  const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
 
   return (
     <>
@@ -48,26 +48,28 @@ export async function SiteHeader() {
             href="/ar"
             aria-label="الرئيسية لفنادق سويس بلو"
           >
-            <Image
-              className="h-10 w-auto object-contain"
-              src={logo}
-              alt="فنادق سويس بلو"
-              width={210}
-              height={88}
-              priority
-            />
+            {logo ? (
+              <Image
+                className="nav-logo-image h-10 w-auto object-contain"
+                src={logo}
+                alt="فنادق سويس بلو"
+                width={210}
+                height={88}
+                priority
+              />
+            ) : null}
           </Link>
           <div className="nav-side">
             <div className="nav-group-row">
               {ar.navGroups.map((group) => (
                 <div className="nav-dropdown" key={group.label}>
                   <button className="nav-parent" type="button">
-                    {group.label}
+                    {rich(group.label)}
                   </button>
                   <div className="nav-menu">
                     {group.links.map((item) => (
                       <Link href={arabicHref(item.href)} key={`${group.label}-${item.href}`}>
-                        {item.label}
+                        {rich(item.label)}
                       </Link>
                     ))}
                   </div>
@@ -122,20 +124,21 @@ export function SiteFooter() {
 
 async function SiteFooterContent() {
   const { ar, en } = await getEditableContent();
-  const sharedLogo = ar.media.logo === defaultLogoImage ? en.media.logo : ar.media.logo;
-  const logo = ar.media.arabicLogo === defaultLogoImage ? sharedLogo : ar.media.arabicLogo;
+  const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
         <div>
-          <Image
-            className="h-12 w-auto"
-            src={logo}
-            alt="فنادق سويس بلو"
-            width={190}
-            height={80}
-          />
+          {logo ? (
+            <Image
+              className="h-12 w-auto"
+              src={logo}
+              alt="فنادق سويس بلو"
+              width={190}
+              height={80}
+            />
+          ) : null}
           <p className="mt-5 max-w-sm leading-7">
             فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة
             للضيوف الأفراد والشركات والإقامات الطويلة.
@@ -151,7 +154,7 @@ async function SiteFooterContent() {
           {ar.footerSections.map((section) => (
             <div key={section.title}>
               <h2 className="text-sm font-bold text-[var(--text-primary)]">
-                {section.title}
+                {rich(section.title)}
               </h2>
               <div className="mt-4 grid gap-3">
                 {section.links.map((item) => (
@@ -160,7 +163,7 @@ async function SiteFooterContent() {
                     href={arabicHref(item.href)}
                     key={`${section.title}-${item.href}`}
                   >
-                    {item.label}
+                    {rich(item.label)}
                   </Link>
                 ))}
               </div>
@@ -172,7 +175,7 @@ async function SiteFooterContent() {
           <h2 className="text-sm font-bold text-[var(--text-primary)]">الدعم والحجز</h2>
           <ul className="mt-4 grid gap-3">
             {ar.footerContact.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>{rich(item)}</li>
             ))}
           </ul>
           <a className="btn btn-primary mt-6 justify-center" href={BOOKING_URL}>
@@ -218,12 +221,12 @@ export async function PageHero({
       />
       <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(8,28,70,0.84),rgba(18,70,168,0.56)_52%,rgba(8,28,70,0.14))]" />
       <div className="relative mx-auto max-w-7xl px-4 py-24 text-white sm:px-6 lg:px-8 lg:py-32">
-        <span className="hero-kicker reveal-slide-down">{eyebrow}</span>
+        <span className="hero-kicker reveal-slide-down">{rich(eyebrow)}</span>
         <h1 className="mt-5 max-w-4xl text-[38px] font-bold leading-[1.15] text-balance sm:text-[58px] reveal-slide-up">
-          {title}
+          {rich(title)}
         </h1>
         <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 sm:text-lg reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
-          {text}
+          {rich(text)}
         </p>
       </div>
     </section>
@@ -245,13 +248,13 @@ export function CtaBand({
         <div className="relative max-w-3xl">
           <span className="eyebrow text-white/72">احجز مباشرة</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">
-            {title}
+            {rich(title)}
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
-            {text}
+            {rich(text)}
           </p>
           <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
-            {cta}
+            {rich(cta)}
           </a>
         </div>
       </div>

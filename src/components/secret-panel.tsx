@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { RichEditor } from "@/components/rich-editor";
+import { StockPhotoPicker } from "@/components/stock-photo-picker";
+import { TranslateButton } from "@/components/translate-button";
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type JsonObject = { [key: string]: JsonValue };
@@ -29,24 +32,38 @@ const languages: Record<Language, { label: string; short: string; previewHref: s
 const adminSections: AdminSection[] = [
   {
     id: "navGroups",
-    group: "Website structure",
+    group: "Site-wide",
     label: "Navigation",
     description: "Main menu groups, dropdown labels, and page links.",
     path: ["navGroups"],
   },
   {
     id: "media",
-    group: "Website structure",
+    group: "Site-wide",
     label: "Website photos",
     description: "Logo, the three hero slides, city photos, and shared images.",
     path: ["media"],
   },
   {
     id: "hospitalityGallery",
-    group: "Website structure",
+    group: "Site-wide",
     label: "Hospitality gallery",
     description: "Homepage hospitality gallery photos and captions.",
     path: ["media", "gallery"],
+  },
+  {
+    id: "footerSections",
+    group: "Site-wide",
+    label: "Footer links",
+    description: "Footer columns and supporting site links.",
+    path: ["footerSections"],
+  },
+  {
+    id: "footerContact",
+    group: "Site-wide",
+    label: "Footer support",
+    description: "Support bullets shown beside the footer booking action.",
+    path: ["footerContact"],
   },
   {
     id: "hero",
@@ -113,154 +130,178 @@ const adminSections: AdminSection[] = [
   },
   {
     id: "homepageFaq",
-    group: "FAQ",
+    group: "Homepage",
     label: "Homepage FAQ",
     description: "Questions shown near the bottom of the homepage.",
     path: ["faq", "homepage"],
   },
   {
-    id: "propertyFaq",
-    group: "FAQ",
-    label: "Property FAQ",
-    description: "Questions shown on every hotel detail page.",
-    path: ["faq", "property"],
-  },
-  {
-    id: "faqCategories",
-    group: "FAQ",
-    label: "Full FAQ page",
-    description: "FAQ categories and questions shown on the full FAQ page.",
-    path: ["faq", "categories"],
-  },
-  {
-    id: "footerSections",
-    group: "Footer",
-    label: "Footer links",
-    description: "Footer columns and supporting site links.",
-    path: ["footerSections"],
-  },
-  {
-    id: "footerContact",
-    group: "Footer",
-    label: "Footer support",
-    description: "Support bullets shown beside the footer booking action.",
-    path: ["footerContact"],
-  },
-  {
-    id: "aboutPage",
-    group: "Subpages",
-    label: "About page",
-    description: "About page hero banner, philosophy paragraph, and brand pillars.",
-    path: ["subpages", "about"],
-  },
-  {
-    id: "diningPage",
-    group: "Subpages",
-    label: "Dining page",
-    description: "Dining page hero banner, introduction text, and food services list.",
-    path: ["subpages", "dining"],
+    id: "hotelsSubpage",
+    group: "Stay",
+    label: "Hotels page",
+    description: "Hotels page hero and introduction text.",
+    path: ["subpages", "hotelsPage"],
   },
   {
     id: "roomsSuitesPage",
-    group: "Subpages",
+    group: "Stay",
     label: "Rooms & Suites page",
     description: "Rooms page hero, classification principles, table intro, and classifications table.",
     path: ["subpages", "roomsSuites"],
   },
   {
     id: "servicedApartmentsPage",
-    group: "Subpages",
+    group: "Stay",
     label: "Serviced Apartments page",
     description: "Serviced Apartments page hero banner.",
     path: ["subpages", "servicedApartments"],
   },
   {
     id: "amenitiesServicesPage",
-    group: "Subpages",
+    group: "Stay",
     label: "Amenities & Services page",
     description: "Amenities & Services page hero banner.",
     path: ["subpages", "amenitiesServices"],
   },
   {
-    id: "loyaltySubpage",
-    group: "Subpages",
-    label: "Loyalty page",
-    description: "Loyalty page hero banner.",
-    path: ["subpages", "loyaltyPage"],
+    id: "propertyFaq",
+    group: "Stay",
+    label: "Property FAQ",
+    description: "Questions shown on every hotel detail page.",
+    path: ["faq", "property"],
   },
   {
-    id: "meetingsEventsPage",
-    group: "Subpages",
-    label: "Meetings & Events page",
-    description: "Meetings page hero, intro, documents, and corporate deal features.",
-    path: ["subpages", "meetingsEvents"],
+    id: "destinationsSubpage",
+    group: "Experience",
+    label: "Destinations page",
+    description: "Destinations page hero banner.",
+    path: ["subpages", "destinationsPage"],
   },
   {
-    id: "corporateDealsSubpage",
-    group: "Subpages",
-    label: "Corporate Deals page",
-    description: "Corporate Deals page hero banner.",
-    path: ["subpages", "corporateDealsPage"],
-  },
-  {
-    id: "groupBookingsPage",
-    group: "Subpages",
-    label: "Group Bookings page",
-    description: "Group Bookings page hero, introduction text, and requirements list.",
-    path: ["subpages", "groupBookings"],
-  },
-  {
-    id: "contactPage",
-    group: "Subpages",
-    label: "Contact page",
-    description: "Contact page hero, channels lists, and direct booking intro.",
-    path: ["subpages", "contact"],
+    id: "diningPage",
+    group: "Experience",
+    label: "Dining page",
+    description: "Dining page hero banner, introduction text, and food services list.",
+    path: ["subpages", "dining"],
   },
   {
     id: "offersSubpage",
-    group: "Subpages",
+    group: "Offers",
     label: "Offers page",
     description: "Offers page hero, main offers, and booking benefits lists.",
     path: ["subpages", "offersPage"],
   },
   {
+    id: "loyaltySubpage",
+    group: "Offers",
+    label: "Loyalty page",
+    description: "Loyalty page hero banner.",
+    path: ["subpages", "loyaltyPage"],
+  },
+  {
+    id: "corporateDealsSubpage",
+    group: "Business",
+    label: "Corporate Deals page",
+    description: "Corporate Deals page hero banner.",
+    path: ["subpages", "corporateDealsPage"],
+  },
+  {
+    id: "meetingsEventsPage",
+    group: "Business",
+    label: "Meetings & Events page",
+    description: "Meetings page hero, intro, documents, and corporate deal features.",
+    path: ["subpages", "meetingsEvents"],
+  },
+  {
+    id: "groupBookingsPage",
+    group: "Business",
+    label: "Group Bookings page",
+    description: "Group Bookings page hero, introduction text, and requirements list.",
+    path: ["subpages", "groupBookings"],
+  },
+  {
+    id: "careersSubpage",
+    group: "Community",
+    label: "Careers page",
+    description: "Hero, why-join cards, departments, and apply panel.",
+    path: ["subpages", "careersPage"],
+  },
+  {
+    id: "csrSubpage",
+    group: "Community",
+    label: "Social Responsibility page",
+    description: "Hero, pillars, initiatives, and reporting.",
+    path: ["subpages", "csrPage"],
+  },
+  {
+    id: "reservationOfficeSubpage",
+    group: "Contact Us",
+    label: "Central Reservation page",
+    description: "Hero, channels (phone / WhatsApp / email), services, and benefits.",
+    path: ["subpages", "reservationOfficePage"],
+  },
+  {
+    id: "feedbackSubpage",
+    group: "Contact Us",
+    label: "Complaints & Suggestions page",
+    description: "Hero, channels, process steps, categories, and escalation path.",
+    path: ["subpages", "feedbackPage"],
+  },
+  {
+    id: "contactPage",
+    group: "Contact Us",
+    label: "Contact page",
+    description: "Contact page hero, channels lists, and direct booking intro.",
+    path: ["subpages", "contact"],
+  },
+  {
+    id: "aboutPage",
+    group: "Company",
+    label: "About page",
+    description: "About page hero banner, philosophy paragraph, and brand pillars.",
+    path: ["subpages", "about"],
+  },
+  {
     id: "faqSubpage",
-    group: "Subpages",
+    group: "Company",
     label: "FAQ page",
     description: "FAQ page hero banner.",
     path: ["subpages", "faqPage"],
   },
   {
-    id: "hotelsSubpage",
-    group: "Subpages",
-    label: "Hotels page",
-    description: "Hotels page hero and introduction text.",
-    path: ["subpages", "hotelsPage"],
-  },
-  {
-    id: "destinationsSubpage",
-    group: "Subpages",
-    label: "Destinations page",
-    description: "Destinations page hero banner.",
-    path: ["subpages", "destinationsPage"],
+    id: "faqCategories",
+    group: "Company",
+    label: "Full FAQ page",
+    description: "FAQ categories and questions shown on the full FAQ page.",
+    path: ["faq", "categories"],
   },
 ];
 
 const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   navGroups: {
-    group: "هيكل الموقع",
+    group: "إعدادات الموقع",
     label: "القائمة الرئيسية",
     description: "مجموعات القائمة، عناوين القوائم المنسدلة، وروابط الصفحات.",
   },
   media: {
-    group: "هيكل الموقع",
+    group: "إعدادات الموقع",
     label: "صور الموقع",
     description: "الشعار، شرائح البانر الثلاث، صور المدن، والصور المشتركة.",
   },
   hospitalityGallery: {
-    group: "هيكل الموقع",
+    group: "إعدادات الموقع",
     label: "معرض الضيافة",
     description: "صور معرض الضيافة في الصفحة الرئيسية وعناوينها.",
+  },
+  footerSections: {
+    group: "إعدادات الموقع",
+    label: "روابط الفوتر",
+    description: "أعمدة الفوتر وروابط الموقع المساندة.",
+  },
+  footerContact: {
+    group: "إعدادات الموقع",
+    label: "دعم الفوتر",
+    description: "نقاط الدعم المعروضة بجانب زر الحجز في الفوتر.",
   },
   hero: {
     group: "الصفحة الرئيسية",
@@ -308,105 +349,133 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     description: "دعوة الحجز في نهاية الصفحة.",
   },
   homepageFaq: {
-    group: "الأسئلة الشائعة",
+    group: "الصفحة الرئيسية",
     label: "أسئلة الصفحة الرئيسية",
     description: "الأسئلة المعروضة قرب نهاية الصفحة الرئيسية.",
   },
-  propertyFaq: {
-    group: "الأسئلة الشائعة",
-    label: "أسئلة صفحات الفنادق",
-    description: "الأسئلة المعروضة في كل صفحة فندق.",
-  },
-  faqCategories: {
-    group: "الأسئلة الشائعة",
-    label: "صفحة الأسئلة الشائعة",
-    description: "تصنيفات الأسئلة والأسئلة المعروضة في صفحة الأسئلة الشائعة الكاملة.",
-  },
-  footerSections: {
-    group: "الفوتر",
-    label: "روابط الفوتر",
-    description: "أعمدة الفوتر وروابط الموقع المساندة.",
-  },
-  footerContact: {
-    group: "الفوتر",
-    label: "دعم الفوتر",
-    description: "نقاط الدعم المعروضة بجانب زر الحجز في الفوتر.",
-  },
-  aboutPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة من نحن",
-    description: "بانر صفحة من نحن، فقرة الفلسفة، وركائز العلامة التجارية.",
-  },
-  diningPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة الطعام",
-    description: "بانر صفحة الطعام، النص التعريفي، وقائمة خدمات الطعام.",
+  hotelsSubpage: {
+    group: "الإقامة",
+    label: "صفحة الفنادق والوجهات",
+    description: "بانر صفحة الفنادق والنص التعريفي المساعد.",
   },
   roomsSuitesPage: {
-    group: "الصفحات الفرعية",
+    group: "الإقامة",
     label: "صفحة الغرف والأجنحة",
     description: "بانر صفحة الغرف، مبادئ التصنيف، مقدمة الجدول، وجدول التصنيفات المعتمد.",
   },
   servicedApartmentsPage: {
-    group: "الصفحات الفرعية",
+    group: "الإقامة",
     label: "صفحة الشقق الفندقية",
     description: "بانر صفحة الشقق الفندقية والخيارات المتاحة.",
   },
   amenitiesServicesPage: {
-    group: "الصفحات الفرعية",
+    group: "الإقامة",
     label: "صفحة الخدمات والمرافق",
     description: "بانر صفحة الخدمات والمرافق الأساسية للضيوف.",
   },
-  loyaltySubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة برنامج الولاء",
-    description: "بانر صفحة برنامج الولاء والمزايا المباشرة للضيوف.",
+  propertyFaq: {
+    group: "الإقامة",
+    label: "أسئلة صفحات الفنادق",
+    description: "الأسئلة المعروضة في كل صفحة فندق.",
   },
-  meetingsEventsPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة الاجتماعات والمناسبات",
-    description: "بانر صفحة الاجتماعات، النص التعريفي، المستندات، ومزايا صفقات الشركات.",
+  destinationsSubpage: {
+    group: "التجربة",
+    label: "صفحة المدن والوجهات",
+    description: "بانر صفحة وجهات سويس بلو والمدن الرئيسية.",
   },
-  corporateDealsSubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة تعاقدات الشركات",
-    description: "بانر صفحة تعاقدات الشركات والتعريف بالحلول.",
-  },
-  groupBookingsPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة حجوزات المجموعات",
-    description: "بانر صفحة حجوزات المجموعات، النص التعريفي، وقائمة المتطلبات.",
-  },
-  contactPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة اتصل بنا",
-    description: "بانر صفحة اتصل بنا، قنوات الاتصال، ومقدمة الحجز المباشر.",
+  diningPage: {
+    group: "التجربة",
+    label: "صفحة الطعام",
+    description: "بانر صفحة الطعام، النص التعريفي، وقائمة خدمات الطعام.",
   },
   offersSubpage: {
-    group: "الصفحات الفرعية",
+    group: "العروض",
     label: "صفحة العروض",
     description: "بانر صفحة العروض، العروض الرئيسية، ومزايا الحجز المباشر.",
   },
+  loyaltySubpage: {
+    group: "العروض",
+    label: "صفحة برنامج الولاء",
+    description: "بانر صفحة برنامج الولاء والمزايا المباشرة للضيوف.",
+  },
+  corporateDealsSubpage: {
+    group: "الأعمال",
+    label: "صفحة تعاقدات الشركات",
+    description: "بانر صفحة تعاقدات الشركات والتعريف بالحلول.",
+  },
+  meetingsEventsPage: {
+    group: "الأعمال",
+    label: "صفحة الاجتماعات والمناسبات",
+    description: "بانر صفحة الاجتماعات، النص التعريفي، المستندات، ومزايا صفقات الشركات.",
+  },
+  groupBookingsPage: {
+    group: "الأعمال",
+    label: "صفحة حجوزات المجموعات",
+    description: "بانر صفحة حجوزات المجموعات، النص التعريفي، وقائمة المتطلبات.",
+  },
+  careersSubpage: {
+    group: "المجتمع",
+    label: "صفحة الوظائف",
+    description: "البانر، بطاقات لماذا الانضمام، الأقسام، ولوحة التقديم.",
+  },
+  csrSubpage: {
+    group: "المجتمع",
+    label: "صفحة المسؤولية الاجتماعية",
+    description: "البانر، الركائز، المبادرات، والشفافية.",
+  },
+  reservationOfficeSubpage: {
+    group: "تواصل معنا",
+    label: "صفحة مكتب الحجوزات المركزي",
+    description: "البانر، قنوات التواصل (هاتف / واتساب / بريد)، الخدمات، والميزات.",
+  },
+  feedbackSubpage: {
+    group: "تواصل معنا",
+    label: "صفحة الشكاوى والاقتراحات",
+    description: "البانر، قنوات الاستلام، خطوات المعالجة، الفئات، ومسار التصعيد.",
+  },
+  contactPage: {
+    group: "تواصل معنا",
+    label: "صفحة اتصل بنا",
+    description: "بانر صفحة اتصل بنا، قنوات الاتصال، ومقدمة الحجز المباشر.",
+  },
+  aboutPage: {
+    group: "عن الشركة",
+    label: "صفحة من نحن",
+    description: "بانر صفحة من نحن، فقرة الفلسفة، وركائز العلامة التجارية.",
+  },
   faqSubpage: {
-    group: "الصفحات الفرعية",
+    group: "عن الشركة",
     label: "صفحة الأسئلة الشائعة",
     description: "بانر صفحة الأسئلة الشائعة والمعلومات المساعدة.",
   },
-  hotelsSubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة الفنادق والوجهات",
-    description: "بانر صفحة الفنادق والنص التعريفي المساعد.",
-  },
-  destinationsSubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة المدن والوجهات",
-    description: "بانر صفحة وجهات سويس بلو والمدن الرئيسية.",
+  faqCategories: {
+    group: "عن الشركة",
+    label: "صفحة الأسئلة الشائعة الكاملة",
+    description: "تصنيفات الأسئلة والأسئلة المعروضة في صفحة الأسئلة الشائعة الكاملة.",
   },
 };
 
 const fieldLabels: Record<string, string> = {
   amenities: "Amenities",
+  applyIntro: "Apply panel",
   benefits: "Benefits",
+  careersPage: "Careers page",
+  categories: "Categories",
+  categoriesIntro: "Categories intro",
+  csrPage: "Social Responsibility page",
+  departments: "Departments",
+  departmentsIntro: "Departments intro",
+  email: "Email address",
+  escalationIntro: "Escalation intro",
+  feedbackPage: "Complaints & Suggestions page",
+  initiatives: "Initiatives",
+  initiativesIntro: "Initiatives intro",
+  process: "Process steps",
+  reportingIntro: "Reporting intro",
+  reservationOfficePage: "Central Reservation page",
+  services: "Services",
+  servicesIntro: "Services intro",
+  whyJoin: "Why join us",
   button: "Button label",
   city: "City",
   count: "Count",
@@ -476,8 +545,26 @@ const fieldLabels: Record<string, string> = {
 const arabicFieldLabels: Record<string, string> = {
   amenities: "المرافق",
   answer: "الإجابة",
+  applyIntro: "لوحة التقديم",
   benefits: "المزايا",
   button: "نص الزر",
+  careersPage: "صفحة الوظائف",
+  categories: "الفئات",
+  categoriesIntro: "تقديم الفئات",
+  csrPage: "صفحة المسؤولية الاجتماعية",
+  departments: "الأقسام",
+  departmentsIntro: "تقديم الأقسام",
+  email: "البريد الإلكتروني",
+  escalationIntro: "تقديم مسار التصعيد",
+  feedbackPage: "صفحة الشكاوى والاقتراحات",
+  initiatives: "المبادرات",
+  initiativesIntro: "تقديم المبادرات",
+  process: "خطوات المعالجة",
+  reportingIntro: "تقديم الشفافية",
+  reservationOfficePage: "صفحة مكتب الحجوزات المركزي",
+  services: "الخدمات",
+  servicesIntro: "تقديم الخدمات",
+  whyJoin: "لماذا الانضمام",
   city: "المدينة",
   count: "العدد",
   cta: "نص الزر",
@@ -725,7 +812,14 @@ function isLongField(name: string, value: string) {
 }
 
 function isImageField(name: string, path: Array<string | number>, value: string) {
-  const imageKeys = new Set(["image", "logo", "arabicLogo", "mainHero", "jeddah", "jazan"]);
+  const imageKeys = new Set([
+    "image",
+    "logo",
+    "arabicLogo",
+    "mainHero",
+    "jeddah",
+    "jazan",
+  ]);
   const isGalleryImage = path.some((segment) => segment === "gallery") && name === "image";
   const isHeroSlideSource = path.some((segment) => segment === "mainHeroSlides") && name === "source";
   const looksLikeImage =
@@ -739,7 +833,7 @@ function imageGuidance(name: string, path: Array<string | number>) {
   const location = path.join(".");
 
   if (name === "logo" || name === "arabicLogo") {
-    return "Recommended: SVG or transparent PNG, around 380 x 160 px. Logo uploads automatically remove light backgrounds. Accepted: JPG, PNG, WebP, AVIF, SVG.";
+    return "Recommended: SVG or transparent PNG, around 380 x 160 px. The same logo is used everywhere; over the dark hero it is auto-inverted to white. Accepted: JPG, PNG, WebP, AVIF, SVG.";
   }
 
   if (location.includes("mainHeroSlides")) {
@@ -765,7 +859,7 @@ function localizedImageGuidance(name: string, path: Array<string | number>, lang
   const location = path.join(".");
 
   if (name === "logo" || name === "arabicLogo") {
-    return "المقاس المقترح: SVG أو PNG شفاف بحجم يقارب 380 x 160 بكسل. يتم إزالة الخلفيات الفاتحة تلقائيا عند رفع الشعار. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
+    return "المقاس المقترح: SVG أو PNG شفاف بحجم يقارب 380 x 160 بكسل. يتم استخدام نفس الشعار في كل مكان، ويتم قلب لونه تلقائيا إلى الأبيض فوق البانر الداكن. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
   }
 
   if (location.includes("mainHeroSlides")) {
@@ -904,6 +998,24 @@ function ImageFieldEditor({
   onChange: (path: Array<string | number>, value: JsonValue) => void;
 }) {
   const [uploadStatus, setUploadStatus] = useState("");
+  const [pickerSource, setPickerSource] = useState<"unsplash" | "pexels" | null>(null);
+
+  function handleStockSelect(asset: { url: string; width?: number; height?: number }) {
+    onChange(path, asset.url);
+    if (path.at(-1) === "source") {
+      onChange([...path.slice(0, -1), "kind"], "image");
+    }
+    setUploadStatus(
+      asset.width && asset.height
+        ? language === "ar"
+          ? `تم الاستيراد بحجم ${asset.width} x ${asset.height} بكسل. احفظ التغييرات للنشر.`
+          : `Imported ${asset.width} x ${asset.height}px. Save changes to publish.`
+        : language === "ar"
+          ? "تم الاستيراد. احفظ التغييرات للنشر."
+          : "Imported. Save changes to publish.",
+    );
+    setPickerSource(null);
+  }
 
   async function uploadImage(file: File | undefined) {
     if (!file) {
@@ -960,20 +1072,53 @@ function ImageFieldEditor({
         </div>
         <div className="admin-image-tools">
           <p>{localizedImageGuidance(name, path, language)}</p>
-          <label className="admin-upload-button">
-            {language === "ar"
-              ? acceptsVideo(name, path) ? "رفع ملف" : "رفع صورة"
-              : acceptsVideo(name, path) ? "Upload media" : "Upload photo"}
-            <input
-              accept={
-                acceptsVideo(name, path)
-                  ? "image/avif,image/jpeg,image/png,image/svg+xml,image/webp,video/mp4,video/quicktime,video/webm"
-                  : "image/avif,image/jpeg,image/png,image/svg+xml,image/webp"
-              }
-              type="file"
-              onChange={(event) => uploadImage(event.target.files?.[0])}
-            />
-          </label>
+          <div className="admin-image-actions">
+            <label className="admin-image-source-icon admin-image-source-upload">
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 4v12" />
+                <path d="m7 9 5-5 5 5" />
+                <path d="M5 20h14" />
+              </svg>
+              <span>
+                {language === "ar"
+                  ? acceptsVideo(name, path) ? "رفع ملف" : "رفع صورة"
+                  : acceptsVideo(name, path) ? "Upload media" : "Upload photo"}
+              </span>
+              <input
+                accept={
+                  acceptsVideo(name, path)
+                    ? "image/avif,image/jpeg,image/png,image/svg+xml,image/webp,video/mp4,video/quicktime,video/webm"
+                    : "image/avif,image/jpeg,image/png,image/svg+xml,image/webp"
+                }
+                type="file"
+                onChange={(event) => uploadImage(event.target.files?.[0])}
+              />
+            </label>
+            <button
+              type="button"
+              className="admin-image-source-icon admin-image-source-unsplash"
+              onClick={() => setPickerSource("unsplash")}
+              aria-label={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
+              title={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
+            >
+              <svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
+                <path d="M10 9V0h12v9H10zM22 14h10v18H0V14h10v9h12v-9z" />
+              </svg>
+              <span>Unsplash</span>
+            </button>
+            <button
+              type="button"
+              className="admin-image-source-icon admin-image-source-pexels"
+              onClick={() => setPickerSource("pexels")}
+              aria-label={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
+              title={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
+            >
+              <svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
+                <path d="M5 0h13a9 9 0 0 1 9 9v3a9 9 0 0 1-9 9h-5v11H5V0zm8 13h5a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4h-5v8z" />
+              </svg>
+              <span>Pexels</span>
+            </button>
+          </div>
           {uploadStatus ? <small>{uploadStatus}</small> : null}
         </div>
       </div>
@@ -983,6 +1128,15 @@ function ImageFieldEditor({
         placeholder={language === "ar" ? "أو الصق رابط الملف" : "Or paste an image URL"}
         onChange={(event) => onChange(path, event.target.value)}
       />
+      {pickerSource ? (
+        <StockPhotoPicker
+          language={language}
+          initialQuery={labelFor(name, "en")}
+          initialSource={pickerSource}
+          onSelect={handleStockSelect}
+          onClose={() => setPickerSource(null)}
+        />
+      ) : null}
     </div>
   );
 }
@@ -1051,6 +1205,87 @@ function statusLabel(status: string, language: Language) {
   return labels[status]?.[language] ?? status;
 }
 
+function StringFieldEditor({
+  name,
+  value,
+  path,
+  language,
+  onChange,
+  isNumber,
+}: {
+  name: string;
+  value: string;
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+  isNumber?: boolean;
+}) {
+  const isUrl = ["href", "image", "secondaryHref", "source"].includes(name);
+  const isOpaque = ["slug", "type", "kind", "mapQuery"].includes(name);
+
+  if (isUrl) {
+    return (
+      <label className="admin-field">
+        <span>{labelFor(name, language)}</span>
+        <input
+          type="url"
+          value={value}
+          onChange={(event) => onChange(path, event.target.value)}
+        />
+      </label>
+    );
+  }
+
+  if (isNumber) {
+    return (
+      <label className="admin-field">
+        <span>{labelFor(name, language)}</span>
+        <input
+          type="number"
+          value={value}
+          onChange={(event) => onChange(path, Number(event.target.value))}
+        />
+      </label>
+    );
+  }
+
+  if (isLongField(name, value)) {
+    return (
+      <label className="admin-field">
+        <span className="admin-field-label-row">
+          <span>{labelFor(name, language)}</span>
+          {!isOpaque ? (
+            <TranslateButton value={value} sourceLanguage={language} path={path} isHtml onChange={onChange} />
+          ) : null}
+        </span>
+        <RichEditor
+          value={value}
+          onChange={(html) => onChange(path, html)}
+          dir={language === "ar" ? "rtl" : "ltr"}
+          ariaLabel={labelFor(name, language)}
+          language={language}
+        />
+      </label>
+    );
+  }
+
+  return (
+    <label className="admin-field">
+      <span className="admin-field-label-row">
+        <span>{labelFor(name, language)}</span>
+        {!isOpaque ? (
+          <TranslateButton value={value} sourceLanguage={language} path={path} onChange={onChange} />
+        ) : null}
+      </span>
+      <input
+        type="text"
+        value={value}
+        onChange={(event) => onChange(path, event.target.value)}
+      />
+    </label>
+  );
+}
+
 function FieldEditor({
   name,
   value,
@@ -1072,31 +1307,20 @@ function FieldEditor({
 
   if (typeof value === "string" || typeof value === "number") {
     const stringValue = String(value);
-    const inputType = ["href", "image", "secondaryHref", "source"].includes(name) ? "url" : "text";
 
     if (typeof value === "string" && isImageField(name, path, value)) {
       return <ImageFieldEditor name={name} value={value} path={path} language={language} onChange={onChange} />;
     }
 
     return (
-      <label className="admin-field">
-        <span>{labelFor(name, language)}</span>
-        {isLongField(name, stringValue) ? (
-          <textarea
-            value={stringValue}
-            rows={4}
-            onChange={(event) => onChange(path, event.target.value)}
-          />
-        ) : (
-          <input
-            type={inputType}
-            value={stringValue}
-            onChange={(event) =>
-              onChange(path, typeof value === "number" ? Number(event.target.value) : event.target.value)
-            }
-          />
-        )}
-      </label>
+      <StringFieldEditor
+        name={name}
+        value={stringValue}
+        path={path}
+        language={language}
+        onChange={onChange}
+        isNumber={typeof value === "number"}
+      />
     );
   }
 
@@ -1302,11 +1526,24 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
 
   const groupedSections = useMemo(() => {
     return filteredSections.reduce<Record<string, AdminSection[]>>((groups, section) => {
-      const copy = sectionCopy(section, language);
-      groups[copy.group] = [...(groups[copy.group] ?? []), section];
+      groups[section.group] = [...(groups[section.group] ?? []), section];
       return groups;
     }, {});
-  }, [filteredSections, language]);
+  }, [filteredSections]);
+
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => new Set([selectedSection.group]));
+
+  function toggleGroup(group: string) {
+    setOpenGroups((current) => {
+      const next = new Set(current);
+      if (next.has(group)) {
+        next.delete(group);
+      } else {
+        next.add(group);
+      }
+      return next;
+    });
+  }
 
   function updateValue(path: Array<string | number>, value: JsonValue) {
     setContent((current) => {
@@ -1395,28 +1632,42 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
         </label>
 
         <nav className="admin-section-list" aria-label={language === "ar" ? "أقسام لوحة الإدارة" : "CMS sections"}>
-          {Object.entries(groupedSections).map(([group, sections]) => (
-            <div className="admin-nav-group" key={group}>
-              <p>{group}</p>
-              {sections.map((section) => (
-                (() => {
-                  const copy = sectionCopy(section, language);
+          {Object.entries(groupedSections).map(([group, sections]) => {
+            const localizedGroup = sectionCopy(sections[0], language).group;
+            const isSearching = query.trim().length > 0;
+            const isOpen = isSearching || openGroups.has(group);
 
-                  return (
-                    <button
-                      className={selectedSection.id === section.id ? "active" : ""}
-                      key={section.id}
-                      type="button"
-                      onClick={() => setSelectedId(section.id)}
-                    >
-                      <span>{copy.label}</span>
-                      <small>{copy.description}</small>
-                    </button>
-                  );
-                })()
-              ))}
-            </div>
-          ))}
+            return (
+              <div className={`admin-nav-group${isOpen ? " is-open" : ""}`} key={group}>
+                <button
+                  type="button"
+                  className="admin-nav-group-toggle"
+                  onClick={() => toggleGroup(group)}
+                  aria-expanded={isOpen}
+                >
+                  <span className="admin-nav-group-caret" aria-hidden="true" />
+                  <span>{localizedGroup}</span>
+                </button>
+                {isOpen
+                  ? sections.map((section) => {
+                      const copy = sectionCopy(section, language);
+
+                      return (
+                        <button
+                          className={selectedSection.id === section.id ? "active" : ""}
+                          key={section.id}
+                          type="button"
+                          onClick={() => setSelectedId(section.id)}
+                        >
+                          <span>{copy.label}</span>
+                          <small>{copy.description}</small>
+                        </button>
+                      );
+                    })
+                  : null}
+              </div>
+            );
+          })}
         </nav>
       </aside>
 

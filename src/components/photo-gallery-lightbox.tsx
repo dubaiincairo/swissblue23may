@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { rich } from "@/components/rich-text";
 
 type GalleryImage = {
   image: string;
@@ -90,7 +91,7 @@ export default function PhotoGalleryLightbox({
                   : "(min-width: 1024px) 33vw, 100vw"
                 }
               />
-              <span className="gallery-caption">{image.title}</span>
+              <span className="gallery-caption">{rich(image.title)}</span>
             </button>
           </figure>
         ))}
@@ -105,7 +106,7 @@ export default function PhotoGalleryLightbox({
                 <span>
                   {labels.count} {(activeIndex ?? 0) + 1} / {images.length}
                 </span>
-                <h3>{activeImage.title}</h3>
+                <h3>{rich(activeImage.title)}</h3>
               </div>
               <button type="button" onClick={() => setActiveIndex(null)}>
                 {labels.close}

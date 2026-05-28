@@ -6,6 +6,7 @@ import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import HomepageGallery from "@/components/homepage-gallery";
 import { PartnersSection } from "@/components/partners-section";
+import { rich } from "@/components/rich-text";
 import { ServiceTiles } from "@/components/service-tiles";
 import { BOOKING_URL, getEditableContent } from "@/lib/editable-content";
 
@@ -28,21 +29,21 @@ export default async function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(8,28,70,0.86),rgba(18,70,168,0.58)_48%,rgba(8,28,70,0.12))]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
 
-        <div className="relative mx-auto flex min-h-[620px] max-w-7xl flex-col justify-between gap-10 px-4 pb-8 pt-16 sm:px-6 lg:min-h-[calc(100svh-72px)] lg:px-8">
+        <div className="relative mx-auto flex min-h-[640px] max-w-7xl flex-col justify-between gap-10 px-4 pb-8 pt-20 sm:px-6 lg:min-h-[100svh] lg:px-8">
           <div className="max-w-3xl pt-10 text-white">
-            <span className="hero-kicker reveal-slide-down">{home.hero.eyebrow}</span>
+            <span className="hero-kicker reveal-slide-down">{rich(home.hero.eyebrow)}</span>
             <h1 className="mt-5 text-[42px] font-bold leading-[1.12] text-balance sm:text-[64px] lg:text-[76px] reveal-slide-up">
-              {home.hero.title}
+              {rich(home.hero.title)}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/84 sm:text-xl reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
-              {home.hero.text}
+              {rich(home.hero.text)}
             </p>
             <div className="mt-8 flex flex-wrap gap-3 reveal-slide-up" style={{ "--delay": "300ms" } as React.CSSProperties}>
               <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
-                {home.hero.primaryCta}
+                {rich(home.hero.primaryCta)}
               </a>
               <Link className="btn btn-glass" href={home.hero.secondaryHref}>
-                {home.hero.secondaryCta}
+                {rich(home.hero.secondaryCta)}
               </Link>
             </div>
           </div>
@@ -50,7 +51,7 @@ export default async function Home() {
           <div className="booking-bar reveal-scale-up" style={{ "--delay": "450ms" } as React.CSSProperties}>
             <div className="booking-field">
               <span>الوجهة</span>
-              <strong>{home.hero.destination}</strong>
+              <strong>{rich(home.hero.destination)}</strong>
             </div>
             <div className="booking-field">
               <span>تاريخ الوصول</span>
@@ -83,9 +84,9 @@ export default async function Home() {
                 <strong>
                   <AnimatedCounter value={item.value} />
                 </strong>
-                <span>{item.label}</span>
+                <span>{rich(item.label)}</span>
               </div>
-              <p>{item.text}</p>
+              <p>{rich(item.text)}</p>
             </article>
           ))}
         </div>
@@ -93,9 +94,9 @@ export default async function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-right">
-          <span className="eyebrow">{home.properties.eyebrow}</span>
-          <h2>{home.properties.title}</h2>
-          <p>{home.properties.text}</p>
+          <span className="eyebrow">{rich(home.properties.eyebrow)}</span>
+          <h2>{rich(home.properties.title)}</h2>
+          <p>{rich(home.properties.text)}</p>
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
@@ -116,15 +117,15 @@ export default async function Home() {
               </figure>
               <div className="p-5">
                 <div className="flex items-center justify-between gap-4 text-xs font-bold text-[var(--primary)]">
-                  <span>{hotel.city}</span>
-                  <span>{hotel.units}</span>
+                  <span>{rich(hotel.city)}</span>
+                  <span>{rich(hotel.units)}</span>
                 </div>
                 <p className="mt-3 text-xs font-bold text-[var(--text-tertiary)]">
-                  {hotel.type}
+                  {rich(hotel.type)}
                 </p>
-                <h3 className="mt-3 text-2xl font-bold">{hotel.title}</h3>
+                <h3 className="mt-3 text-2xl font-bold">{rich(hotel.title)}</h3>
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                  {hotel.summary}
+                  {rich(hotel.summary)}
                 </p>
                 <Link
                   className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
@@ -141,12 +142,12 @@ export default async function Home() {
       <section className="brand-band">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
           <div className="reveal-slide-right">
-            <span className="eyebrow text-white/72">{home.loyalty.subtitle}</span>
+            <span className="eyebrow text-white/72">{rich(home.loyalty.subtitle)}</span>
             <h2 className="mt-4 text-3xl font-bold leading-tight text-white sm:text-[46px]">
-              {home.loyalty.title}
+              {rich(home.loyalty.title)}
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/76">
-              {home.loyalty.description}
+              {rich(home.loyalty.description)}
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -156,7 +157,7 @@ export default async function Home() {
                 key={benefit}
                 style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
               >
-                {benefit}
+                {rich(benefit)}
               </div>
             ))}
           </div>
@@ -167,9 +168,9 @@ export default async function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-right">
-          <span className="eyebrow">{home.destinations.eyebrow}</span>
-          <h2>{home.destinations.title}</h2>
-          <p>{home.destinations.text}</p>
+          <span className="eyebrow">{rich(home.destinations.eyebrow)}</span>
+          <h2>{rich(home.destinations.title)}</h2>
+          <p>{rich(home.destinations.text)}</p>
         </div>
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
           {home.destinations.items.map((destination, index) => (
@@ -188,9 +189,9 @@ export default async function Home() {
                 />
               </figure>
               <div className="p-5">
-                <h3 className="text-2xl font-bold">{destination.title}</h3>
+                <h3 className="text-2xl font-bold">{rich(destination.title)}</h3>
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                  {destination.text}
+                  {rich(destination.text)}
                 </p>
                 <Link
                   className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
@@ -207,11 +208,11 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
           <div className="feature-panel reveal-slide-right">
-            <span className="eyebrow">{home.offers.eyebrow}</span>
-            <h2>{home.offers.title}</h2>
-            <p>{home.offers.text}</p>
+            <span className="eyebrow">{rich(home.offers.eyebrow)}</span>
+            <h2>{rich(home.offers.title)}</h2>
+            <p>{rich(home.offers.text)}</p>
             <Link className="btn btn-primary mt-8" href={home.offers.href}>
-              {home.offers.cta}
+              {rich(home.offers.cta)}
             </Link>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
@@ -221,8 +222,8 @@ export default async function Home() {
                 key={offer.title}
                 style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
               >
-                <h3>{offer.title}</h3>
-                <p>{offer.text}</p>
+                <h3>{rich(offer.title)}</h3>
+                <p>{rich(offer.text)}</p>
               </article>
             ))}
           </div>
@@ -231,12 +232,12 @@ export default async function Home() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
         <div className="reveal-slide-right">
-          <span className="eyebrow">{home.services.eyebrow}</span>
+          <span className="eyebrow">{rich(home.services.eyebrow)}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
-            {home.services.title}
+            {rich(home.services.title)}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
-            {home.services.text}
+            {rich(home.services.text)}
           </p>
         </div>
         <ServiceTiles items={home.services.items} locale="ar" />
@@ -244,9 +245,9 @@ export default async function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-right">
-          <span className="eyebrow">{home.categories.eyebrow}</span>
-          <h2>{home.categories.title}</h2>
-          <p>{home.categories.text}</p>
+          <span className="eyebrow">{rich(home.categories.eyebrow)}</span>
+          <h2>{rich(home.categories.title)}</h2>
+          <p>{rich(home.categories.text)}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {home.categories.items.map((category, index) => (
@@ -256,8 +257,8 @@ export default async function Home() {
               style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
             >
               <span>فئة إقامة</span>
-              <h3>{category.title}</h3>
-              <p>{category.text}</p>
+              <h3>{rich(category.title)}</h3>
+              <p>{rich(category.text)}</p>
             </article>
           ))}
         </div>
@@ -276,15 +277,15 @@ export default async function Home() {
       <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
           <div className="relative max-w-3xl">
-            <span className="eyebrow text-white/72">{home.cta.eyebrow}</span>
+            <span className="eyebrow text-white/72">{rich(home.cta.eyebrow)}</span>
             <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">
-              {home.cta.title}
+              {rich(home.cta.title)}
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
-              {home.cta.text}
+              {rich(home.cta.text)}
             </p>
             <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
-              {home.cta.button}
+              {rich(home.cta.button)}
             </a>
           </div>
         </div>

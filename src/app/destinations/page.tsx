@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { PhotoStrip } from "@/components/photo-strip";
+import { rich } from "@/components/rich-text";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -38,7 +39,7 @@ export default async function DestinationsPage() {
                 <div className="destination-card-head">
                   <figure className="destination-card-cover">
                     {destination.badge ? (
-                      <span className="destination-card-badge">{destination.badge}</span>
+                      <span className="destination-card-badge">{rich(destination.badge)}</span>
                     ) : null}
                     <Image
                       className="object-cover"
@@ -50,14 +51,14 @@ export default async function DestinationsPage() {
                   </figure>
                   <div className="destination-card-copy">
                     <span className="eyebrow">وجهة سويس بلو</span>
-                    <h2>{destination.title}</h2>
-                    <p>{destination.text}</p>
+                    <h2>{rich(destination.title)}</h2>
+                    <p>{rich(destination.text)}</p>
                     {stats.length ? (
                       <div className="destination-card-stats">
                         {stats.map((stat) => (
                           <div className="destination-card-stat" key={stat.label}>
-                            <span>{stat.label}</span>
-                            <strong>{stat.value}</strong>
+                            <span>{rich(stat.label)}</span>
+                            <strong>{rich(stat.value)}</strong>
                           </div>
                         ))}
                       </div>
@@ -68,7 +69,7 @@ export default async function DestinationsPage() {
                 <div className="destination-card-section">
                   <h3>
                     <span className="eyebrow">كيف تستمتع</span>
-                    أفضل ما يمكن تجربته في {destination.title}.
+                    أفضل ما يمكن تجربته في {rich(destination.title)}.
                   </h3>
                   <div className="mt-5">
                     <FeatureChipGrid items={destination.howToEnjoy} variant="compass" columns={2} />
@@ -78,7 +79,7 @@ export default async function DestinationsPage() {
                 <div className="destination-card-section">
                   <h3>
                     <span className="eyebrow">معرض المدينة</span>
-                    لمحات من {destination.title} عبر عدسة الضيف.
+                    لمحات من {rich(destination.title)} عبر عدسة الضيف.
                   </h3>
                   <div className="mt-5">
                     <PhotoStrip

@@ -559,8 +559,19 @@ const highlightsEn = [
   },
 ];
 
-export const defaultLogoImage =
-  "https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png";
+export const defaultLogoImage = "";
+
+const LEGACY_LOGO_URL_PATTERNS = [/swissbluehotels\.com\/wp-content/i];
+
+export function usableLogo(url: string | undefined | null): string {
+  if (!url) {
+    return "";
+  }
+  if (LEGACY_LOGO_URL_PATTERNS.some((pattern) => pattern.test(url))) {
+    return "";
+  }
+  return url;
+}
 
 const galleryImages = [
   {
@@ -623,7 +634,6 @@ export const defaultSiteContent = {
     footerSections,
     footerContact,
     media: {
-      logo: defaultLogoImage,
       arabicLogo: defaultLogoImage,
       mainHero: heroImage,
       mainHeroSlides: heroSlides,
@@ -916,6 +926,281 @@ export const defaultSiteContent = {
         },
       },
       hotelPolicy: hotelPolicyAr,
+      careersPage: {
+        hero: {
+          eyebrow: "انضم إلى سويس بلو",
+          title: "ابني مسيرتك المهنية في الضيافة السعودية.",
+          text: "ننمي فرقنا من الداخل. كن جزءاً من ثقافة خدمة متميزة في جدة والرياض وجازان.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "لماذا سويس بلو",
+          title: "نموٌّ حقيقي ومسؤولية حقيقية منذ اليوم الأول.",
+          text: "كل منشأة بيئة تدريب. الخط الأمامي والخلفي والمكاتب الإدارية، نستثمر في الأشخاص الذين يقدّمون معاييرنا كل يوم.",
+        },
+        whyJoin: [
+          {
+            title: "مسار مهني واضح",
+            text: "تدرج وظيفي من الوظائف التشغيلية إلى القيادة عبر الفنادق والإدارة العامة.",
+          },
+          {
+            title: "تعلم مستمر",
+            text: "تدريب منظم عند الانضمام، تطوير أثناء العمل، وشهادات في الخدمة والسلامة وعمليات الضيافة.",
+          },
+          {
+            title: "فريق متعدد الثقافات",
+            text: "سعوديون وزملاء من المنطقة ودول مختلفة جنباً إلى جنب، باللغتين العربية والإنجليزية.",
+          },
+          {
+            title: "تقدير وتحفيز",
+            text: "حوافز أداء، تكريم موظف الشهر، وأولوية للترقيات الداخلية قبل التوظيف الخارجي.",
+          },
+        ],
+        departmentsIntro: {
+          eyebrow: "الأقسام التي نوظف فيها",
+          title: "فرص في كل تخصص فندقي.",
+          text: "نبحث باستمرار عن مرشحين في الأدوار التشغيلية والإدارية والتجارية في مختلف منشآتنا.",
+        },
+        departments: [
+          {
+            title: "مكتب الاستقبال",
+            text: "موظف استقبال، مشرف نوبة، مدير مكتب أمامي، خدمة ضيوف.",
+          },
+          {
+            title: "تدبير الفنادق",
+            text: "عامل تنظيف غرف، مشرف طوابق، مدير تدبير، فحص الجودة.",
+          },
+          {
+            title: "الأطعمة والمشروبات",
+            text: "خدمة المطعم، باريستا، شيف، إشراف وجبات، تنظيم الإفطار.",
+          },
+          {
+            title: "الهندسة والصيانة",
+            text: "فني صيانة عام، فني تكييف، كهربائي، مسؤول سلامة.",
+          },
+          {
+            title: "المبيعات والتسويق",
+            text: "مدير حسابات شركات، حجوزات مجموعات، تسويق رقمي.",
+          },
+          {
+            title: "المالية والإدارة",
+            text: "محاسب، موظف مشتريات، شؤون موظفين، تدقيق ليلي.",
+          },
+        ],
+        applyIntro: {
+          eyebrow: "كيفية التقديم",
+          title: "أرسل سيرتك الذاتية إلى فريقنا.",
+          text: "أرفق سيرتك الذاتية، الدور الذي يهمك، والمدينة المفضلة. سنتواصل خلال خمسة أيام عمل في حال توافق ملفك مع الفرص المتاحة.",
+          email: "careers@swissblue.sa",
+          cta: "أرسل سيرتك الذاتية",
+        },
+      },
+      csrPage: {
+        hero: {
+          eyebrow: "المسؤولية الاجتماعية",
+          title: "ضيافةٌ تردّ للمجتمع.",
+          text: "متجذرون في رؤية المملكة 2030، نستثمر فنادقنا في المجتمع والبيئة والإنسان، وراء كل إقامة جميلة.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "نهجنا",
+          title: "الضيافة المسؤولة ضيافة يومية.",
+          text: "نرى المسؤولية الاجتماعية جزءاً من طريقة عملنا، لا برنامجاً منفصلاً. القرارات اليومية في كل منشأة تُغذّي التزاماتنا.",
+        },
+        pillars: [
+          {
+            title: "المجتمع",
+            text: "توريد محلي، دعم برامج التعليم والشباب، وموائد إفطار رمضان في كل منشأة.",
+          },
+          {
+            title: "البيئة",
+            text: "ترشيد المياه والطاقة، تقليل البلاستيك أحادي الاستخدام، وفصل النفايات في فنادقنا.",
+          },
+          {
+            title: "كوادر العمل",
+            text: "السعودة، توظيف عادل، تدريب منظم، وبيئة عمل آمنة لكل فرد من الفريق.",
+          },
+          {
+            title: "رؤية 2030",
+            text: "متوائمون مع أهداف المملكة في السياحة والبيئة وتنمية القدرات البشرية.",
+          },
+        ],
+        initiativesIntro: {
+          eyebrow: "مبادرات قائمة",
+          title: "ممارسات عملية في كل منشأة.",
+          text: "نقيس ما نقدمه، ونحدّث برامجنا سنوياً ضمن خطتنا للحوكمة والاستدامة.",
+        },
+        initiatives: [
+          {
+            title: "خارطة السعودة",
+            text: "زيادة نسبة الكوادر السعودية في الأدوار التشغيلية والقيادية كل عام.",
+          },
+          {
+            title: "شراكات تعليمية",
+            text: "اتفاقيات تدريب مع كليات السياحة والضيافة لاستقبال طلاب الإمتياز.",
+          },
+          {
+            title: "تدريب الشباب",
+            text: "برامج صيفية ومسار مبتدئين لخريجي المدارس الثانوية والكليات.",
+          },
+          {
+            title: "موائد رمضان",
+            text: "موائد إفطار يومية للعاملين والضيوف وأبناء الحي خلال شهر رمضان المبارك.",
+          },
+          {
+            title: "تقليل البلاستيك",
+            text: "زجاجات قابلة لإعادة التعبئة، تعبئة المرافق بكميات كبيرة، والاستغناء عن المصاصات.",
+          },
+          {
+            title: "التوريد المحلي",
+            text: "أولوية لمزودي الأطعمة والمنتجات والصناعات الصغيرة من داخل المملكة.",
+          },
+        ],
+        reportingIntro: {
+          eyebrow: "الشفافية والإفصاح",
+          title: "نُصدر تحديثاً سنوياً عن أدائنا.",
+          text: "نشارك تقدمنا في برامج الاستدامة والسعودة وممارسات الضيافة المسؤولة في تقرير سنوي يصدر مع الإدارة العامة.",
+        },
+      },
+      reservationOfficePage: {
+        hero: {
+          eyebrow: "دعم الحجز المباشر",
+          title: "مكتب الحجوزات المركزي.",
+          text: "فريق واحد. رقم واحد. خطّط وعدّل وأكّد حجوزاتك في كل منشآت سويس بلو.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "متاح 24/7",
+          title: "تواصل مع المختصين في أي وقت، باللغتين العربية والإنجليزية.",
+          text: "فريق الحجوزات يتولى الحجوزات الجديدة، طلبات المجموعات، حسابات الشركات، وتعديلات أثناء الإقامة، بشكل مباشر دون وسطاء.",
+        },
+        channels: [
+          {
+            title: "الهاتف",
+            value: "+966 12 000 0000",
+            href: "tel:+966120000000",
+            text: "اتصال مباشر بفريق الحجوزات على مدار الساعة.",
+          },
+          {
+            title: "واتساب",
+            value: "+966 50 000 0000",
+            href: "https://wa.me/966500000000",
+            text: "محادثة سريعة لتوفر الغرف، تأكيدات، أو تعديلات.",
+          },
+          {
+            title: "البريد الإلكتروني",
+            value: "reservations@swissblue.sa",
+            href: "mailto:reservations@swissblue.sa",
+            text: "للحجوزات والطلبات التي تتطلب توثيقاً كتابياً.",
+          },
+          {
+            title: "في الفندق",
+            value: "مكتب الاستقبال",
+            href: "",
+            text: "زرنا في أي منشأة لإجراء حجوزاتك مباشرة مع موظف الاستقبال.",
+          },
+        ],
+        servicesIntro: {
+          eyebrow: "ماذا نقدم",
+          title: "كل ما يلزم لتجربة حجز سلسة.",
+          text: "نتعامل مع كافة طلبات الحجز من البسيطة إلى المعقدة، ونصلك بفريق المنشأة عند الحاجة.",
+        },
+        services: [
+          "حجوزات جديدة لأفراد وعوائل",
+          "حجوزات المجموعات (10 غرف أو أكثر)",
+          "حسابات وعقود الشركات",
+          "ترتيبات خاصة (احتفالات، شهر العسل، إقامات طويلة)",
+          "تعديل وإلغاء الحجوزات",
+          "دعم أثناء الإقامة",
+          "خطط رحلات متعددة المنشآت",
+        ],
+        benefitsIntro: {
+          eyebrow: "لماذا الحجز المباشر",
+          title: "ميزات حصرية لا تجدها مع الوسطاء.",
+          text: "حجزك عبر مكتبنا يحفظ لك أفضل سعر، أعلى مرونة، وتنسيقاً شخصياً.",
+        },
+        benefits: [
+          {
+            title: "ضمان أفضل سعر",
+            text: "سعرنا المباشر مكافئ أو أقل من أي قناة خارجية للوحدة نفسها وفي التاريخ نفسه.",
+          },
+          {
+            title: "سياسات أكثر مرونة",
+            text: "إلغاء، تعديل، أو تأجيل بشروط أوضح وأسرع من قنوات الحجز الخارجية.",
+          },
+          {
+            title: "تنسيق شخصي",
+            text: "أولوية للترقية عند توفرها، طلبات خاصة، وتنسيق مع فريق المنشأة قبل وصولك.",
+          },
+        ],
+      },
+      feedbackPage: {
+        hero: {
+          eyebrow: "صوتك يهمنا",
+          title: "الشكاوى والاقتراحات.",
+          text: "ملاحظاتك المباشرة تساعدنا على تحسين كل إقامة. كل رسالة تصل إلى مدير مختص ويتم الرد عليها.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "وعدنا في الخدمة",
+          title: "تأكيد خلال 4 ساعات. حل خلال 48 ساعة.",
+          text: "حال استلامنا ملاحظتك، يتولى مدير الخدمة متابعتها من البداية للنهاية. سيردّ عليك شخص حقيقي، وليس رسالة آلية.",
+        },
+        channels: [
+          {
+            title: "في الفندق",
+            text: "تحدث مع مدير المنشأة عبر مكتب الاستقبال — ستجد جواباً مباشراً غالباً.",
+          },
+          {
+            title: "مكتب الحجوزات",
+            text: "اتصل بفريقنا المركزي لتسجيل الملاحظة وتوجيهها للقسم المختص.",
+          },
+          {
+            title: "البريد الإلكتروني",
+            text: "أرسل لنا على feedback@swissblue.sa مع رقم الحجز ومدى الإلحاحية.",
+          },
+          {
+            title: "النموذج الإلكتروني",
+            text: "استخدم نموذج التواصل في الموقع — يصل مباشرة إلى فريق تجربة الضيف.",
+          },
+        ],
+        process: [
+          {
+            title: "الاستلام والإقرار",
+            text: "تأكيد فوري بأن ملاحظتك وصلت، مع رقم متابعة خلال 4 ساعات كحدّ أقصى.",
+          },
+          {
+            title: "البحث والتقصي",
+            text: "نراجع تفاصيل الحجز، نتحدث مع فريق المنشأة، ونتحقق من جذور الموضوع.",
+          },
+          {
+            title: "الحل والتعويض",
+            text: "نقترح حلاً واضحاً، وعند الحاجة نقدم تعويضاً مناسباً للحالة وملف الضيف.",
+          },
+          {
+            title: "المتابعة والإغلاق",
+            text: "نتواصل معك مرة أخيرة للتأكد من رضاك قبل إغلاق التذكرة.",
+          },
+        ],
+        categoriesIntro: {
+          eyebrow: "ما الذي نستقبله",
+          title: "كل ما يخصّ تجربتك يهمنا.",
+          text: "نرحب بالشكاوى والمقترحات وحتى الإشادات. كلها تساعدنا على رفع المعيار.",
+        },
+        categories: [
+          "شكوى على خدمة محددة",
+          "اقتراح لتحسين عملية تشغيلية",
+          "إشادة بأحد أفراد الفريق",
+          "طلب إصلاح أو صيانة",
+          "ملاحظة تخص الخصوصية أو السلامة",
+          "استفسار عن الفاتورة",
+        ],
+        escalationIntro: {
+          eyebrow: "مسار التصعيد",
+          title: "إن لم تكن النتيجة مرضية.",
+          text: "يمكنك تصعيد الموضوع إلى الإدارة العامة عبر escalations@swissblue.sa. تذكرة التصعيد تُراجَع من فريق تجربة الضيف خلال 72 ساعة.",
+        },
+      },
     },
   },
   en: {
@@ -1215,11 +1500,305 @@ export const defaultSiteContent = {
         },
       },
       hotelPolicy: hotelPolicyEn,
+      careersPage: {
+        hero: {
+          eyebrow: "Join Swiss Blue",
+          title: "Build a career in Saudi hospitality.",
+          text: "We grow our teams from within. Be part of a service-driven culture across Jeddah, Riyadh, and Jazan.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "Why Swiss Blue",
+          title: "Real growth, real responsibility — from day one.",
+          text: "Every property is a training ground. Front-of-house, back-of-house, corporate office — we invest in the people who deliver our standards every day.",
+        },
+        whyJoin: [
+          {
+            title: "Clear career path",
+            text: "Defined progression from line roles into leadership across hotels and the corporate office.",
+          },
+          {
+            title: "Continuous learning",
+            text: "Structured onboarding, on-the-job training, and certifications in service, safety, and hospitality operations.",
+          },
+          {
+            title: "Multicultural team",
+            text: "Saudi nationals and regional and international colleagues working side by side, with Arabic and English as working languages.",
+          },
+          {
+            title: "Recognition that counts",
+            text: "Performance incentives, employee-of-the-month recognition, and internal promotion priority over external hiring.",
+          },
+        ],
+        departmentsIntro: {
+          eyebrow: "Where we hire",
+          title: "Opportunities across every hotel discipline.",
+          text: "We are continuously reviewing candidates for operational, administrative, and commercial roles across our properties.",
+        },
+        departments: [
+          {
+            title: "Front Office",
+            text: "Receptionist, shift supervisor, front-office manager, guest service agent.",
+          },
+          {
+            title: "Housekeeping",
+            text: "Room attendant, floor supervisor, housekeeping manager, quality inspector.",
+          },
+          {
+            title: "Food & Beverage",
+            text: "Restaurant service, barista, chef de partie, banquet operations, breakfast captain.",
+          },
+          {
+            title: "Engineering & Maintenance",
+            text: "General maintenance technician, HVAC, electrician, safety officer.",
+          },
+          {
+            title: "Sales & Marketing",
+            text: "Corporate account manager, group reservations, digital marketing executive.",
+          },
+          {
+            title: "Finance & Administration",
+            text: "Accountant, procurement, HR coordinator, night auditor.",
+          },
+        ],
+        applyIntro: {
+          eyebrow: "How to apply",
+          title: "Send your CV to our team.",
+          text: "Attach your CV, the role you are interested in, and your preferred city. We respond within five working days when your profile aligns with an open opportunity.",
+          email: "careers@swissblue.sa",
+          cta: "Send your CV",
+        },
+      },
+      csrPage: {
+        hero: {
+          eyebrow: "CSR commitments",
+          title: "Hospitality that gives back.",
+          text: "Anchored in Saudi Vision 2030, our hotels invest in community, environment, and people — beyond a great stay.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "Our approach",
+          title: "Responsible hospitality is everyday hospitality.",
+          text: "We treat social responsibility as part of how we operate, not as a separate program. The daily decisions in every property feed into our commitments.",
+        },
+        pillars: [
+          {
+            title: "Community",
+            text: "Local sourcing, support for education and youth programs, and Ramadan iftar programs at every property.",
+          },
+          {
+            title: "Environment",
+            text: "Water and energy management, single-use plastic reduction, and waste-segregation programs in our hotels.",
+          },
+          {
+            title: "Workforce",
+            text: "Saudization, fair employment, structured training, and a safe workplace for every team member.",
+          },
+          {
+            title: "Vision 2030",
+            text: "Aligned with the Kingdom's tourism, environmental, and human capability development goals.",
+          },
+        ],
+        initiativesIntro: {
+          eyebrow: "Active initiatives",
+          title: "Practical programs in every property.",
+          text: "We measure what we deliver and refresh our programs annually within our governance and sustainability plan.",
+        },
+        initiatives: [
+          {
+            title: "Saudization roadmap",
+            text: "Increasing the share of Saudi nationals in operational and leadership roles every year.",
+          },
+          {
+            title: "Education partnerships",
+            text: "Training agreements with tourism and hospitality colleges to host excellence-program students.",
+          },
+          {
+            title: "Youth training",
+            text: "Summer programs and entry-level tracks for school and college graduates.",
+          },
+          {
+            title: "Ramadan iftar",
+            text: "Daily iftar meals for staff, guests, and neighborhood community during the Holy Month.",
+          },
+          {
+            title: "Plastic reduction",
+            text: "Refillable bottles, bulk-fill amenities, and an end to single-use straws across our restaurants.",
+          },
+          {
+            title: "Local sourcing",
+            text: "Preference for in-Kingdom suppliers across food, beverages, and small-scale crafts.",
+          },
+        ],
+        reportingIntro: {
+          eyebrow: "Transparency & disclosure",
+          title: "We publish an annual progress update.",
+          text: "We share our progress on sustainability programs, Saudization, and responsible hospitality practices in an annual report from the corporate office.",
+        },
+      },
+      reservationOfficePage: {
+        hero: {
+          eyebrow: "Direct booking support",
+          title: "Central Reservation Office.",
+          text: "One team. One number. Plan, modify, and confirm reservations across every Swiss Blue property.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "Available 24/7",
+          title: "Reach our specialists any time, in Arabic or English.",
+          text: "Our reservations team handles new bookings, group requests, corporate accounts, and on-stay changes — directly, without intermediaries.",
+        },
+        channels: [
+          {
+            title: "Phone",
+            value: "+966 12 000 0000",
+            href: "tel:+966120000000",
+            text: "Direct line to the reservations team, around the clock.",
+          },
+          {
+            title: "WhatsApp",
+            value: "+966 50 000 0000",
+            href: "https://wa.me/966500000000",
+            text: "Quick chat for availability, confirmations, or changes.",
+          },
+          {
+            title: "Email",
+            value: "reservations@swissblue.sa",
+            href: "mailto:reservations@swissblue.sa",
+            text: "For reservations and requests that need written documentation.",
+          },
+          {
+            title: "In-person",
+            value: "Front desk",
+            href: "",
+            text: "Visit any property to make your reservation directly with the receptionist.",
+          },
+        ],
+        servicesIntro: {
+          eyebrow: "What we handle",
+          title: "Everything you need for a smooth booking experience.",
+          text: "We cover the full range of reservation requests, from a single room to multi-property itineraries, and loop in property teams when needed.",
+        },
+        services: [
+          "New reservations for individuals and families",
+          "Group bookings (10 rooms or more)",
+          "Corporate accounts and contracts",
+          "Special arrangements (celebrations, honeymoon, long stays)",
+          "Modifications and cancellations",
+          "On-stay guest support",
+          "Multi-property itineraries",
+        ],
+        benefitsIntro: {
+          eyebrow: "Why book direct",
+          title: "Exclusive benefits you won't get through intermediaries.",
+          text: "Booking through our office secures the best rate, the most flexibility, and personal coordination.",
+        },
+        benefits: [
+          {
+            title: "Best rate guarantee",
+            text: "Our direct rate matches or beats any third-party channel for the same room and dates.",
+          },
+          {
+            title: "More flexible policies",
+            text: "Cancellation, modification, or postponement on clearer and faster terms than external booking channels.",
+          },
+          {
+            title: "Personal coordination",
+            text: "Priority upgrades when available, special requests, and pre-arrival coordination with the property team.",
+          },
+        ],
+      },
+      feedbackPage: {
+        hero: {
+          eyebrow: "Your voice matters",
+          title: "Complaints & Suggestions.",
+          text: "Direct feedback helps us improve every stay. Every message reaches a manager and gets a response.",
+          image: heroImage,
+        },
+        intro: {
+          eyebrow: "Our service promise",
+          title: "Acknowledged in 4 hours. Resolved in 48.",
+          text: "Once we receive your feedback, a service manager owns it end-to-end. You will hear back from a real person, not an auto-reply.",
+        },
+        channels: [
+          {
+            title: "At the hotel",
+            text: "Speak to the property manager via the front desk — most matters get an answer on the spot.",
+          },
+          {
+            title: "Central reservation office",
+            text: "Call our central team to log the issue and route it to the responsible department.",
+          },
+          {
+            title: "Email",
+            text: "Write to feedback@swissblue.sa with your booking reference and how urgent it is.",
+          },
+          {
+            title: "Online form",
+            text: "Use the contact form on the website — it lands directly with the guest experience team.",
+          },
+        ],
+        process: [
+          {
+            title: "Acknowledge",
+            text: "Immediate confirmation that your message was received, with a tracking reference within 4 hours.",
+          },
+          {
+            title: "Investigate",
+            text: "We review the booking details, speak to the property team, and verify the root cause.",
+          },
+          {
+            title: "Resolve",
+            text: "We propose a clear solution and, where appropriate, offer compensation suited to the case and the guest profile.",
+          },
+          {
+            title: "Follow up",
+            text: "One final check-in to ensure you are satisfied before we close the ticket.",
+          },
+        ],
+        categoriesIntro: {
+          eyebrow: "What we accept",
+          title: "Anything that affects your stay matters to us.",
+          text: "We welcome complaints, suggestions, and even compliments. All of them help us raise the bar.",
+        },
+        categories: [
+          "Service complaint",
+          "Process improvement suggestion",
+          "Compliment for a team member",
+          "Repair or maintenance request",
+          "Privacy or safety concern",
+          "Billing question",
+        ],
+        escalationIntro: {
+          eyebrow: "Escalation path",
+          title: "If you are not satisfied with the outcome.",
+          text: "You can escalate the case to the corporate office at escalations@swissblue.sa. Escalations are reviewed by the guest experience team within 72 hours.",
+        },
+      },
     },
   },
 };
 
 export type EditableSiteContent = typeof defaultSiteContent;
+
+const DEPRECATED_MEDIA_KEYS_SHARED = ["lightLogo", "arabicLightLogo"] as const;
+const DEPRECATED_MEDIA_KEYS_AR = [...DEPRECATED_MEDIA_KEYS_SHARED, "logo"] as const;
+
+function stripKeys<T extends Record<string, unknown>>(media: T, keys: readonly string[]): T {
+  const next = { ...media };
+  for (const key of keys) {
+    delete next[key];
+  }
+  return next;
+}
+
+function stripDeprecatedArMediaKeys<T extends Record<string, unknown>>(media: T): T {
+  return stripKeys(media, DEPRECATED_MEDIA_KEYS_AR);
+}
+
+function stripDeprecatedEnMediaKeys<T extends Record<string, unknown>>(media: T): T {
+  return stripKeys(media, DEPRECATED_MEDIA_KEYS_SHARED);
+}
 
 function sharedImageValue(
   left: string,
@@ -1474,9 +2053,9 @@ function normalizeHighlights(
 
 function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
   const [logoAr, logoEn] = sharedImageValue(
-    content.ar.media.logo,
+    content.ar.media.arabicLogo,
     content.en.media.logo,
-    defaultSiteContent.ar.media.logo,
+    defaultSiteContent.ar.media.arabicLogo,
     defaultSiteContent.en.media.logo,
   );
   const [mainHeroAr, mainHeroEn] = sharedImageValue(
@@ -1603,13 +2182,15 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     defaultSiteContent.en.subpages.hotelPolicy.hero.image,
   );
 
+  const arMediaWithoutDeprecated = stripDeprecatedArMediaKeys(content.ar.media);
+  const enMediaWithoutDeprecated = stripDeprecatedEnMediaKeys(content.en.media);
+
   return {
     ar: {
       ...content.ar,
       media: {
-        ...content.ar.media,
-        logo: logoAr,
-        arabicLogo: content.ar.media.arabicLogo,
+        ...arMediaWithoutDeprecated,
+        arabicLogo: logoAr,
         mainHero: heroFallbackFromSlides(syncedHeroSlides.ar, mainHeroAr),
         mainHeroSlides: syncedHeroSlides.ar,
         jeddah: jeddahAr,
@@ -1695,7 +2276,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     en: {
       ...content.en,
       media: {
-        ...content.en.media,
+        ...enMediaWithoutDeprecated,
         logo: logoEn,
         mainHero: heroFallbackFromSlides(syncedHeroSlides.en, mainHeroEn),
         mainHeroSlides: syncedHeroSlides.en,
@@ -1829,6 +2410,10 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
         hotelsPage: { ...defaultSiteContent.ar.subpages.hotelsPage, ...(content?.ar?.subpages?.hotelsPage ?? {}) },
         destinationsPage: { ...defaultSiteContent.ar.subpages.destinationsPage, ...(content?.ar?.subpages?.destinationsPage ?? {}) },
         hotelPolicy: { ...defaultSiteContent.ar.subpages.hotelPolicy, ...(content?.ar?.subpages?.hotelPolicy ?? {}) },
+        careersPage: { ...defaultSiteContent.ar.subpages.careersPage, ...(content?.ar?.subpages?.careersPage ?? {}) },
+        csrPage: { ...defaultSiteContent.ar.subpages.csrPage, ...(content?.ar?.subpages?.csrPage ?? {}) },
+        reservationOfficePage: { ...defaultSiteContent.ar.subpages.reservationOfficePage, ...(content?.ar?.subpages?.reservationOfficePage ?? {}) },
+        feedbackPage: { ...defaultSiteContent.ar.subpages.feedbackPage, ...(content?.ar?.subpages?.feedbackPage ?? {}) },
       },
     },
     en: {
@@ -1862,6 +2447,10 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
         hotelsPage: { ...defaultSiteContent.en.subpages.hotelsPage, ...(content?.en?.subpages?.hotelsPage ?? {}) },
         destinationsPage: { ...defaultSiteContent.en.subpages.destinationsPage, ...(content?.en?.subpages?.destinationsPage ?? {}) },
         hotelPolicy: { ...defaultSiteContent.en.subpages.hotelPolicy, ...(content?.en?.subpages?.hotelPolicy ?? {}) },
+        careersPage: { ...defaultSiteContent.en.subpages.careersPage, ...(content?.en?.subpages?.careersPage ?? {}) },
+        csrPage: { ...defaultSiteContent.en.subpages.csrPage, ...(content?.en?.subpages?.csrPage ?? {}) },
+        reservationOfficePage: { ...defaultSiteContent.en.subpages.reservationOfficePage, ...(content?.en?.subpages?.reservationOfficePage ?? {}) },
+        feedbackPage: { ...defaultSiteContent.en.subpages.feedbackPage, ...(content?.en?.subpages?.feedbackPage ?? {}) },
       },
     },
   });
