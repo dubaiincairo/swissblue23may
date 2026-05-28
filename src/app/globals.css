@@ -157,8 +157,20 @@ button {
   margin: 0 auto;
   max-width: 1280px;
   min-height: 68px;
-  padding: 7px 0;
-  width: calc(100% - 32px);
+  padding: 7px 16px;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .nav-shell {
+    padding-inline: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-shell {
+    padding-inline: 32px;
+  }
 }
 
 .nav-logo {
