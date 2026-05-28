@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
-import { defaultLogoImage, getEditableContent } from "@/lib/editable-content";
+import { getEditableContent } from "@/lib/editable-content";
 
 function resolveMediaImage(
   image: string,
@@ -36,12 +36,11 @@ function arabicHref(href: string) {
 
 export async function SiteHeader() {
   const { ar, en } = await getEditableContent();
-  const sharedLogo = ar.media.logo === defaultLogoImage ? en.media.logo : ar.media.logo;
-  const logo = ar.media.arabicLogo === defaultLogoImage ? sharedLogo : ar.media.arabicLogo;
-  const sharedLight = ar.media.lightLogo === defaultLogoImage ? en.media.lightLogo : ar.media.lightLogo;
-  const lightLogo =
-    ar.media.arabicLightLogo === defaultLogoImage ? sharedLight : ar.media.arabicLightLogo;
-  const lightNeedsInvert = lightLogo === defaultLogoImage;
+  const logo = ar.media.arabicLogo || ar.media.logo || en.media.logo;
+  const dedicatedLight =
+    ar.media.arabicLightLogo || ar.media.lightLogo || en.media.lightLogo;
+  const lightLogo = dedicatedLight || logo;
+  const lightNeedsInvert = !dedicatedLight;
 
   return (
     <>
@@ -52,24 +51,28 @@ export async function SiteHeader() {
             href="/ar"
             aria-label="الرئيسية لفنادق سويس بلو"
           >
-            <Image
-              className={`nav-logo--light h-10 w-auto object-contain${
-                lightNeedsInvert ? " nav-logo--needs-invert" : ""
-              }`}
-              src={lightLogo}
-              alt="فنادق سويس بلو"
-              width={210}
-              height={88}
-              priority
-            />
-            <Image
-              className="nav-logo--dark h-10 w-auto object-contain"
-              src={logo}
-              alt="فنادق سويس بلو"
-              width={210}
-              height={88}
-              priority
-            />
+            {lightLogo ? (
+              <Image
+                className={`nav-logo--light h-10 w-auto object-contain${
+                  lightNeedsInvert ? " nav-logo--needs-invert" : ""
+                }`}
+                src={lightLogo}
+                alt="فنادق سويس بلو"
+                width={210}
+                height={88}
+                priority
+              />
+            ) : null}
+            {logo ? (
+              <Image
+                className="nav-logo--dark h-10 w-auto object-contain"
+                src={logo}
+                alt="فنادق سويس بلو"
+                width={210}
+                height={88}
+                priority
+              />
+            ) : null}
           </Link>
           <div className="nav-side">
             <div className="nav-group-row">
@@ -136,20 +139,21 @@ export function SiteFooter() {
 
 async function SiteFooterContent() {
   const { ar, en } = await getEditableContent();
-  const sharedLogo = ar.media.logo === defaultLogoImage ? en.media.logo : ar.media.logo;
-  const logo = ar.media.arabicLogo === defaultLogoImage ? sharedLogo : ar.media.arabicLogo;
+  const logo = ar.media.arabicLogo || ar.media.logo || en.media.logo;
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
         <div>
-          <Image
-            className="h-12 w-auto"
-            src={logo}
-            alt="فنادق سويس بلو"
-            width={190}
-            height={80}
-          />
+          {logo ? (
+            <Image
+              className="h-12 w-auto"
+              src={logo}
+              alt="فنادق سويس بلو"
+              width={190}
+              height={80}
+            />
+          ) : null}
           <p className="mt-5 max-w-sm leading-7">
             فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة
             للضيوف الأفراد والشركات والإقامات الطويلة.

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content-en";
 import { LanguageToggle } from "@/components/site";
-import { defaultLogoImage, getEditableContent } from "@/lib/editable-content";
+import { getEditableContent } from "@/lib/editable-content";
 
 function resolveMediaImage(
   image: string,
@@ -25,34 +25,38 @@ function resolveMediaImage(
 
 export async function SiteHeaderEn() {
   const { ar, en } = await getEditableContent();
-  const logo = en.media.logo === defaultLogoImage ? ar.media.logo : en.media.logo;
-  const lightLogo =
-    en.media.lightLogo === defaultLogoImage ? ar.media.lightLogo : en.media.lightLogo;
-  const lightNeedsInvert = lightLogo === defaultLogoImage;
+  const logo = en.media.logo || ar.media.logo || ar.media.arabicLogo;
+  const dedicatedLight = en.media.lightLogo || ar.media.lightLogo || ar.media.arabicLightLogo;
+  const lightLogo = dedicatedLight || logo;
+  const lightNeedsInvert = !dedicatedLight;
 
   return (
     <>
       <nav className="site-nav">
         <div className="nav-shell">
           <Link className="nav-logo" href="/en" aria-label="Swiss Blue Hotels home">
-            <Image
-              className={`nav-logo--light h-10 w-auto object-contain${
-                lightNeedsInvert ? " nav-logo--needs-invert" : ""
-              }`}
-              src={lightLogo}
-              alt="Swiss Blue Hotels"
-              width={210}
-              height={88}
-              priority
-            />
-            <Image
-              className="nav-logo--dark h-10 w-auto object-contain"
-              src={logo}
-              alt="Swiss Blue Hotels"
-              width={210}
-              height={88}
-              priority
-            />
+            {lightLogo ? (
+              <Image
+                className={`nav-logo--light h-10 w-auto object-contain${
+                  lightNeedsInvert ? " nav-logo--needs-invert" : ""
+                }`}
+                src={lightLogo}
+                alt="Swiss Blue Hotels"
+                width={210}
+                height={88}
+                priority
+              />
+            ) : null}
+            {logo ? (
+              <Image
+                className="nav-logo--dark h-10 w-auto object-contain"
+                src={logo}
+                alt="Swiss Blue Hotels"
+                width={210}
+                height={88}
+                priority
+              />
+            ) : null}
           </Link>
           <div className="nav-side">
             <div className="nav-group-row">
@@ -90,19 +94,21 @@ export function SiteFooterEn() {
 
 async function SiteFooterEnContent() {
   const { ar, en } = await getEditableContent();
-  const logo = en.media.logo === defaultLogoImage ? ar.media.logo : en.media.logo;
+  const logo = en.media.logo || ar.media.logo || ar.media.arabicLogo;
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
         <div>
-          <Image
-            className="h-12 w-auto"
-            src={logo}
-            alt="Swiss Blue Hotels"
-            width={190}
-            height={80}
-          />
+          {logo ? (
+            <Image
+              className="h-12 w-auto"
+              src={logo}
+              alt="Swiss Blue Hotels"
+              width={190}
+              height={80}
+            />
+          ) : null}
           <p className="mt-5 max-w-sm leading-7">
             Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.
           </p>

@@ -559,8 +559,7 @@ const highlightsEn = [
   },
 ];
 
-export const defaultLogoImage =
-  "https://swissbluehotels.com/wp-content/uploads/2024/03/%D9%84%D9%88%D8%AC%D9%88-%D8%B3%D9%88%D9%8A%D8%B3-%D8%A8%D9%84%D9%88.png";
+export const defaultLogoImage = "";
 
 const galleryImages = [
   {
