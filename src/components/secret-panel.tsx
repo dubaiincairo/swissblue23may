@@ -31,24 +31,38 @@ const languages: Record<Language, { label: string; short: string; previewHref: s
 const adminSections: AdminSection[] = [
   {
     id: "navGroups",
-    group: "Website structure",
+    group: "Site-wide",
     label: "Navigation",
     description: "Main menu groups, dropdown labels, and page links.",
     path: ["navGroups"],
   },
   {
     id: "media",
-    group: "Website structure",
+    group: "Site-wide",
     label: "Website photos",
     description: "Logo, the three hero slides, city photos, and shared images.",
     path: ["media"],
   },
   {
     id: "hospitalityGallery",
-    group: "Website structure",
+    group: "Site-wide",
     label: "Hospitality gallery",
     description: "Homepage hospitality gallery photos and captions.",
     path: ["media", "gallery"],
+  },
+  {
+    id: "footerSections",
+    group: "Site-wide",
+    label: "Footer links",
+    description: "Footer columns and supporting site links.",
+    path: ["footerSections"],
+  },
+  {
+    id: "footerContact",
+    group: "Site-wide",
+    label: "Footer support",
+    description: "Support bullets shown beside the footer booking action.",
+    path: ["footerContact"],
   },
   {
     id: "hero",
@@ -115,182 +129,178 @@ const adminSections: AdminSection[] = [
   },
   {
     id: "homepageFaq",
-    group: "FAQ",
+    group: "Homepage",
     label: "Homepage FAQ",
     description: "Questions shown near the bottom of the homepage.",
     path: ["faq", "homepage"],
   },
   {
-    id: "propertyFaq",
-    group: "FAQ",
-    label: "Property FAQ",
-    description: "Questions shown on every hotel detail page.",
-    path: ["faq", "property"],
-  },
-  {
-    id: "faqCategories",
-    group: "FAQ",
-    label: "Full FAQ page",
-    description: "FAQ categories and questions shown on the full FAQ page.",
-    path: ["faq", "categories"],
-  },
-  {
-    id: "footerSections",
-    group: "Footer",
-    label: "Footer links",
-    description: "Footer columns and supporting site links.",
-    path: ["footerSections"],
-  },
-  {
-    id: "footerContact",
-    group: "Footer",
-    label: "Footer support",
-    description: "Support bullets shown beside the footer booking action.",
-    path: ["footerContact"],
-  },
-  {
-    id: "aboutPage",
-    group: "Subpages",
-    label: "About page",
-    description: "About page hero banner, philosophy paragraph, and brand pillars.",
-    path: ["subpages", "about"],
-  },
-  {
-    id: "diningPage",
-    group: "Subpages",
-    label: "Dining page",
-    description: "Dining page hero banner, introduction text, and food services list.",
-    path: ["subpages", "dining"],
+    id: "hotelsSubpage",
+    group: "Stay",
+    label: "Hotels page",
+    description: "Hotels page hero and introduction text.",
+    path: ["subpages", "hotelsPage"],
   },
   {
     id: "roomsSuitesPage",
-    group: "Subpages",
+    group: "Stay",
     label: "Rooms & Suites page",
     description: "Rooms page hero, classification principles, table intro, and classifications table.",
     path: ["subpages", "roomsSuites"],
   },
   {
     id: "servicedApartmentsPage",
-    group: "Subpages",
+    group: "Stay",
     label: "Serviced Apartments page",
     description: "Serviced Apartments page hero banner.",
     path: ["subpages", "servicedApartments"],
   },
   {
     id: "amenitiesServicesPage",
-    group: "Subpages",
+    group: "Stay",
     label: "Amenities & Services page",
     description: "Amenities & Services page hero banner.",
     path: ["subpages", "amenitiesServices"],
   },
   {
-    id: "loyaltySubpage",
-    group: "Subpages",
-    label: "Loyalty page",
-    description: "Loyalty page hero banner.",
-    path: ["subpages", "loyaltyPage"],
-  },
-  {
-    id: "meetingsEventsPage",
-    group: "Subpages",
-    label: "Meetings & Events page",
-    description: "Meetings page hero, intro, documents, and corporate deal features.",
-    path: ["subpages", "meetingsEvents"],
-  },
-  {
-    id: "corporateDealsSubpage",
-    group: "Subpages",
-    label: "Corporate Deals page",
-    description: "Corporate Deals page hero banner.",
-    path: ["subpages", "corporateDealsPage"],
-  },
-  {
-    id: "groupBookingsPage",
-    group: "Subpages",
-    label: "Group Bookings page",
-    description: "Group Bookings page hero, introduction text, and requirements list.",
-    path: ["subpages", "groupBookings"],
-  },
-  {
-    id: "contactPage",
-    group: "Subpages",
-    label: "Contact page",
-    description: "Contact page hero, channels lists, and direct booking intro.",
-    path: ["subpages", "contact"],
-  },
-  {
-    id: "offersSubpage",
-    group: "Subpages",
-    label: "Offers page",
-    description: "Offers page hero, main offers, and booking benefits lists.",
-    path: ["subpages", "offersPage"],
-  },
-  {
-    id: "faqSubpage",
-    group: "Subpages",
-    label: "FAQ page",
-    description: "FAQ page hero banner.",
-    path: ["subpages", "faqPage"],
-  },
-  {
-    id: "hotelsSubpage",
-    group: "Subpages",
-    label: "Hotels page",
-    description: "Hotels page hero and introduction text.",
-    path: ["subpages", "hotelsPage"],
+    id: "propertyFaq",
+    group: "Stay",
+    label: "Property FAQ",
+    description: "Questions shown on every hotel detail page.",
+    path: ["faq", "property"],
   },
   {
     id: "destinationsSubpage",
-    group: "Subpages",
+    group: "Experience",
     label: "Destinations page",
     description: "Destinations page hero banner.",
     path: ["subpages", "destinationsPage"],
   },
   {
+    id: "diningPage",
+    group: "Experience",
+    label: "Dining page",
+    description: "Dining page hero banner, introduction text, and food services list.",
+    path: ["subpages", "dining"],
+  },
+  {
+    id: "offersSubpage",
+    group: "Offers",
+    label: "Offers page",
+    description: "Offers page hero, main offers, and booking benefits lists.",
+    path: ["subpages", "offersPage"],
+  },
+  {
+    id: "loyaltySubpage",
+    group: "Offers",
+    label: "Loyalty page",
+    description: "Loyalty page hero banner.",
+    path: ["subpages", "loyaltyPage"],
+  },
+  {
+    id: "corporateDealsSubpage",
+    group: "Business",
+    label: "Corporate Deals page",
+    description: "Corporate Deals page hero banner.",
+    path: ["subpages", "corporateDealsPage"],
+  },
+  {
+    id: "meetingsEventsPage",
+    group: "Business",
+    label: "Meetings & Events page",
+    description: "Meetings page hero, intro, documents, and corporate deal features.",
+    path: ["subpages", "meetingsEvents"],
+  },
+  {
+    id: "groupBookingsPage",
+    group: "Business",
+    label: "Group Bookings page",
+    description: "Group Bookings page hero, introduction text, and requirements list.",
+    path: ["subpages", "groupBookings"],
+  },
+  {
     id: "careersSubpage",
-    group: "Subpages",
+    group: "Community",
     label: "Careers page",
     description: "Hero, why-join cards, departments, and apply panel.",
     path: ["subpages", "careersPage"],
   },
   {
     id: "csrSubpage",
-    group: "Subpages",
+    group: "Community",
     label: "Social Responsibility page",
     description: "Hero, pillars, initiatives, and reporting.",
     path: ["subpages", "csrPage"],
   },
   {
     id: "reservationOfficeSubpage",
-    group: "Subpages",
+    group: "Contact Us",
     label: "Central Reservation page",
     description: "Hero, channels (phone / WhatsApp / email), services, and benefits.",
     path: ["subpages", "reservationOfficePage"],
   },
   {
     id: "feedbackSubpage",
-    group: "Subpages",
+    group: "Contact Us",
     label: "Complaints & Suggestions page",
     description: "Hero, channels, process steps, categories, and escalation path.",
     path: ["subpages", "feedbackPage"],
+  },
+  {
+    id: "contactPage",
+    group: "Contact Us",
+    label: "Contact page",
+    description: "Contact page hero, channels lists, and direct booking intro.",
+    path: ["subpages", "contact"],
+  },
+  {
+    id: "aboutPage",
+    group: "Company",
+    label: "About page",
+    description: "About page hero banner, philosophy paragraph, and brand pillars.",
+    path: ["subpages", "about"],
+  },
+  {
+    id: "faqSubpage",
+    group: "Company",
+    label: "FAQ page",
+    description: "FAQ page hero banner.",
+    path: ["subpages", "faqPage"],
+  },
+  {
+    id: "faqCategories",
+    group: "Company",
+    label: "Full FAQ page",
+    description: "FAQ categories and questions shown on the full FAQ page.",
+    path: ["faq", "categories"],
   },
 ];
 
 const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   navGroups: {
-    group: "هيكل الموقع",
+    group: "إعدادات الموقع",
     label: "القائمة الرئيسية",
     description: "مجموعات القائمة، عناوين القوائم المنسدلة، وروابط الصفحات.",
   },
   media: {
-    group: "هيكل الموقع",
+    group: "إعدادات الموقع",
     label: "صور الموقع",
     description: "الشعار، شرائح البانر الثلاث، صور المدن، والصور المشتركة.",
   },
   hospitalityGallery: {
-    group: "هيكل الموقع",
+    group: "إعدادات الموقع",
     label: "معرض الضيافة",
     description: "صور معرض الضيافة في الصفحة الرئيسية وعناوينها.",
+  },
+  footerSections: {
+    group: "إعدادات الموقع",
+    label: "روابط الفوتر",
+    description: "أعمدة الفوتر وروابط الموقع المساندة.",
+  },
+  footerContact: {
+    group: "إعدادات الموقع",
+    label: "دعم الفوتر",
+    description: "نقاط الدعم المعروضة بجانب زر الحجز في الفوتر.",
   },
   hero: {
     group: "الصفحة الرئيسية",
@@ -338,119 +348,109 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     description: "دعوة الحجز في نهاية الصفحة.",
   },
   homepageFaq: {
-    group: "الأسئلة الشائعة",
+    group: "الصفحة الرئيسية",
     label: "أسئلة الصفحة الرئيسية",
     description: "الأسئلة المعروضة قرب نهاية الصفحة الرئيسية.",
   },
-  propertyFaq: {
-    group: "الأسئلة الشائعة",
-    label: "أسئلة صفحات الفنادق",
-    description: "الأسئلة المعروضة في كل صفحة فندق.",
-  },
-  faqCategories: {
-    group: "الأسئلة الشائعة",
-    label: "صفحة الأسئلة الشائعة",
-    description: "تصنيفات الأسئلة والأسئلة المعروضة في صفحة الأسئلة الشائعة الكاملة.",
-  },
-  footerSections: {
-    group: "الفوتر",
-    label: "روابط الفوتر",
-    description: "أعمدة الفوتر وروابط الموقع المساندة.",
-  },
-  footerContact: {
-    group: "الفوتر",
-    label: "دعم الفوتر",
-    description: "نقاط الدعم المعروضة بجانب زر الحجز في الفوتر.",
-  },
-  aboutPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة من نحن",
-    description: "بانر صفحة من نحن، فقرة الفلسفة، وركائز العلامة التجارية.",
-  },
-  diningPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة الطعام",
-    description: "بانر صفحة الطعام، النص التعريفي، وقائمة خدمات الطعام.",
+  hotelsSubpage: {
+    group: "الإقامة",
+    label: "صفحة الفنادق والوجهات",
+    description: "بانر صفحة الفنادق والنص التعريفي المساعد.",
   },
   roomsSuitesPage: {
-    group: "الصفحات الفرعية",
+    group: "الإقامة",
     label: "صفحة الغرف والأجنحة",
     description: "بانر صفحة الغرف، مبادئ التصنيف، مقدمة الجدول، وجدول التصنيفات المعتمد.",
   },
   servicedApartmentsPage: {
-    group: "الصفحات الفرعية",
+    group: "الإقامة",
     label: "صفحة الشقق الفندقية",
     description: "بانر صفحة الشقق الفندقية والخيارات المتاحة.",
   },
   amenitiesServicesPage: {
-    group: "الصفحات الفرعية",
+    group: "الإقامة",
     label: "صفحة الخدمات والمرافق",
     description: "بانر صفحة الخدمات والمرافق الأساسية للضيوف.",
   },
-  loyaltySubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة برنامج الولاء",
-    description: "بانر صفحة برنامج الولاء والمزايا المباشرة للضيوف.",
-  },
-  meetingsEventsPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة الاجتماعات والمناسبات",
-    description: "بانر صفحة الاجتماعات، النص التعريفي، المستندات، ومزايا صفقات الشركات.",
-  },
-  corporateDealsSubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة تعاقدات الشركات",
-    description: "بانر صفحة تعاقدات الشركات والتعريف بالحلول.",
-  },
-  groupBookingsPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة حجوزات المجموعات",
-    description: "بانر صفحة حجوزات المجموعات، النص التعريفي، وقائمة المتطلبات.",
-  },
-  contactPage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة اتصل بنا",
-    description: "بانر صفحة اتصل بنا، قنوات الاتصال، ومقدمة الحجز المباشر.",
-  },
-  offersSubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة العروض",
-    description: "بانر صفحة العروض، العروض الرئيسية، ومزايا الحجز المباشر.",
-  },
-  faqSubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة الأسئلة الشائعة",
-    description: "بانر صفحة الأسئلة الشائعة والمعلومات المساعدة.",
-  },
-  hotelsSubpage: {
-    group: "الصفحات الفرعية",
-    label: "صفحة الفنادق والوجهات",
-    description: "بانر صفحة الفنادق والنص التعريفي المساعد.",
+  propertyFaq: {
+    group: "الإقامة",
+    label: "أسئلة صفحات الفنادق",
+    description: "الأسئلة المعروضة في كل صفحة فندق.",
   },
   destinationsSubpage: {
-    group: "الصفحات الفرعية",
+    group: "التجربة",
     label: "صفحة المدن والوجهات",
     description: "بانر صفحة وجهات سويس بلو والمدن الرئيسية.",
   },
+  diningPage: {
+    group: "التجربة",
+    label: "صفحة الطعام",
+    description: "بانر صفحة الطعام، النص التعريفي، وقائمة خدمات الطعام.",
+  },
+  offersSubpage: {
+    group: "العروض",
+    label: "صفحة العروض",
+    description: "بانر صفحة العروض، العروض الرئيسية، ومزايا الحجز المباشر.",
+  },
+  loyaltySubpage: {
+    group: "العروض",
+    label: "صفحة برنامج الولاء",
+    description: "بانر صفحة برنامج الولاء والمزايا المباشرة للضيوف.",
+  },
+  corporateDealsSubpage: {
+    group: "الأعمال",
+    label: "صفحة تعاقدات الشركات",
+    description: "بانر صفحة تعاقدات الشركات والتعريف بالحلول.",
+  },
+  meetingsEventsPage: {
+    group: "الأعمال",
+    label: "صفحة الاجتماعات والمناسبات",
+    description: "بانر صفحة الاجتماعات، النص التعريفي، المستندات، ومزايا صفقات الشركات.",
+  },
+  groupBookingsPage: {
+    group: "الأعمال",
+    label: "صفحة حجوزات المجموعات",
+    description: "بانر صفحة حجوزات المجموعات، النص التعريفي، وقائمة المتطلبات.",
+  },
   careersSubpage: {
-    group: "الصفحات الفرعية",
+    group: "المجتمع",
     label: "صفحة الوظائف",
     description: "البانر، بطاقات لماذا الانضمام، الأقسام، ولوحة التقديم.",
   },
   csrSubpage: {
-    group: "الصفحات الفرعية",
+    group: "المجتمع",
     label: "صفحة المسؤولية الاجتماعية",
     description: "البانر، الركائز، المبادرات، والشفافية.",
   },
   reservationOfficeSubpage: {
-    group: "الصفحات الفرعية",
+    group: "تواصل معنا",
     label: "صفحة مكتب الحجوزات المركزي",
     description: "البانر، قنوات التواصل (هاتف / واتساب / بريد)، الخدمات، والميزات.",
   },
   feedbackSubpage: {
-    group: "الصفحات الفرعية",
+    group: "تواصل معنا",
     label: "صفحة الشكاوى والاقتراحات",
     description: "البانر، قنوات الاستلام، خطوات المعالجة، الفئات، ومسار التصعيد.",
+  },
+  contactPage: {
+    group: "تواصل معنا",
+    label: "صفحة اتصل بنا",
+    description: "بانر صفحة اتصل بنا، قنوات الاتصال، ومقدمة الحجز المباشر.",
+  },
+  aboutPage: {
+    group: "عن الشركة",
+    label: "صفحة من نحن",
+    description: "بانر صفحة من نحن، فقرة الفلسفة، وركائز العلامة التجارية.",
+  },
+  faqSubpage: {
+    group: "عن الشركة",
+    label: "صفحة الأسئلة الشائعة",
+    description: "بانر صفحة الأسئلة الشائعة والمعلومات المساعدة.",
+  },
+  faqCategories: {
+    group: "عن الشركة",
+    label: "صفحة الأسئلة الشائعة الكاملة",
+    description: "تصنيفات الأسئلة والأسئلة المعروضة في صفحة الأسئلة الشائعة الكاملة.",
   },
 };
 
@@ -1507,11 +1507,24 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
 
   const groupedSections = useMemo(() => {
     return filteredSections.reduce<Record<string, AdminSection[]>>((groups, section) => {
-      const copy = sectionCopy(section, language);
-      groups[copy.group] = [...(groups[copy.group] ?? []), section];
+      groups[section.group] = [...(groups[section.group] ?? []), section];
       return groups;
     }, {});
-  }, [filteredSections, language]);
+  }, [filteredSections]);
+
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+
+  function toggleGroup(group: string) {
+    setOpenGroups((current) => {
+      const next = new Set(current);
+      if (next.has(group)) {
+        next.delete(group);
+      } else {
+        next.add(group);
+      }
+      return next;
+    });
+  }
 
   function updateValue(path: Array<string | number>, value: JsonValue) {
     setContent((current) => {
@@ -1600,28 +1613,42 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
         </label>
 
         <nav className="admin-section-list" aria-label={language === "ar" ? "أقسام لوحة الإدارة" : "CMS sections"}>
-          {Object.entries(groupedSections).map(([group, sections]) => (
-            <div className="admin-nav-group" key={group}>
-              <p>{group}</p>
-              {sections.map((section) => (
-                (() => {
-                  const copy = sectionCopy(section, language);
+          {Object.entries(groupedSections).map(([group, sections]) => {
+            const localizedGroup = sectionCopy(sections[0], language).group;
+            const isSearching = query.trim().length > 0;
+            const isOpen = isSearching || openGroups.has(group) || group === selectedSection.group;
 
-                  return (
-                    <button
-                      className={selectedSection.id === section.id ? "active" : ""}
-                      key={section.id}
-                      type="button"
-                      onClick={() => setSelectedId(section.id)}
-                    >
-                      <span>{copy.label}</span>
-                      <small>{copy.description}</small>
-                    </button>
-                  );
-                })()
-              ))}
-            </div>
-          ))}
+            return (
+              <div className={`admin-nav-group${isOpen ? " is-open" : ""}`} key={group}>
+                <button
+                  type="button"
+                  className="admin-nav-group-toggle"
+                  onClick={() => toggleGroup(group)}
+                  aria-expanded={isOpen}
+                >
+                  <span>{localizedGroup}</span>
+                  <span className="admin-nav-group-caret" aria-hidden="true">›</span>
+                </button>
+                {isOpen
+                  ? sections.map((section) => {
+                      const copy = sectionCopy(section, language);
+
+                      return (
+                        <button
+                          className={selectedSection.id === section.id ? "active" : ""}
+                          key={section.id}
+                          type="button"
+                          onClick={() => setSelectedId(section.id)}
+                        >
+                          <span>{copy.label}</span>
+                          <small>{copy.description}</small>
+                        </button>
+                      );
+                    })
+                  : null}
+              </div>
+            );
+          })}
         </nav>
       </aside>
 
