@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { RichEditor } from "@/components/rich-editor";
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type JsonObject = { [key: string]: JsonValue };
@@ -1188,6 +1189,21 @@ function StringFieldEditor({
           type="number"
           value={value}
           onChange={(event) => onChange(path, Number(event.target.value))}
+        />
+      </label>
+    );
+  }
+
+  if (isLongField(name, value)) {
+    return (
+      <label className="admin-field">
+        <span>{labelFor(name, language)}</span>
+        <RichEditor
+          value={value}
+          onChange={(html) => onChange(path, html)}
+          dir={language === "ar" ? "rtl" : "ltr"}
+          ariaLabel={labelFor(name, language)}
+          language={language}
         />
       </label>
     );
