@@ -1,3 +1,4 @@
+import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { getEditableContent } from "@/lib/editable-content";
 
@@ -23,7 +24,7 @@ export default async function ServicedApartmentsPage() {
               key={benefit}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              {benefit}
+              {rich(benefit)}
             </div>
           ))}
         </div>

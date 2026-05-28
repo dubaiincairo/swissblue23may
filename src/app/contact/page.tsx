@@ -1,4 +1,5 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
+import { rich } from "@/components/rich-text";
 import { getEditableContent, BOOKING_URL } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -23,17 +24,17 @@ export default async function ContactPage() {
               key={channel.title}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{channel.title}</span>
+              <span className="eyebrow">{rich(channel.title)}</span>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                {channel.text}
+                {rich(channel.text)}
               </p>
             </article>
           ))}
         </div>
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{content.bookingIntro.eyebrow}</span>
-          <h2>{content.bookingIntro.title}</h2>
-          <p>{content.bookingIntro.text}</p>
+          <span className="eyebrow">{rich(content.bookingIntro.eyebrow)}</span>
+          <h2>{rich(content.bookingIntro.title)}</h2>
+          <p>{rich(content.bookingIntro.text)}</p>
           <a className="btn btn-primary mt-8" href={BOOKING_URL}>
             تحقق من التوفر
           </a>

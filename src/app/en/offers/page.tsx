@@ -1,5 +1,6 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { FeatureChipGrid } from "@/components/feature-chip";
+import { rich } from "@/components/rich-text";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -18,9 +19,9 @@ export default async function OffersPageEn() {
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">{content.intro.eyebrow}</span>
-          <h2>{content.intro.title}</h2>
-          <p>{content.intro.text}</p>
+          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+          <h2>{rich(content.intro.title)}</h2>
+          <p>{rich(content.intro.text)}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {content.offers.map((offer, index) => (
@@ -29,8 +30,8 @@ export default async function OffersPageEn() {
               key={offer.title}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              <h3>{offer.title}</h3>
-              <p>{offer.text}</p>
+              <h3>{rich(offer.title)}</h3>
+              <p>{rich(offer.text)}</p>
             </article>
           ))}
         </div>
@@ -38,12 +39,12 @@ export default async function OffersPageEn() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
         <div className="reveal-slide-up">
-          <span className="eyebrow">{content.benefitsIntro.eyebrow}</span>
+          <span className="eyebrow">{rich(content.benefitsIntro.eyebrow)}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
-            {content.benefitsIntro.title}
+            {rich(content.benefitsIntro.title)}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
-            {content.benefitsIntro.text}
+            {rich(content.benefitsIntro.text)}
           </p>
         </div>
         <FeatureChipGrid items={content.benefits} variant="sparkle" columns={2} />

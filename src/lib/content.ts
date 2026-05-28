@@ -28,38 +28,43 @@ export const navGroups = [
   {
     label: "الإقامة",
     links: [
-      { label: "منشآت الضيافة", href: "/hotels" },
-      { label: "الغرف والأجنحة", href: "/rooms-suites" },
+      { label: "الضيافة والمنشآت", href: "/hotels" },
+      { label: "الخدمات والمرافق", href: "/amenities-services" },
     ],
   },
   {
     label: "التجربة",
     links: [
-      { label: "الخدمات", href: "/amenities-services" },
-      { label: "تجربة الطعام", href: "/dining" },
-      { label: "الوجهات / المدن", href: "/destinations" },
+      { label: "الوجهات والمعالم", href: "/destinations" },
+      { label: "المطاعم", href: "/dining" },
     ],
   },
   {
     label: "العروض",
     links: [
-      { label: "العروض والتخفيضات", href: "/offers" },
-      { label: "برنامج الولاء", href: "/loyalty" },
+      { label: "العروض الخاصة", href: "/offers" },
+      { label: "عضوية سويس بلو", href: "/loyalty" },
     ],
   },
   {
-    label: "الشركات",
+    label: "الأعمال",
     links: [
-      { label: "تعاقدات الشركات", href: "/corporate-deals" },
-      { label: "حجوزات المجموعات", href: "/group-bookings" },
-      { label: "الاجتماعات والمناسبات", href: "/meetings-events" },
+      { label: "المجموعات وعقود الشركات", href: "/corporate-deals" },
+      { label: "الاجتماعات والفعاليات", href: "/meetings-events" },
     ],
   },
   {
-    label: "عن سويس بلو",
+    label: "المجتمع",
     links: [
-      { label: "من نحن؟", href: "/about" },
-      { label: "تواصل معنا", href: "/contact" },
+      { label: "الوظائف", href: "/careers" },
+      { label: "المسؤولية الاجتماعية", href: "/social-responsibility" },
+    ],
+  },
+  {
+    label: "تواصل معنا",
+    links: [
+      { label: "مكتب الحجوزات المركزي", href: "/central-reservation" },
+      { label: "الشكاوى والاقتراحات", href: "/feedback" },
     ],
   },
 ];

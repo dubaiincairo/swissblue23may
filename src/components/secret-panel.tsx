@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { RichEditor } from "@/components/rich-editor";
 import { StockPhotoPicker } from "@/components/stock-photo-picker";
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
@@ -245,6 +246,34 @@ const adminSections: AdminSection[] = [
     description: "Destinations page hero banner.",
     path: ["subpages", "destinationsPage"],
   },
+  {
+    id: "careersSubpage",
+    group: "Subpages",
+    label: "Careers page",
+    description: "Hero, why-join cards, departments, and apply panel.",
+    path: ["subpages", "careersPage"],
+  },
+  {
+    id: "csrSubpage",
+    group: "Subpages",
+    label: "Social Responsibility page",
+    description: "Hero, pillars, initiatives, and reporting.",
+    path: ["subpages", "csrPage"],
+  },
+  {
+    id: "reservationOfficeSubpage",
+    group: "Subpages",
+    label: "Central Reservation page",
+    description: "Hero, channels (phone / WhatsApp / email), services, and benefits.",
+    path: ["subpages", "reservationOfficePage"],
+  },
+  {
+    id: "feedbackSubpage",
+    group: "Subpages",
+    label: "Complaints & Suggestions page",
+    description: "Hero, channels, process steps, categories, and escalation path.",
+    path: ["subpages", "feedbackPage"],
+  },
 ];
 
 const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
@@ -403,11 +432,49 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     label: "صفحة المدن والوجهات",
     description: "بانر صفحة وجهات سويس بلو والمدن الرئيسية.",
   },
+  careersSubpage: {
+    group: "الصفحات الفرعية",
+    label: "صفحة الوظائف",
+    description: "البانر، بطاقات لماذا الانضمام، الأقسام، ولوحة التقديم.",
+  },
+  csrSubpage: {
+    group: "الصفحات الفرعية",
+    label: "صفحة المسؤولية الاجتماعية",
+    description: "البانر، الركائز، المبادرات، والشفافية.",
+  },
+  reservationOfficeSubpage: {
+    group: "الصفحات الفرعية",
+    label: "صفحة مكتب الحجوزات المركزي",
+    description: "البانر، قنوات التواصل (هاتف / واتساب / بريد)، الخدمات، والميزات.",
+  },
+  feedbackSubpage: {
+    group: "الصفحات الفرعية",
+    label: "صفحة الشكاوى والاقتراحات",
+    description: "البانر، قنوات الاستلام، خطوات المعالجة، الفئات، ومسار التصعيد.",
+  },
 };
 
 const fieldLabels: Record<string, string> = {
   amenities: "Amenities",
+  applyIntro: "Apply panel",
   benefits: "Benefits",
+  careersPage: "Careers page",
+  categories: "Categories",
+  categoriesIntro: "Categories intro",
+  csrPage: "Social Responsibility page",
+  departments: "Departments",
+  departmentsIntro: "Departments intro",
+  email: "Email address",
+  escalationIntro: "Escalation intro",
+  feedbackPage: "Complaints & Suggestions page",
+  initiatives: "Initiatives",
+  initiativesIntro: "Initiatives intro",
+  process: "Process steps",
+  reportingIntro: "Reporting intro",
+  reservationOfficePage: "Central Reservation page",
+  services: "Services",
+  servicesIntro: "Services intro",
+  whyJoin: "Why join us",
   button: "Button label",
   city: "City",
   count: "Count",
@@ -477,8 +544,26 @@ const fieldLabels: Record<string, string> = {
 const arabicFieldLabels: Record<string, string> = {
   amenities: "المرافق",
   answer: "الإجابة",
+  applyIntro: "لوحة التقديم",
   benefits: "المزايا",
   button: "نص الزر",
+  careersPage: "صفحة الوظائف",
+  categories: "الفئات",
+  categoriesIntro: "تقديم الفئات",
+  csrPage: "صفحة المسؤولية الاجتماعية",
+  departments: "الأقسام",
+  departmentsIntro: "تقديم الأقسام",
+  email: "البريد الإلكتروني",
+  escalationIntro: "تقديم مسار التصعيد",
+  feedbackPage: "صفحة الشكاوى والاقتراحات",
+  initiatives: "المبادرات",
+  initiativesIntro: "تقديم المبادرات",
+  process: "خطوات المعالجة",
+  reportingIntro: "تقديم الشفافية",
+  reservationOfficePage: "صفحة مكتب الحجوزات المركزي",
+  services: "الخدمات",
+  servicesIntro: "تقديم الخدمات",
+  whyJoin: "لماذا الانضمام",
   city: "المدينة",
   count: "العدد",
   cta: "نص الزر",
@@ -726,7 +811,14 @@ function isLongField(name: string, value: string) {
 }
 
 function isImageField(name: string, path: Array<string | number>, value: string) {
-  const imageKeys = new Set(["image", "logo", "arabicLogo", "mainHero", "jeddah", "jazan"]);
+  const imageKeys = new Set([
+    "image",
+    "logo",
+    "arabicLogo",
+    "mainHero",
+    "jeddah",
+    "jazan",
+  ]);
   const isGalleryImage = path.some((segment) => segment === "gallery") && name === "image";
   const isHeroSlideSource = path.some((segment) => segment === "mainHeroSlides") && name === "source";
   const looksLikeImage =
@@ -740,7 +832,7 @@ function imageGuidance(name: string, path: Array<string | number>) {
   const location = path.join(".");
 
   if (name === "logo" || name === "arabicLogo") {
-    return "Recommended: SVG or transparent PNG, around 380 x 160 px. Logo uploads automatically remove light backgrounds. Accepted: JPG, PNG, WebP, AVIF, SVG.";
+    return "Recommended: SVG or transparent PNG, around 380 x 160 px. The same logo is used everywhere; over the dark hero it is auto-inverted to white. Accepted: JPG, PNG, WebP, AVIF, SVG.";
   }
 
   if (location.includes("mainHeroSlides")) {
@@ -766,7 +858,7 @@ function localizedImageGuidance(name: string, path: Array<string | number>, lang
   const location = path.join(".");
 
   if (name === "logo" || name === "arabicLogo") {
-    return "المقاس المقترح: SVG أو PNG شفاف بحجم يقارب 380 x 160 بكسل. يتم إزالة الخلفيات الفاتحة تلقائيا عند رفع الشعار. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
+    return "المقاس المقترح: SVG أو PNG شفاف بحجم يقارب 380 x 160 بكسل. يتم استخدام نفس الشعار في كل مكان، ويتم قلب لونه تلقائيا إلى الأبيض فوق البانر الداكن. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
   }
 
   if (location.includes("mainHeroSlides")) {
@@ -1105,6 +1197,76 @@ function statusLabel(status: string, language: Language) {
   return labels[status]?.[language] ?? status;
 }
 
+function StringFieldEditor({
+  name,
+  value,
+  path,
+  language,
+  onChange,
+  isNumber,
+}: {
+  name: string;
+  value: string;
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+  isNumber?: boolean;
+}) {
+  const isUrl = ["href", "image", "secondaryHref", "source"].includes(name);
+
+  if (isUrl) {
+    return (
+      <label className="admin-field">
+        <span>{labelFor(name, language)}</span>
+        <input
+          type="url"
+          value={value}
+          onChange={(event) => onChange(path, event.target.value)}
+        />
+      </label>
+    );
+  }
+
+  if (isNumber) {
+    return (
+      <label className="admin-field">
+        <span>{labelFor(name, language)}</span>
+        <input
+          type="number"
+          value={value}
+          onChange={(event) => onChange(path, Number(event.target.value))}
+        />
+      </label>
+    );
+  }
+
+  if (isLongField(name, value)) {
+    return (
+      <label className="admin-field">
+        <span>{labelFor(name, language)}</span>
+        <RichEditor
+          value={value}
+          onChange={(html) => onChange(path, html)}
+          dir={language === "ar" ? "rtl" : "ltr"}
+          ariaLabel={labelFor(name, language)}
+          language={language}
+        />
+      </label>
+    );
+  }
+
+  return (
+    <label className="admin-field">
+      <span>{labelFor(name, language)}</span>
+      <input
+        type="text"
+        value={value}
+        onChange={(event) => onChange(path, event.target.value)}
+      />
+    </label>
+  );
+}
+
 function FieldEditor({
   name,
   value,
@@ -1126,31 +1288,20 @@ function FieldEditor({
 
   if (typeof value === "string" || typeof value === "number") {
     const stringValue = String(value);
-    const inputType = ["href", "image", "secondaryHref", "source"].includes(name) ? "url" : "text";
 
     if (typeof value === "string" && isImageField(name, path, value)) {
       return <ImageFieldEditor name={name} value={value} path={path} language={language} onChange={onChange} />;
     }
 
     return (
-      <label className="admin-field">
-        <span>{labelFor(name, language)}</span>
-        {isLongField(name, stringValue) ? (
-          <textarea
-            value={stringValue}
-            rows={4}
-            onChange={(event) => onChange(path, event.target.value)}
-          />
-        ) : (
-          <input
-            type={inputType}
-            value={stringValue}
-            onChange={(event) =>
-              onChange(path, typeof value === "number" ? Number(event.target.value) : event.target.value)
-            }
-          />
-        )}
-      </label>
+      <StringFieldEditor
+        name={name}
+        value={stringValue}
+        path={path}
+        language={language}
+        onChange={onChange}
+        isNumber={typeof value === "number"}
+      />
     );
   }
 
