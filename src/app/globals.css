@@ -2228,22 +2228,7 @@ button {
   line-height: 1.55;
 }
 
-.admin-upload-button {
-  align-items: center;
-  background: var(--admin-ink);
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 12px;
-  font-weight: 850;
-  justify-content: center;
-  min-height: 38px;
-  padding: 10px 14px;
-  width: fit-content;
-}
-
-.admin-upload-button input {
+.admin-image-source-upload input[type="file"] {
   display: none;
 }
 
@@ -2297,6 +2282,17 @@ button {
 
 .admin-image-source-pexels:hover {
   background: #05a081;
+  color: white;
+}
+
+.admin-image-source-upload {
+  background: white;
+  border-color: var(--admin-ink);
+  color: var(--admin-ink);
+}
+
+.admin-image-source-upload:hover {
+  background: var(--admin-ink);
   color: white;
 }
 
