@@ -25,7 +25,7 @@ export default async function EnglishHomePage() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.78),rgba(18,70,168,0.46)_48%,rgba(8,28,70,0.1))]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
-        <div className="relative mx-auto flex min-h-[760px] max-w-7xl flex-col justify-between gap-16 px-4 pb-8 pt-16 sm:px-6 lg:px-8">
+        <div className="relative mx-auto flex min-h-[620px] max-w-7xl flex-col justify-between gap-10 px-4 pb-8 pt-16 sm:px-6 lg:min-h-[calc(100svh-72px)] lg:px-8">
           <div className="max-w-3xl pt-3 text-white">
             <span className="hero-kicker reveal-slide-down">{home.hero.eyebrow}</span>
             <h1 className="mt-5 text-[42px] font-bold leading-[1.02] text-balance sm:text-[68px] lg:text-[82px] reveal-slide-up">
