@@ -2162,10 +2162,6 @@ button {
   text-align: right;
 }
 
-.admin-content-panel[dir="rtl"] .admin-upload-button {
-  margin-left: auto;
-}
-
 .admin-content-panel[dir="rtl"] .admin-item-summary,
 .admin-content-panel[dir="rtl"] .admin-list-row {
   direction: rtl;
