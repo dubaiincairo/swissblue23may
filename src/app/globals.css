@@ -1923,6 +1923,45 @@ button {
   width: 100%;
 }
 
+.admin-field textarea {
+  resize: vertical;
+  min-height: 44px;
+  overflow: hidden;
+}
+
+.admin-field-toolbar {
+  display: flex;
+  gap: 6px;
+}
+
+.admin-field-bold {
+  align-items: center;
+  background: white;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  color: var(--admin-ink);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  height: 28px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition: background-color 140ms ease, border-color 140ms ease;
+  width: 30px;
+}
+
+.admin-field-bold:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.admin-field-bold:active {
+  background: #e5e7eb;
+}
+
 .admin-content-panel[dir="rtl"] {
   text-align: right;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type JsonObject = { [key: string]: JsonValue };
@@ -1142,6 +1142,114 @@ function statusLabel(status: string, language: Language) {
   return labels[status]?.[language] ?? status;
 }
 
+function StringFieldEditor({
+  name,
+  value,
+  path,
+  language,
+  onChange,
+  isNumber,
+}: {
+  name: string;
+  value: string;
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+  isNumber?: boolean;
+}) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const isUrl = ["href", "image", "secondaryHref", "source"].includes(name);
+
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [value]);
+
+  if (isUrl) {
+    return (
+      <label className="admin-field">
+        <span>{labelFor(name, language)}</span>
+        <input
+          type="url"
+          value={value}
+          onChange={(event) => onChange(path, event.target.value)}
+        />
+      </label>
+    );
+  }
+
+  if (isNumber) {
+    return (
+      <label className="admin-field">
+        <span>{labelFor(name, language)}</span>
+        <input
+          type="number"
+          value={value}
+          onChange={(event) => onChange(path, Number(event.target.value))}
+        />
+      </label>
+    );
+  }
+
+  const applyBold = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = value.slice(start, end);
+    const before = value.slice(0, start);
+    const after = value.slice(end);
+
+    if (selected) {
+      onChange(path, `${before}**${selected}**${after}`);
+      requestAnimationFrame(() => {
+        el.focus();
+        el.setSelectionRange(start + 2, start + 2 + selected.length);
+      });
+    } else {
+      onChange(path, `${before}****${after}`);
+      requestAnimationFrame(() => {
+        el.focus();
+        el.setSelectionRange(start + 2, start + 2);
+      });
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "b") {
+      event.preventDefault();
+      applyBold();
+    }
+  };
+
+  return (
+    <label className="admin-field">
+      <span>{labelFor(name, language)}</span>
+      <div className="admin-field-toolbar">
+        <button
+          type="button"
+          className="admin-field-bold"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={applyBold}
+          title={language === "ar" ? "غامق (Ctrl/Cmd+B)" : "Bold (Ctrl/Cmd+B)"}
+          aria-label={language === "ar" ? "تطبيق غامق" : "Apply bold"}
+        >
+          B
+        </button>
+      </div>
+      <textarea
+        ref={textareaRef}
+        value={value}
+        rows={isLongField(name, value) ? 4 : 2}
+        onChange={(event) => onChange(path, event.target.value)}
+        onKeyDown={handleKeyDown}
+      />
+    </label>
+  );
+}
+
 function FieldEditor({
   name,
   value,
@@ -1163,31 +1271,20 @@ function FieldEditor({
 
   if (typeof value === "string" || typeof value === "number") {
     const stringValue = String(value);
-    const inputType = ["href", "image", "secondaryHref", "source"].includes(name) ? "url" : "text";
 
     if (typeof value === "string" && isImageField(name, path, value)) {
       return <ImageFieldEditor name={name} value={value} path={path} language={language} onChange={onChange} />;
     }
 
     return (
-      <label className="admin-field">
-        <span>{labelFor(name, language)}</span>
-        {isLongField(name, stringValue) ? (
-          <textarea
-            value={stringValue}
-            rows={4}
-            onChange={(event) => onChange(path, event.target.value)}
-          />
-        ) : (
-          <input
-            type={inputType}
-            value={stringValue}
-            onChange={(event) =>
-              onChange(path, typeof value === "number" ? Number(event.target.value) : event.target.value)
-            }
-          />
-        )}
-      </label>
+      <StringFieldEditor
+        name={name}
+        value={stringValue}
+        path={path}
+        language={language}
+        onChange={onChange}
+        isNumber={typeof value === "number"}
+      />
     );
   }
 
