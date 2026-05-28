@@ -1073,10 +1073,17 @@ function ImageFieldEditor({
         <div className="admin-image-tools">
           <p>{localizedImageGuidance(name, path, language)}</p>
           <div className="admin-image-actions">
-            <label className="admin-upload-button">
-              {language === "ar"
-                ? acceptsVideo(name, path) ? "رفع ملف" : "رفع صورة"
-                : acceptsVideo(name, path) ? "Upload media" : "Upload photo"}
+            <label className="admin-image-source-icon admin-image-source-upload">
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 4v12" />
+                <path d="m7 9 5-5 5 5" />
+                <path d="M5 20h14" />
+              </svg>
+              <span>
+                {language === "ar"
+                  ? acceptsVideo(name, path) ? "رفع ملف" : "رفع صورة"
+                  : acceptsVideo(name, path) ? "Upload media" : "Upload photo"}
+              </span>
               <input
                 accept={
                   acceptsVideo(name, path)
