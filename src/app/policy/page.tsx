@@ -1,3 +1,4 @@
+import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { getEditableContent } from "@/lib/editable-content";
 
@@ -18,9 +19,9 @@ export default async function HotelPolicyPage() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
         <div className="feature-panel reveal-slide-right">
-          <span className="eyebrow">{content.intro.eyebrow}</span>
-          <h2>{content.intro.title}</h2>
-          <p>{content.intro.text}</p>
+          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+          <h2>{rich(content.intro.title)}</h2>
+          <p>{rich(content.intro.text)}</p>
         </div>
         <div className="policy-principles reveal-slide-left">
           <span className="eyebrow">المبادئ الأساسية</span>
@@ -32,7 +33,7 @@ export default async function HotelPolicyPage() {
                 style={{ "--delay": `${index * 70}ms` } as React.CSSProperties}
               >
                 <span className="policy-principle-mark">{index + 1}</span>
-                <span>{principle}</span>
+                <span>{rich(principle)}</span>
               </div>
             ))}
           </div>
@@ -60,11 +61,11 @@ export default async function HotelPolicyPage() {
                 <span className="policy-card-index">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3>{section.title}</h3>
+                <h3>{rich(section.title)}</h3>
               </div>
               <ul>
                 {section.items.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item}>{rich(item)}</li>
                 ))}
               </ul>
             </article>

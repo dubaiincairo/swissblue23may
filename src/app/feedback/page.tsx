@@ -1,4 +1,5 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
+import { rich } from "@/components/rich-text";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -18,9 +19,9 @@ export default async function FeedbackPage() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{content.intro.eyebrow}</span>
-          <h2>{content.intro.title}</h2>
-          <p>{content.intro.text}</p>
+          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+          <h2>{rich(content.intro.title)}</h2>
+          <p>{rich(content.intro.text)}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {content.channels.map((channel, index) => (
@@ -29,9 +30,9 @@ export default async function FeedbackPage() {
               key={channel.title}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{channel.title}</span>
+              <span className="eyebrow">{rich(channel.title)}</span>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                {channel.text}
+                {rich(channel.text)}
               </p>
             </article>
           ))}
@@ -55,9 +56,9 @@ export default async function FeedbackPage() {
               <span className="text-2xl font-black text-[var(--primary)]">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="eyebrow mt-3 block">{step.title}</span>
+              <span className="eyebrow mt-3 block">{rich(step.title)}</span>
               <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                {step.text}
+                {rich(step.text)}
               </p>
             </li>
           ))}
@@ -66,12 +67,12 @@ export default async function FeedbackPage() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
         <div className="reveal-slide-up">
-          <span className="eyebrow">{content.categoriesIntro.eyebrow}</span>
+          <span className="eyebrow">{rich(content.categoriesIntro.eyebrow)}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {content.categoriesIntro.title}
+            {rich(content.categoriesIntro.title)}
           </h2>
           <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-            {content.categoriesIntro.text}
+            {rich(content.categoriesIntro.text)}
           </p>
         </div>
         <div className="amenity-grid">
@@ -81,7 +82,7 @@ export default async function FeedbackPage() {
               key={category}
               style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
             >
-              {category}
+              {rich(category)}
             </div>
           ))}
         </div>
@@ -89,9 +90,9 @@ export default async function FeedbackPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{content.escalationIntro.eyebrow}</span>
-          <h2>{content.escalationIntro.title}</h2>
-          <p>{content.escalationIntro.text}</p>
+          <span className="eyebrow">{rich(content.escalationIntro.eyebrow)}</span>
+          <h2>{rich(content.escalationIntro.title)}</h2>
+          <p>{rich(content.escalationIntro.text)}</p>
         </div>
       </section>
 

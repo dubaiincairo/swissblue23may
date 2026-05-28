@@ -1,3 +1,4 @@
+import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { getEditableContent } from "@/lib/editable-content";
 
@@ -18,9 +19,9 @@ export default async function LoyaltyPage() {
       />
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{loyaltyProgram.subtitle}</span>
-          <h2>{loyaltyProgram.title}</h2>
-          <p>{loyaltyProgram.description}</p>
+          <span className="eyebrow">{rich(loyaltyProgram.subtitle)}</span>
+          <h2>{rich(loyaltyProgram.title)}</h2>
+          <p>{rich(loyaltyProgram.description)}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {loyaltyProgram.benefits.map((benefit, index) => (
@@ -29,7 +30,7 @@ export default async function LoyaltyPage() {
               key={benefit}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              {benefit}
+              {rich(benefit)}
             </article>
           ))}
         </div>

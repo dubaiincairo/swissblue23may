@@ -1,4 +1,5 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
+import { rich } from "@/components/rich-text";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -17,9 +18,9 @@ export default async function CareersPage() {
       />
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{content.intro.eyebrow}</span>
-          <h2>{content.intro.title}</h2>
-          <p>{content.intro.text}</p>
+          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+          <h2>{rich(content.intro.title)}</h2>
+          <p>{rich(content.intro.text)}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {content.whyJoin.map((item, index) => (
@@ -28,9 +29,9 @@ export default async function CareersPage() {
               key={item.title}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{item.title}</span>
+              <span className="eyebrow">{rich(item.title)}</span>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                {item.text}
+                {rich(item.text)}
               </p>
             </article>
           ))}
@@ -39,12 +40,12 @@ export default async function CareersPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="reveal-slide-up">
-          <span className="eyebrow">{content.departmentsIntro.eyebrow}</span>
+          <span className="eyebrow">{rich(content.departmentsIntro.eyebrow)}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {content.departmentsIntro.title}
+            {rich(content.departmentsIntro.title)}
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--text-secondary)]">
-            {content.departmentsIntro.text}
+            {rich(content.departmentsIntro.text)}
           </p>
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -54,9 +55,9 @@ export default async function CareersPage() {
               key={dept.title}
               style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{dept.title}</span>
+              <span className="eyebrow">{rich(dept.title)}</span>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                {dept.text}
+                {rich(dept.text)}
               </p>
             </article>
           ))}
@@ -65,22 +66,22 @@ export default async function CareersPage() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:px-8">
         <div className="reveal-slide-up">
-          <span className="eyebrow">{content.applyIntro.eyebrow}</span>
+          <span className="eyebrow">{rich(content.applyIntro.eyebrow)}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {content.applyIntro.title}
+            {rich(content.applyIntro.title)}
           </h2>
           <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-            {content.applyIntro.text}
+            {rich(content.applyIntro.text)}
           </p>
         </div>
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{content.applyIntro.email}</span>
-          <h3 className="mt-4 text-lg font-semibold">{content.applyIntro.cta}</h3>
+          <span className="eyebrow">{rich(content.applyIntro.email)}</span>
+          <h3 className="mt-4 text-lg font-semibold">{rich(content.applyIntro.cta)}</h3>
           <a
             className="btn btn-primary mt-6 inline-flex"
             href={`mailto:${content.applyIntro.email}`}
           >
-            {content.applyIntro.cta}
+            {rich(content.applyIntro.cta)}
           </a>
         </div>
       </section>

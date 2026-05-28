@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { rich } from "@/components/rich-text";
 import { BOOKING_URL } from "@/lib/editable-content";
 
 export type Partner = {
@@ -33,13 +34,13 @@ export function PartnersSection({
         <div className="partners-shell-decor" aria-hidden="true" />
         <div className="partners-head">
           <div className={isRtl ? "reveal-slide-right" : "reveal-slide-left"}>
-            <span className="eyebrow">{content.eyebrow}</span>
-            <h2 className="partners-title">{content.title}</h2>
-            <p className="partners-text">{content.text}</p>
+            <span className="eyebrow">{rich(content.eyebrow)}</span>
+            <h2 className="partners-title">{rich(content.title)}</h2>
+            <p className="partners-text">{rich(content.text)}</p>
           </div>
           <div className="partners-badge reveal-elastic-pop" aria-hidden={false}>
             <span className="partners-badge-dot" />
-            <span>{content.badge}</span>
+            <span>{rich(content.badge)}</span>
           </div>
         </div>
 
@@ -58,17 +59,17 @@ export function PartnersSection({
                 className="partner-mark"
                 style={{ fontWeight: partner.weight as React.CSSProperties["fontWeight"] }}
               >
-                {partner.name}
+                {rich(partner.name)}
               </span>
-              <span className="partner-note">{partner.note}</span>
+              <span className="partner-note">{rich(partner.note)}</span>
             </div>
           ))}
         </div>
 
         <div className="partners-footer">
-          <p className="partners-footnote">{content.footnote}</p>
+          <p className="partners-footnote">{rich(content.footnote)}</p>
           <Link className="btn btn-primary partners-cta" href={BOOKING_URL}>
-            {content.cta}
+            {rich(content.cta)}
           </Link>
         </div>
       </div>

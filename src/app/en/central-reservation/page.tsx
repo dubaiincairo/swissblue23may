@@ -1,4 +1,5 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
+import { rich } from "@/components/rich-text";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -18,9 +19,9 @@ export default async function CentralReservationPageEn() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{content.intro.eyebrow}</span>
-          <h2>{content.intro.title}</h2>
-          <p>{content.intro.text}</p>
+          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+          <h2>{rich(content.intro.title)}</h2>
+          <p>{rich(content.intro.text)}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {content.channels.map((channel, index) => (
@@ -29,21 +30,21 @@ export default async function CentralReservationPageEn() {
               key={channel.title}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{channel.title}</span>
+              <span className="eyebrow">{rich(channel.title)}</span>
               {channel.href ? (
                 <a
                   className="mt-3 inline-block text-lg font-bold text-[var(--primary)] hover:underline"
                   href={channel.href}
                 >
-                  {channel.value}
+                  {rich(channel.value)}
                 </a>
               ) : (
                 <p className="mt-3 text-lg font-bold text-[var(--primary)]">
-                  {channel.value}
+                  {rich(channel.value)}
                 </p>
               )}
               <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                {channel.text}
+                {rich(channel.text)}
               </p>
             </article>
           ))}
@@ -52,12 +53,12 @@ export default async function CentralReservationPageEn() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
         <div className="reveal-slide-up">
-          <span className="eyebrow">{content.servicesIntro.eyebrow}</span>
+          <span className="eyebrow">{rich(content.servicesIntro.eyebrow)}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {content.servicesIntro.title}
+            {rich(content.servicesIntro.title)}
           </h2>
           <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-            {content.servicesIntro.text}
+            {rich(content.servicesIntro.text)}
           </p>
         </div>
         <div className="amenity-grid">
@@ -67,7 +68,7 @@ export default async function CentralReservationPageEn() {
               key={service}
               style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
             >
-              {service}
+              {rich(service)}
             </div>
           ))}
         </div>
@@ -75,12 +76,12 @@ export default async function CentralReservationPageEn() {
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="reveal-slide-up">
-          <span className="eyebrow">{content.benefitsIntro.eyebrow}</span>
+          <span className="eyebrow">{rich(content.benefitsIntro.eyebrow)}</span>
           <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {content.benefitsIntro.title}
+            {rich(content.benefitsIntro.title)}
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--text-secondary)]">
-            {content.benefitsIntro.text}
+            {rich(content.benefitsIntro.text)}
           </p>
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -90,9 +91,9 @@ export default async function CentralReservationPageEn() {
               key={item.title}
               style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{item.title}</span>
+              <span className="eyebrow">{rich(item.title)}</span>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                {item.text}
+                {rich(item.text)}
               </p>
             </article>
           ))}

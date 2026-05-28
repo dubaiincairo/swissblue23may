@@ -1,5 +1,6 @@
 import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
+import { rich } from "@/components/rich-text";
 import { diningGalleryPhotos } from "@/lib/content";
 import { getEditableContent } from "@/lib/editable-content";
 
@@ -19,9 +20,9 @@ export default async function DiningPage() {
       />
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">{content.intro.eyebrow}</span>
-          <h2>{content.intro.title}</h2>
-          <p>{content.intro.text}</p>
+          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+          <h2>{rich(content.intro.title)}</h2>
+          <p>{rich(content.intro.text)}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {content.options.map((item, index) => (
@@ -31,8 +32,8 @@ export default async function DiningPage() {
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
               <span>خدمة طعام</span>
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
+              <h3>{rich(item.title)}</h3>
+              <p>{rich(item.text)}</p>
             </article>
           ))}
         </div>

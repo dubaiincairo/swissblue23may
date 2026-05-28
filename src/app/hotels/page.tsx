@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { getEditableContent } from "@/lib/editable-content";
 
@@ -21,9 +22,9 @@ export default async function HotelsPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
-          <span className="eyebrow">{content.intro.eyebrow}</span>
-          <h2>{content.intro.title}</h2>
-          <p>{content.intro.text}</p>
+          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+          <h2>{rich(content.intro.title)}</h2>
+          <p>{rich(content.intro.text)}</p>
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
@@ -44,12 +45,12 @@ export default async function HotelsPage() {
               </figure>
               <div className="p-5">
                 <div className="flex items-center justify-between gap-4 text-xs font-bold text-[var(--primary)]">
-                  <span>{hotel.city}</span>
-                  <span>{hotel.units}</span>
+                  <span>{rich(hotel.city)}</span>
+                  <span>{rich(hotel.units)}</span>
                 </div>
-                <h3 className="mt-4 text-2xl font-bold">{hotel.title}</h3>
+                <h3 className="mt-4 text-2xl font-bold">{rich(hotel.title)}</h3>
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                  {hotel.summary}
+                  {rich(hotel.summary)}
                 </p>
                 <Link
                   className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"

@@ -1,3 +1,5 @@
+import { rich } from "@/components/rich-text";
+
 type FaqItem = {
   readonly question: string;
   readonly answer: string;
@@ -14,11 +16,11 @@ export function FaqAccordion({ items }: { items: readonly FaqItem[] }) {
       {items.map((faq) => (
         <details key={faq.question}>
           <summary>
-            <span>{faq.question}</span>
+            <span>{rich(faq.question)}</span>
             <strong aria-hidden="true" />
           </summary>
           <div>
-            <p>{faq.answer}</p>
+            <p>{rich(faq.answer)}</p>
           </div>
         </details>
       ))}
@@ -31,7 +33,7 @@ export function FaqCategoryList({ categories }: { categories: readonly FaqCatego
     <div className="faq-category-list">
       {categories.map((category) => (
         <section className="faq-category" key={category.title}>
-          <h2>{category.title}</h2>
+          <h2>{rich(category.title)}</h2>
           <FaqAccordion items={category.items} />
         </section>
       ))}
