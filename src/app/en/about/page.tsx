@@ -1,4 +1,5 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
+import { rich } from "@/components/rich-text";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -17,9 +18,9 @@ export default async function AboutPageEn() {
       />
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
         <div className="feature-panel reveal-slide-left">
-          <span className="eyebrow">{content.philosophy.eyebrow}</span>
-          <h2>{content.philosophy.title}</h2>
-          <p>{content.philosophy.text}</p>
+          <span className="eyebrow">{rich(content.philosophy.eyebrow)}</span>
+          <h2>{rich(content.philosophy.title)}</h2>
+          <p>{rich(content.philosophy.text)}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {content.pillars.map((pillar, index) => (
@@ -28,7 +29,7 @@ export default async function AboutPageEn() {
               key={pillar}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
-              {pillar}
+              {rich(pillar)}
             </div>
           ))}
         </div>

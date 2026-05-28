@@ -3,6 +3,7 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { PropertyGallery } from "@/components/property-gallery";
 import PropertyMap from "@/components/property-map";
+import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { hotelsEn } from "@/lib/content-en";
 import { getEditableContent, BOOKING_URL } from "@/lib/editable-content";
@@ -41,17 +42,17 @@ export default async function HotelDetailPageEn({
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">
           <span className="eyebrow">Property positioning</span>
-          <h2>{hotel.title}</h2>
-          <p>{hotel.positioning}</p>
+          <h2>{rich(hotel.title)}</h2>
+          <p>{rich(hotel.positioning)}</p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <div className="stat-tile">
-              <div className="text-2xl font-bold text-[var(--primary)]">{hotel.units}</div>
+              <div className="text-2xl font-bold text-[var(--primary)]">{rich(hotel.units)}</div>
               <div className="stat-tile-label mt-1 text-sm font-semibold text-[var(--text-secondary)]">
                 Total inventory
               </div>
             </div>
             <div className="stat-tile">
-              <div className="text-2xl font-bold text-[var(--primary)]">{hotel.city}</div>
+              <div className="text-2xl font-bold text-[var(--primary)]">{rich(hotel.city)}</div>
               <div className="stat-tile-label mt-1 text-sm font-semibold text-[var(--text-secondary)]">
                 City
               </div>
@@ -66,14 +67,14 @@ export default async function HotelDetailPageEn({
           <div className="content-card reveal-slide-up" style={{ "--delay": "100ms" } as React.CSSProperties}>
             <span className="eyebrow">Location highlight</span>
             <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-              {hotel.locationHighlight}
+              {rich(hotel.locationHighlight)}
             </p>
           </div>
           <div className="content-card reveal-slide-up" style={{ "--delay": "200ms" } as React.CSSProperties}>
             <span className="eyebrow">Nearby landmarks</span>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {hotel.landmarks.map((item) => (
-                <li key={item}>{item}</li>
+                <li key={item}>{rich(item)}</li>
               ))}
             </ul>
           </div>
@@ -97,13 +98,13 @@ export default async function HotelDetailPageEn({
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
               <span>
-                {"totalUnits" in unit ? `${unit.totalUnits} units` : unit.count}
+                {"totalUnits" in unit ? `${unit.totalUnits} units` : rich(unit.count)}
               </span>
-              <h3>{"type" in unit ? unit.type : unit.title}</h3>
+              <h3>{"type" in unit ? rich(unit.type) : rich(unit.title)}</h3>
               <p>
                 {"type" in unit
                   ? `${unit.bedrooms} bedroom(s) | ${unit.bedConfig} | ${unit.view} | Rooms: ${unit.rooms}`
-                  : unit.description}
+                  : rich(unit.description)}
               </p>
             </article>
           ))}

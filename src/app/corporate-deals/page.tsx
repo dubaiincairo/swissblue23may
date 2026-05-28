@@ -1,6 +1,7 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import CorporateDealForm from "@/components/corporate-deal-form";
 import { FeatureChipGrid } from "@/components/feature-chip";
+import { rich } from "@/components/rich-text";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";

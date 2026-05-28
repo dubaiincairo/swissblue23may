@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content-en";
 import { LanguageToggle } from "@/components/site";
+import { rich } from "@/components/rich-text";
 import { getEditableContent, usableLogo } from "@/lib/editable-content";
 
 function resolveMediaImage(
@@ -48,12 +49,12 @@ export async function SiteHeaderEn() {
               {en.navGroups.map((group) => (
                 <div className="nav-dropdown" key={group.label}>
                   <button className="nav-parent" type="button">
-                    {group.label}
+                    {rich(group.label)}
                   </button>
                   <div className="nav-menu">
                     {group.links.map((item) => (
                       <Link href={item.href} key={`${group.label}-${item.href}`}>
-                        {item.label}
+                        {rich(item.label)}
                       </Link>
                     ))}
                   </div>
@@ -107,7 +108,7 @@ async function SiteFooterEnContent() {
         <div className="grid gap-8 sm:grid-cols-3">
           {en.footerSections.map((section) => (
             <div key={section.title}>
-              <h2 className="text-sm font-bold text-[var(--text-primary)]">{section.title}</h2>
+              <h2 className="text-sm font-bold text-[var(--text-primary)]">{rich(section.title)}</h2>
               <div className="mt-4 grid gap-3">
                 {section.links.map((item) => (
                   <Link
@@ -115,7 +116,7 @@ async function SiteFooterEnContent() {
                     href={item.href}
                     key={`${section.title}-${item.href}`}
                   >
-                    {item.label}
+                    {rich(item.label)}
                   </Link>
                 ))}
               </div>
@@ -127,7 +128,7 @@ async function SiteFooterEnContent() {
           <h2 className="text-sm font-bold text-[var(--text-primary)]">Support & Booking</h2>
           <ul className="mt-4 grid gap-3">
             {en.footerContact.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>{rich(item)}</li>
             ))}
           </ul>
           <a className="btn btn-primary mt-6 justify-center" href={BOOKING_URL}>
@@ -173,12 +174,12 @@ export async function PageHeroEn({
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.84),rgba(18,70,168,0.56)_52%,rgba(8,28,70,0.14))]" />
       <div className="relative mx-auto max-w-7xl px-4 py-24 text-white sm:px-6 lg:px-8 lg:py-32">
-        <span className="hero-kicker reveal-slide-down"> {eyebrow}</span>
+        <span className="hero-kicker reveal-slide-down"> {rich(eyebrow)}</span>
         <h1 className="mt-5 max-w-4xl text-[38px] font-bold leading-[1.08] text-balance sm:text-[58px] reveal-slide-up">
-          {title}
+          {rich(title)}
         </h1>
         <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 sm:text-lg reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
-          {text}
+          {rich(text)}
         </p>
       </div>
     </section>
@@ -199,10 +200,10 @@ export function CtaBandEn({
       <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
         <div className="relative max-w-3xl">
           <span className="eyebrow text-white/72">Book direct</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">{title}</h2>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">{text}</p>
+          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">{rich(title)}</h2>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">{rich(text)}</p>
           <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
-            {cta}
+            {rich(cta)}
           </a>
         </div>
       </div>

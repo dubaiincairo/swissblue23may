@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { PhotoStrip } from "@/components/photo-strip";
+import { rich } from "@/components/rich-text";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
