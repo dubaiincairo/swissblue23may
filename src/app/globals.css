@@ -1650,17 +1650,68 @@ button {
 
 .admin-section-list {
   display: grid;
-  gap: 18px;
+  gap: 6px;
 }
 
 .admin-nav-group {
   display: grid;
-  gap: 8px;
+  gap: 4px;
 }
 
 .admin-nav-group p {
   color: #7a8699;
   padding: 0 4px;
+}
+
+.admin-nav-group-toggle {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--admin-ink);
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 900;
+  justify-content: space-between;
+  min-height: 40px;
+  padding: 8px 10px;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-nav-group-toggle:hover {
+  background: #eef4ff;
+}
+
+.admin-nav-group-toggle:focus-visible {
+  outline: 2px solid var(--admin-ink);
+  outline-offset: 2px;
+}
+
+.admin-nav-group-caret {
+  color: var(--admin-muted);
+  font-size: 18px;
+  line-height: 1;
+  transform: rotate(90deg);
+  transition: transform 0.15s ease;
+}
+
+.admin-nav-group.is-open .admin-nav-group-caret {
+  transform: rotate(-90deg);
+}
+
+.admin-shell[dir="rtl"] .admin-nav-group-toggle {
+  text-align: right;
+}
+
+.admin-shell[dir="rtl"] .admin-nav-group-caret {
+  transform: rotate(-90deg);
+}
+
+.admin-shell[dir="rtl"] .admin-nav-group.is-open .admin-nav-group-caret {
+  transform: rotate(90deg);
 }
 
 .admin-section-list button {
@@ -1671,8 +1722,12 @@ button {
   display: grid;
   gap: 4px;
   min-height: 58px;
-  padding: 10px 12px;
+  padding: 10px 12px 10px 24px;
   text-align: left;
+}
+
+.admin-shell[dir="rtl"] .admin-section-list button {
+  padding: 10px 24px 10px 12px;
 }
 
 .admin-section-list button span {
