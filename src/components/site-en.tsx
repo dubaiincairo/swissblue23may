@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content-en";
 import { LanguageToggle } from "@/components/site";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, usableLogo } from "@/lib/editable-content";
 
 function resolveMediaImage(
   image: string,
@@ -25,8 +25,14 @@ function resolveMediaImage(
 
 export async function SiteHeaderEn() {
   const { ar, en } = await getEditableContent();
-  const logo = en.media.logo || ar.media.logo || ar.media.arabicLogo;
-  const dedicatedLight = en.media.lightLogo || ar.media.lightLogo || ar.media.arabicLightLogo;
+  const logo =
+    usableLogo(en.media.logo) ||
+    usableLogo(ar.media.logo) ||
+    usableLogo(ar.media.arabicLogo);
+  const dedicatedLight =
+    usableLogo(en.media.lightLogo) ||
+    usableLogo(ar.media.lightLogo) ||
+    usableLogo(ar.media.arabicLightLogo);
   const lightLogo = dedicatedLight || logo;
   const lightNeedsInvert = !dedicatedLight;
 
@@ -94,7 +100,10 @@ export function SiteFooterEn() {
 
 async function SiteFooterEnContent() {
   const { ar, en } = await getEditableContent();
-  const logo = en.media.logo || ar.media.logo || ar.media.arabicLogo;
+  const logo =
+    usableLogo(en.media.logo) ||
+    usableLogo(ar.media.logo) ||
+    usableLogo(ar.media.arabicLogo);
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">

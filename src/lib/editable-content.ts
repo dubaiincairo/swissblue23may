@@ -561,6 +561,18 @@ const highlightsEn = [
 
 export const defaultLogoImage = "";
 
+const LEGACY_LOGO_URL_PATTERNS = [/swissbluehotels\.com\/wp-content/i];
+
+export function usableLogo(url: string | undefined | null): string {
+  if (!url) {
+    return "";
+  }
+  if (LEGACY_LOGO_URL_PATTERNS.some((pattern) => pattern.test(url))) {
+    return "";
+  }
+  return url;
+}
+
 const galleryImages = [
   {
     image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1500&q=82",

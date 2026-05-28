@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, usableLogo } from "@/lib/editable-content";
 
 function resolveMediaImage(
   image: string,
@@ -36,9 +36,14 @@ function arabicHref(href: string) {
 
 export async function SiteHeader() {
   const { ar, en } = await getEditableContent();
-  const logo = ar.media.arabicLogo || ar.media.logo || en.media.logo;
+  const logo =
+    usableLogo(ar.media.arabicLogo) ||
+    usableLogo(ar.media.logo) ||
+    usableLogo(en.media.logo);
   const dedicatedLight =
-    ar.media.arabicLightLogo || ar.media.lightLogo || en.media.lightLogo;
+    usableLogo(ar.media.arabicLightLogo) ||
+    usableLogo(ar.media.lightLogo) ||
+    usableLogo(en.media.lightLogo);
   const lightLogo = dedicatedLight || logo;
   const lightNeedsInvert = !dedicatedLight;
 
@@ -139,7 +144,10 @@ export function SiteFooter() {
 
 async function SiteFooterContent() {
   const { ar, en } = await getEditableContent();
-  const logo = ar.media.arabicLogo || ar.media.logo || en.media.logo;
+  const logo =
+    usableLogo(ar.media.arabicLogo) ||
+    usableLogo(ar.media.logo) ||
+    usableLogo(en.media.logo);
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">
