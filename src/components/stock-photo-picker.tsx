@@ -38,15 +38,17 @@ const t = (language: Language, en: string, ar: string) => (language === "ar" ? a
 export function StockPhotoPicker({
   language,
   initialQuery,
+  initialSource = "unsplash",
   onSelect,
   onClose,
 }: {
   language: Language;
   initialQuery?: string;
+  initialSource?: Source;
   onSelect: (asset: { url: string; width?: number; height?: number }) => void;
   onClose: () => void;
 }) {
-  const [source, setSource] = useState<Source>("unsplash");
+  const [source, setSource] = useState<Source>(initialSource);
   const [query, setQuery] = useState(initialQuery ?? "");
   const [results, setResults] = useState<StockResult[]>([]);
   const [hasMore, setHasMore] = useState(false);

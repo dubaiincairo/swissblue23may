@@ -905,7 +905,7 @@ function ImageFieldEditor({
   onChange: (path: Array<string | number>, value: JsonValue) => void;
 }) {
   const [uploadStatus, setUploadStatus] = useState("");
-  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerSource, setPickerSource] = useState<"unsplash" | "pexels" | null>(null);
 
   function handleStockSelect(asset: { url: string; width?: number; height?: number }) {
     onChange(path, asset.url);
@@ -921,7 +921,7 @@ function ImageFieldEditor({
           ? "تم الاستيراد. احفظ التغييرات للنشر."
           : "Imported. Save changes to publish.",
     );
-    setPickerOpen(false);
+    setPickerSource(null);
   }
 
   async function uploadImage(file: File | undefined) {
@@ -996,15 +996,27 @@ function ImageFieldEditor({
             </label>
             <button
               type="button"
-              className="admin-image-source-icon"
-              onClick={() => setPickerOpen(true)}
-              aria-label={language === "ar" ? "ابحث عن صورة" : "Find a photo"}
-              title={language === "ar" ? "ابحث عن صورة من Unsplash أو Pexels" : "Find a photo from Unsplash or Pexels"}
+              className="admin-image-source-icon admin-image-source-unsplash"
+              onClick={() => setPickerSource("unsplash")}
+              aria-label={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
+              title={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-                <circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" strokeWidth="1.8" />
-                <line x1="10.7" y1="10.7" x2="14" y2="14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
+                <path d="M10 9V0h12v9H10zM22 14h10v18H0V14h10v9h12v-9z" />
               </svg>
+              <span>Unsplash</span>
+            </button>
+            <button
+              type="button"
+              className="admin-image-source-icon admin-image-source-pexels"
+              onClick={() => setPickerSource("pexels")}
+              aria-label={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
+              title={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
+            >
+              <svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
+                <path d="M5 0h13a9 9 0 0 1 9 9v3a9 9 0 0 1-9 9h-5v11H5V0zm8 13h5a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4h-5v8z" />
+              </svg>
+              <span>Pexels</span>
             </button>
           </div>
           {uploadStatus ? <small>{uploadStatus}</small> : null}
@@ -1016,12 +1028,13 @@ function ImageFieldEditor({
         placeholder={language === "ar" ? "أو الصق رابط الملف" : "Or paste an image URL"}
         onChange={(event) => onChange(path, event.target.value)}
       />
-      {pickerOpen ? (
+      {pickerSource ? (
         <StockPhotoPicker
           language={language}
           initialQuery={labelFor(name, "en")}
+          initialSource={pickerSource}
           onSelect={handleStockSelect}
-          onClose={() => setPickerOpen(false)}
+          onClose={() => setPickerSource(null)}
         />
       ) : null}
     </div>

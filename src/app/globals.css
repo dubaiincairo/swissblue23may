@@ -1955,27 +1955,48 @@ button {
 
 .admin-image-source-icon {
   align-items: center;
-  background: white;
   border: 1px solid var(--admin-border);
   border-radius: 8px;
-  color: var(--admin-ink);
   cursor: pointer;
   display: inline-flex;
+  font-size: 12px;
+  font-weight: 800;
+  gap: 6px;
   height: 38px;
   justify-content: center;
-  padding: 0;
-  transition: background 0.15s, border-color 0.15s;
-  width: 38px;
+  padding: 0 12px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.admin-image-source-icon:hover {
-  background: #eef4ff;
-  border-color: #8aa4d4;
+.admin-image-source-icon svg {
+  flex-shrink: 0;
 }
 
 .admin-image-source-icon:focus-visible {
   outline: 2px solid var(--admin-ink);
   outline-offset: 2px;
+}
+
+.admin-image-source-unsplash {
+  background: white;
+  border-color: #111;
+  color: #111;
+}
+
+.admin-image-source-unsplash:hover {
+  background: #111;
+  color: white;
+}
+
+.admin-image-source-pexels {
+  background: white;
+  border-color: #05a081;
+  color: #05a081;
+}
+
+.admin-image-source-pexels:hover {
+  background: #05a081;
+  color: white;
 }
 
 .admin-stock-picker {
