@@ -1,24 +1,16 @@
-import { createClient } from "next-sanity";
 import { NextResponse } from "next/server";
-import { apiVersion, dataset, projectId } from "@/sanity/env";
+import {
+  allowedAssetTypes,
+  isUploadConfigured,
+  maxImageBytes,
+  maxVideoBytes,
+  uploadAssetToSanity,
+} from "@/sanity/lib/asset-upload";
 
 export const dynamic = "force-dynamic";
 
-const allowedTypes = new Set([
-  "image/avif",
-  "image/jpeg",
-  "image/png",
-  "image/svg+xml",
-  "image/webp",
-  "video/mp4",
-  "video/quicktime",
-  "video/webm",
-]);
-
 export async function POST(request: Request) {
-  const token = process.env.SANITY_API_WRITE_TOKEN;
-
-  if (!projectId || !dataset || !token) {
+  if (!isUploadConfigured()) {
     return NextResponse.json({ error: "CMS upload is not configured." }, { status: 500 });
   }
 
@@ -29,7 +21,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Choose an image file to upload." }, { status: 400 });
   }
 
-  if (!allowedTypes.has(file.type)) {
+  if (!allowedAssetTypes.has(file.type)) {
     return NextResponse.json(
       { error: "Supported media types are JPG, PNG, WebP, AVIF, SVG, MP4, MOV, and WebM." },
       { status: 400 },
@@ -37,7 +29,7 @@ export async function POST(request: Request) {
   }
 
   const isVideo = file.type.startsWith("video/");
-  const maxSize = isVideo ? 80 * 1024 * 1024 : 8 * 1024 * 1024;
+  const maxSize = isVideo ? maxVideoBytes : maxImageBytes;
 
   if (file.size > maxSize) {
     return NextResponse.json(
@@ -46,23 +38,12 @@ export async function POST(request: Request) {
     );
   }
 
-  const client = createClient({
-    apiVersion,
-    dataset,
-    projectId,
-    token,
-    useCdn: false,
-  });
-
   const buffer = Buffer.from(await file.arrayBuffer());
-  const asset = await client.assets.upload(isVideo ? "file" : "image", buffer, {
+  const asset = await uploadAssetToSanity({
+    buffer,
+    mimeType: file.type,
     filename: file.name,
   });
 
-  return NextResponse.json({
-    url: asset.url,
-    type: isVideo ? "video" : "image",
-    width: asset.metadata?.dimensions?.width,
-    height: asset.metadata?.dimensions?.height,
-  });
+  return NextResponse.json(asset);
 }
