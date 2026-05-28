@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { StockPhotoPicker } from "@/components/stock-photo-picker";
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type JsonObject = { [key: string]: JsonValue };
@@ -904,6 +905,24 @@ function ImageFieldEditor({
   onChange: (path: Array<string | number>, value: JsonValue) => void;
 }) {
   const [uploadStatus, setUploadStatus] = useState("");
+  const [pickerOpen, setPickerOpen] = useState(false);
+
+  function handleStockSelect(asset: { url: string; width?: number; height?: number }) {
+    onChange(path, asset.url);
+    if (path.at(-1) === "source") {
+      onChange([...path.slice(0, -1), "kind"], "image");
+    }
+    setUploadStatus(
+      asset.width && asset.height
+        ? language === "ar"
+          ? `تم الاستيراد بحجم ${asset.width} x ${asset.height} بكسل. احفظ التغييرات للنشر.`
+          : `Imported ${asset.width} x ${asset.height}px. Save changes to publish.`
+        : language === "ar"
+          ? "تم الاستيراد. احفظ التغييرات للنشر."
+          : "Imported. Save changes to publish.",
+    );
+    setPickerOpen(false);
+  }
 
   async function uploadImage(file: File | undefined) {
     if (!file) {
@@ -960,20 +979,34 @@ function ImageFieldEditor({
         </div>
         <div className="admin-image-tools">
           <p>{localizedImageGuidance(name, path, language)}</p>
-          <label className="admin-upload-button">
-            {language === "ar"
-              ? acceptsVideo(name, path) ? "رفع ملف" : "رفع صورة"
-              : acceptsVideo(name, path) ? "Upload media" : "Upload photo"}
-            <input
-              accept={
-                acceptsVideo(name, path)
-                  ? "image/avif,image/jpeg,image/png,image/svg+xml,image/webp,video/mp4,video/quicktime,video/webm"
-                  : "image/avif,image/jpeg,image/png,image/svg+xml,image/webp"
-              }
-              type="file"
-              onChange={(event) => uploadImage(event.target.files?.[0])}
-            />
-          </label>
+          <div className="admin-image-actions">
+            <label className="admin-upload-button">
+              {language === "ar"
+                ? acceptsVideo(name, path) ? "رفع ملف" : "رفع صورة"
+                : acceptsVideo(name, path) ? "Upload media" : "Upload photo"}
+              <input
+                accept={
+                  acceptsVideo(name, path)
+                    ? "image/avif,image/jpeg,image/png,image/svg+xml,image/webp,video/mp4,video/quicktime,video/webm"
+                    : "image/avif,image/jpeg,image/png,image/svg+xml,image/webp"
+                }
+                type="file"
+                onChange={(event) => uploadImage(event.target.files?.[0])}
+              />
+            </label>
+            <button
+              type="button"
+              className="admin-image-source-icon"
+              onClick={() => setPickerOpen(true)}
+              aria-label={language === "ar" ? "ابحث عن صورة" : "Find a photo"}
+              title={language === "ar" ? "ابحث عن صورة من Unsplash أو Pexels" : "Find a photo from Unsplash or Pexels"}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                <line x1="10.7" y1="10.7" x2="14" y2="14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
           {uploadStatus ? <small>{uploadStatus}</small> : null}
         </div>
       </div>
@@ -983,6 +1016,14 @@ function ImageFieldEditor({
         placeholder={language === "ar" ? "أو الصق رابط الملف" : "Or paste an image URL"}
         onChange={(event) => onChange(path, event.target.value)}
       />
+      {pickerOpen ? (
+        <StockPhotoPicker
+          language={language}
+          initialQuery={labelFor(name, "en")}
+          onSelect={handleStockSelect}
+          onClose={() => setPickerOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }
