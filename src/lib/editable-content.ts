@@ -634,7 +634,6 @@ export const defaultSiteContent = {
     footerSections,
     footerContact,
     media: {
-      logo: defaultLogoImage,
       arabicLogo: defaultLogoImage,
       mainHero: heroImage,
       mainHeroSlides: heroSlides,
@@ -1232,14 +1231,23 @@ export const defaultSiteContent = {
 
 export type EditableSiteContent = typeof defaultSiteContent;
 
-const DEPRECATED_MEDIA_KEYS = ["lightLogo", "arabicLightLogo"] as const;
+const DEPRECATED_MEDIA_KEYS_SHARED = ["lightLogo", "arabicLightLogo"] as const;
+const DEPRECATED_MEDIA_KEYS_AR = [...DEPRECATED_MEDIA_KEYS_SHARED, "logo"] as const;
 
-function stripDeprecatedMediaKeys<T extends Record<string, unknown>>(media: T): T {
+function stripKeys<T extends Record<string, unknown>>(media: T, keys: readonly string[]): T {
   const next = { ...media };
-  for (const key of DEPRECATED_MEDIA_KEYS) {
+  for (const key of keys) {
     delete next[key];
   }
   return next;
+}
+
+function stripDeprecatedArMediaKeys<T extends Record<string, unknown>>(media: T): T {
+  return stripKeys(media, DEPRECATED_MEDIA_KEYS_AR);
+}
+
+function stripDeprecatedEnMediaKeys<T extends Record<string, unknown>>(media: T): T {
+  return stripKeys(media, DEPRECATED_MEDIA_KEYS_SHARED);
 }
 
 function sharedImageValue(
@@ -1495,9 +1503,9 @@ function normalizeHighlights(
 
 function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
   const [logoAr, logoEn] = sharedImageValue(
-    content.ar.media.logo,
+    content.ar.media.arabicLogo,
     content.en.media.logo,
-    defaultSiteContent.ar.media.logo,
+    defaultSiteContent.ar.media.arabicLogo,
     defaultSiteContent.en.media.logo,
   );
   const [mainHeroAr, mainHeroEn] = sharedImageValue(
@@ -1624,16 +1632,15 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     defaultSiteContent.en.subpages.hotelPolicy.hero.image,
   );
 
-  const arMediaWithoutDeprecated = stripDeprecatedMediaKeys(content.ar.media);
-  const enMediaWithoutDeprecated = stripDeprecatedMediaKeys(content.en.media);
+  const arMediaWithoutDeprecated = stripDeprecatedArMediaKeys(content.ar.media);
+  const enMediaWithoutDeprecated = stripDeprecatedEnMediaKeys(content.en.media);
 
   return {
     ar: {
       ...content.ar,
       media: {
         ...arMediaWithoutDeprecated,
-        logo: logoAr,
-        arabicLogo: content.ar.media.arabicLogo,
+        arabicLogo: logoAr,
         mainHero: heroFallbackFromSlides(syncedHeroSlides.ar, mainHeroAr),
         mainHeroSlides: syncedHeroSlides.ar,
         jeddah: jeddahAr,

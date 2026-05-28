@@ -36,10 +36,7 @@ function arabicHref(href: string) {
 
 export async function SiteHeader() {
   const { ar, en } = await getEditableContent();
-  const logo =
-    usableLogo(ar.media.logo) ||
-    usableLogo(en.media.logo) ||
-    usableLogo(ar.media.arabicLogo);
+  const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
 
   return (
     <>
@@ -126,10 +123,7 @@ export function SiteFooter() {
 
 async function SiteFooterContent() {
   const { ar, en } = await getEditableContent();
-  const logo =
-    usableLogo(ar.media.logo) ||
-    usableLogo(en.media.logo) ||
-    usableLogo(ar.media.arabicLogo);
+  const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">

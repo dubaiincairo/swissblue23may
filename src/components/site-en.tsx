@@ -25,10 +25,7 @@ function resolveMediaImage(
 
 export async function SiteHeaderEn() {
   const { ar, en } = await getEditableContent();
-  const logo =
-    usableLogo(en.media.logo) ||
-    usableLogo(ar.media.logo) ||
-    usableLogo(ar.media.arabicLogo);
+  const logo = usableLogo(en.media.logo) || usableLogo(ar.media.arabicLogo);
 
   return (
     <>
@@ -82,10 +79,7 @@ export function SiteFooterEn() {
 
 async function SiteFooterEnContent() {
   const { ar, en } = await getEditableContent();
-  const logo =
-    usableLogo(en.media.logo) ||
-    usableLogo(ar.media.logo) ||
-    usableLogo(ar.media.arabicLogo);
+  const logo = usableLogo(en.media.logo) || usableLogo(ar.media.arabicLogo);
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white">
