@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RichEditor } from "@/components/rich-editor";
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
@@ -1158,15 +1158,7 @@ function StringFieldEditor({
   onChange: (path: Array<string | number>, value: JsonValue) => void;
   isNumber?: boolean;
 }) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const isUrl = ["href", "image", "secondaryHref", "source"].includes(name);
-
-  useEffect(() => {
-    const el = textareaRef.current;
-    if (!el) return;
-    el.style.height = "auto";
-    el.style.height = `${el.scrollHeight}px`;
-  }, [value]);
 
   if (isUrl) {
     return (
@@ -1209,58 +1201,13 @@ function StringFieldEditor({
     );
   }
 
-  const applyBold = () => {
-    const el = textareaRef.current;
-    if (!el) return;
-    const start = el.selectionStart;
-    const end = el.selectionEnd;
-    const selected = value.slice(start, end);
-    const before = value.slice(0, start);
-    const after = value.slice(end);
-
-    if (selected) {
-      onChange(path, `${before}**${selected}**${after}`);
-      requestAnimationFrame(() => {
-        el.focus();
-        el.setSelectionRange(start + 2, start + 2 + selected.length);
-      });
-    } else {
-      onChange(path, `${before}****${after}`);
-      requestAnimationFrame(() => {
-        el.focus();
-        el.setSelectionRange(start + 2, start + 2);
-      });
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "b") {
-      event.preventDefault();
-      applyBold();
-    }
-  };
-
   return (
     <label className="admin-field">
       <span>{labelFor(name, language)}</span>
-      <div className="admin-field-toolbar">
-        <button
-          type="button"
-          className="admin-field-bold"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={applyBold}
-          title={language === "ar" ? "غامق (Ctrl/Cmd+B)" : "Bold (Ctrl/Cmd+B)"}
-          aria-label={language === "ar" ? "تطبيق غامق" : "Apply bold"}
-        >
-          B
-        </button>
-      </div>
-      <textarea
-        ref={textareaRef}
+      <input
+        type="text"
         value={value}
-        rows={isLongField(name, value) ? 4 : 2}
         onChange={(event) => onChange(path, event.target.value)}
-        onKeyDown={handleKeyDown}
       />
     </label>
   );
