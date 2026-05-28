@@ -18,7 +18,7 @@ function badRequest(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
 }
 
-function sanitizeFilename(input: string, source: "unsplash" | "pexels" | "google") {
+function sanitizeFilename(input: string, source: "unsplash" | "pexels") {
   const fallback = `${source}-photo`;
   const cleaned = input
     .toLowerCase()
@@ -61,8 +61,8 @@ export async function POST(request: Request) {
   const downloadUrl = body.downloadUrl;
   const filenameHint = typeof body.filename === "string" ? body.filename : "";
 
-  if (source !== "unsplash" && source !== "pexels" && source !== "google") {
-    return badRequest("source must be 'unsplash', 'pexels', or 'google'.");
+  if (source !== "unsplash" && source !== "pexels") {
+    return badRequest("source must be 'unsplash' or 'pexels'.");
   }
 
   if (typeof downloadUrl !== "string" || !downloadUrl.startsWith("https://")) {
@@ -74,10 +74,8 @@ export async function POST(request: Request) {
     const host = new URL(downloadUrl).hostname;
     if (source === "unsplash") {
       allowedHost = host === "api.unsplash.com" || host.endsWith(".unsplash.com");
-    } else if (source === "pexels") {
-      allowedHost = host.endsWith(".pexels.com");
     } else {
-      allowedHost = true;
+      allowedHost = host.endsWith(".pexels.com");
     }
   } catch {
     return badRequest("downloadUrl is not a valid URL.");

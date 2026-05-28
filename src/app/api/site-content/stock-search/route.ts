@@ -83,85 +83,6 @@ async function searchUnsplash(query: string, page: number): Promise<NormalizedRe
   };
 }
 
-async function searchGoogle(query: string, page: number): Promise<NormalizedResponse> {
-  const key = process.env.GOOGLE_API_KEY;
-  const cx = process.env.GOOGLE_CSE_ID;
-  if (!key || !cx) {
-    throw new Error(
-      "Google isn't configured. Add GOOGLE_API_KEY and GOOGLE_CSE_ID to your environment.",
-    );
-  }
-
-  const perPage = 10;
-  const clampedPage = Math.min(page, 10);
-  const start = (clampedPage - 1) * perPage + 1;
-
-  const url = new URL("https://www.googleapis.com/customsearch/v1");
-  url.searchParams.set("key", key);
-  url.searchParams.set("cx", cx);
-  url.searchParams.set("q", query);
-  url.searchParams.set("searchType", "image");
-  url.searchParams.set("num", String(perPage));
-  url.searchParams.set("start", String(start));
-  url.searchParams.set("safe", "active");
-
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Google search failed (${response.status}): ${text.slice(0, 200)}`);
-  }
-
-  const data = (await response.json()) as {
-    items?: Array<{
-      title?: string;
-      link?: string;
-      image?: {
-        thumbnailLink?: string;
-        contextLink?: string;
-        width?: number;
-        height?: number;
-        thumbnailWidth?: number;
-        thumbnailHeight?: number;
-      };
-    }>;
-    queries?: {
-      nextPage?: Array<{ startIndex: number }>;
-    };
-  };
-
-  const items = data.items ?? [];
-
-  return {
-    results: items
-      .filter((item) => typeof item.link === "string" && item.link.startsWith("https://"))
-      .map((item) => {
-        const link = item.link as string;
-        const contextLink = item.image?.contextLink ?? link;
-        let creditName = "Source";
-        try {
-          creditName = new URL(contextLink).hostname.replace(/^www\./, "");
-        } catch {
-          // fall through
-        }
-        return {
-          id: link,
-          thumb: item.image?.thumbnailLink ?? link,
-          full: link,
-          downloadUrl: link,
-          alt: item.title ?? "",
-          width: item.image?.width ?? 0,
-          height: item.image?.height ?? 0,
-          credit: {
-            name: creditName,
-            url: contextLink,
-          },
-        };
-      }),
-    hasMore: Array.isArray(data.queries?.nextPage) && data.queries.nextPage.length > 0,
-  };
-}
-
 async function searchPexels(query: string, page: number): Promise<NormalizedResponse> {
   const key = process.env.PEXELS_API_KEY;
   if (!key) {
@@ -221,8 +142,8 @@ export async function GET(request: Request) {
   const pageParam = Number(searchParams.get("page") ?? "1");
   const page = Number.isFinite(pageParam) && pageParam > 0 ? Math.min(pageParam, 50) : 1;
 
-  if (source !== "unsplash" && source !== "pexels" && source !== "google") {
-    return badRequest("source must be 'unsplash', 'pexels', or 'google'.");
+  if (source !== "unsplash" && source !== "pexels") {
+    return badRequest("source must be 'unsplash' or 'pexels'.");
   }
 
   if (!query) {
@@ -230,12 +151,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result =
-      source === "unsplash"
-        ? await searchUnsplash(query, page)
-        : source === "pexels"
-          ? await searchPexels(query, page)
-          : await searchGoogle(query, page);
+    const result = source === "unsplash" ? await searchUnsplash(query, page) : await searchPexels(query, page);
     return NextResponse.json(result, {
       headers: { "Cache-Control": "private, max-age=60" },
     });
