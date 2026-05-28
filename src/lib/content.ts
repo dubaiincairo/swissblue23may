@@ -56,15 +56,15 @@ export const navGroups = [
   {
     label: "المجتمع",
     links: [
-      { label: "الوظائف", href: "/about" },
-      { label: "المسؤولية الاجتماعية", href: "/about" },
+      { label: "الوظائف", href: "/careers" },
+      { label: "المسؤولية الاجتماعية", href: "/social-responsibility" },
     ],
   },
   {
     label: "تواصل معنا",
     links: [
-      { label: "مكتب الحجوزات المركزي", href: "/contact" },
-      { label: "الشكاوى والاقتراحات", href: "/contact" },
+      { label: "مكتب الحجوزات المركزي", href: "/central-reservation" },
+      { label: "الشكاوى والاقتراحات", href: "/feedback" },
     ],
   },
 ];

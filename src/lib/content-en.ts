@@ -56,15 +56,15 @@ export const navGroupsEn = [
   {
     label: "Community",
     links: [
-      { label: "Careers", href: "/en/about" },
-      { label: "Social Responsibility", href: "/en/about" },
+      { label: "Careers", href: "/en/careers" },
+      { label: "Social Responsibility", href: "/en/social-responsibility" },
     ],
   },
   {
     label: "Contact Us",
     links: [
-      { label: "Central Reservation Office", href: "/en/contact" },
-      { label: "Complaints & Suggestions", href: "/en/contact" },
+      { label: "Central Reservation Office", href: "/en/central-reservation" },
+      { label: "Complaints & Suggestions", href: "/en/feedback" },
     ],
   },
 ];
