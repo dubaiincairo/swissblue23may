@@ -2,16 +2,18 @@ import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { rich } from "@/components/rich-text";
 import { diningGalleryPhotosEn } from "@/lib/content-en";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function DiningPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.dining;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "diningPage") && (
+      <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -55,6 +57,8 @@ export default async function DiningPageEn() {
       </section>
 
       <CtaBandEn title="Pick a stay that makes the day easier." cta="Book your stay" />
+      </>
+      )}
     </PageShellEn>
   );
 }

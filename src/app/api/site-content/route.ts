@@ -8,10 +8,10 @@ import {
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const content = await getEditableContent();
+  const { hiddenSections, ...content } = await getEditableContent();
 
   return NextResponse.json(
-    { content },
+    { content, hiddenSections },
     {
       headers: {
         "Cache-Control": "no-store",
@@ -21,7 +21,7 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  let body: { content?: typeof defaultSiteContent };
+  let body: { content?: typeof defaultSiteContent; hiddenSections?: string[] };
 
   try {
     const text = await request.text();
@@ -42,11 +42,13 @@ export async function PUT(request: Request) {
   }
 
   const content = body?.content ?? defaultSiteContent;
+  const hiddenSections = Array.isArray(body?.hiddenSections) ? body.hiddenSections : [];
 
-  const savedContent = await saveEditableContent(content);
+  const saved = await saveEditableContent(content, hiddenSections);
 
   return NextResponse.json({
     ok: true,
-    content: savedContent,
+    content: saved.content,
+    hiddenSections: saved.hiddenSections,
   });
 }

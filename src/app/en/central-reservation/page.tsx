@@ -1,15 +1,17 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function CentralReservationPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.reservationOfficePage;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "reservationOfficeSubpage") && (
+        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -101,6 +103,8 @@ export default async function CentralReservationPageEn() {
       </section>
 
       <CtaBandEn title="Direct booking, best rates, more flexibility." cta="Check availability" />
+        </>
+      )}
     </PageShellEn>
   );
 }

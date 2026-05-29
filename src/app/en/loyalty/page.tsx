@@ -1,16 +1,18 @@
 import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function LoyaltyPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const pageContent = en.subpages.loyaltyPage;
   const loyaltyProgram = en.homepage.loyalty;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "loyaltySubpage") && (
+      <>
       <PageHeroEn
         eyebrow={pageContent.hero.eyebrow}
         title={pageContent.hero.title}
@@ -35,7 +37,76 @@ export default async function LoyaltyPageEn() {
           ))}
         </div>
       </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">{rich(pageContent.tiersIntro.eyebrow)}</span>
+          <h2>{rich(pageContent.tiersIntro.title)}</h2>
+          <p>{rich(pageContent.tiersIntro.text)}</p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {pageContent.tiers.map((tier, index) => (
+            <article
+              className="content-card reveal-slide-up"
+              key={tier.name}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
+              <h3 className="text-2xl font-bold text-[var(--primary)]">{rich(tier.name)}</h3>
+              <span className="mt-1 block text-xs font-bold text-[var(--text-secondary)]">
+                {rich(tier.threshold)}
+              </span>
+              <ul className="mt-4 grid gap-2 text-sm leading-7 text-[var(--text-secondary)]">
+                {tier.perks.map((perk) => (
+                  <li key={perk}>• {rich(perk)}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-14 sm:px-6 lg:grid-cols-2 lg:px-8">
+        {[pageContent.earn, pageContent.redeem].map((block) => (
+          <div className="feature-panel reveal-slide-up" key={block.title}>
+            <span className="eyebrow">{rich(block.eyebrow)}</span>
+            <h2>{rich(block.title)}</h2>
+            <ul className="mt-4 grid gap-2 text-sm leading-7 text-[var(--text-secondary)]">
+              {block.items.map((item) => (
+                <li key={item}>• {rich(item)}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">{rich(pageContent.howItWorksIntro.eyebrow)}</span>
+          <h2>{rich(pageContent.howItWorksIntro.title)}</h2>
+          <p>{rich(pageContent.howItWorksIntro.text)}</p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {pageContent.howItWorks.map((step, index) => (
+            <article
+              className="content-card reveal-slide-up"
+              key={step.title}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
+              <span className="text-3xl font-bold text-[var(--primary)]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="mt-2 text-lg font-bold">{rich(step.title)}</h3>
+              <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">
+                {rich(step.text)}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <CtaBandEn title="Start with direct booking for clearer benefits." cta="Check availability" />
+      </>
+      )}
     </PageShellEn>
   );
 }

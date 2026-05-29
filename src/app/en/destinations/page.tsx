@@ -3,18 +3,20 @@ import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { PhotoStrip } from "@/components/photo-strip";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 
 export const dynamic = "force-dynamic";
 
 export default async function DestinationsPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.destinationsPage;
   const destinations = en.homepage.destinations.items;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "destinationsSubpage") && (
+      <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -96,6 +98,8 @@ export default async function DestinationsPageEn() {
         </div>
       </section>
       <CtaBandEn title="Pick the city closest to your trip." cta="Book now" />
+      </>
+      )}
     </PageShellEn>
   );
 }

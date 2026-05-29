@@ -1,15 +1,17 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function CentralReservationPage() {
-  const { ar } = await getEditableContent();
+  const { ar, hiddenSections } = await getEditableContent();
   const content = ar.subpages.reservationOfficePage;
 
   return (
     <PageShell>
+      {!isSectionHidden(hiddenSections, "reservationOfficeSubpage") && (
+        <>
       <PageHero
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -102,6 +104,8 @@ export default async function CentralReservationPage() {
       </section>
 
       <CtaBand title="حجز مباشر، أفضل الأسعار، مرونة أعلى." cta="تحقق من التوفر" />
+        </>
+      )}
     </PageShell>
   );
 }

@@ -1,15 +1,18 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import CareersOpenings from "@/components/careers-openings";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function CareersPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.careersPage;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "careersSubpage") && (
+        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -64,29 +67,11 @@ export default async function CareersPageEn() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:px-8">
-        <div className="reveal-slide-up">
-          <span className="eyebrow">{rich(content.applyIntro.eyebrow)}</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {rich(content.applyIntro.title)}
-          </h2>
-          <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-            {rich(content.applyIntro.text)}
-          </p>
-        </div>
-        <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{rich(content.applyIntro.email)}</span>
-          <h3 className="mt-4 text-lg font-semibold">{rich(content.applyIntro.cta)}</h3>
-          <a
-            className="btn btn-primary mt-6 inline-flex"
-            href={`mailto:${content.applyIntro.email}`}
-          >
-            {rich(content.applyIntro.cta)}
-          </a>
-        </div>
-      </section>
+      <CareersOpenings locale="en" />
 
       <CtaBandEn title="Find your next role at Swiss Blue." cta="Send your CV" />
+        </>
+      )}
     </PageShellEn>
   );
 }

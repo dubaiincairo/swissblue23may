@@ -1,16 +1,19 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { CategorizedAmenities } from "@/components/amenities-categorized";
-import { getEditableContent } from "@/lib/editable-content";
+import { rich } from "@/components/rich-text";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function AmenitiesServicesPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.amenitiesServices;
   const services = en.homepage.services.items;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "amenitiesServicesPage") && (
+        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -32,7 +35,32 @@ export default async function AmenitiesServicesPageEn() {
           <CategorizedAmenities items={services} locale="en" />
         </div>
       </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">{rich(content.standardsIntro.eyebrow)}</span>
+          <h2>{rich(content.standardsIntro.title)}</h2>
+          <p>{rich(content.standardsIntro.text)}</p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {content.commitments.map((item, index) => (
+            <article
+              className="content-card reveal-slide-up"
+              key={item.title}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
+              <span className="eyebrow">{rich(item.title)}</span>
+              <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
+                {rich(item.text)}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <CtaBandEn title="Book a stay with the essentials covered." cta="Book now" />
+        </>
+      )}
     </PageShellEn>
   );
 }
