@@ -1,15 +1,17 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { rich } from "@/components/rich-text";
-import { getEditableContent, BOOKING_URL } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function ContactPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.contact;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "contactPage") && (
+        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -41,6 +43,8 @@ export default async function ContactPageEn() {
         </div>
       </section>
       <CtaBandEn title="Choose the right path, and we will help with the next step." cta="Book now" />
+        </>
+      )}
     </PageShellEn>
   );
 }

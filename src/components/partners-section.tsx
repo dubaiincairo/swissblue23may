@@ -29,7 +29,7 @@ export function PartnersSection({
   const isRtl = locale === "ar";
 
   return (
-    <section className="partners-section mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="partners-section section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" dir={isRtl ? "rtl" : "ltr"}>
       <div className="partners-shell">
         <div className="partners-shell-decor" aria-hidden="true" />
         <div className="partners-head">

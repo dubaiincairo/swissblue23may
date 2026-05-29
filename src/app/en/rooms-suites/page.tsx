@@ -1,15 +1,17 @@
 import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function RoomsSuitesPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.roomsSuites;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "roomsSuitesPage") && (
+        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -96,6 +98,8 @@ export default async function RoomsSuitesPageEn() {
       </section>
 
       <CtaBandEn title="Compare categories and book the right unit." cta="Book your unit" />
+        </>
+      )}
     </PageShellEn>
   );
 }

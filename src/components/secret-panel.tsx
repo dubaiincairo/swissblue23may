@@ -1,5 +1,6 @@
 "use client";
 
+// Swiss Blue content studio (admin panel).
 import { useEffect, useMemo, useState } from "react";
 import { RichEditor } from "@/components/rich-editor";
 import { RephraseButton } from "@/components/rephrase-button";
@@ -121,6 +122,13 @@ const adminSections: AdminSection[] = [
     label: "Stay categories",
     description: "Hotel, apart-hotel, and serviced-apartment comparison.",
     path: ["homepage", "categories"],
+  },
+  {
+    id: "testimonials",
+    group: "Homepage",
+    label: "Guest testimonials",
+    description: "Reviews shown on the homepage. Pull real testimonials from Google Maps, Booking.com, Agoda, Expedia, and other platforms.",
+    path: ["homepage", "testimonials"],
   },
   {
     id: "cta",
@@ -344,6 +352,11 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     label: "فئات الإقامة",
     description: "مقارنة الفندق والشقق الفندقية والشقق المخدومة.",
   },
+  testimonials: {
+    group: "الصفحة الرئيسية",
+    label: "آراء الضيوف",
+    description: "آراء حقيقية من ضيوفنا عبر جوجل، Booking.com، Agoda، Expedia وغيرها.",
+  },
   cta: {
     group: "الصفحة الرئيسية",
     label: "دعوة الإجراء الختامية",
@@ -510,6 +523,11 @@ const fieldLabels: Record<string, string> = {
   secondaryHref: "Secondary button URL",
   slug: "Page slug",
   source: "Source URL",
+  platform: "Booking platform",
+  quote: "Review quote",
+  rating: "Rating (1–5)",
+  role: "Stay type",
+  name: "Guest name",
   kind: "Media type",
   summary: "Short summary",
   text: "Body text",
@@ -598,6 +616,11 @@ const arabicFieldLabels: Record<string, string> = {
   secondaryHref: "رابط الزر الثانوي",
   slug: "رابط الصفحة المختصر",
   source: "رابط الملف",
+  platform: "منصة الحجز",
+  quote: "نص الرأي",
+  rating: "التقييم (1–5)",
+  role: "نوع الإقامة",
+  name: "اسم الضيف",
   kind: "نوع الملف",
   summary: "الملخص",
   text: "النص",
@@ -794,7 +817,7 @@ function isPlainObject(value: JsonValue): value is JsonObject {
 
 function itemTitle(value: JsonValue, fallback: string) {
   if (isPlainObject(value)) {
-    const title = value.question ?? value.title ?? value.label ?? value.city ?? value.value ?? value.slug;
+    const title = value.question ?? value.title ?? value.label ?? value.name ?? value.city ?? value.value ?? value.slug;
     return typeof title === "string" || typeof title === "number" ? String(title) : fallback;
   }
 
@@ -1252,7 +1275,7 @@ function StringFieldEditor({
 
   if (isLongField(name, value)) {
     return (
-      <label className="admin-field">
+      <div className="admin-field">
         <span className="admin-field-label-row">
           <span>{labelFor(name, language)}</span>
           {!isOpaque ? (
@@ -1269,12 +1292,12 @@ function StringFieldEditor({
           ariaLabel={labelFor(name, language)}
           language={language}
         />
-      </label>
+      </div>
     );
   }
 
   return (
-    <label className="admin-field">
+    <div className="admin-field">
       <span className="admin-field-label-row">
         <span>{labelFor(name, language)}</span>
         {!isOpaque ? (
@@ -1286,10 +1309,11 @@ function StringFieldEditor({
       </span>
       <input
         type="text"
+        aria-label={labelFor(name, language)}
         value={value}
         onChange={(event) => onChange(path, event.target.value)}
       />
-    </label>
+    </div>
   );
 }
 
@@ -1490,8 +1514,12 @@ function FieldEditor({
   return null;
 }
 
+// Structural sections that must always render — hiding them would break the site layout.
+const NON_HIDEABLE_SECTIONS = new Set(["navGroups", "media", "footerSections", "footerContact"]);
+
 export default function SecretPanel({ language = "en" }: { language?: Language }) {
   const [content, setContent] = useState<JsonObject | null>(null);
+  const [hiddenSections, setHiddenSections] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState("hero");
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("loading");
@@ -1502,6 +1530,7 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
       .then((response) => response.json())
       .then((data) => {
         setContent(data.content);
+        setHiddenSections(Array.isArray(data.hiddenSections) ? data.hiddenSections : []);
         setStatus("ready");
         setStatusTone("ready");
       })
@@ -1515,6 +1544,8 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
   const selectedSectionCopy = sectionCopy(selectedSection, language);
   const activePath = [language, ...selectedSection.path];
   const sectionValue = content ? getAtPath(content, activePath) : null;
+  const selectedHideable = !NON_HIDEABLE_SECTIONS.has(selectedSection.id);
+  const selectedHidden = hiddenSections.includes(selectedSection.id);
 
   const filteredSections = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -1576,6 +1607,17 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
     setStatusTone("dirty");
   }
 
+  function toggleHidden(id: string) {
+    if (NON_HIDEABLE_SECTIONS.has(id)) {
+      return;
+    }
+    setHiddenSections((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+    );
+    setStatus("dirty");
+    setStatusTone("dirty");
+  }
+
   async function save() {
     if (!content || statusTone === "saving") {
       return;
@@ -1586,7 +1628,7 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
 
     try {
       const response = await fetch("/api/site-content", {
-        body: JSON.stringify({ content }),
+        body: JSON.stringify({ content, hiddenSections }),
         headers: { "Content-Type": "application/json" },
         method: "PUT",
       });
@@ -1597,6 +1639,9 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
       }
 
       setContent(data.content);
+      if (Array.isArray(data.hiddenSections)) {
+        setHiddenSections(data.hiddenSections);
+      }
       setStatus("saved");
       setStatusTone("ready");
     } catch {
@@ -1666,7 +1711,14 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
                           type="button"
                           onClick={() => setSelectedId(section.id)}
                         >
-                          <span>{copy.label}</span>
+                          <span>
+                            {copy.label}
+                            {hiddenSections.includes(section.id) ? (
+                              <span className="admin-hidden-badge">
+                                {language === "ar" ? "مخفي" : "Hidden"}
+                              </span>
+                            ) : null}
+                          </span>
                           <small>{copy.description}</small>
                         </button>
                       );
@@ -1690,6 +1742,22 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
 
           <div className="admin-actions">
             <span className={`admin-status ${statusTone}`}>{statusLabel(status, language)}</span>
+            {selectedHideable ? (
+              <button
+                type="button"
+                className={`admin-hide-toggle${selectedHidden ? " is-hidden" : ""}`}
+                onClick={() => toggleHidden(selectedSection.id)}
+                aria-pressed={selectedHidden}
+              >
+                {selectedHidden
+                  ? language === "ar"
+                    ? "إظهار القسم"
+                    : "Show section"
+                  : language === "ar"
+                    ? "إخفاء القسم"
+                    : "Hide section"}
+              </button>
+            ) : null}
             <a className="admin-preview" href={languages[language].previewHref} target="_blank" rel="noreferrer">
               {language === "ar" ? "معاينة الموقع" : "Preview site"}
             </a>
@@ -1710,6 +1778,14 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
               </div>
               <span>{sectionMeta(sectionValue, language)}</span>
             </div>
+
+            {selectedHidden ? (
+              <div className="admin-hidden-note">
+                {language === "ar"
+                  ? 'هذا القسم مخفي حاليًا من الموقع المباشر. اضغط "إظهار القسم" ثم احفظ لإعادته.'
+                  : 'This section is hidden from the live site. Click "Show section", then save, to restore it.'}
+              </div>
+            ) : null}
 
             {sectionValue ? (
               <FieldEditor

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SwissBlue Project — Developer Field Guide</title>
+<style>
+  :root{
+    --navy:#0a2a5e; --royal:#1246a8; --sky:#2bb6d6; --cyan-soft:#e6f4f9;
+    --bg:#eef3fa; --panel:#ffffff; --ink:#13233f; --muted:#5d6e8c;
+    --line:#dde6f2; --code-bg:#0d1c3a; --code-ink:#cfe0ff; --code-key:#7fd1ff;
+    --good:#1f9d6b; --warn:#c8742b; --danger:#c2413c; --accent:#1246a8;
+    --shadow:0 1px 2px rgba(10,42,94,.06),0 8px 24px rgba(10,42,94,.08);
+    --radius:14px;
+    --maxw:1180px;
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.62;font-size:16px;-webkit-font-smoothing:antialiased}
+  a{color:var(--royal);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:var(--mono);font-size:.86em;background:#eaf0fb;color:#0f3b86;padding:.1em .42em;border-radius:6px;border:1px solid #dce6f7;white-space:nowrap}
+  h1,h2,h3,h4{line-height:1.25;color:var(--navy)}
+  /* ---------- top bar ---------- */
+  header.top{position:sticky;top:0;z-index:50;background:linear-gradient(120deg,var(--navy),var(--royal));color:#fff;box-shadow:var(--shadow)}
+  .top-inner{max-width:var(--maxw);margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.2px;font-size:1.05rem}
+  .brand .dot{width:13px;height:13px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 4px rgba(43,182,214,.28)}
+  .brand small{font-weight:500;opacity:.78;font-size:.74rem;display:block;letter-spacing:.3px}
+  .top form{margin-left:auto;flex:1;min-width:200px;max-width:380px;position:relative}
+  .top input{width:100%;padding:9px 14px 9px 36px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;font-size:.92rem;outline:none}
+  .top input::placeholder{color:rgba(255,255,255,.7)}
+  .top input:focus{background:rgba(255,255,255,.2);border-color:var(--sky)}
+  .top .mag{position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:.8}
+  /* ---------- layout ---------- */
+  .shell{max-width:var(--maxw);margin:0 auto;padding:26px 22px 90px;display:grid;grid-template-columns:230px 1fr;gap:34px;align-items:start}
+  nav.side{position:sticky;top:78px;font-size:.9rem;border-right:1px solid var(--line);padding-right:8px}
+  nav.side a{display:block;color:var(--muted);padding:7px 10px;border-radius:8px;border-left:2px solid transparent;font-weight:500}
+  nav.side a:hover{background:var(--cyan-soft);text-decoration:none;color:var(--navy)}
+  nav.side a.active{color:var(--royal);background:#eaf1fc;border-left-color:var(--royal);font-weight:700}
+  nav.side .grp{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:#9aa9c2;margin:16px 10px 5px;font-weight:700}
+  main{min-width:0}
+  section.block{margin-bottom:46px;scroll-margin-top:84px}
+  .block > h2{font-size:1.62rem;margin:0 0 4px;display:flex;align-items:center;gap:11px}
+  .block > h2 .num{font-size:.8rem;font-weight:800;color:#fff;background:var(--royal);width:30px;height:30px;display:grid;place-items:center;border-radius:9px;flex:none}
+  .lead{color:var(--muted);font-size:1.02rem;margin:2px 0 20px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px}
+  .card h3{margin:0 0 8px;font-size:1.16rem}
+  .card h4{margin:18px 0 6px;font-size:1rem;color:var(--royal)}
+  p{margin:0 0 13px}
+  .muted{color:var(--muted)}
+  ul.clean{margin:6px 0 14px;padding-left:22px}
+  ul.clean li{margin:6px 0}
+  /* callouts */
+  .note{border-left:4px solid var(--royal);background:#f3f7fe;padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:.95rem}
+  .note.good{border-color:var(--good);background:#f0faf5}
+  .note.warn{border-color:var(--warn);background:#fdf6ee}
+  .note.tip{border-color:var(--sky);background:#eef9fc}
+  .note b{color:var(--navy)}
+  /* pills */
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+  .pill{font-size:.78rem;font-weight:600;padding:5px 12px;border-radius:999px;background:#eef954;background:#eaf1fc;color:#1c4a9c;border:1px solid #d6e3f8}
+  .pill .v{opacity:.6;font-weight:500}
+  /* stack grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:14px}
+  .tile{border:1px solid var(--line);border-radius:12px;padding:15px 16px;background:#fbfcfe}
+  .tile .nm{font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px}
+  .tile .role{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--sky);font-weight:800;margin-bottom:5px}
+  .tile p{font-size:.9rem;margin:4px 0 0;color:var(--muted)}
+  /* code block */
+  pre{background:var(--code-bg);color:var(--code-ink);padding:15px 17px;border-radius:11px;overflow:auto;font-family:var(--mono);font-size:.82rem;line-height:1.6;margin:12px 0}
+  pre .k{color:var(--code-key)} pre .c{color:#7e93bd} pre .s{color:#9be8b0} pre .p{color:#ffcaa6}
+  /* steps / flow */
+  .flow{counter-reset:step;margin:6px 0}
+  .step{position:relative;padding:4px 0 20px 52px;border-left:2px dashed #c8d6ea;margin-left:16px}
+  .step:last-child{border-left-color:transparent}
+  .step::before{counter-increment:step;content:counter(step);position:absolute;left:-15px;top:0;width:30px;height:30px;border-radius:50%;background:var(--royal);color:#fff;font-weight:800;display:grid;place-items:center;font-size:.85rem;box-shadow:0 0 0 4px var(--bg)}
+  .step h4{margin:2px 0 4px;font-size:1.02rem;color:var(--navy)}
+  .step p{font-size:.93rem;margin:0;color:var(--muted)}
+  .step code{white-space:normal}
+  /* tree */
+  .tree-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px}
+  .tree{font-family:var(--mono);font-size:.83rem;background:#fbfcff;border:1px solid var(--line);border-radius:12px;padding:12px 8px;max-height:560px;overflow:auto}
+  .tree ul{list-style:none;margin:0;padding-left:17px}
+  .tree > ul{padding-left:2px}
+  .row{display:flex;align-items:center;gap:6px;padding:3px 7px;border-radius:7px;cursor:pointer;white-space:nowrap}
+  .row:hover{background:#eaf1fc}
+  .row.sel{background:#dce9fd;outline:1px solid #b7cdf3}
+  .row .tw{width:13px;color:#9aa9c2;flex:none;text-align:center}
+  .row .ic{flex:none}
+  .row .nm{overflow:hidden;text-overflow:ellipsis}
+  .row .badge{margin-left:6px;font-size:.62rem;font-family:var(--sans);font-weight:700;padding:1px 7px;border-radius:999px;letter-spacing:.03em}
+  .b-gen{background:#eceff4;color:#8493ab}
+  .b-key{background:#fde9cf;color:#a9621b}
+  .b-ai{background:#e7e2fb;color:#5b46b8}
+  .kids{display:none}
+  .kids.open{display:block}
+  .detail{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:78px;max-height:560px;overflow:auto;box-shadow:var(--shadow)}
+  .detail .path{font-family:var(--mono);font-size:.8rem;color:var(--royal);background:#eef3fc;padding:6px 10px;border-radius:7px;display:inline-block;margin-bottom:10px;word-break:break-all;white-space:normal}
+  .detail h3{margin:0 0 4px;font-size:1.12rem}
+  .detail .role{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sky);margin-bottom:10px}
+  .detail .body{font-size:.93rem;color:#33445f}
+  .detail .body b{color:var(--navy)}
+  .detail .empty{color:var(--muted);font-style:italic}
+  /* glossary */
+  .gctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+  .gctrl input{flex:1;min-width:180px;padding:10px 13px;border:1px solid var(--line);border-radius:10px;font-size:.92rem;outline:none}
+  .gctrl input:focus{border-color:var(--royal)}
+  .chip{font-size:.78rem;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--muted)}
+  .chip.on{background:var(--royal);color:#fff;border-color:var(--royal)}
+  .gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:12px}
+  .term{border:1px solid var(--line);border-radius:11px;padding:13px 15px;background:#fff}
+  .term .t{font-weight:800;color:var(--navy);font-size:.98rem}
+  .term .a{font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--sky);margin:2px 0 6px}
+  .term .d{font-size:.88rem;color:#46566f;line-height:1.55}
+  .term .d code{font-size:.82em}
+  .nohit{color:var(--muted);font-style:italic;padding:14px}
+  .count{font-size:.8rem;color:var(--muted);margin-left:auto}
+  /* footer */
+  footer{max-width:var(--maxw);margin:0 auto;padding:24px 22px 60px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
+  .totop{position:fixed;right:20px;bottom:20px;background:var(--royal);color:#fff;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;box-shadow:var(--shadow);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s;font-size:1.1rem;border:none}
+  .totop.show{opacity:1;pointer-events:auto}
+  mark{background:#ffe9a8;color:inherit;padding:0 1px;border-radius:3px}
+  @media (max-width:860px){
+    .shell{grid-template-columns:1fr;gap:18px}
+    nav.side{position:static;border-right:none;border-bottom:1px solid var(--line);padding:0 0 12px;display:flex;flex-wrap:wrap;gap:4px}
+    nav.side .grp{width:100%;margin:8px 4px 2px}
+    .tree-wrap{grid-template-columns:1fr}
+    .detail{position:static;max-height:none}
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><span class="dot"></span><span>SwissBlue Project<small>Developer Field Guide for vibe coders</small></span></div>
+    <form onsubmit="return false;">
+      <span class="mag">⌕</span>
+      <input id="globalSearch" type="search" placeholder="Search the glossary (e.g. hydration, Sanity, RTL)…" autocomplete="off" />
+    </form>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="side" id="sideNav">
+    <div class="grp">Orientation</div>
+    <a href="#start">Start here</a>
+    <a href="#stack">The tech stack</a>
+    <div class="grp">The Code</div>
+    <a href="#tree">Folder, file by file</a>
+    <a href="#website">How it works as a website</a>
+    <a href="#editing">The live-editing system</a>
+    <div class="grp">Working With AI</div>
+    <a href="#agentic">How agentic AI builds this</a>
+    <a href="#vibe">Vibe coding, professionally</a>
+    <div class="grp">Reference</div>
+    <a href="#glossary">Glossary</a>
+  </nav>
+
+  <main>
+    <!-- ============ 1. START HERE ============ -->
+    <section class="block" id="start">
+      <h2><span class="num">1</span> Start here — the 60-second mental model</h2>
+      <p class="lead">What this project actually is, in plain language, before any jargon.</p>
+
+      <div class="card">
+        <p>This folder is the <b>SwissBlue Hotels website</b> — a real, live, bilingual (Arabic + English) hospitality
+        site for a hotel group operating in Saudi Arabia (Jeddah, Jazan, Riyadh). Internally the project is named
+        <code>wdgroupwebsite28</code> (WD = Watan Designs Group). It is a <b>Next.js</b> application written in
+        <b>TypeScript</b>, styled with <b>Tailwind CSS</b>, with its editable text and photos stored in a cloud
+        content system called <b>Sanity</b>, and it is published to the internet through <b>Vercel</b>.</p>
+
+        <h4>The restaurant analogy</h4>
+        <p>If the website were a restaurant, here is who's who. It makes the rest of the guide click into place:</p>
+        <ul class="clean">
+          <li><b>The kitchen = Next.js / the server.</b> When a visitor asks for a page, the kitchen <i>cooks it fresh</i>
+          (renders HTML) and sends out a finished plate.</li>
+          <li><b>The recipe book = your code in <code>src/</code>.</b> The pages and components describe how every dish is made.</li>
+          <li><b>The pantry = Sanity (the CMS).</b> The ingredients that change often — headlines, descriptions, photos —
+          live here so a non-programmer can restock them without touching the recipe book.</li>
+          <li><b>The default ingredients = <code>src/lib/content.ts</code>.</b> If the pantry is empty, the kitchen falls
+          back to a built-in set of ingredients shipped with the recipe book, so a plate always goes out.</li>
+          <li><b>The waiter's order pad = <code>/secretpanel</code>.</b> A custom back-office screen where staff edit the
+          words and pictures. It writes new ingredients into the pantry.</li>
+          <li><b>The building & utilities = Vercel.</b> The premises that host the kitchen, handle the crowd, and keep
+          the lights on 24/7.</li>
+          <li><b>The contractor you hire by text message = an AI coding agent.</b> It reads the house rules
+          (<code>AGENTS.md</code>), renovates the recipe book, and hands changes back through Git + Vercel.</li>
+        </ul>
+        <div class="note tip"><b>Why this design is clever:</b> most of the site is fast, version-controlled code, but the
+        bits that change weekly (a price, a hero photo, a tagline) are editable live by non-coders — and updates appear on
+        the public site within ~5 seconds, with <i>no re-deploy</i>. You get the safety of code and the speed of a CMS.</div>
+      </div>
+
+      <div class="card">
+        <h3>The four big ideas you'll see everywhere</h3>
+        <div class="flow">
+          <div class="step"><h4>It renders on the server, fresh, every time</h4><p>Pages are marked
+            <code>export const dynamic = "force-dynamic"</code>. The HTML is built on the server on each request, so the
+            newest content from the pantry always shows. (Many Next.js sites cache pages; this one deliberately doesn't.)</p></div>
+          <div class="step"><h4>One language tree, mirrored twice</h4><p>Arabic lives at the root (<code>/</code>, right-to-left)
+            and English is a parallel copy under <code>/en</code> (left-to-right). A small router file decides which one you get.</p></div>
+          <div class="step"><h4>Defaults in code, overrides in the cloud</h4><p>Every page asks one function,
+            <code>getEditableContent()</code>, for its words and images. That function merges built-in defaults with whatever
+            edits are saved in Sanity.</p></div>
+          <div class="step"><h4>Humans and AI edit different layers</h4><p>Non-coders change <b>content</b> in <code>/secretpanel</code>.
+            Developers (and AI agents) change <b>code & structure</b> via Git. The two rarely collide.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2. STACK ============ -->
+    <section class="block" id="stack">
+      <h2><span class="num">2</span> The tech stack</h2>
+      <p class="lead">The named tools this project is built from, and the one-line job each one does here.</p>
+      <div class="card">
+        <div class="grid">
+          <div class="tile"><div class="role">Framework</div><div class="nm">Next.js 16</div><p>The kitchen. Turns your React code into real web pages, handles routing and the server-side API endpoints. Uses the modern "App Router".</p></div>
+          <div class="tile"><div class="role">UI library</div><div class="nm">React 19</div><p>The component system. You build the page out of reusable pieces (header, gallery, FAQ) instead of one giant HTML file.</p></div>
+          <div class="tile"><div class="role">Language</div><div class="nm">TypeScript</div><p>JavaScript with type labels. Catches "you passed text where a number was expected" mistakes <i>before</i> the site runs.</p></div>
+          <div class="tile"><div class="role">Styling</div><div class="nm">Tailwind CSS v4</div><p>Styling by composing tiny class names (<code>flex</code>, <code>px-4</code>) right in the markup, instead of separate CSS files.</p></div>
+          <div class="tile"><div class="role">Content (CMS)</div><div class="nm">Sanity</div><p>The cloud pantry. Stores the editable text & images as data, and provides the <code>/studio</code> editing dashboard.</p></div>
+          <div class="tile"><div class="role">Rich text editor</div><div class="nm">TipTap</div><p>Powers the bold/italic/link editing boxes inside <code>/secretpanel</code> so staff can format text visually.</p></div>
+          <div class="tile"><div class="role">Hosting / deploy</div><div class="nm">Vercel</div><p>Where the site lives online. Every Git push auto-builds and publishes. Built by the makers of Next.js.</p></div>
+          <div class="tile"><div class="role">AI — rewriting</div><div class="nm">Google Gemini</div><p>Called by the "Rephrase" button to rewrite a paragraph in a luxury-hospitality tone.</p></div>
+          <div class="tile"><div class="role">AI — translation</div><div class="nm">DeepL</div><p>Called by the "Translate" button to convert text between Arabic and English.</p></div>
+          <div class="tile"><div class="role">Stock photos</div><div class="nm">Unsplash + Pexels</div><p>Searched from inside the editor so staff can drop in free professional photos without leaving the panel.</p></div>
+          <div class="tile"><div class="role">Chat widget</div><div class="nm">Chatbase</div><p>An embedded chatbot (its ID lives in the environment file) for guest questions.</p></div>
+          <div class="tile"><div class="role">Safety</div><div class="nm">DOMPurify</div><p>Scrubs user/AI-generated HTML so a stray <code>&lt;script&gt;</code> can't sneak onto the page.</p></div>
+        </div>
+        <div class="note"><b>How to read a stack:</b> almost every web project is "a <i>framework</i> + a <i>language</i> + a
+        <i>styling system</i> + a place to <i>store content</i> + a place to <i>host</i>." Once you can name those five slots
+        for any repo, you can find your way around it. Here they are Next.js · TypeScript · Tailwind · Sanity · Vercel.</div>
+      </div>
+    </section>
+
+    <!-- ============ 3. TREE ============ -->
+    <section class="block" id="tree">
+      <h2><span class="num">3</span> The folder, file by file</h2>
+      <p class="lead">Click any folder to expand it, and any file to read what it is and why it's there. Badges:
+        <span class="pill" style="background:#eceff4;color:#8493ab">generated</span> = not hand-edited,
+        <span class="pill" style="background:#fde9cf;color:#a9621b">key file</span> = worth understanding,
+        <span class="pill" style="background:#e7e2fb;color:#5b46b8">AI</span> = instructions for coding agents.</p>
+      <div class="tree-wrap">
+        <div class="tree" id="treeRoot" aria-label="Project file tree"></div>
+        <div class="detail" id="detailPanel">
+          <div class="role">File explorer</div>
+          <h3>Pick something on the left</h3>
+          <p class="empty">Click any file or folder to see a plain-language explanation of what it does and how it
+          connects to the rest of the site.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. WEBSITE ============ -->
+    <section class="block" id="website">
+      <h2><span class="num">4</span> How it works as a website</h2>
+      <p class="lead">Follow one visitor from typing the address to seeing the page. This is the request lifecycle.</p>
+
+      <div class="card">
+        <h3>What happens when someone opens the site</h3>
+        <div class="flow">
+          <div class="step"><h4>The browser asks Vercel for a page</h4><p>A visitor goes to the site. The request hits the
+            Next.js app running on Vercel's servers.</p></div>
+          <div class="step"><h4>The router picks a language</h4><p><code>src/proxy.ts</code> inspects the URL.
+            Plain <code>/</code> is sent to <code>/en</code> (English). A <code>/ar</code> URL is quietly served the
+            Arabic pages that live at the root. This is how one codebase serves two languages.</p></div>
+          <div class="step"><h4>The matching page component runs on the server</h4><p>Next.js finds the file for that route
+            (e.g. <code>src/app/en/page.tsx</code>). Because it's an <code>async</code> Server Component, it can fetch
+            data before sending anything to the browser.</p></div>
+          <div class="step"><h4>The page asks for its content</h4><p>It calls <code>getEditableContent()</code>, which
+            reaches into Sanity for the saved overrides and <b>merges them on top of the code defaults</b>, returning one
+            tidy object split into <code>{ ar, en }</code>.</p></div>
+          <div class="step"><h4>Components turn data into HTML</h4><p>The page hands that data to React components
+            (<code>SiteHeader</code>, <code>HeroMediaCarousel</code>, <code>FaqAccordion</code>…). The <code>rich()</code>
+            helper safely renders formatted text. The server produces finished HTML.</p></div>
+          <div class="step"><h4>The browser shows it, then "hydrates"</h4><p>The visitor sees content immediately. Then the
+            interactive bits (carousels, menus) "wake up" in the browser — this is <b>hydration</b>. A few small
+            background helpers also start, including the live-refresh poller (next section).</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>The Arabic / English routing, concretely</h3>
+        <p>There are two parallel page trees. Anything under <code>src/app/en/</code> is the English site; everything else
+        directly under <code>src/app/</code> is the Arabic site. They share the same components and the same content object —
+        they just read the <code>.ar</code> or <code>.en</code> half of it.</p>
+        <pre><span class="c">// src/proxy.ts — the traffic director (runs before every matched request)</span>
+<span class="k">if</span> (path === <span class="s">"/"</span>)        → redirect to <span class="s">"/en"</span>   <span class="c">// default visitors get English</span>
+<span class="k">if</span> (path === <span class="s">"/ar"</span>)      → rewrite  to <span class="s">"/"</span>     <span class="c">// /ar shows the Arabic root page</span>
+<span class="k">if</span> (path.startsWith(<span class="s">"/ar/"</span>)) → strip <span class="s">"/ar"</span> prefix    <span class="c">// /ar/contact → /contact (Arabic)</span></pre>
+        <div class="note"><b>Redirect vs. rewrite:</b> a <b>redirect</b> changes the address in the visitor's bar
+        (<code>/</code> visibly becomes <code>/en</code>). A <b>rewrite</b> keeps the address but secretly serves a
+        different file (<code>/ar</code> stays in the bar but renders the root Arabic page). Knowing this difference is a
+        genuinely useful piece of web literacy.</div>
+      </div>
+
+      <div class="card">
+        <h3>Server Components vs. Client Components — the single most important Next.js idea</h3>
+        <p>Files here are one of two kinds, and you can tell them apart by the first line:</p>
+        <ul class="clean">
+          <li><b>Server Component (the default).</b> No special marker at the top. Runs only on the server, can fetch data
+          directly, can't use buttons/clicks/state. Most <code>page.tsx</code> files are these.</li>
+          <li><b>Client Component.</b> Starts with <code>"use client";</code>. Runs in the browser, can use clicks,
+          typing, timers, and React state. The editor (<code>secret-panel.tsx</code>) and the live-refresh poller are these.</li>
+        </ul>
+        <div class="note tip">Rule of thumb in this repo: if a file needs interactivity (state, clicks, <code>useEffect</code>),
+        it'll have <code>"use client"</code> at the top. If it just fetches data and lays out HTML, it won't.</div>
+      </div>
+    </section>
+
+    <!-- ============ 5. EDITING ============ -->
+    <section class="block" id="editing">
+      <h2><span class="num">5</span> The live-editing system (the heart of this project)</h2>
+      <p class="lead">This is the most original part of the codebase: a custom CMS layer that lets non-coders change the
+        live site in seconds. Worth understanding deeply.</p>
+
+      <div class="card">
+        <h3>The journey of one edit</h3>
+        <div class="flow">
+          <div class="step"><h4>Staff open <code>/secretpanel</code></h4><p>A client component (<code>secret-panel.tsx</code>,
+            ~1,800 lines) loads. On open it does <code>GET /api/site-content</code> to fetch the current merged content and
+            fills its editing fields.</p></div>
+          <div class="step"><h4>They edit, with AI helpers on tap</h4><p>Text is edited in TipTap rich-text boxes. Optional
+            buttons call helper endpoints: <b>Rephrase</b> → Gemini, <b>Translate</b> → DeepL, <b>stock photos</b> →
+            Unsplash/Pexels search, and direct image <b>upload</b> → stored in Sanity.</p></div>
+          <div class="step"><h4>They hit Save</h4><p>The panel sends <code>PUT /api/site-content</code> with the whole content
+            object as JSON.</p></div>
+          <div class="step"><h4>The server writes one document to Sanity</h4><p><code>saveEditableContent()</code> calls
+            <code>createOrReplace()</code> on a single fixed document (<code>site-content-singleton</code>) and stamps a new
+            <code>updatedAt</code> timestamp. Everything lives in that one record.</p></div>
+          <div class="step"><h4>Every visitor's page is quietly watching</h4><p><code>LiveContentRefresh</code> (mounted in
+            the root layout) polls <code>GET /api/site-content/version</code> every 5 seconds. It only reads the timestamp.</p></div>
+          <div class="step"><h4>The live site updates itself</h4><p>When the timestamp changes, the poller calls
+            <code>router.refresh()</code>. Next.js re-renders the page on the server with the new content and swaps it in —
+            no full reload, no re-deploy. The edit is live in ~5 seconds.</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>The defaults-plus-overrides merge (why the site never breaks)</h3>
+        <p>The single biggest file in the project, <code>src/lib/editable-content.ts</code> (~2,600 lines), exists to do
+        one job safely: combine the built-in defaults with the saved edits.</p>
+        <pre><span class="c">// simplified shape of getEditableContent()</span>
+<span class="k">const</span> overrides = <span class="k">await</span> sanity.fetch(theSingletonDocument)   <span class="c">// may be empty/null</span>
+<span class="k">return</span> mergeContent(overrides)   <span class="c">// defaults underneath, overrides on top</span>
+
+<span class="c">// mergeContent spreads code defaults first, then the saved values:</span>
+homepage: { ...defaults.ar.homepage, ...(overrides?.ar?.homepage ?? {}) }</pre>
+        <ul class="clean">
+          <li>If Sanity isn't configured or the fetch fails, it simply returns the <b>code defaults</b> — the site still renders.</li>
+          <li>If a field was never edited, the <b>default</b> shows. If it was edited, the <b>override</b> wins.</li>
+          <li>Image helpers (e.g. <code>syncSharedImages</code>, <code>syncHeroSlides</code>) keep photos consistent across
+          pages after edits.</li>
+        </ul>
+        <div class="note good"><b>This is a resilience pattern worth stealing.</b> "Ship sensible defaults in code, allow
+        overrides from a database, merge at read time." It means a misconfigured CMS or a network blip degrades to a working
+        site instead of a blank one.</div>
+      </div>
+
+      <div class="card">
+        <h3>Two editing doors</h3>
+        <p>The project actually has <b>two</b> ways to edit content, and it helps not to confuse them:</p>
+        <ul class="clean">
+          <li><b><code>/secretpanel</code></b> — the custom-built, friendly editor tailored to this site's exact fields,
+          with the AI rephrase/translate/photo tools. This is the everyday door.</li>
+          <li><b><code>/studio</code></b> — the full standard <b>Sanity Studio</b> dashboard (mounted by
+          <code>src/app/studio/[[...tool]]/page.tsx</code>). More raw and general-purpose; the power-user door.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 6. AGENTIC ============ -->
+    <section class="block" id="agentic">
+      <h2><span class="num">6</span> How agentic AI develops &amp; communicates with this repo</h2>
+      <p class="lead">You asked specifically about this. Here's how an AI coding agent (like the one reading your project)
+        actually plugs into a codebase like this one.</p>
+
+      <div class="card">
+        <h3>The agent's "house rules" files</h3>
+        <p>An AI coding agent doesn't guess how to behave — it reads instruction files committed to the repo. This project
+        has them, and they're short and powerful:</p>
+        <ul class="clean">
+          <li><b><code>CLAUDE.md</code></b> — the entry point an agent looks for. Here it contains a single line,
+          <code>@AGENTS.md</code>, which means "import the rules from AGENTS.md." (The <code>@file</code> syntax pulls in
+          another file's content.)</li>
+          <li><b><code>AGENTS.md</code></b> — the real rulebook. It tells the agent two critical things, quoted from your repo:</li>
+        </ul>
+        <pre><span class="c">// 1) Don't trust your memory of this framework</span>
+"This is NOT the Next.js you know … Read the relevant guide in
+ node_modules/next/dist/docs/ before writing any code."
+
+<span class="c">// 2) The exact deployment workflow</span>
+- branch <span class="p">staging</span>  → auto-deploys to a preview URL
+- branch <span class="p">main</span>     → production
+- Finish work on a <span class="p">claude/*</span> branch, open a PR into <span class="p">staging</span>, merge it
+  WITHOUT asking. NEVER push to <span class="p">main</span> unless the user says "deploy to production".</pre>
+        <div class="note tip"><b>Takeaway for you:</b> a well-run vibe-coding project keeps a short <code>AGENTS.md</code>
+        (or <code>CLAUDE.md</code>) at its root. It's the single highest-leverage file you can write — it turns vague
+        requests into safe, repeatable behavior. More on this in the next section.</div>
+      </div>
+
+      <div class="card">
+        <h3>The <code>.claude/</code> folder — the agent's local settings</h3>
+        <ul class="clean">
+          <li><b><code>settings.local.json</code></b> — a permissions allow-list. It pre-approves specific safe actions
+          (here: <code>npm install</code>, and a preview tool) so the agent isn't stopped to ask about routine commands.</li>
+          <li><b><code>launch.json</code></b> — defines the "web" run configuration (<code>npm run dev</code> on port 3000),
+          so the agent and tools know how to start the site locally.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>How the agent actually "communicates" with the project</h3>
+        <div class="flow">
+          <div class="step"><h4>Reads</h4><p>It opens files (like this guide did), greps for symbols, and reads the
+            instruction files to load context.</p></div>
+          <div class="step"><h4>Edits</h4><p>It makes precise changes to <code>.ts</code>/<code>.tsx</code> files on a
+            feature branch named <code>claude/...</code>.</p></div>
+          <div class="step"><h4>Runs commands</h4><p>Through a shell it runs <code>npm install</code>, <code>npm run build</code>,
+            <code>npm run lint</code>, and Git commands to commit and push.</p></div>
+          <div class="step"><h4>Opens a Pull Request → staging</h4><p>Following <code>AGENTS.md</code>, it merges into the
+            <code>staging</code> branch. Vercel sees the push and <b>auto-builds a preview</b> you can click and review.</p></div>
+          <div class="step"><h4>Waits for your word on production</h4><p>It will not touch <code>main</code> (production)
+            until you explicitly say so. Your standing approval covers staging only.</p></div>
+        </div>
+        <div class="note warn"><b>Where AI must be careful here:</b> secrets live in <code>.env.local</code> (Sanity write
+        token, Gemini/DeepL/Unsplash keys). That file is <code>.gitignore</code>d and must never be printed, committed, or
+        leaked. A good agent treats it as read-only and invisible.</div>
+      </div>
+    </section>
+
+    <!-- ============ 7. VIBE CODING ============ -->
+    <section class="block" id="vibe">
+      <h2><span class="num">7</span> Vibe coding, professionally</h2>
+      <p class="lead">You called yourself a vibe coder and asked how to do it more professionally. Here's a practical
+        playbook, anchored to things you can see in <i>this</i> repo.</p>
+
+      <div class="card">
+        <h3>What "vibe coding" is — and its one real risk</h3>
+        <p>Vibe coding means building by describing what you want to an AI and steering it, rather than typing every line.
+        It's legitimate and fast. The single risk is <b>shipping code you don't understand</b>, which bites you when
+        something breaks at 11pm and you can't tell the AI <i>where</i> to look. Everything below is about closing that gap
+        without slowing down.</p>
+      </div>
+
+      <div class="card">
+        <h3>Eight habits that turn vibe coding into engineering</h3>
+        <div class="flow">
+          <div class="step"><h4>Keep an <code>AGENTS.md</code> and treat it as living law</h4><p>Yours already encodes the
+            deploy rules. Add to it: coding conventions, "never do X," where things live. Every hour you invest here is repaid
+            on every future prompt.</p></div>
+          <div class="step"><h4>Branch, preview, then promote</h4><p>Your <code>staging</code> → <code>main</code> split is
+            exactly right. Never let AI (or yourself) edit production directly. Always click the staging preview before
+            promoting.</p></div>
+          <div class="step"><h4>Commit in small, labelled steps</h4><p>Many small commits with clear messages give you an
+            "undo" button at every point. If a change breaks the build, you can revert just that step.</p></div>
+          <div class="step"><h4>Make the AI explain before it edits</h4><p>Ask "what files will you touch and why?" first.
+            If the plan is wrong, you've saved a mess. This guide's tree is a map you can use to sanity-check those answers.</p></div>
+          <div class="step"><h4>Read the diff, not just the result</h4><p>Before merging, skim <i>what changed</i>. You don't
+            need to understand every line — just confirm it touched the files you expected and nothing in
+            <code>.env.local</code> or unrelated areas.</p></div>
+          <div class="step"><h4>Let the tools catch mistakes</h4><p>Run <code>npm run lint</code> and <code>npm run build</code>
+            before deploying. TypeScript + ESLint here will flag whole classes of bugs for free. Green build = safe to ship.</p></div>
+          <div class="step"><h4>Guard your secrets</h4><p>API keys belong only in <code>.env.local</code> (gitignored) and in
+            Vercel's dashboard. Never paste them into chat, code, or a public file.</p></div>
+          <div class="step"><h4>Learn one concept per task</h4><p>Each time the AI does something, pick one term from the
+            glossary below and actually understand it. In a month you'll read your own codebase fluently.</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>The vocabulary that makes you sound (and think) like a developer</h3>
+        <p>When you can say these to an AI, you get far better results: <span class="pills">
+          <span class="pill">component</span><span class="pill">props</span><span class="pill">state</span>
+          <span class="pill">server vs client</span><span class="pill">route</span><span class="pill">API endpoint</span>
+          <span class="pill">environment variable</span><span class="pill">branch</span><span class="pill">pull request</span>
+          <span class="pill">build</span><span class="pill">deploy</span><span class="pill">merge / rebase</span>
+          <span class="pill">refactor</span><span class="pill">regression</span></span></p>
+        <p class="muted">All of these are defined in the glossary. Aim to retire them from "words I've heard" to "words I
+        use correctly."</p>
+        <div class="note good"><b>A good prompt, using this repo's vocabulary:</b> <i>"On a new <code>claude/</code> branch,
+        add a 'Spa' feature chip to the amenities Server Component for both <code>ar</code> and <code>en</code>, keep it a
+        Server Component, run lint and build, then PR into staging. Don't touch <code>.env.local</code>."</i> — specific,
+        scoped, safe.</div>
+      </div>
+    </section>
+
+    <!-- ============ 8. GLOSSARY ============ -->
+    <section class="block" id="glossary">
+      <h2><span class="num">8</span> Glossary</h2>
+      <p class="lead">Every concept in this project, grouped by area. Use the search box at the top of the page, or filter
+        by area below.</p>
+      <div class="gctrl">
+        <input id="glossSearch" type="search" placeholder="Filter terms…" autocomplete="off" />
+        <span id="glossCount" class="count"></span>
+      </div>
+      <div class="gctrl" id="glossChips"></div>
+      <div class="gloss" id="glossRoot"></div>
+      <p class="nohit" id="glossNohit" style="display:none">No terms match that filter.</p>
+    </section>
+  </main>
+</div>
+
+<footer>
+  Generated as a personal learning companion for the <b>SwissBlue Hotels</b> codebase
+  (<code>wdgroupwebsite28</code>). Everything here was read directly from your project files —
+  Next.js 16, React 19, Sanity CMS, Tailwind v4, deployed on Vercel.
+</footer>
+<button class="totop" id="toTop" title="Back to top">↑</button>
+
+<script>
+/* ============================================================
+   1) FILE TREE DATA   n=name k=kind b=badge o=open i=info c=children
+   ============================================================ */
+const TREE = [{
+  n:"swissblue23may-main", k:"folder", o:true,
+  i:`The project root. The files sitting directly here are mostly <b>configuration</b>; the actual website lives inside <code>src/</code>. A useful instinct: in any repo, the interesting code is rarely at the top level — go find the <code>src</code>.`,
+  c:[
+    { n:"src", k:"folder", b:"key", o:true,
+      i:`<b>The source code</b> — the only folder you'll spend real time in. Holds every page, UI component, the content data, the CMS wiring, and the language router.`,
+      c:[
+        { n:"app", k:"folder", b:"key", o:true,
+          i:`The <b>App Router</b>. In Next.js 16 every folder in here becomes a URL, and a <code>page.tsx</code> inside it is what renders at that URL. Special folders (<code>api/</code>, <code>studio/</code>, <code>en/</code>) have dedicated jobs.`,
+          c:[
+            { n:"layout.tsx", k:"file", b:"key", i:`The <b>shell wrapped around every page</b>: the &lt;html&gt; tag, the two fonts (Noto Kufi Arabic + Geist Mono), the tab title/description, and three always-on helpers — <code>LiveContentRefresh</code>, <code>NavScrollState</code>, <code>ScrollObserver</code>. A page's output appears where it writes <code>{children}</code>.` },
+            { n:"page.tsx", k:"file", b:"key", i:`The <b>Arabic homepage</b> (served at <code>/</code>, right-to-left). An async Server Component: it awaits <code>getEditableContent()</code>, takes the <code>.ar</code> half, and feeds it to the hero carousel, gallery, service tiles, testimonials and FAQ. Marked <code>force-dynamic</code> so it always shows the freshest content.` },
+            { n:"globals.css", k:"file", i:`Global styles plus the Tailwind import. Defines the brand CSS variables (the deep navy/blue you see in the hero) and the base look shared by every page.` },
+            { n:"favicon.ico", k:"file", b:"gen", i:`The little icon in the browser tab. A static asset.` },
+            { n:"Arabic content pages", k:"folder",
+              i:`Each of these is a folder containing one <code>page.tsx</code>, and each becomes an Arabic URL. They all follow the same recipe: fetch content, read the <code>.ar</code> half, lay it out with shared components.`,
+              c:[
+                { n:"about/page.tsx", k:"file", i:`About / brand story page (Arabic).` },
+                { n:"amenities-services/page.tsx", k:"file", i:`Amenities &amp; services page (Arabic).` },
+                { n:"careers/page.tsx", k:"file", i:`Careers page, with the openings list component (Arabic).` },
+                { n:"central-reservation/page.tsx", k:"file", i:`Central reservation office page (Arabic).` },
+                { n:"contact/page.tsx", k:"file", i:`Contact page with channels &amp; form (Arabic).` },
+                { n:"corporate-deals/page.tsx", k:"file", i:`Corporate deals page + enquiry form (Arabic).` },
+                { n:"destinations/page.tsx", k:"file", i:`Destinations (cities) overview page (Arabic).` },
+                { n:"dining/page.tsx", k:"file", i:`Dining options page (Arabic).` },
+                { n:"faq/page.tsx", k:"file", i:`FAQ page powered by the FAQ content + accordion (Arabic).` },
+                { n:"feedback/page.tsx", k:"file", i:`Guest feedback page (Arabic).` },
+                { n:"group-bookings/page.tsx", k:"file", i:`Group bookings page (Arabic).` },
+                { n:"loyalty/page.tsx", k:"file", i:`Loyalty programme page (Arabic).` },
+                { n:"meetings-events/page.tsx", k:"file", i:`Meetings &amp; events page (Arabic).` },
+                { n:"offers/page.tsx", k:"file", i:`Offers / promotions page (Arabic).` },
+                { n:"policy/page.tsx", k:"file", i:`Hotel policy page (Arabic).` },
+                { n:"rooms-suites/page.tsx", k:"file", i:`Rooms &amp; suites page with room classifications (Arabic).` },
+                { n:"serviced-apartments/page.tsx", k:"file", i:`Serviced apartments page (Arabic).` },
+                { n:"social-responsibility/page.tsx", k:"file", i:`Social responsibility (CSR) page (Arabic).` }
+              ]
+            },
+            { n:"hotels", k:"folder", b:"key",
+              i:`The hotels section. Contains a listing page and a <b>dynamic route</b> for each individual property.`,
+              c:[
+                { n:"page.tsx", k:"file", i:`The hotels listing page (Arabic) — shows all properties.` },
+                { n:"[slug]/page.tsx", k:"file", b:"key", i:`A <b>dynamic route</b>. The <code>[slug]</code> in the folder name is a wildcard, so <code>/hotels/swiss-blue-jeddah</code> and <code>/hotels/anything</code> all run this one file. It reads the <code>slug</code>, finds the matching hotel in the content, and renders its detail page — or calls <code>notFound()</code> if there's no match. <code>generateStaticParams()</code> lists the known slugs ahead of time.` }
+              ]
+            },
+            { n:"en", k:"folder", b:"key",
+              i:`The <b>entire English site</b>, mirrored. Same routes as the Arabic tree, but each page reads the <code>.en</code> half of the content and renders left-to-right via the English shell (<code>site-en.tsx</code>).`,
+              c:[
+                { n:"page.tsx", k:"file", i:`The English homepage (served at <code>/en</code>).` },
+                { n:"…all the same routes as Arabic", k:"file", i:`about, hotels, dining, rooms-suites, contact, offers and the rest — one English <code>page.tsx</code> per route, including <code>hotels/[slug]</code>. The duplication is deliberate: it keeps the two languages fully independent while sharing components.` }
+              ]
+            },
+            { n:"secretpanel", k:"folder", b:"key",
+              i:`The custom <b>content editor</b> for staff — the everyday "order pad". A friendly screen tailored to this exact site's fields, with AI rephrase/translate and stock-photo tools built in.`,
+              c:[
+                { n:"page.tsx", k:"file", i:`Mounts the <code>SecretPanel</code> component (English-first).` },
+                { n:"ar/page.tsx", k:"file", i:`The Arabic-language version of the editor screen.` }
+              ]
+            },
+            { n:"studio/[[...tool]]/page.tsx", k:"file", b:"key", i:`Mounts the full <b>Sanity Studio</b> dashboard at <code>/studio</code>. The <code>[[...tool]]</code> is an <i>optional catch-all</i> route — it matches <code>/studio</code> and any sub-path under it, which Studio needs for its internal tabs.` },
+            { n:"api/site-content", k:"folder", b:"key",
+              i:`The <b>back-end endpoints</b> for the editing system. These aren't pages — they return data (JSON), not HTML. The browser editor talks to these.`,
+              c:[
+                { n:"route.ts", k:"file", b:"key", i:`The core endpoint. <code>GET</code> returns the current merged content; <code>PUT</code> saves a new version (calls <code>saveEditableContent</code>). The "load" and "save" of the whole panel.` },
+                { n:"rephrase/route.ts", k:"file", i:`<code>POST</code> — sends text to <b>Google Gemini</b> and returns a rewritten version in a luxury-hospitality tone. Powers the "Rephrase" button.` },
+                { n:"translate/route.ts", k:"file", i:`<code>POST</code> — sends text to <b>DeepL</b> and returns it in the other language (AR↔EN). Powers the "Translate" button.` },
+                { n:"upload/route.ts", k:"file", i:`<code>POST</code> — receives an uploaded image/video file and stores it in Sanity, returning its URL. Enforces allowed types and size limits.` },
+                { n:"version/route.ts", k:"file", i:`<code>GET</code> — returns only the content's <code>updatedAt</code> timestamp. The live-refresh poller hits this every 5s; it's deliberately tiny.` },
+                { n:"stock-search/route.ts", k:"file", i:`<code>GET</code> — searches <b>Unsplash + Pexels</b> and returns normalised photo results for the picker.` },
+                { n:"stock-import/route.ts", k:"file", i:`<code>POST</code> — downloads a chosen stock photo and re-uploads it into Sanity so the site owns its own copy.` }
+              ]
+            }
+          ]
+        },
+        { n:"components", k:"folder", b:"key",
+          i:`The <b>reusable UI pieces</b>. Pages assemble these like Lego. A handful are interactive Client Components (the editor, buttons, carousels); the rest are presentational.`,
+          c:[
+            { n:"site.tsx", k:"file", b:"key", i:`The Arabic <b>page shell</b>: exports <code>SiteHeader</code>, <code>SiteFooter</code>, <code>PageShell</code>, <code>PageHero</code>, <code>CtaBand</code> — the frame most Arabic pages wrap themselves in.` },
+            { n:"site-en.tsx", k:"file", b:"key", i:`The English equivalent shell (<code>PageShellEn</code> etc.), left-to-right.` },
+            { n:"secret-panel.tsx", k:"file", b:"key", i:`The big one (~1,800 lines). The whole staff editor: loads content, renders an editable field for every section, wires up rephrase/translate/photo tools, tracks "dirty/saving/saved" status, and PUTs changes back. A Client Component (<code>"use client"</code>).` },
+            { n:"rich-editor.tsx", k:"file", i:`The <b>TipTap</b> rich-text box (bold, italic, links) used inside the editor.` },
+            { n:"rich-text.tsx", k:"file", i:`Exports the <code>rich()</code> helper that safely turns stored formatted text into rendered React, used all over the pages.` },
+            { n:"live-content-refresh.tsx", k:"file", b:"key", i:`The quiet hero. Mounted once in the layout; every 5s it checks the content version and, if it changed, calls <code>router.refresh()</code> so edits appear live without a reload.` },
+            { n:"hero-media-carousel.tsx", k:"file", i:`The rotating hero image/video slideshow at the top of the homepage.` },
+            { n:"homepage-gallery.tsx", k:"file", i:`The hospitality photo gallery block on the homepage.` },
+            { n:"photo-gallery-lightbox.tsx", k:"file", i:`A click-to-enlarge photo viewer (lightbox).` },
+            { n:"property-gallery.tsx", k:"file", i:`Image gallery on an individual hotel's page.` },
+            { n:"property-map.tsx", k:"file", i:`The location map on a hotel page.` },
+            { n:"photo-strip.tsx", k:"file", i:`A horizontal strip of photos.` },
+            { n:"faq-accordion.tsx", k:"file", i:`Expand/collapse FAQ list. A Client Component.` },
+            { n:"amenities-categorized.tsx", k:"file", i:`Renders amenities grouped into categories.` },
+            { n:"service-tiles.tsx", k:"file", i:`The grid of service tiles on the homepage.` },
+            { n:"feature-chip.tsx", k:"file", i:`Small labelled "chips" (e.g. room features) and their grid.` },
+            { n:"partners-section.tsx", k:"file", i:`The logos/partners band (e.g. booking channels).` },
+            { n:"testimonials-section.tsx", k:"file", i:`Guest testimonials block.` },
+            { n:"animated-counter.tsx", k:"file", i:`Numbers that count up when scrolled into view (e.g. "120 rooms").` },
+            { n:"careers-openings.tsx", k:"file", i:`Lists current job openings on the careers page.` },
+            { n:"corporate-deal-form.tsx", k:"file", i:`The corporate-deals enquiry form.` },
+            { n:"mobile-nav.tsx", k:"file", i:`The hamburger menu / navigation for phones.` },
+            { n:"nav-scroll-state.tsx", k:"file", i:`Tracks scrolling so the top nav can restyle (e.g. shrink) as you scroll.` },
+            { n:"scroll-observer.tsx", k:"file", i:`Triggers the reveal/fade-in animations as sections enter the viewport.` },
+            { n:"rephrase-button.tsx", k:"file", i:`The button that calls the rephrase endpoint.` },
+            { n:"translate-button.tsx", k:"file", i:`The button that calls the translate endpoint.` },
+            { n:"stock-photo-picker.tsx", k:"file", i:`The search-and-pick UI for Unsplash/Pexels photos inside the editor.` }
+          ]
+        },
+        { n:"lib", k:"folder", b:"key",
+          i:`The <b>content data and logic</b> layer (not UI). This is where the site's actual words and the merge logic live.`,
+          c:[
+            { n:"content.ts", k:"file", b:"key", i:`The <b>Arabic default content</b> (~1,160 lines): navigation, hotels, destinations, services, footer, room types, and more — written as typed TypeScript objects. Also exports <code>BOOKING_URL</code>.` },
+            { n:"content-en.ts", k:"file", b:"key", i:`The <b>English default content</b>, mirroring <code>content.ts</code>.` },
+            { n:"faq-content.ts", k:"file", i:`Arabic FAQ data (homepage + per-property questions).` },
+            { n:"faq-content-en.ts", k:"file", i:`English FAQ data.` },
+            { n:"editable-content.ts", k:"file", b:"key", i:`<b>The brain of the site</b> (~2,600 lines). Assembles all the defaults into <code>defaultSiteContent</code>; <code>getEditableContent()</code> fetches Sanity overrides and <code>mergeContent()</code> overlays them on the defaults; <code>saveEditableContent()</code> writes the singleton back; image-sync helpers keep photos consistent. If anything goes wrong, it safely returns the defaults.` }
+          ]
+        },
+        { n:"sanity", k:"folder", b:"key",
+          i:`Everything that connects the app to the <b>Sanity</b> CMS: configuration, the client, asset uploads, and the content schemas.`,
+          c:[
+            { n:"env.ts", k:"file", i:`Reads the Sanity <code>projectId</code>, <code>dataset</code>, and API version from environment variables, and exposes <code>hasSanityConfig</code> so the app can gracefully skip the CMS if it isn't set up.` },
+            { n:"lib", k:"folder",
+              c:[
+                { n:"client.ts", k:"file", i:`<code>getClient()</code> — builds the Sanity client used to read content (returns null if not configured).` },
+                { n:"asset-upload.ts", k:"file", i:`<code>uploadAssetToSanity()</code> + the allowed file types and size limits (8MB images / 80MB video). Used by the upload and stock-import endpoints.` }
+              ]
+            },
+            { n:"schemaTypes", k:"folder",
+              i:`Defines the <b>shape of documents</b> Sanity will store. A schema is like a form template.`,
+              c:[
+                { n:"index.ts", k:"file", i:`Collects the schema types into one array for the config.` },
+                { n:"siteContentType.ts", k:"file", b:"key", i:`Defines the <code>siteContent</code> document — the single record (<code>site-content-singleton</code>) that holds all the editable overrides plus an <code>updatedAt</code> timestamp.` },
+                { n:"pageType.ts", k:"file", i:`Defines a generic <code>page</code> document type.` }
+              ]
+            }
+          ]
+        },
+        { n:"proxy.ts", k:"file", b:"key", i:`The <b>language traffic director</b>. Runs before matched requests: sends <code>/</code> to <code>/en</code>, and quietly serves the Arabic root for <code>/ar</code> and <code>/ar/*</code> URLs. This one small file is what makes the bilingual routing work.` }
+      ]
+    },
+    { n:"public", k:"folder",
+      i:`<b>Static files served as-is</b> at the site root (e.g. <code>/next.svg</code>). Anything you drop here is publicly downloadable, unchanged. These particular SVGs are leftovers from the Next.js starter template.`,
+      c:[
+        { n:"file.svg", k:"file", b:"gen", i:`Starter-template icon.` },
+        { n:"globe.svg", k:"file", b:"gen", i:`Starter-template icon.` },
+        { n:"next.svg", k:"file", b:"gen", i:`Next.js logo from the starter.` },
+        { n:"vercel.svg", k:"file", b:"gen", i:`Vercel logo from the starter.` },
+        { n:"window.svg", k:"file", b:"gen", i:`Starter-template icon.` }
+      ]
+    },
+    { n:"docs", k:"folder",
+      i:`Project documentation.`,
+      c:[
+        { n:"swiss-blue-website-content.md", k:"file", i:`The <b>master content source</b> — the bilingual brand positioning, taglines, and section copy written in both English and Arabic. The human-readable source the coded content was built from.` }
+      ]
+    },
+    { n:"AGENTS.md", k:"file", b:"ai", i:`The <b>rulebook for AI coding agents</b>. Two key rules: (1) "This is NOT the Next.js you know" — read the bundled docs before coding; (2) the deploy workflow — finish on a <code>claude/*</code> branch, PR into <code>staging</code> without asking, and <b>never</b> push to <code>main</code> unless told "deploy to production".` },
+    { n:"CLAUDE.md", k:"file", b:"ai", i:`The file an agent reads first. Here it's a single line — <code>@AGENTS.md</code> — which imports the rules from AGENTS.md. The <code>@file</code> syntax means "include that file's contents here."` },
+    { n:"README.md", k:"file", i:`The human intro to the repo. Currently the default Next.js starter text (how to run <code>npm run dev</code>, etc.).` },
+    { n:"package.json", k:"file", b:"key", i:`The project's <b>ID card and shopping list</b>: its name (<code>wdgroupwebsite28</code>), the run commands (<code>dev</code>, <code>build</code>, <code>start</code>, <code>lint</code>), and every dependency with its version. The first file any developer (or agent) reads.` },
+    { n:"package-lock.json", k:"file", b:"gen", i:`An auto-generated, exact record of every installed package and sub-package version, so installs are identical on every machine. You never edit this by hand.` },
+    { n:"next.config.ts", k:"file", b:"key", i:`Next.js configuration. Notably it lists the <b>allowed external image domains</b> (Sanity's CDN, Unsplash, the WordPress sites, etc.) — Next won't optimise/serve remote images unless their host is whitelisted here.` },
+    { n:"sanity.config.ts", k:"file", b:"key", i:`Configures the Sanity Studio (project name "WD Group Website"), wiring in the schema types and the Structure + Vision tools.` },
+    { n:"tsconfig.json", k:"file", i:`TypeScript settings — including the handy <code>@/*</code> alias that lets imports say <code>@/components/...</code> instead of long relative paths.` },
+    { n:"eslint.config.mjs", k:"file", i:`ESLint rules — the automated style/quality checker run by <code>npm run lint</code>.` },
+    { n:"postcss.config.mjs", k:"file", i:`Plugs Tailwind v4 into the CSS build pipeline.` },
+    { n:"next-env.d.ts", k:"file", b:"gen", i:`Auto-generated TypeScript types for Next.js. Don't edit.` },
+    { n:".env.local", k:"file", b:"key", i:`<b>The secrets file.</b> Holds API keys and tokens — Sanity write token, Gemini, DeepL, Unsplash, Pexels, Chatbase — plus Vercel build vars. It is <code>.gitignore</code>d and must never be committed, printed, or shared.` },
+    { n:".gitignore", k:"file", i:`The list of files/folders Git should ignore (<code>node_modules</code>, <code>.next</code>, <code>.env*</code>, <code>.vercel</code>…). Keeps secrets and generated bulk out of version control.` },
+    { n:".claude", k:"folder", b:"ai",
+      i:`Local settings for the Claude coding agent.`,
+      c:[
+        { n:"settings.local.json", k:"file", b:"ai", i:`A <b>permissions allow-list</b> — pre-approves safe actions (like <code>npm install</code>) so routine commands don't interrupt to ask.` },
+        { n:"launch.json", k:"file", b:"ai", i:`Defines the "web" run config (<code>npm run dev</code> on port 3000) so tools know how to start the site.` }
+      ]
+    },
+    { n:".vercel", k:"folder", b:"gen",
+      i:`Links this local repo to its <b>Vercel</b> project (so the CLI knows where to deploy).`,
+      c:[ { n:"project.json", k:"file", b:"gen", i:`Stores the Vercel project & org IDs and the project name (<code>swissblue23may</code>).` } ]
+    },
+    { n:".next", k:"folder", b:"gen", i:`The <b>build output</b> — what <code>npm run build</code> produces and <code>npm run dev</code> uses. Entirely generated; never edit, never commit.` },
+    { n:"node_modules", k:"folder", b:"gen", i:`The downloaded code of every dependency listed in <code>package.json</code> (745 packages here). Generated by <code>npm install</code>, ignored by Git, occasionally huge.` },
+    { n:"tsconfig.tsbuildinfo", k:"file", b:"gen", i:`A TypeScript build cache that speeds up re-compiles. Generated; ignored by Git.` }
+  ]
+}];
+
+/* ============================================================
+   2) GLOSSARY DATA   t=term a=area d=definition
+   ============================================================ */
+const GLOSS = [
+  // ---- Web basics ----
+  {t:"HTML",a:"Web basics",d:`The markup language that defines a page's structure and content (headings, paragraphs, images). The "skeleton" of any web page.`},
+  {t:"CSS",a:"Web basics",d:`The language that styles HTML — colors, spacing, fonts, layout. The "skin and clothes".`},
+  {t:"JavaScript",a:"Web basics",d:`The programming language that makes pages interactive (clicks, animations, data fetching). Runs in the browser and, via Node, on the server.`},
+  {t:"Frontend / Backend",a:"Web basics",d:`Frontend = what runs in the visitor's browser (the UI). Backend = what runs on the server (data, logic, secrets). Next.js does both.`},
+  {t:"Server",a:"Web basics",d:`A computer that receives requests and sends back pages/data. Here, Next.js running on Vercel's servers.`},
+  {t:"Client",a:"Web basics",d:`The visitor's browser. "Client-side" means code running on their device, not the server.`},
+  {t:"HTTP request / response",a:"Web basics",d:`The browser sends a request (GET this page, PUT this data); the server sends back a response. The basic conversation of the web.`},
+  {t:"URL / route",a:"Web basics",d:`The web address. In Next.js a "route" maps a URL like /hotels to the folder/file that renders it.`},
+  {t:"API",a:"Web basics",d:`Application Programming Interface — a defined way for programs to talk. This site's <code>/api/site-content</code> endpoints are an API the editor calls.`},
+  {t:"API endpoint",a:"Web basics",d:`One specific URL in an API that does one job, e.g. <code>/api/site-content/translate</code>. Returns data (JSON), not a web page.`},
+  {t:"JSON",a:"Web basics",d:`JavaScript Object Notation — the plain-text format used to send structured data between browser and server. The editor saves content as JSON.`},
+  {t:"Static vs dynamic",a:"Web basics",d:`Static = the same pre-built file for everyone (fast, cacheable). Dynamic = built fresh per request (always current). This site is dynamic on purpose.`},
+  {t:"Cache",a:"Web basics",d:`A saved copy kept to avoid redoing work. This site deliberately uses <code>no-store</code> / <code>force-dynamic</code> in key places so content is never stale.`},
+  {t:"Redirect",a:"Web basics",d:`The server tells the browser "go to a different URL", which changes the address bar. Here, <code>/</code> redirects to <code>/en</code>.`},
+  {t:"Rewrite",a:"Web basics",d:`The server keeps the URL but secretly serves a different file. Here, <code>/ar</code> stays in the bar but renders the root Arabic page.`},
+  {t:"RTL (right-to-left)",a:"Web basics",d:`Text direction for languages like Arabic. The Arabic pages set <code>dir="rtl"</code>; English uses <code>ltr</code>.`},
+  {t:"Domain / DNS",a:"Web basics",d:`The human name of a site (e.g. swissbluehotels.com) and the system that points it at the right server.`},
+  {t:"Responsive",a:"Web basics",d:`Layout that adapts to screen size (phone vs desktop). Tailwind classes like <code>sm:</code> and <code>lg:</code> control this.`},
+  {t:"Environment variable",a:"Web basics",d:`A setting passed in from outside the code (kept in <code>.env.local</code> / Vercel) instead of hard-coded — used for keys and config that differ per environment.`},
+  {t:"Secret / API key",a:"Web basics",d:`A password-like token that authorises calls to a service (Sanity, Gemini, DeepL). Must stay private; lives only in env vars.`},
+
+  // ---- Next.js & React ----
+  {t:"Next.js",a:"Next.js & React",d:`The React framework this site is built on. Handles routing, server rendering, and API routes. This repo uses v16 with the App Router.`},
+  {t:"React",a:"Next.js & React",d:`The library for building UIs from reusable components. v19 here.`},
+  {t:"App Router",a:"Next.js & React",d:`Next.js's modern routing system where folders under <code>src/app</code> become URLs and <code>page.tsx</code> files render them.`},
+  {t:"Component",a:"Next.js & React",d:`A self-contained, reusable UI piece (a header, a gallery). Pages are assembled from components.`},
+  {t:"Props",a:"Next.js & React",d:`The inputs you pass into a component to configure it, like arguments to a function (e.g. a gallery's list of photos).`},
+  {t:"State",a:"Next.js & React",d:`Data a component remembers and can change over time (e.g. "is this menu open?"). Only Client Components have it.`},
+  {t:"Hook",a:"Next.js & React",d:`A React function like <code>useState</code> or <code>useEffect</code> that adds state or side-effects to a component. The live-refresh poller uses <code>useEffect</code>.`},
+  {t:"Server Component",a:"Next.js & React",d:`The default component type here. Runs only on the server, can fetch data directly, has no clicks/state. Most <code>page.tsx</code> files are these.`},
+  {t:"Client Component",a:"Next.js & React",d:`A component marked <code>"use client"</code> that runs in the browser and can be interactive. The editor and buttons are these.`},
+  {t:'"use client"',a:"Next.js & React",d:`The directive at the top of a file that marks it (and what it imports) as browser-side and interactive.`},
+  {t:"JSX / TSX",a:"Next.js & React",d:`The HTML-like syntax inside React files. TSX = JSX written in TypeScript. It's why <code>.tsx</code> files mix tags and code.`},
+  {t:"Layout",a:"Next.js & React",d:`A wrapper shared by many pages. <code>layout.tsx</code> here provides the &lt;html&gt; tag, fonts, and always-on helpers.`},
+  {t:"Page",a:"Next.js & React",d:`A <code>page.tsx</code> file — the thing rendered at a given route/URL.`},
+  {t:"Dynamic route [slug]",a:"Next.js & React",d:`A folder named with brackets acts as a wildcard. <code>hotels/[slug]</code> handles every hotel URL with one file.`},
+  {t:"Catch-all [[...tool]]",a:"Next.js & React",d:`A route that matches a path and everything beneath it. Used by <code>/studio</code> so Sanity Studio can own all its sub-paths.`},
+  {t:"Route handler (API route)",a:"Next.js & React",d:`A <code>route.ts</code> file exporting <code>GET</code>/<code>POST</code>/<code>PUT</code> functions — a backend endpoint instead of a page.`},
+  {t:"force-dynamic",a:"Next.js & React",d:`<code>export const dynamic = "force-dynamic"</code> tells Next to render the page fresh on every request (no caching), so edited content always shows.`},
+  {t:"generateStaticParams",a:"Next.js & React",d:`A function that tells Next which dynamic-route values exist ahead of time (e.g. the list of hotel slugs).`},
+  {t:"Hydration",a:"Next.js & React",d:`The moment the static HTML sent by the server "comes alive" in the browser as interactive React. Until then, buttons don't react yet.`},
+  {t:"Middleware / proxy",a:"Next.js & React",d:`Code that runs before a request reaches a page, used to redirect/rewrite. Here it's <code>src/proxy.ts</code> doing the language routing.`},
+  {t:"next/font",a:"Next.js & React",d:`Next's font optimiser. The layout uses it to load Noto Kufi Arabic and Geist Mono efficiently.`},
+  {t:"next/image",a:"Next.js & React",d:`Next's smart &lt;Image&gt; component that auto-optimises images. It only allows remote hosts listed in <code>next.config.ts</code>.`},
+  {t:"Metadata",a:"Next.js & React",d:`The page title and description (for browser tabs and search engines), exported from <code>layout.tsx</code> here.`},
+
+  // ---- This project ----
+  {t:"getEditableContent()",a:"This project",d:`The function every page calls to get its words/images. Fetches Sanity overrides, merges them onto code defaults, returns <code>{ ar, en }</code>.`},
+  {t:"mergeContent()",a:"This project",d:`Overlays saved Sanity edits on top of the built-in defaults, field by field. Edited fields win; untouched fields fall back to defaults.`},
+  {t:"defaultSiteContent",a:"This project",d:`The complete set of built-in content assembled from <code>src/lib</code>. The safety net shown when nothing has been edited.`},
+  {t:"saveEditableContent()",a:"This project",d:`Writes the whole content object back to Sanity via <code>createOrReplace</code>, stamping a new <code>updatedAt</code>.`},
+  {t:"Singleton document",a:"This project",d:`The single fixed Sanity record (<code>site-content-singleton</code>) that holds all editable content. "Singleton" = there's exactly one.`},
+  {t:"LiveContentRefresh",a:"This project",d:`The component (in the layout) that polls the version endpoint every 5s and calls <code>router.refresh()</code> when content changes — making edits go live without a reload.`},
+  {t:"Polling",a:"This project",d:`Repeatedly asking "has anything changed?" on a timer. Here, every 5 seconds against <code>/api/site-content/version</code>.`},
+  {t:"/secretpanel",a:"This project",d:`The custom, friendly staff editor tailored to this site, with AI rephrase/translate and stock-photo tools.`},
+  {t:"/studio",a:"This project",d:`The full standard Sanity Studio dashboard — the power-user editing door.`},
+  {t:"rich() helper",a:"This project",d:`A small function (in <code>rich-text.tsx</code>) that safely renders stored formatted text into React on the pages.`},
+  {t:"BOOKING_URL",a:"This project",d:`A shared constant for the booking link, imported wherever a "Book now" button appears.`},
+  {t:"AR / EN trees",a:"This project",d:`The two parallel page folders: <code>src/app/*</code> (Arabic) and <code>src/app/en/*</code> (English), sharing components and content.`},
+  {t:"syncSharedImages",a:"This project",d:`A helper in <code>editable-content.ts</code> that keeps photos consistent across pages after an edit (hero slides, property images, etc.).`},
+
+  // ---- Sanity / CMS ----
+  {t:"CMS",a:"Sanity / CMS",d:`Content Management System — a place to store and edit a site's content (text, images) separately from its code.`},
+  {t:"Headless CMS",a:"Sanity / CMS",d:`A CMS that stores content as data and serves it via an API, leaving the design entirely to your own code. Sanity is one.`},
+  {t:"Sanity",a:"Sanity / CMS",d:`The headless CMS used here — the cloud "pantry" for editable content and uploaded images.`},
+  {t:"Sanity Studio",a:"Sanity / CMS",d:`Sanity's editing dashboard, mounted in this app at <code>/studio</code>.`},
+  {t:"Dataset",a:"Sanity / CMS",d:`A named bucket of content inside a Sanity project (here, "production"). You can have several (e.g. staging).`},
+  {t:"Project ID",a:"Sanity / CMS",d:`The unique identifier of your Sanity project, read from an env var.`},
+  {t:"Schema / schemaType",a:"Sanity / CMS",d:`The definition of what fields a document has — like a form template. See <code>schemaTypes/</code>.`},
+  {t:"Document",a:"Sanity / CMS",d:`One stored record in Sanity (e.g. the single <code>siteContent</code> document holding all overrides).`},
+  {t:"GROQ",a:"Sanity / CMS",d:`Sanity's query language for fetching documents. The fetch <code>*[_id == $id][0]</code> in this repo is GROQ.`},
+  {t:"createOrReplace",a:"Sanity / CMS",d:`A Sanity write that creates the document if missing or overwrites it if present — used to save the singleton.`},
+  {t:"Write token / read token",a:"Sanity / CMS",d:`Secret keys authorising the app to write to (or read draft) content in Sanity. Stored in env vars only.`},
+  {t:"useCdn",a:"Sanity / CMS",d:`A Sanity client setting: serve from a fast cached CDN (good for reads) vs always-fresh. Reads here favour freshness.`},
+  {t:"Asset / asset upload",a:"Sanity / CMS",d:`An uploaded file (image/video) stored in Sanity. <code>asset-upload.ts</code> handles type and size limits.`},
+  {t:"Vision tool",a:"Sanity / CMS",d:`A Studio plugin for testing GROQ queries live, enabled in <code>sanity.config.ts</code>.`},
+
+  // ---- Tooling & deploy ----
+  {t:"TypeScript",a:"Tooling & deploy",d:`JavaScript plus type checking — catches "wrong kind of value" bugs before the site runs. The <code>.ts</code>/<code>.tsx</code> files.`},
+  {t:"Tailwind CSS",a:"Tooling & deploy",d:`A styling system using small utility classes (<code>flex</code>, <code>px-4</code>) directly in markup. v4 here, wired via PostCSS.`},
+  {t:"PostCSS",a:"Tooling & deploy",d:`A CSS build tool; here it runs the Tailwind plugin. Configured in <code>postcss.config.mjs</code>.`},
+  {t:"ESLint",a:"Tooling & deploy",d:`An automated code-quality checker. Run with <code>npm run lint</code>; catches likely mistakes and enforces style.`},
+  {t:"npm",a:"Tooling & deploy",d:`Node's package manager — installs dependencies and runs scripts (<code>npm run dev</code>, <code>npm run build</code>).`},
+  {t:"package.json",a:"Tooling & deploy",d:`The manifest listing the project's name, scripts, and dependencies.`},
+  {t:"Dependency",a:"Tooling & deploy",d:`An external package your project relies on (React, Sanity, TipTap…). Listed in <code>package.json</code>, downloaded into <code>node_modules</code>.`},
+  {t:"node_modules",a:"Tooling & deploy",d:`The folder of all installed dependency code. Generated by <code>npm install</code>; never edited or committed.`},
+  {t:"Build",a:"Tooling & deploy",d:`Compiling the source into the optimised files browsers actually run (<code>npm run build</code> → <code>.next/</code>).`},
+  {t:"Deploy",a:"Tooling & deploy",d:`Publishing the built site to a server so the public can reach it. Here, automatically via Vercel on every push.`},
+  {t:"Vercel",a:"Tooling & deploy",d:`The hosting platform (makers of Next.js). Auto-builds and deploys on each Git push; gives preview URLs.`},
+  {t:"Preview deployment",a:"Tooling & deploy",d:`A live, shareable build of a branch (e.g. staging) you can click and test before promoting to production.`},
+  {t:"Git",a:"Tooling & deploy",d:`The version-control system that tracks every change and lets you branch, merge, and revert.`},
+  {t:"Branch",a:"Tooling & deploy",d:`An independent line of work. This repo uses <code>claude/*</code> for features, <code>staging</code> for testing, <code>main</code> for production.`},
+  {t:"Commit",a:"Tooling & deploy",d:`A saved snapshot of changes with a message. Small, frequent commits = an easy undo history.`},
+  {t:"Pull Request (PR)",a:"Tooling & deploy",d:`A proposal to merge one branch into another, where changes can be reviewed first. The agent opens PRs into <code>staging</code>.`},
+  {t:"Merge",a:"Tooling & deploy",d:`Combining one branch's changes into another. This repo prefers a merge commit (not squash) into staging.`},
+  {t:"Rebase",a:"Tooling & deploy",d:`Replaying your branch's commits on top of the latest base branch — a tidy way to resolve being out of date.`},
+  {t:"Staging vs production",a:"Tooling & deploy",d:`Staging = the safe test site (auto-deployed from the <code>staging</code> branch). Production = the real public site (<code>main</code>).`},
+  {t:".gitignore",a:"Tooling & deploy",d:`The list of files Git should never track — secrets, <code>node_modules</code>, build output.`},
+
+  // ---- AI & agents ----
+  {t:"AI coding agent",a:"AI & agents",d:`An AI that can read your files, edit code, run commands, and use Git — not just answer questions. It follows your repo's instruction files.`},
+  {t:"AGENTS.md",a:"AI & agents",d:`A conventional instruction file telling AI agents how to behave in this repo (workflow, do's and don'ts). This project's most important rulebook.`},
+  {t:"CLAUDE.md",a:"AI & agents",d:`The file the Claude agent reads first. Here it just imports <code>@AGENTS.md</code>.`},
+  {t:"@import (@file)",a:"AI & agents",d:`Writing <code>@AGENTS.md</code> inside an instruction file pulls that file's contents in — a way to share one rulebook across entry points.`},
+  {t:"LLM",a:"AI & agents",d:`Large Language Model — the kind of AI (like Gemini or Claude) that powers the rephrase/translate features and the coding agent.`},
+  {t:"Prompt",a:"AI & agents",d:`The instruction you give an AI. Better, more specific prompts (using real vocabulary) get better results.`},
+  {t:"MCP",a:"AI & agents",d:`Model Context Protocol — a standard that lets an AI agent use external tools/services (e.g. a Vercel or Sanity connector) safely.`},
+  {t:"Google Gemini",a:"AI & agents",d:`The LLM called by the "Rephrase" endpoint to rewrite copy in a luxury-hospitality tone.`},
+  {t:"DeepL",a:"AI & agents",d:`The translation service called by the "Translate" endpoint for Arabic↔English.`},
+  {t:"DOMPurify",a:"AI & agents",d:`A library that strips dangerous HTML (like injected scripts) from text before it's shown — used so AI/user content can't attack the page.`},
+  {t:"Sanitization",a:"AI & agents",d:`Cleaning untrusted input so it can't run malicious code. DOMPurify does this here.`},
+  {t:"Chatbase",a:"AI & agents",d:`The embedded chatbot service (its ID is in the env file) for answering guest questions on the site.`},
+
+  // ---- Vibe coding ----
+  {t:"Vibe coding",a:"Vibe coding",d:`Building software mainly by directing an AI in natural language and steering it, rather than hand-writing every line.`},
+  {t:"Refactor",a:"Vibe coding",d:`Improving the structure of code without changing what it does — e.g. splitting a giant file into smaller ones.`},
+  {t:"Regression",a:"Vibe coding",d:`When a change accidentally breaks something that used to work. Previews + builds help you catch these before users do.`},
+  {t:"Diff",a:"Vibe coding",d:`The exact set of lines added/removed by a change. Reading the diff before merging is the single best safety habit.`},
+  {t:"Scope",a:"Vibe coding",d:`The boundary of a task — which files/behaviour it should and shouldn't touch. Tight scope = safer AI edits.`},
+  {t:"Technical debt",a:"Vibe coding",d:`Shortcuts that speed you up now but cost you later. Manageable if you know where it is; dangerous when invisible.`},
+  {t:"Code review",a:"Vibe coding",d:`Looking over changes (yours or an AI's) before they ship. Even a quick skim of the diff counts.`}
+];
+
+/* ============================================================
+   3) RENDERING + INTERACTION
+   ============================================================ */
+function fileIcon(node){
+  if(node.k==="folder") return "📁";
+  const n=node.n.toLowerCase();
+  if(n.startsWith(".env")) return "🔑";
+  if(n.endsWith(".md")) return "📘";
+  if(n.endsWith(".css")) return "🎨";
+  if(n.endsWith(".ico")||n.endsWith(".svg")||n.endsWith(".png")||n.endsWith(".jpg")) return "🖼️";
+  if(n.endsWith(".json")) return "🔧";
+  if(n.startsWith(".env")) return "🔑";
+  return "📄";
+}
+const BADGE={gen:["b-gen","generated"],key:["b-key","key file"],ai:["b-ai","AI"]};
+
+function buildTree(nodes, parentPath){
+  const ul=document.createElement("ul");
+  nodes.forEach(node=>{
+    const li=document.createElement("li");
+    const path=parentPath? parentPath+"/"+node.n : node.n;
+    const row=document.createElement("div"); row.className="row";
+    const hasKids=node.c&&node.c.length;
+    const tw=document.createElement("span"); tw.className="tw"; tw.textContent=hasKids?"▸":"";
+    row.appendChild(tw);
+    const ic=document.createElement("span"); ic.className="ic"; ic.textContent= node.k==="folder"?"📁":fileIcon(node);
+    row.appendChild(ic);
+    const nm=document.createElement("span"); nm.className="nm"; nm.textContent=node.n; row.appendChild(nm);
+    if(node.b&&BADGE[node.b]){ const bd=document.createElement("span"); bd.className="badge "+BADGE[node.b][0]; bd.textContent=BADGE[node.b][1]; row.appendChild(bd); }
+    li.appendChild(row);
+    let kids=null;
+    if(hasKids){
+      kids=buildTree(node.c, path); kids.classList.add("kids");
+      if(node.o){ kids.classList.add("open"); tw.textContent="▾"; if(node.k==="folder") ic.textContent="📂"; }
+      li.appendChild(kids);
+    }
+    row.addEventListener("click",function(e){
+      e.stopPropagation();
+      if(hasKids){ const open=kids.classList.toggle("open"); tw.textContent=open?"▾":"▸"; if(node.k==="folder") ic.textContent=open?"📂":"📁"; }
+      if(node.i){ selectRow(row); showDetail(node,path); }
+    });
+    ul.appendChild(li);
+  });
+  return ul;
+}
+function selectRow(row){ document.querySelectorAll(".tree .row.sel").forEach(r=>r.classList.remove("sel")); row.classList.add("sel"); }
+function showDetail(node,path){
+  const roleMap={gen:"Generated — don't edit",key:"Key file",ai:"AI agent instructions"};
+  const role= node.k==="folder" ? "Folder" : (node.b&&roleMap[node.b]?roleMap[node.b]:"File");
+  document.getElementById("detailPanel").innerHTML =
+    '<div class="role">'+role+'</div>'+
+    '<div class="path">'+path+'</div>'+
+    '<h3>'+node.n+'</h3>'+
+    '<div class="body">'+node.i+'</div>';
+}
+document.getElementById("treeRoot").appendChild(buildTree(TREE,""));
+
+/* ---- glossary ---- */
+const areas=[...new Set(GLOSS.map(g=>g.a))];
+let activeArea="All", q="";
+const chipsEl=document.getElementById("glossChips");
+function chip(label){ const b=document.createElement("button"); b.className="chip"+(label===activeArea?" on":""); b.textContent=label; b.onclick=()=>{activeArea=label; renderChips(); renderGloss();}; return b; }
+function renderChips(){ chipsEl.innerHTML=""; chipsEl.appendChild(chip("All")); areas.forEach(a=>chipsEl.appendChild(chip(a))); }
+function hl(text,query){ if(!query) return text; try{ const re=new RegExp("("+query.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig"); return text.replace(re,"<mark>$1</mark>"); }catch(e){ return text; } }
+function renderGloss(){
+  const root=document.getElementById("glossRoot"); root.innerHTML="";
+  const query=q.trim().toLowerCase();
+  let shown=0;
+  GLOSS.slice().sort((a,b)=>a.t.localeCompare(b.t)).forEach(g=>{
+    if(activeArea!=="All" && g.a!==activeArea) return;
+    const hay=(g.t+" "+g.d).toLowerCase();
+    if(query && hay.indexOf(query)===-1) return;
+    shown++;
+    const el=document.createElement("div"); el.className="term";
+    el.innerHTML='<div class="t">'+hl(g.t,q)+'</div><div class="a">'+g.a+'</div><div class="d">'+hl(g.d,q)+'</div>';
+    root.appendChild(el);
+  });
+  document.getElementById("glossNohit").style.display= shown? "none":"block";
+  document.getElementById("glossCount").textContent= shown+" of "+GLOSS.length+" terms";
+}
+document.getElementById("glossSearch").addEventListener("input",e=>{ q=e.target.value; renderGloss(); });
+document.getElementById("globalSearch").addEventListener("input",e=>{
+  q=e.target.value; document.getElementById("glossSearch").value=q; activeArea="All"; renderChips(); renderGloss();
+  if(q.trim()){ document.getElementById("glossary").scrollIntoView({behavior:"smooth",block:"start"}); }
+});
+renderChips(); renderGloss();
+
+/* ---- side-nav scrollspy ---- */
+const navLinks=[...document.querySelectorAll("nav.side a")];
+const spy=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ const id=en.target.id; navLinks.forEach(a=>a.classList.toggle("active", a.getAttribute("href")==="#"+id)); } });
+},{rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll("section.block").forEach(s=>spy.observe(s));
+
+/* ---- back to top ---- */
+const toTop=document.getElementById("toTop");
+window.addEventListener("scroll",()=>{ toTop.classList.toggle("show", window.scrollY>500); });
+toTop.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+
+</script>
+</body>
+</html>

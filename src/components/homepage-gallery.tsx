@@ -53,7 +53,7 @@ export default function HomepageGallery({
         }));
 
   return (
-    <section className="hotel-showcase mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+    <section className="hotel-showcase section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="section-heading">
         <span className="eyebrow">{isArabic ? "معرض الصور" : "Photo gallery"}</span>
         <h2>

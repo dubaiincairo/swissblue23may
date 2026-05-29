@@ -31,5 +31,10 @@
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "jsdom": "^26.1.0",
+    "html-encoding-sniffer": "^4.0.0",
+    "whatwg-url": "^14.2.0"
   }
 }

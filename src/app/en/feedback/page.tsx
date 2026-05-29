@@ -1,15 +1,17 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function FeedbackPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.feedbackPage;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "feedbackSubpage") && (
+        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -97,6 +99,8 @@ export default async function FeedbackPageEn() {
       </section>
 
       <CtaBandEn title="We listen. Share a complaint or suggestion now." cta="Write to us" />
+        </>
+      )}
     </PageShellEn>
   );
 }

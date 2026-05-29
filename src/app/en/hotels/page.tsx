@@ -2,17 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function HotelsPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.hotelsPage;
   const hotelsEn = en.homepage.properties.items;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "hotelsSubpage") && (
+        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -49,6 +51,8 @@ export default async function HotelsPageEn() {
         </div>
       </section>
       <CtaBandEn title="Choose your hotel and book with confidence." cta="Check availability" />
+        </>
+      )}
     </PageShellEn>
   );
 }

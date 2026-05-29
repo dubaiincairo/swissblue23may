@@ -2,17 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function HotelsPage() {
-  const { ar } = await getEditableContent();
+  const { ar, hiddenSections } = await getEditableContent();
   const content = ar.subpages.hotelsPage;
   const hotels = ar.homepage.properties.items;
 
   return (
     <PageShell>
+      {!isSectionHidden(hiddenSections, "hotelsSubpage") && (
+        <>
       <PageHero
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -65,6 +67,8 @@ export default async function HotelsPage() {
       </section>
 
       <CtaBand title="اختر فندقك واحجز بثقة." cta="تحقق من التوفر" />
+        </>
+      )}
     </PageShell>
   );
 }

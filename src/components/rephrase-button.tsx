@@ -55,6 +55,11 @@ const labels: Record<
     tooltip: string;
     toneAria: string;
     toneHeading: string;
+    optionsAria: string;
+    panelHeading: string;
+    instructionsHeading: string;
+    instructionsPlaceholder: string;
+    apply: string;
   }
 > = {
   ar: {
@@ -64,6 +69,12 @@ const labels: Record<
     tooltip: "إعادة صياغة هذا الحقل عبر Gemini مع الحفاظ على المعنى واللغة.",
     toneAria: "اختيار النبرة",
     toneHeading: "النبرة",
+    optionsAria: "خيارات إعادة الصياغة",
+    panelHeading: "إعدادات إعادة الصياغة",
+    instructionsHeading: "تعليمات مخصصة (اختياري)",
+    instructionsPlaceholder:
+      "مثال: اجعل النص أقصر، ركّز على إطلالة البحر، وأضِف دعوة واضحة للحجز.",
+    apply: "أعد الصياغة بهذه التعليمات",
   },
   en: {
     idle: "Rephrase",
@@ -72,6 +83,12 @@ const labels: Record<
     tooltip: "Rephrase this field with Gemini while keeping its meaning and language.",
     toneAria: "Choose tone",
     toneHeading: "Tone",
+    optionsAria: "Rephrase options",
+    panelHeading: "Rephrase settings",
+    instructionsHeading: "Custom instructions (optional)",
+    instructionsPlaceholder:
+      "e.g. Make it shorter, emphasize the sea view, and add a clear booking call-to-action.",
+    apply: "Rephrase with these instructions",
   },
 };
 
@@ -128,6 +145,7 @@ export function RephraseButton({
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [instructions, setInstructions] = useState("");
   const wrapperRef = useRef<HTMLSpanElement | null>(null);
 
   const toneId = useSyncExternalStore(
@@ -178,6 +196,7 @@ export function RephraseButton({
           language,
           tone: activeTone.apiValue,
           isHtml,
+          instructions: instructions.trim(),
         }),
       });
 
@@ -233,45 +252,60 @@ export function RephraseButton({
         type="button"
         className="admin-rephrase-caret"
         onClick={() => setMenuOpen((open) => !open)}
-        aria-label={copy.toneAria}
-        aria-haspopup="listbox"
+        aria-label={copy.optionsAria}
+        aria-haspopup="dialog"
         aria-expanded={menuOpen}
-        title={`${copy.toneHeading}: ${activeTone.label[language]}`}
+        title={copy.panelHeading}
       >
         <svg width="10" height="10" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
           <path d="m6 9 6 6 6-6" />
         </svg>
       </button>
       {menuOpen ? (
-        <ul
-          className="admin-rephrase-tone-menu"
-          role="listbox"
-          aria-label={copy.toneHeading}
-        >
-          <li className="admin-rephrase-tone-heading" aria-hidden="true">
-            {copy.toneHeading}
-          </li>
-          {TONE_OPTIONS.map((option) => {
-            const selected = option.id === toneId;
-            return (
-              <li
-                key={option.id}
-                role="option"
-                aria-selected={selected}
-              >
+        <div className="admin-rephrase-panel" role="dialog" aria-label={copy.panelHeading}>
+          <div className="admin-rephrase-panel-field">
+            <span className="admin-rephrase-panel-label">{copy.instructionsHeading}</span>
+            <textarea
+              className="admin-rephrase-instructions"
+              value={instructions}
+              onChange={(event) => setInstructions(event.target.value)}
+              placeholder={copy.instructionsPlaceholder}
+              aria-label={copy.instructionsHeading}
+              rows={3}
+              maxLength={600}
+              autoFocus
+            />
+          </div>
+
+          <div className="admin-rephrase-tones" role="group" aria-label={copy.toneHeading}>
+            <span className="admin-rephrase-panel-label">{copy.toneHeading}</span>
+            <div className="admin-rephrase-tone-chips">
+              {TONE_OPTIONS.map((option) => (
                 <button
+                  key={option.id}
                   type="button"
-                  onClick={() => {
-                    persistToneId(option.id);
-                    setMenuOpen(false);
-                  }}
+                  className={option.id === toneId ? "active" : ""}
+                  aria-pressed={option.id === toneId}
+                  onClick={() => persistToneId(option.id)}
                 >
                   {option.label[language]}
                 </button>
-              </li>
-            );
-          })}
-        </ul>
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="admin-rephrase-apply"
+            disabled={disabled}
+            onClick={() => {
+              setMenuOpen(false);
+              rephrase();
+            }}
+          >
+            {copy.apply}
+          </button>
+        </div>
       ) : null}
     </span>
   );
