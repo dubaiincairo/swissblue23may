@@ -68,6 +68,13 @@
   text-wrap: balance;
 }
 
+/* Arabic display glyphs (with diacritics) need more vertical breathing room than
+   the Latin headline, otherwise the lines read cramped. RTL-only so the English
+   hero keeps its tighter rhythm. */
+[dir="rtl"] .t-hero {
+  line-height: 1.32;
+}
+
 .t-h1 {
   font-size: var(--t-h1);
   font-weight: 800;
@@ -339,7 +346,7 @@ summary:focus:not(:focus-visible) {
   content: "";
   height: 14px;
   position: absolute;
-  right: 0;
+  inset-inline-start: 0;
   top: 100%;
   width: 238px;
 }
@@ -422,10 +429,10 @@ summary:focus:not(:focus-visible) {
   padding: 8px;
   pointer-events: none;
   position: absolute;
-  right: 0;
+  inset-inline-start: 0;
   top: calc(100% + 8px);
   transform: translateY(6px) scale(0.98);
-  transform-origin: top right;
+  transform-origin: top;
   transition:
     opacity 180ms ease,
     transform 180ms ease;
@@ -440,17 +447,6 @@ summary:focus:not(:focus-visible) {
   .nav-group-row {
     display: none;
   }
-}
-
-[dir="ltr"] .nav-menu {
-  left: 0;
-  right: auto;
-  transform-origin: top left;
-}
-
-[dir="ltr"] .nav-dropdown::after {
-  left: 0;
-  right: auto;
 }
 
 .nav-menu a {
@@ -1025,6 +1021,12 @@ summary:focus:not(:focus-visible) {
   line-height: 1.75;
 }
 
+/* Tighten the gap under the insights row — the full section-lg bottom padding
+   leaves an oversized void before the next section. */
+section:has(> .insight-grid) {
+  padding-bottom: clamp(18px, 2.4vw, 30px);
+}
+
 .section-heading {
   max-width: 790px;
 }
@@ -1214,16 +1216,76 @@ summary:focus:not(:focus-visible) {
   color: rgba(255, 255, 255, 0.88);
 }
 
+.loyalty-intro {
+  align-self: center;
+}
+
+.loyalty-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.btn-loyalty {
+  background: white;
+  border-radius: 999px;
+  box-shadow: 0 12px 26px rgba(8, 28, 70, 0.2);
+  color: var(--primary);
+  padding-inline: 22px;
+}
+
+.btn-loyalty:hover {
+  background: var(--bluehost-foam, #eef4ff);
+  color: var(--bluehost-deep);
+}
+
+.loyalty-note {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 13px;
+  font-weight: 600;
+  max-width: 220px;
+}
+
 .brand-point {
-  background: rgba(255, 255, 255, 0.12);
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: var(--radius-lg);
   color: white;
+  display: grid;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 750;
+  gap: 14px;
+  grid-template-columns: auto minmax(0, 1fr);
   line-height: 1.5;
-  min-height: 104px;
-  padding: 20px;
+  min-height: 96px;
+  padding: 18px 20px;
+}
+
+.brand-point-icon {
+  align-items: center;
+  align-self: center;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: white;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+
+.brand-point-icon svg {
+  height: 21px;
+  width: 21px;
+}
+
+.brand-point-text {
+  align-self: center;
 }
 
 .property-map-card {
@@ -1348,8 +1410,58 @@ summary:focus:not(:focus-visible) {
 }
 
 .offer-card {
+  display: flex;
+  flex-direction: column;
   min-height: 280px;
   padding: 24px;
+}
+
+.offer-card-index {
+  align-items: center;
+  background: var(--bluehost-foam, #eef4ff);
+  border: 1px solid rgba(43, 111, 232, 0.14);
+  border-radius: 13px;
+  color: var(--primary);
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+  height: 46px;
+  justify-content: center;
+  width: 46px;
+}
+
+.offer-card h3 {
+  margin-top: 18px;
+}
+
+.offer-card-link {
+  align-items: center;
+  color: var(--primary);
+  display: inline-flex;
+  font-size: 13.5px;
+  font-weight: 800;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.offer-card-link svg {
+  height: 17px;
+  transition: transform 200ms ease;
+  width: 17px;
+}
+
+[dir="rtl"] .offer-card-link svg {
+  transform: scaleX(-1);
+}
+
+.offer-card-link:hover svg {
+  transform: translateX(3px);
+}
+
+[dir="rtl"] .offer-card-link:hover svg {
+  transform: scaleX(-1) translateX(3px);
 }
 
 .offer-card:nth-child(2) {
@@ -1359,6 +1471,16 @@ summary:focus:not(:focus-visible) {
 
 .offer-card:nth-child(2) p {
   color: rgba(255, 255, 255, 0.76);
+}
+
+.offer-card:nth-child(2) .offer-card-index {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.offer-card:nth-child(2) .offer-card-link {
+  color: white;
 }
 
 .amenity-grid {
@@ -1810,6 +1932,18 @@ summary:focus:not(:focus-visible) {
   .service-tile-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+/* Homepage services: balance the heading column against the tile grid so the
+   two sides read as aligned instead of a short heading beside tall tiles. */
+@media (min-width: 1024px) {
+  .home-services {
+    align-items: center;
+  }
+}
+
+.services-cta {
+  border-radius: 999px;
 }
 
 .portfolio-strip {
@@ -4294,6 +4428,94 @@ summary:focus:not(:focus-visible) {
   width: 420px;
 }
 
+.closing-cta-grid {
+  align-items: center;
+  display: grid;
+  gap: 28px;
+}
+
+@media (min-width: 1024px) {
+  .closing-cta-grid {
+    gap: 48px;
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+}
+
+.closing-cta-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.closing-cta-panel {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+}
+
+.closing-cta-panel-title {
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+[dir="rtl"] .closing-cta-panel-title {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.closing-cta-link {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  color: white;
+  display: flex;
+  font-size: 14.5px;
+  font-weight: 750;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 14px 16px;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.closing-cta-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.closing-cta-link svg {
+  flex: 0 0 auto;
+  height: 18px;
+  opacity: 0.85;
+  transition: transform 200ms ease;
+  width: 18px;
+}
+
+[dir="rtl"] .closing-cta-link svg {
+  transform: scaleX(-1);
+}
+
+.closing-cta-link:hover svg {
+  transform: translateX(3px);
+}
+
+[dir="rtl"] .closing-cta-link:hover svg {
+  transform: scaleX(-1) translateX(3px);
+}
+
 /* ==========================================
    PARTNERS / OTA SECTION
    ========================================== */
@@ -4556,6 +4778,16 @@ summary:focus:not(:focus-visible) {
   line-height: 1.75;
   position: relative;
   z-index: 1;
+}
+
+/* Reserve the top inline-end corner so the first line of the quote wraps
+   before it reaches the decorative quote mark instead of overlapping it.
+   float: inline-end -> right in LTR, left in RTL (matches the mark). */
+.testimonial-quote::before {
+  content: "";
+  float: inline-end;
+  width: 40px;
+  height: 22px;
 }
 
 .testimonial-meta {

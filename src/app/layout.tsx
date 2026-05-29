@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Noto_Kufi_Arabic } from "next/font/google";
+import ChatbaseWidget from "@/components/chatbase-widget";
 import LiveContentRefresh from "@/components/live-content-refresh";
 import NavScrollState from "@/components/nav-scroll-state";
 import ScrollObserver from "@/components/scroll-observer";
@@ -38,6 +39,7 @@ export default function RootLayout({
         <NavScrollState />
         <ScrollObserver />
         {children}
+        <ChatbaseWidget />
       </body>
     </html>
   );

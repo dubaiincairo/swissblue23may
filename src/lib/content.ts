@@ -104,7 +104,6 @@ export const footerSections = [
 export const footerContact = [
   "نظام حجز مركزي للضيوف الأفراد",
   "مختص صفقات الشركات والمجموعات",
-  "مساعد SwissBlue Concierge AI",
 ];
 
 export const propertyAmenities = [
