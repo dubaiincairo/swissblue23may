@@ -1,15 +1,17 @@
 import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function MeetingsEventsPage() {
-  const { ar } = await getEditableContent();
+  const { ar, hiddenSections } = await getEditableContent();
   const content = ar.subpages.meetingsEvents;
 
   return (
     <PageShell>
+      {!isSectionHidden(hiddenSections, "meetingsEventsPage") && (
+      <>
       <PageHero
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -61,6 +63,8 @@ export default async function MeetingsEventsPage() {
         </div>
       </section>
       <CtaBand title="اطلب عرضا للشركات أو المجموعات." cta="تواصل مع المختص" />
+      </>
+      )}
     </PageShell>
   );
 }

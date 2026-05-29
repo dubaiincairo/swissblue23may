@@ -199,6 +199,118 @@ const partnersSectionEn = {
   items: otasEn,
 };
 
+const testimonialsSection = {
+  eyebrow: "آراء الضيوف",
+  title: "تجارب حقيقية يشاركها ضيوفنا من أبرز منصات الحجز.",
+  text: "آراء موثقة من ضيوفنا عبر جوجل، Booking.com، Agoda، Expedia، وغيرها، تعكس تجربة الإقامة الفعلية في فنادق وشقق سويس بلو.",
+  items: [
+    {
+      name: "أحمد العتيبي",
+      role: "إقامة عائلية في جدة",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/2ec246be46d86c5d72e227e416b8de35f45fcd83-3569x5354.jpg",
+      quote: "موقع مميز قريب من كل ما تحتاجه، والاستقبال كان لطيفًا وسريعًا. الغرفة نظيفة والإفطار يستحق التجربة. سنعود بإذن الله.",
+      platform: "Google Maps",
+      rating: 5,
+    },
+    {
+      name: "سارة المنصور",
+      role: "إقامة عمل – جدة",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/a149018b573c9c446871f42b25634bc59f458a9c-3974x5000.jpg",
+      quote: "تسجيل دخول سلس، غرف هادئة، وشبكة واي فاي قوية. مناسبة جدًا لرحلات العمل القصيرة عندما تحتاج إلى التركيز.",
+      platform: "Booking.com",
+      rating: 5,
+    },
+    {
+      name: "محمد القحطاني",
+      role: "إقامة شهرية – جازان",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/9b0649eab8612d307f07390358f2edd09327ec1b-4480x6415.jpg",
+      quote: "شقة واسعة ومجهزة بالكامل، فريق الصيانة سريع الاستجابة، والسعر الشهري ممتاز مقارنة بالخدمات المقدمة.",
+      platform: "Agoda",
+      rating: 5,
+    },
+    {
+      name: "ليلى حسن",
+      role: "إجازة عائلية – الرياض",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/45f0b6e8ea8bb2b90e471c2103d776756ddf9fbd-4000x5705.jpg",
+      quote: "شقة الغرفتين كانت مناسبة جدًا لعائلتنا. نظيفة وعصرية، والفريق كان متعاونًا للغاية مع تأخر وقت وصولنا.",
+      platform: "Expedia",
+      rating: 4,
+    },
+    {
+      name: "خالد الزهراني",
+      role: "ضيف متكرر – جدة",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/2a02d66bb1df7354769704ae22afebdd53cea3d8-4480x6720.jpg",
+      quote: "أحرص على الحجز في سويس بلو في كل زيارة لجدة. الخدمة ثابتة الجودة والاستقبال يعرف الضيوف الدائمين.",
+      platform: "TripAdvisor",
+      rating: 5,
+    },
+    {
+      name: "عمر خليل",
+      role: "إقامة منفردة – جازان",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/af728bb74bd33bce0a4188f0b10d2679ea49c225-4160x6240.jpg",
+      quote: "قيمة ممتازة مقابل المنطقة. الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.",
+      platform: "Trivago",
+      rating: 4,
+    },
+  ],
+};
+
+const testimonialsSectionEn = {
+  eyebrow: "Guest reviews",
+  title: "Real experiences shared by our guests on top booking platforms.",
+  text: "Verified guest reviews from Google, Booking.com, Agoda, Expedia, and more, reflecting the actual stay experience across Swiss Blue hotels and apartments.",
+  items: [
+    {
+      name: "Ahmed Al-Otaibi",
+      role: "Family stay in Jeddah",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/2ec246be46d86c5d72e227e416b8de35f45fcd83-3569x5354.jpg",
+      quote: "A great location close to everything we needed. Reception was warm and quick, the room was clean, and breakfast was worth trying. We will be back.",
+      platform: "Google Maps",
+      rating: 5,
+    },
+    {
+      name: "Sara Al-Mansour",
+      role: "Business stay – Jeddah",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/a149018b573c9c446871f42b25634bc59f458a9c-3974x5000.jpg",
+      quote: "Smooth check-in, quiet rooms, and a strong Wi-Fi connection. Perfect for short business trips when you need to focus.",
+      platform: "Booking.com",
+      rating: 5,
+    },
+    {
+      name: "Mohammed Al-Qahtani",
+      role: "Monthly stay – Jazan",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/9b0649eab8612d307f07390358f2edd09327ec1b-4480x6415.jpg",
+      quote: "Spacious, fully equipped apartment, the maintenance team responds quickly, and the monthly rate is excellent for the services offered.",
+      platform: "Agoda",
+      rating: 5,
+    },
+    {
+      name: "Layla Hassan",
+      role: "Family vacation – Riyadh",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/45f0b6e8ea8bb2b90e471c2103d776756ddf9fbd-4000x5705.jpg",
+      quote: "The two-bedroom apartment fit our family perfectly. Clean, modern, and the staff was very accommodating with our late check-in.",
+      platform: "Expedia",
+      rating: 4,
+    },
+    {
+      name: "Khalid Al-Zahrani",
+      role: "Returning guest – Jeddah",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/2a02d66bb1df7354769704ae22afebdd53cea3d8-4480x6720.jpg",
+      quote: "I make sure to book Swiss Blue on every visit to Jeddah. The service is consistently good and reception recognises loyal guests.",
+      platform: "TripAdvisor",
+      rating: 5,
+    },
+    {
+      name: "Omar Khalil",
+      role: "Solo traveler – Jazan",
+      image: "https://cdn.sanity.io/images/uoj8zwj3/production/af728bb74bd33bce0a4188f0b10d2679ea49c225-4160x6240.jpg",
+      quote: "Great value for the area. The apart-hotel felt like home for a longer stay, and the location is convenient for getting around Jazan.",
+      platform: "Trivago",
+      rating: 4,
+    },
+  ],
+};
+
 const hotelPolicyAr = {
   hero: {
     eyebrow: "سياسة الفنادق",
@@ -691,6 +803,7 @@ export const defaultSiteContent = {
         items: accommodationCategories,
       },
       partners: partnersSection,
+      testimonials: testimonialsSection,
       cta: {
         eyebrow: "جاهزون لاستقبالكم",
         title: "اعثر على إقامتك القادمة مع سويس بلو.",
@@ -717,6 +830,52 @@ export const defaultSiteContent = {
           "راحة لرجال الأعمال والعائلات",
           "مرونة الشقق الفندقية",
           "ثقة في الحجز المباشر",
+        ],
+        stats: [
+          { value: "6", label: "منشآت ضيافة" },
+          { value: "3", label: "مدن سعودية" },
+          { value: "+280", label: "غرفة وجناح وشقة" },
+          { value: "24/7", label: "دعم ضيوف مباشر" },
+        ],
+        story: {
+          eyebrow: "قصتنا",
+          title: "بدأنا من فكرة واحدة: إقامة واضحة بلا تعقيد.",
+          paragraphs: [
+            "انطلقت سويس بلو من قناعة بأن الإقامة الفندقية يجب أن تكون صادقة وسهلة، تركّز على ما يهم الضيف فعلاً: غرفة مريحة، موقع عملي، خدمة ودودة، وسعر مفهوم دون وعود مبالغ فيها.",
+            "اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض وجازان، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة واحدة متّسقة، تُدار كل منشأة فيها وفق المعايير ذاتها في النظافة والسلامة والضيافة.",
+            "ونؤمن بأن الضيافة المسؤولة جزء من هويتنا، فنستثمر في الكوادر السعودية وندعم مجتمعاتنا المحلية، ونعمل بما يتوافق مع مستهدفات رؤية المملكة 2030 في السياحة وتنمية الإنسان.",
+          ],
+        },
+        valuesIntro: {
+          eyebrow: "قيمنا",
+          title: "ما الذي يجعل سويس بلو خياراً موثوقاً؟",
+          text: "تنعكس قيمنا في كل تفصيل من تجربة الضيف، من لحظة البحث عن الإقامة وحتى المغادرة.",
+        },
+        values: [
+          {
+            title: "وضوح الاختيار",
+            text: "نحوّل فئات الغرف والشقق إلى خيارات سهلة الفهم، فيعرف الضيف ما يحجزه تماماً قبل وصوله.",
+          },
+          {
+            title: "ضيافة سعودية أصيلة",
+            text: "حفاوة استقبال نابعة من ثقافة المملكة، يقدّمها فريق يتحدث لغة ضيوفه ويفهم احتياجاتهم.",
+          },
+          {
+            title: "موقع يخدم رحلتك",
+            text: "منشآت في قلب المدن قريبة من مناطق الأعمال والتسوق والمطارات والمعالم الرئيسية.",
+          },
+          {
+            title: "مرونة الإقامة",
+            text: "من الليلة الواحدة إلى الإقامة الشهرية، بخيارات فندقية وشقق مخدومة تناسب كل رحلة.",
+          },
+          {
+            title: "ثقة الحجز المباشر",
+            text: "أفضل سعر وأوضح الشروط حين تحجز من قنوات سويس بلو مباشرة دون وسطاء.",
+          },
+          {
+            title: "التزام الجودة",
+            text: "معايير تشغيل وسلامة موحّدة عبر كل منشأة في المحفظة، يراجعها فريق مختص باستمرار.",
+          },
         ],
       },
       dining: {
@@ -773,6 +932,64 @@ export const defaultSiteContent = {
           "مناسبة لتعاقدات الشركات والانتقال المؤقت والإقامة الشهرية",
           "خصوصية أعلى مع دعم حجز مباشر مخصص",
         ],
+        intro: {
+          eyebrow: "لماذا الشقق الفندقية",
+          title: "مساحة بيت كامل مع راحة الفندق.",
+          text: "تجمع الشقق الفندقية بين استقلالية السكن الخاص وخدمات الضيافة اليومية، فهي الخيار الأمثل للإقامات الأطول التي تحتاج إلى مطبخ ومساحة معيشة وخصوصية إضافية دون التخلي عن الاستقبال والتدبير والدعم الفندقي.",
+        },
+        includedIntro: {
+          eyebrow: "ماذا تتضمن كل شقة",
+          title: "تجهيزات تجعل الإقامة الطويلة سهلة.",
+          text: "تختلف بعض التفاصيل حسب المنشأة والفئة، لكن أساسيات الراحة حاضرة في كل وحدة.",
+        },
+        included: [
+          "مطبخ مجهّز بأدوات الطهي والثلاجة",
+          "غسالة ملابس داخل الوحدة أو خدمة غسيل",
+          "مساحة معيشة منفصلة للعمل أو الاستقبال",
+          "خدمة تدبير دورية للوحدة",
+          "إنترنت عالي السرعة في كل الغرف",
+          "استقبال ودعم ضيوف على مدار اليوم",
+        ],
+        propertiesIntro: {
+          eyebrow: "وجهات الشقق الفندقية",
+          title: "خمس منشآت في ثلاث مدن.",
+          text: "اختر الموقع الأنسب لرحلتك بين جدة والرياض وجازان.",
+        },
+        properties: [
+          { name: "شقق الزهراء الفندقية", city: "جدة", units: "46 شقة", slug: "al-zahraa-serviced-apartments" },
+          { name: "شقق السامر الفندقية", city: "جدة", units: "33 شقة", slug: "al-samer-serviced-apartments" },
+          { name: "سويس بلو للشقق الفندقية جازان", city: "جازان", units: "55 شقة", slug: "swiss-blue-jazan" },
+          { name: "شقق فيناس الرياض الفندقية", city: "الرياض", units: "35 شقة", slug: "vinas-riyadh-serviced-apartments" },
+          { name: "شقق توليب الروضة الفندقية", city: "الرياض", units: "37 شقة", slug: "tulip-alrawdah-serviced-apartments" },
+        ],
+        idealForIntro: {
+          eyebrow: "لمن تناسب",
+          title: "صُممت لمن يحتاج مساحة ومرونة.",
+          text: "تخدم الشقق الفندقية أنماط إقامة مختلفة، تجمعها الحاجة إلى راحة تشبه البيت.",
+        },
+        idealFor: [
+          {
+            title: "العائلات",
+            text: "غرف نوم متعددة ومساحة معيشة تمنح كل فرد خصوصيته وراحته.",
+          },
+          {
+            title: "انتقالات العمل",
+            text: "قاعدة مريحة للموظفين المنتدبين وفرق المشاريع المؤقتة.",
+          },
+          {
+            title: "الإقامة الطويلة",
+            text: "أسعار شهرية وخدمات تجعل الإقامة الممتدة عملية واقتصادية.",
+          },
+          {
+            title: "ضيوف الأعمال",
+            text: "مكان للعمل والراحة معاً مع إنترنت سريع وموقع حيوي قريب من الأعمال.",
+          },
+        ],
+        longStay: {
+          eyebrow: "الإقامة الشهرية",
+          title: "أسعار خاصة للإقامات الممتدة.",
+          text: "نوفّر باقات شهرية بأسعار تفضيلية للضيوف الأفراد والشركات، تشمل خدمات تدبير منتظمة ودعماً مخصصاً من فريق الحجوزات. تواصل معنا لتجهيز عرض إقامة طويلة يناسب مدتك ووجهتك.",
+        },
       },
       amenitiesServices: {
         hero: {
@@ -781,6 +998,37 @@ export const defaultSiteContent = {
           text: "تدعم كل إقامة في سويس بلو مجموعة من الخدمات الأساسية التي تجعل السفر أسهل وأكثر راحة وموثوقية.",
           image: jazanImage,
         },
+        standardsIntro: {
+          eyebrow: "معايير الخدمة",
+          title: "وعد خدمة موحّد في كل منشأة.",
+          text: "مهما اخترت من وجهاتنا، تجد المعايير ذاتها في النظافة والسلامة وحفاوة الاستقبال. نرتّب خدماتنا في عائلات واضحة تساعدك على معرفة ما تتوقعه قبل وصولك.",
+        },
+        commitments: [
+          {
+            title: "اتصال دائم",
+            text: "إنترنت مجاني عالي السرعة في كل الغرف والمساحات العامة لتبقى متصلاً للعمل والترفيه.",
+          },
+          {
+            title: "ضيافة الطعام",
+            text: "بوفيه إفطار يومي، مقهى، ومطعم، مع خدمة غرف في وجهات مختارة.",
+          },
+          {
+            title: "جاهزية الأعمال",
+            text: "قاعات اجتماعات ومساحات عمل ودعم متخصص للحجوزات المؤسسية والمجموعات.",
+          },
+          {
+            title: "العافية والراحة",
+            text: "نادٍ رياضي مجهّز ومسبح داخلي في وجهات مختارة للحفاظ على روتينك أثناء السفر.",
+          },
+          {
+            title: "سهولة التنقل",
+            text: "خدمة سيارات أجرة، مواقف، ودعم للوصول من وإلى المطار حسب الموقع.",
+          },
+          {
+            title: "دعم الضيف",
+            text: "استقبال ومساندة على مدار اليوم، خزائن آمنة، وخدمة قهوة وشاي وميني بار.",
+          },
+        ],
       },
       loyaltyPage: {
         hero: {
@@ -789,6 +1037,97 @@ export const defaultSiteContent = {
           text: "برنامج ولاء يربط الضيوف المتكررين بعروض الحجز المباشر، أولوية الترقية عند توفرها، ودعم أسرع من فريق الحجوزات.",
           image: heroImage,
         },
+        tiersIntro: {
+          eyebrow: "فئات العضوية",
+          title: "كلما أقمت أكثر، حصلت على مزايا أكبر.",
+          text: "أربع فئات ترتقي معك تلقائياً مع كل إقامة مباشرة، وتفتح لك مزايا إضافية في الترقيات والأسعار والخدمة.",
+        },
+        tiers: [
+          {
+            name: "أزرق",
+            threshold: "من أول إقامة",
+            perks: [
+              "سعر العضو الخاص على الحجز المباشر",
+              "إنترنت مجاني عالي السرعة",
+              "تسجيل وصول مبكر عند التوفر",
+            ],
+          },
+          {
+            name: "فضي",
+            threshold: "بعد 5 ليالٍ أو 3 إقامات سنوياً",
+            perks: [
+              "خصم إضافي على الحجز المباشر",
+              "ترقية فئة الغرفة عند التوفر",
+              "مغادرة متأخرة حتى الساعة 2 ظهراً",
+              "نقاط مضاعفة ×1.25",
+            ],
+          },
+          {
+            name: "ذهبي",
+            threshold: "بعد 15 ليلة أو 8 إقامات سنوياً",
+            perks: [
+              "أولوية ترقية للأجنحة عند التوفر",
+              "إفطار مجاني لشخصين",
+              "مغادرة متأخرة حتى الساعة 4 عصراً",
+              "نقاط مضاعفة ×1.5",
+              "خط حجز مخصص",
+            ],
+          },
+          {
+            name: "بلاتيني",
+            threshold: "بعد 30 ليلة أو 15 إقامة سنوياً",
+            perks: [
+              "ترقية مضمونة لأفضل فئة متاحة",
+              "وصول وانصراف مرنان",
+              "هدية ترحيب وخدمة كونسيرج شخصية",
+              "نقاط مضاعفة ×2",
+              "مزايا حصرية لدى شركائنا",
+            ],
+          },
+        ],
+        earn: {
+          eyebrow: "اكسب نقاطك",
+          title: "كل إقامة مباشرة تقرّبك من مكافأتك القادمة.",
+          items: [
+            "نقاط على كل ريال تنفقه في الإقامة المباشرة",
+            "نقاط إضافية على خدمات الطعام والإقامات الممتدة",
+            "نقاط ترحيبية عند أول تسجيل في البرنامج",
+            "عروض موسمية لمضاعفة النقاط",
+          ],
+        },
+        redeem: {
+          eyebrow: "استبدل نقاطك",
+          title: "حوّل نقاطك إلى قيمة حقيقية.",
+          items: [
+            "ليالٍ مجانية في أي من منشآت سويس بلو",
+            "ترقيات الغرف والأجنحة",
+            "خصم مباشر على قيمة الفاتورة",
+            "مزايا طعام وخدمات إضافية",
+          ],
+        },
+        howItWorksIntro: {
+          eyebrow: "كيف يعمل البرنامج",
+          title: "أربع خطوات تفصلك عن مزاياك.",
+          text: "التسجيل مجاني، والمزايا تبدأ من إقامتك الأولى.",
+        },
+        howItWorks: [
+          {
+            title: "سجّل مجاناً",
+            text: "انضم إلى برنامج ولاء سويس بلو خلال دقيقة عبر موقعنا أو مكتب الاستقبال.",
+          },
+          {
+            title: "احجز مباشرة",
+            text: "احجز من قنواتنا المباشرة لتكسب النقاط مع كل ليلة إقامة.",
+          },
+          {
+            title: "ارتقِ بين الفئات",
+            text: "تصعد فئتك تلقائياً كلما زادت لياليك وإقاماتك خلال العام.",
+          },
+          {
+            title: "استبدل مزاياك",
+            text: "حوّل نقاطك إلى ليالٍ وترقيات ومزايا حصرية وقتما تشاء.",
+          },
+        ],
       },
       meetingsEvents: {
         hero: {
@@ -842,6 +1181,59 @@ export const defaultSiteContent = {
           "توزيع أنواع الغرف والشقق حسب احتياج المجموعة",
           "دعم حجوزات الوفود والفرق والزيارات الرسمية",
           "إمكانية ربط الإقامة بالاجتماعات أو الضيافة عند الحاجة",
+        ],
+        eligibility: {
+          eyebrow: "من 10 وحدات فأكثر",
+          title: "متى تكون مجموعتك مؤهلة؟",
+          text: "نعتبر الحجز مجموعة عند عشر غرف أو وحدات فأكثر في التواريخ نفسها. عندها نوفّر تسعيراً خاصاً للمجموعات ومنسّق حجز مخصصاً يتابع كل التفاصيل من العرض الأول حتى المغادرة.",
+        },
+        processIntro: {
+          eyebrow: "كيف نعمل",
+          title: "من الطلب إلى الوصول في أربع خطوات.",
+          text: "مسار واضح وسريع يجعل تنظيم حجز المجموعة سهلاً ومنظّماً.",
+        },
+        process: [
+          {
+            title: "أرسل طلبك",
+            text: "زوّدنا بالمدينة، عدد الوحدات، التواريخ، وطبيعة المجموعة.",
+          },
+          {
+            title: "استلم عرضك",
+            text: "نجهّز عرضاً خاصاً بفئات الوحدات والأسعار خلال يوم عمل.",
+          },
+          {
+            title: "أكّد التفاصيل",
+            text: "نثبّت قائمة الضيوف وتوزيع الغرف وطلبات الضيافة.",
+          },
+          {
+            title: "صل واستمتع",
+            text: "تسجيل وصول جماعي منظّم ومنسّق مخصص طوال الإقامة.",
+          },
+        ],
+        inclusionsIntro: {
+          eyebrow: "ماذا يشمل",
+          title: "كل ما تحتاجه مجموعتك في مكان واحد.",
+          text: "نوفّر التفاصيل اللوجستية حتى تركّز على هدف رحلتك.",
+        },
+        inclusions: [
+          "تسعير خاص للمجموعات",
+          "منسّق حجز مخصص",
+          "تسجيل وصول ومغادرة جماعي ميسّر",
+          "مرونة في توزيع أنواع الغرف",
+          "ربط الإقامة بقاعات الاجتماعات عند الحاجة",
+          "خيارات فوترة موحّدة للجهة المنظّمة",
+        ],
+        idealForIntro: {
+          eyebrow: "لمن تناسب",
+          title: "نستقبل كل أنواع المجموعات.",
+          text: "خبرتنا تشمل تنسيق الإقامات لمجموعات متنوعة الأهداف والأحجام.",
+        },
+        idealFor: [
+          "وفود الشركات والمؤتمرات",
+          "المجموعات السياحية والعائلية",
+          "حفلات الزفاف وإقامة الضيوف",
+          "الفرق الرياضية وبرامج التدريب",
+          "الرحلات الدينية والزيارات الرسمية",
         ],
       },
       contact: {
@@ -1265,6 +1657,7 @@ export const defaultSiteContent = {
         items: accommodationCategoriesEn,
       },
       partners: partnersSectionEn,
+      testimonials: testimonialsSectionEn,
       cta: {
         eyebrow: "Book direct",
         title: "Find your next Swiss Blue stay.",
@@ -1291,6 +1684,52 @@ export const defaultSiteContent = {
           "Comfort for business and families",
           "Flexibility of serviced apartments",
           "Confidence in booking direct",
+        ],
+        stats: [
+          { value: "6", label: "Hospitality properties" },
+          { value: "3", label: "Saudi cities" },
+          { value: "280+", label: "Rooms, suites & apartments" },
+          { value: "24/7", label: "Direct guest support" },
+        ],
+        story: {
+          eyebrow: "Our Story",
+          title: "We started from one idea: a clear stay, without complexity.",
+          paragraphs: [
+            "Swiss Blue began from the conviction that a hotel stay should be honest and easy, focused on what truly matters to the guest: a comfortable room, a practical location, friendly service, and a price you understand, with no exaggerated promises.",
+            "Today the portfolio brings together hotels, serviced apartments, and serviced residences across Jeddah, Riyadh, and Jazan, serving the business guest, the family, and the long-stay resident within one consistent experience, where every property is run to the same standards of cleanliness, safety, and hospitality.",
+            "We believe responsible hospitality is part of our identity, so we invest in Saudi talent, support our local communities, and operate in alignment with Saudi Vision 2030 goals for tourism and human development.",
+          ],
+        },
+        valuesIntro: {
+          eyebrow: "Our Values",
+          title: "What makes Swiss Blue a trusted choice?",
+          text: "Our values show up in every detail of the guest experience, from the moment of searching for a stay all the way to departure.",
+        },
+        values: [
+          {
+            title: "Clarity of choice",
+            text: "We turn room and apartment categories into easy-to-understand options, so the guest knows exactly what they are booking before arrival.",
+          },
+          {
+            title: "Authentic Saudi hospitality",
+            text: "A warm welcome rooted in the Kingdom's culture, delivered by a team that speaks its guests' language and understands their needs.",
+          },
+          {
+            title: "A location that serves your trip",
+            text: "Properties in the heart of the city, close to business districts, shopping, airports, and key landmarks.",
+          },
+          {
+            title: "Stay flexibility",
+            text: "From a single night to a monthly stay, with hotel and serviced-apartment options to suit every journey.",
+          },
+          {
+            title: "Direct-booking confidence",
+            text: "The best rate and the clearest terms when you book through Swiss Blue channels, with no intermediaries.",
+          },
+          {
+            title: "Quality commitment",
+            text: "Unified operating and safety standards across every property in the portfolio, reviewed continuously by a dedicated team.",
+          },
         ],
       },
       dining: {
@@ -1347,6 +1786,64 @@ export const defaultSiteContent = {
           "Suitable for business relocation and monthly stays",
           "More privacy with direct booking support",
         ],
+        intro: {
+          eyebrow: "Why Serviced Apartments",
+          title: "The space of a full home with the comfort of a hotel.",
+          text: "Serviced apartments combine the independence of private living with daily hospitality services, making them the ideal choice for longer stays that need a kitchen, living space, and extra privacy without giving up reception, housekeeping, and hotel support.",
+        },
+        includedIntro: {
+          eyebrow: "What every apartment includes",
+          title: "Furnishings that make a long stay easy.",
+          text: "Some details vary by property and category, but the essentials of comfort are present in every unit.",
+        },
+        included: [
+          "Kitchen equipped with cookware and a refrigerator",
+          "In-unit washing machine or laundry service",
+          "Separate living space for work or hosting",
+          "Regular housekeeping for the unit",
+          "High-speed internet in every room",
+          "Reception and guest support around the clock",
+        ],
+        propertiesIntro: {
+          eyebrow: "Serviced apartment destinations",
+          title: "Five properties across three cities.",
+          text: "Choose the location best suited to your trip across Jeddah, Riyadh, and Jazan.",
+        },
+        properties: [
+          { name: "Al Zahraa Serviced Apartments", city: "Jeddah", units: "46 apartments", slug: "al-zahraa-serviced-apartments" },
+          { name: "Al Samer Serviced Apartments", city: "Jeddah", units: "33 apartments", slug: "al-samer-serviced-apartments" },
+          { name: "Swiss Blue Serviced Apartments Jazan", city: "Jazan", units: "55 apartments", slug: "swiss-blue-jazan" },
+          { name: "Vinas Riyadh Serviced Apartments", city: "Riyadh", units: "35 apartments", slug: "vinas-riyadh-serviced-apartments" },
+          { name: "Tulip Al Rawdah Serviced Apartments", city: "Riyadh", units: "37 apartments", slug: "tulip-alrawdah-serviced-apartments" },
+        ],
+        idealForIntro: {
+          eyebrow: "Who they suit",
+          title: "Designed for those who need space and flexibility.",
+          text: "Serviced apartments serve different stay patterns, united by the need for a home-like comfort.",
+        },
+        idealFor: [
+          {
+            title: "Families",
+            text: "Multiple bedrooms and a living space that gives every member their own privacy and comfort.",
+          },
+          {
+            title: "Work relocations",
+            text: "A comfortable base for seconded employees and temporary project teams.",
+          },
+          {
+            title: "Long stays",
+            text: "Monthly rates and services that make an extended stay practical and economical.",
+          },
+          {
+            title: "Business guests",
+            text: "A place to work and rest together, with fast internet and a lively location close to business.",
+          },
+        ],
+        longStay: {
+          eyebrow: "Monthly Stays",
+          title: "Special rates for extended stays.",
+          text: "We offer monthly packages at preferential rates for individual guests and companies, including regular housekeeping and dedicated support from the reservations team. Contact us to arrange a long-stay offer tailored to your duration and destination.",
+        },
       },
       amenitiesServices: {
         hero: {
@@ -1355,6 +1852,37 @@ export const defaultSiteContent = {
           text: "Every stay at Swiss Blue is supported by a selection of core services that make travel easier, comfortable, and reliable.",
           image: jazanImage,
         },
+        standardsIntro: {
+          eyebrow: "Service Standards",
+          title: "One service promise across every property.",
+          text: "Whichever destination you choose, you will find the same standards of cleanliness, safety, and warm welcome. We organize our services into clear families so you know what to expect before you arrive.",
+        },
+        commitments: [
+          {
+            title: "Always Connected",
+            text: "Free high-speed internet in every room and public space to keep you connected for work and leisure.",
+          },
+          {
+            title: "Dining Hospitality",
+            text: "Daily breakfast buffet, a café, and a restaurant, with room service at selected destinations.",
+          },
+          {
+            title: "Business Ready",
+            text: "Meeting rooms, workspaces, and dedicated support for corporate and group bookings.",
+          },
+          {
+            title: "Wellness & Comfort",
+            text: "An equipped gym and an indoor pool at selected destinations to keep your routine while traveling.",
+          },
+          {
+            title: "Easy Mobility",
+            text: "Taxi service, parking, and airport transfer support depending on the location.",
+          },
+          {
+            title: "Guest Support",
+            text: "Reception and assistance around the clock, secure safes, and coffee, tea, and minibar service.",
+          },
+        ],
       },
       loyaltyPage: {
         hero: {
@@ -1363,6 +1891,97 @@ export const defaultSiteContent = {
           text: "A loyalty program linking repeat guests to direct booking offers, priority upgrade when available, and faster reservations support.",
           image: heroImage,
         },
+        tiersIntro: {
+          eyebrow: "Membership Tiers",
+          title: "The more you stay, the greater your benefits.",
+          text: "Four tiers that rise with you automatically with every direct stay, unlocking added benefits in upgrades, rates, and service.",
+        },
+        tiers: [
+          {
+            name: "Blue",
+            threshold: "From your first stay",
+            perks: [
+              "Special member rate on direct booking",
+              "Free high-speed internet",
+              "Early check-in when available",
+            ],
+          },
+          {
+            name: "Silver",
+            threshold: "After 5 nights or 3 stays per year",
+            perks: [
+              "Extra discount on direct booking",
+              "Room category upgrade when available",
+              "Late checkout until 2 PM",
+              "Bonus points ×1.25",
+            ],
+          },
+          {
+            name: "Gold",
+            threshold: "After 15 nights or 8 stays per year",
+            perks: [
+              "Priority suite upgrade when available",
+              "Complimentary breakfast for two",
+              "Late checkout until 4 PM",
+              "Bonus points ×1.5",
+              "Dedicated booking line",
+            ],
+          },
+          {
+            name: "Platinum",
+            threshold: "After 30 nights or 15 stays per year",
+            perks: [
+              "Guaranteed upgrade to the best available category",
+              "Flexible arrival and departure",
+              "Welcome gift and personal concierge service",
+              "Bonus points ×2",
+              "Exclusive benefits with our partners",
+            ],
+          },
+        ],
+        earn: {
+          eyebrow: "Earn Points",
+          title: "Every direct stay brings your next reward closer.",
+          items: [
+            "Points on every riyal spent on a direct stay",
+            "Bonus points on dining services and extended stays",
+            "Welcome points when you first join the program",
+            "Seasonal point-multiplier offers",
+          ],
+        },
+        redeem: {
+          eyebrow: "Redeem Points",
+          title: "Turn your points into real value.",
+          items: [
+            "Free nights at any Swiss Blue property",
+            "Room and suite upgrades",
+            "Direct discount on your bill",
+            "Dining perks and extra services",
+          ],
+        },
+        howItWorksIntro: {
+          eyebrow: "How the program works",
+          title: "Four steps stand between you and your benefits.",
+          text: "Registration is free, and the benefits begin from your very first stay.",
+        },
+        howItWorks: [
+          {
+            title: "Register free",
+            text: "Join the Swiss Blue loyalty program in a minute, online or at the reception desk.",
+          },
+          {
+            title: "Book direct",
+            text: "Book through our direct channels to earn points with every night of your stay.",
+          },
+          {
+            title: "Rise through tiers",
+            text: "Your tier rises automatically as your nights and stays add up over the year.",
+          },
+          {
+            title: "Redeem your benefits",
+            text: "Turn your points into nights, upgrades, and exclusive benefits whenever you like.",
+          },
+        ],
       },
       meetingsEvents: {
         hero: {
@@ -1416,6 +2035,59 @@ export const defaultSiteContent = {
           "Room and apartment type allocation by group need",
           "Support for delegations, teams, and official visits",
           "Ability to connect accommodation with meetings or hospitality when needed",
+        ],
+        eligibility: {
+          eyebrow: "From 10 units and up",
+          title: "When does your group qualify?",
+          text: "We treat a booking as a group from ten rooms or units and up on the same dates. At that point we provide special group pricing and a dedicated booking coordinator who follows every detail from the first proposal to departure.",
+        },
+        processIntro: {
+          eyebrow: "How we work",
+          title: "From request to arrival in four steps.",
+          text: "A clear, fast path that makes organizing a group booking simple and well-structured.",
+        },
+        process: [
+          {
+            title: "Send your request",
+            text: "Tell us the city, number of units, dates, and the nature of the group.",
+          },
+          {
+            title: "Receive your offer",
+            text: "We prepare a tailored proposal with unit categories and rates within one business day.",
+          },
+          {
+            title: "Confirm the details",
+            text: "We lock in the guest list, room allocation, and hospitality requests.",
+          },
+          {
+            title: "Arrive and enjoy",
+            text: "An organized group check-in and a dedicated coordinator throughout the stay.",
+          },
+        ],
+        inclusionsIntro: {
+          eyebrow: "What's included",
+          title: "Everything your group needs in one place.",
+          text: "We handle the logistical details so you can focus on the purpose of your trip.",
+        },
+        inclusions: [
+          "Special group pricing",
+          "A dedicated booking coordinator",
+          "Smooth group check-in and check-out",
+          "Flexibility in room-type allocation",
+          "Connecting the stay with meeting rooms when needed",
+          "Consolidated billing options for the organizing entity",
+        ],
+        idealForIntro: {
+          eyebrow: "Who they suit",
+          title: "We welcome every kind of group.",
+          text: "Our experience covers coordinating stays for groups of varied purposes and sizes.",
+        },
+        idealFor: [
+          "Corporate delegations and conferences",
+          "Tourism and family groups",
+          "Weddings and guest accommodation",
+          "Sports teams and training programs",
+          "Religious journeys and official visits",
         ],
       },
       contact: {
@@ -2363,6 +3035,11 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
   };
 }
 
+/** Read token, accepting either the Vercel env name (SANITY_READ) or the legacy one. */
+function readToken(): string | undefined {
+  return process.env.SANITY_READ ?? process.env.SANITY_API_READ_TOKEN;
+}
+
 function getSanityClient(token?: string) {
   if (!projectId || !dataset) {
     return null;
@@ -2456,27 +3133,142 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
   });
 }
 
-export async function getEditableContent(): Promise<EditableSiteContent> {
-  const client = getSanityClient(process.env.SANITY_API_READ_TOKEN);
+/**
+ * Content persistence is split across several small Sanity documents instead of
+ * one giant singleton. The full `{ ar, en }` tree is ~5,250 attributes, far over
+ * Sanity's hard limit of 1,000 attributes per document, which made saving the
+ * monolithic singleton fail. Each chunk below stays comfortably under 1,000:
+ *   shell ~141 · faq ~669 · homepage ~580 · rooms ~466 · subpages(rest) ~769
+ * The in-memory shape is unchanged — only storage is chunked, transparently.
+ */
+const LANGS = ["ar", "en"] as const;
+const CHUNK_KINDS = ["shell", "faq", "homepage", "rooms", "subpages"] as const;
+const METADATA_ID = "site-content--meta";
+
+type AnyRecord = Record<string, unknown>;
+
+function chunkId(lang: string, kind: string) {
+  return `site-content--${lang}--${kind}`;
+}
+
+function allChunkIds(): string[] {
+  return LANGS.flatMap((lang) => CHUNK_KINDS.map((kind) => chunkId(lang, kind)));
+}
+
+/** Slice one language's content into the persisted chunks. */
+function splitLang(langContent: AnyRecord): Record<(typeof CHUNK_KINDS)[number], AnyRecord> {
+  const {
+    navGroups,
+    footerSections,
+    footerContact,
+    media,
+    faq,
+    homepage,
+    subpages,
+    ...rest
+  } = langContent;
+  const { roomsSuites, ...subpagesRest } = (subpages as AnyRecord) ?? {};
+  return {
+    shell: { navGroups, footerSections, footerContact, media, ...rest },
+    faq: { faq },
+    homepage: { homepage },
+    rooms: { subpages: { roomsSuites } },
+    subpages: { subpages: subpagesRest },
+  };
+}
+
+/** Build the list of chunk documents to write for a full content tree. */
+function splitContent(content: EditableSiteContent): { id: string; content: AnyRecord }[] {
+  const docs: { id: string; content: AnyRecord }[] = [];
+  for (const lang of LANGS) {
+    const slices = splitLang(content[lang] as unknown as AnyRecord);
+    for (const kind of CHUNK_KINDS) {
+      docs.push({ id: chunkId(lang, kind), content: slices[kind] });
+    }
+  }
+  return docs;
+}
+
+/** Reassemble a partial content tree from fetched chunk documents. */
+function assembleChunks(byId: Map<string, AnyRecord>): Partial<EditableSiteContent> | null {
+  const out: AnyRecord = {};
+  let found = false;
+  for (const lang of LANGS) {
+    const langOut: AnyRecord = {};
+    const subpages: AnyRecord = {};
+    let langFound = false;
+    for (const kind of CHUNK_KINDS) {
+      const slice = byId.get(chunkId(lang, kind));
+      if (!slice) continue;
+      langFound = true;
+      if (kind === "rooms" || kind === "subpages") {
+        Object.assign(subpages, (slice.subpages as AnyRecord) ?? {});
+      } else {
+        Object.assign(langOut, slice);
+      }
+    }
+    if (Object.keys(subpages).length) langOut.subpages = subpages;
+    if (langFound) {
+      out[lang] = langOut;
+      found = true;
+    }
+  }
+  return found ? (out as Partial<EditableSiteContent>) : null;
+}
+
+export async function getEditableContent(): Promise<
+  EditableSiteContent & { hiddenSections: string[] }
+> {
+  const client = getSanityClient(readToken());
 
   if (!client) {
-    return defaultSiteContent;
+    return { ...defaultSiteContent, hiddenSections: [] };
   }
 
   try {
-    const document = await client.fetch(
-      `*[_id == $id][0]{content}`,
-      { id: documentId },
+    const ids = [...allChunkIds(), METADATA_ID, documentId];
+    const documents: Array<{
+      _id: string;
+      content?: AnyRecord;
+      hiddenSections?: unknown;
+    }> = await client.fetch(
+      `*[_id in $ids]{_id, content, hiddenSections}`,
+      { ids },
       { cache: "no-store" },
     );
-    return mergeContent(document?.content ?? null);
+
+    const byId = new Map(
+      documents
+        .filter((d) => d.content && allChunkIds().includes(d._id))
+        .map((d) => [d._id, d.content as AnyRecord]),
+    );
+    const meta = documents.find((d) => d._id === METADATA_ID);
+    const legacy = documents.find((d) => d._id === documentId);
+
+    // Prefer chunked storage; fall back to the legacy singleton until first save.
+    const assembled = assembleChunks(byId);
+    const partial = assembled ?? (legacy?.content as Partial<EditableSiteContent> | undefined) ?? null;
+    const hidden = assembled ? meta?.hiddenSections : legacy?.hiddenSections;
+
+    return {
+      ...mergeContent(partial),
+      hiddenSections: Array.isArray(hidden) ? (hidden as string[]) : [],
+    };
   } catch {
-    return defaultSiteContent;
+    return { ...defaultSiteContent, hiddenSections: [] };
   }
+}
+
+/** True when the given admin section id is marked hidden from the live site. */
+export function isSectionHidden(
+  hiddenSections: readonly string[] | undefined | null,
+  id: string,
+): boolean {
+  return Array.isArray(hiddenSections) && hiddenSections.includes(id);
 }
 
 export async function getEditableContentVersion() {
-  const client = getSanityClient(process.env.SANITY_API_READ_TOKEN);
+  const client = getSanityClient(readToken());
 
   if (!client) {
     return "default";
@@ -2484,18 +3276,24 @@ export async function getEditableContentVersion() {
 
   try {
     const document = await client.fetch(
-      `*[_id == $id][0]{updatedAt, _updatedAt}`,
-      { id: documentId },
+      `*[_id in $ids]{_id, updatedAt, _updatedAt}`,
+      { ids: [METADATA_ID, documentId] },
       { cache: "no-store" },
     );
+    const meta =
+      document?.find((d: { _id: string }) => d._id === METADATA_ID) ??
+      document?.find((d: { _id: string }) => d._id === documentId);
 
-    return document?.updatedAt ?? document?._updatedAt ?? "default";
+    return meta?.updatedAt ?? meta?._updatedAt ?? "default";
   } catch {
     return "default";
   }
 }
 
-export async function saveEditableContent(content: EditableSiteContent) {
+export async function saveEditableContent(
+  content: EditableSiteContent,
+  hiddenSections: string[] = [],
+) {
   const client = getSanityClient(process.env.SANITY_API_WRITE_TOKEN);
 
   if (!client) {
@@ -2503,16 +3301,40 @@ export async function saveEditableContent(content: EditableSiteContent) {
   }
 
   const normalizedContent = syncSharedImages(content);
+  const normalizedHidden = Array.isArray(hiddenSections)
+    ? Array.from(new Set(hiddenSections.filter((id) => typeof id === "string")))
+    : [];
+  const now = new Date().toISOString();
 
-  await client.createOrReplace({
-    _id: documentId,
+  // Write each chunk + a small metadata doc in one atomic transaction. Each doc
+  // stays under Sanity's 1,000-attribute-per-document limit (see splitContent).
+  const tx = client.transaction();
+  for (const { id, content: slice } of splitContent(normalizedContent)) {
+    tx.createOrReplace({
+      _id: id,
+      _type: "siteContent",
+      title: `Swiss Blue Content — ${id}`,
+      content: slice,
+      updatedAt: now,
+    });
+  }
+  tx.createOrReplace({
+    _id: METADATA_ID,
     _type: "siteContent",
-    title: "Swiss Blue Website Content",
-    content: normalizedContent,
-    updatedAt: new Date().toISOString(),
+    title: "Swiss Blue Content — metadata",
+    hiddenSections: normalizedHidden,
+    updatedAt: now,
   });
+  await tx.commit({ visibility: "sync" });
 
-  return normalizedContent;
+  // Best-effort cleanup of the oversized legacy singleton so reads use chunks.
+  try {
+    await client.delete(documentId);
+  } catch {
+    // ignore — legacy doc may already be gone
+  }
+
+  return { content: normalizedContent, hiddenSections: normalizedHidden };
 }
 
 export { BOOKING_URL, heroImage };

@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { rich } from "@/components/rich-text";
 
 type GalleryImage = {
@@ -20,8 +21,10 @@ export default function PhotoGalleryLightbox({
 }) {
   const isArabic = locale === "ar";
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const activeImage = activeIndex === null ? null : images[activeIndex];
+  const [mounted, setMounted] = useState(false);
   const galleryClass = variant === "property" ? "gallery-grid" : "hotel-showcase-grid";
+  const touchStartX = useRef<number | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
 
   const labels = useMemo(
     () => ({
@@ -29,40 +32,73 @@ export default function PhotoGalleryLightbox({
       next: isArabic ? "الصورة التالية" : "Next photo",
       previous: isArabic ? "الصورة السابقة" : "Previous photo",
       open: isArabic ? "فتح الصورة" : "Open photo",
-      count: isArabic ? "الصورة" : "Photo",
+      thumbs: isArabic ? "صور المعرض" : "Gallery photos",
     }),
     [isArabic],
   );
 
   useEffect(() => {
-    if (activeIndex === null) {
+    setMounted(true);
+  }, []);
+
+  const isOpen = activeIndex !== null;
+  const activeImage = activeIndex === null ? null : images[activeIndex];
+
+  const close = useCallback(() => {
+    setActiveIndex(null);
+    openerRef.current?.focus();
+    openerRef.current = null;
+  }, []);
+
+  const next = useCallback(() => {
+    setActiveIndex((current) => (current === null ? current : (current + 1) % images.length));
+  }, [images.length]);
+
+  const previous = useCallback(() => {
+    setActiveIndex((current) =>
+      current === null ? current : (current - 1 + images.length) % images.length,
+    );
+  }, [images.length]);
+
+  // Body scroll lock + keyboard navigation while open
+  useEffect(() => {
+    if (!isOpen) {
       return;
     }
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setActiveIndex(null);
-      }
-
-      if (event.key === "ArrowRight") {
-        setActiveIndex((current) => (current === null ? current : (current + 1) % images.length));
-      }
-
-      if (event.key === "ArrowLeft") {
-        setActiveIndex((current) => (current === null ? current : (current - 1 + images.length) % images.length));
-      }
+      if (event.key === "Escape") close();
+      else if (event.key === "ArrowRight") next();
+      else if (event.key === "ArrowLeft") previous();
     }
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [activeIndex, images.length]);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen, close, next, previous]);
 
-  function showPrevious() {
-    setActiveIndex((current) => (current === null ? current : (current - 1 + images.length) % images.length));
+  function open(index: number, event: React.MouseEvent<HTMLButtonElement>) {
+    openerRef.current = event.currentTarget;
+    setActiveIndex(index);
   }
 
-  function showNext() {
-    setActiveIndex((current) => (current === null ? current : (current + 1) % images.length));
+  function onTouchStart(event: React.TouchEvent) {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+  }
+
+  function onTouchEnd(event: React.TouchEvent) {
+    if (touchStartX.current === null || images.length < 2) return;
+    const delta = (event.changedTouches[0]?.clientX ?? 0) - touchStartX.current;
+    if (Math.abs(delta) > 45) {
+      if (delta < 0) next();
+      else previous();
+    }
+    touchStartX.current = null;
   }
 
   return (
@@ -78,7 +114,7 @@ export default function PhotoGalleryLightbox({
               className="gallery-open-button"
               type="button"
               aria-label={`${labels.open}: ${image.title}`}
-              onClick={() => setActiveIndex(index)}
+              onClick={(event) => open(index, event)}
             >
               <Image
                 className="object-cover"
@@ -87,8 +123,8 @@ export default function PhotoGalleryLightbox({
                 fill
                 sizes={
                   variant === "homepage" && index === 0
-                  ? "(min-width: 1024px) 50vw, 100vw"
-                  : "(min-width: 1024px) 33vw, 100vw"
+                    ? "(min-width: 1024px) 50vw, 100vw"
+                    : "(min-width: 1024px) 33vw, 100vw"
                 }
               />
               <span className="gallery-caption">{rich(image.title)}</span>
@@ -97,61 +133,126 @@ export default function PhotoGalleryLightbox({
         ))}
       </div>
 
-      {activeImage ? (
-        <div className="gallery-lightbox" role="dialog" aria-modal="true" aria-label={activeImage.title} dir={isArabic ? "rtl" : "ltr"}>
-          <button className="gallery-lightbox-backdrop" type="button" aria-label={labels.close} onClick={() => setActiveIndex(null)} />
-          <div className="gallery-lightbox-panel">
-            <div className="gallery-lightbox-topbar">
-              <div>
-                <span>
-                  {labels.count} {(activeIndex ?? 0) + 1} / {images.length}
+      {mounted && isOpen && activeImage
+        ? createPortal(
+            <div
+              className="lightbox"
+              role="dialog"
+              aria-modal="true"
+              aria-label={activeImage.title}
+              dir={isArabic ? "rtl" : "ltr"}
+            >
+              <button
+                type="button"
+                className="lightbox-backdrop"
+                aria-label={labels.close}
+                tabIndex={-1}
+                onClick={close}
+              />
+
+              <div className="lightbox-bar">
+                <span className="lightbox-counter">
+                  {(activeIndex ?? 0) + 1} / {images.length}
                 </span>
-                <h3>{rich(activeImage.title)}</h3>
-              </div>
-              <button type="button" onClick={() => setActiveIndex(null)}>
-                {labels.close}
-              </button>
-            </div>
-
-            <div className="gallery-lightbox-stage">
-              {images.length > 1 ? (
-                <button className="gallery-lightbox-control" type="button" onClick={showPrevious}>
-                  {labels.previous}
-                </button>
-              ) : null}
-              <figure>
-                <Image
-                  className="object-contain"
-                  src={activeImage.image}
-                  alt={activeImage.title}
-                  fill
-                  sizes="min(1180px, 92vw)"
-                  priority
-                />
-              </figure>
-              {images.length > 1 ? (
-                <button className="gallery-lightbox-control" type="button" onClick={showNext}>
-                  {labels.next}
-                </button>
-              ) : null}
-            </div>
-
-            <div className="gallery-lightbox-thumbs" aria-label={isArabic ? "صور المعرض" : "Gallery photos"}>
-              {images.map((image, index) => (
                 <button
-                  className={index === activeIndex ? "active" : ""}
                   type="button"
-                  key={`${image.image}-thumb-${index}`}
-                  aria-label={`${labels.open}: ${image.title}`}
-                  onClick={() => setActiveIndex(index)}
+                  className="lightbox-close"
+                  aria-label={labels.close}
+                  onClick={close}
+                  autoFocus
                 >
-                  <Image src={image.image} alt="" fill sizes="110px" className="object-cover" />
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path
+                      d="M6 6l12 12M18 6L6 18"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                 </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : null}
+              </div>
+
+              <div
+                className="lightbox-stage"
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+              >
+                {images.length > 1 ? (
+                  <button
+                    type="button"
+                    className="lightbox-arrow lightbox-prev"
+                    aria-label={labels.previous}
+                    onClick={previous}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M15 5l-7 7 7 7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                ) : null}
+
+                <figure className="lightbox-figure" key={activeIndex}>
+                  <Image
+                    className="lightbox-image"
+                    src={activeImage.image}
+                    alt={activeImage.title}
+                    fill
+                    sizes="min(1200px, 94vw)"
+                    priority
+                  />
+                </figure>
+
+                {images.length > 1 ? (
+                  <button
+                    type="button"
+                    className="lightbox-arrow lightbox-next"
+                    aria-label={labels.next}
+                    onClick={next}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M9 5l7 7-7 7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                ) : null}
+              </div>
+
+              {activeImage.title ? (
+                <p className="lightbox-caption">{rich(activeImage.title)}</p>
+              ) : null}
+
+              {images.length > 1 ? (
+                <div className="lightbox-thumbs" aria-label={labels.thumbs}>
+                  {images.map((image, index) => (
+                    <button
+                      className={`lightbox-thumb${index === activeIndex ? " active" : ""}`}
+                      type="button"
+                      key={`${image.image}-thumb-${index}`}
+                      aria-label={`${labels.open}: ${image.title}`}
+                      aria-current={index === activeIndex}
+                      onClick={() => setActiveIndex(index)}
+                    >
+                      <Image src={image.image} alt="" fill sizes="96px" className="object-cover" />
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

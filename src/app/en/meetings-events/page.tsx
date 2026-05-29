@@ -1,15 +1,17 @@
 import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function MeetingsEventsPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.meetingsEvents;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "meetingsEventsPage") && (
+      <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -61,6 +63,8 @@ export default async function MeetingsEventsPageEn() {
         </div>
       </section>
       <CtaBandEn title="Request a corporate or group proposal." cta="Contact specialist" />
+      </>
+      )}
     </PageShellEn>
   );
 }

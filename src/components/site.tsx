@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { rich } from "@/components/rich-text";
+import MobileNav from "@/components/mobile-nav";
+import PaymentMethods from "@/components/payment-methods";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
 import { getEditableContent, usableLogo } from "@/lib/editable-content";
 
@@ -38,10 +40,14 @@ function arabicHref(href: string) {
 export async function SiteHeader() {
   const { ar, en } = await getEditableContent();
   const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
+  const mobileGroups = ar.navGroups.map((group) => ({
+    label: group.label,
+    links: group.links.map((item) => ({ href: arabicHref(item.href), label: item.label })),
+  }));
 
   return (
     <>
-      <nav className="site-nav">
+      <nav className="site-nav" aria-label="التنقل الرئيسي">
         <div className="nav-shell">
           <Link
             className="nav-logo"
@@ -63,7 +69,7 @@ export async function SiteHeader() {
             <div className="nav-group-row">
               {ar.navGroups.map((group) => (
                 <div className="nav-dropdown" key={group.label}>
-                  <button className="nav-parent" type="button">
+                  <button className="nav-parent" type="button" aria-haspopup="true">
                     {rich(group.label)}
                   </button>
                   <div className="nav-menu">
@@ -79,9 +85,10 @@ export async function SiteHeader() {
           </div>
           <div className="nav-actions">
             <LanguageToggle current="ar" />
-            <a className="btn btn-primary" href={BOOKING_URL}>
+            <a className="btn btn-primary nav-book-btn" href={BOOKING_URL}>
               احجز الآن
             </a>
+            <MobileNav groups={mobileGroups} locale="ar" bookingUrl={BOOKING_URL} />
           </div>
         </div>
       </nav>
@@ -127,35 +134,38 @@ async function SiteFooterContent() {
   const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
 
   return (
-    <footer className="site-footer border-t border-[var(--border)] bg-white">
+    <footer className="site-footer border-t border-[var(--border)] bg-white" aria-label="تذييل الموقع">
+      <h2 className="sr-only">معلومات سويس بلو وروابط الموقع</h2>
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
         <div>
-          {logo ? (
-            <Image
-              className="h-12 w-auto"
-              src={logo}
-              alt="فنادق سويس بلو"
-              width={190}
-              height={80}
-            />
-          ) : null}
+          <Link href="/ar" className="inline-block" aria-label="الرئيسية لفنادق سويس بلو">
+            {logo ? (
+              <Image
+                className="h-12 w-auto"
+                src={logo}
+                alt="فنادق سويس بلو"
+                width={190}
+                height={80}
+              />
+            ) : null}
+          </Link>
           <p className="mt-5 max-w-sm leading-7">
             فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة
             للضيوف الأفراد والشركات والإقامات الطويلة.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            <span className="footer-badge">جدة</span>
-            <span className="footer-badge">الرياض</span>
-            <span className="footer-badge">جازان</span>
-          </div>
+          <ul className="mt-6 flex flex-wrap gap-2" aria-label="مدن التشغيل">
+            <li className="footer-badge">جدة</li>
+            <li className="footer-badge">الرياض</li>
+            <li className="footer-badge">جازان</li>
+          </ul>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-3">
+        <nav className="grid gap-8 sm:grid-cols-3" aria-label="روابط التذييل">
           {ar.footerSections.map((section) => (
             <div key={section.title}>
-              <h2 className="text-sm font-bold text-[var(--text-primary)]">
+              <h3 className="text-sm font-bold text-[var(--text-primary)]">
                 {rich(section.title)}
-              </h2>
+              </h3>
               <div className="mt-4 grid gap-3">
                 {section.links.map((item) => (
                   <Link
@@ -169,25 +179,30 @@ async function SiteFooterContent() {
               </div>
             </div>
           ))}
-        </div>
+        </nav>
 
         <div className="footer-contact">
-          <h2 className="text-sm font-bold text-[var(--text-primary)]">الدعم والحجز</h2>
+          <h3 className="text-sm font-bold text-[var(--text-primary)]">الدعم والحجز</h3>
           <ul className="mt-4 grid gap-3">
             {ar.footerContact.map((item) => (
               <li key={item}>{rich(item)}</li>
             ))}
           </ul>
-          <a className="btn btn-primary mt-6 justify-center" href={BOOKING_URL}>
+          <a className="btn btn-primary mt-6 w-full justify-center" href={BOOKING_URL}>
             تحقق من التوفر
           </a>
-          <Link className="btn btn-secondary mt-3 justify-center" href="/ar/contact">
+          <Link className="btn btn-secondary mt-3 w-full justify-center" href="/ar/contact">
             تواصل معنا
           </Link>
         </div>
       </div>
       <div className="border-t border-[var(--border)]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs font-semibold text-[var(--text-tertiary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <PaymentMethods locale="ar" />
+        </div>
+      </div>
+      <div className="border-t border-[var(--border)]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs font-semibold text-[var(--text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>© 2026 SwissBlue Hotels. جميع الحقوق محفوظة.</p>
           <p>حجز مباشر | ضيافة سعودية | إقامة للشركات والعائلات</p>
         </div>
@@ -222,7 +237,7 @@ export async function PageHero({
       <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(8,28,70,0.84),rgba(18,70,168,0.56)_52%,rgba(8,28,70,0.14))]" />
       <div className="relative mx-auto max-w-7xl px-4 py-24 text-white sm:px-6 lg:px-8 lg:py-32">
         <span className="hero-kicker reveal-slide-down">{rich(eyebrow)}</span>
-        <h1 className="mt-5 max-w-4xl text-[38px] font-bold leading-[1.15] text-balance sm:text-[58px] reveal-slide-up">
+        <h1 className="t-h1 mt-5 max-w-4xl reveal-slide-up">
           {rich(title)}
         </h1>
         <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 sm:text-lg reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
@@ -247,7 +262,7 @@ export function CtaBand({
       <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
         <div className="relative max-w-3xl">
           <span className="eyebrow text-white/72">احجز مباشرة</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">
+          <h2 className="t-h2 mt-4">
             {rich(title)}
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">

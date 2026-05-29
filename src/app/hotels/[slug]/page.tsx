@@ -6,7 +6,7 @@ import PropertyMap from "@/components/property-map";
 import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { hotels } from "@/lib/content";
-import { getEditableContent, BOOKING_URL } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +20,7 @@ export default async function HotelDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { ar } = await getEditableContent();
+  const { ar, hiddenSections } = await getEditableContent();
   const hotel = ar.homepage.properties.items.find((item) => item.slug === slug);
   const classification = ar.subpages.roomsSuites.classifications.find(
     (item) => item.property === hotel?.title,
@@ -143,6 +143,7 @@ export default async function HotelDetailPage({
         </div>
       </section>
 
+      {!isSectionHidden(hiddenSections, "propertyFaq") && (
       <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="rtl">
         <div className="faq-heading reveal-slide-up">
           <span className="eyebrow">أسئلة هذا الفرع</span>
@@ -150,6 +151,7 @@ export default async function HotelDetailPage({
         </div>
         <FaqAccordion items={ar.faq.property} />
       </section>
+      )}
 
       <CtaBand title={`احجز إقامتك في ${hotel.title}.`} cta="تحقق من التوفر" />
     </PageShell>

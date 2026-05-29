@@ -3,17 +3,19 @@ import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { PhotoStrip } from "@/components/photo-strip";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function DestinationsPage() {
-  const { ar } = await getEditableContent();
+  const { ar, hiddenSections } = await getEditableContent();
   const content = ar.subpages.destinationsPage;
   const destinations = ar.homepage.destinations.items;
 
   return (
     <PageShell>
+      {!isSectionHidden(hiddenSections, "destinationsSubpage") && (
+      <>
       <PageHero
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -95,6 +97,8 @@ export default async function DestinationsPage() {
         </div>
       </section>
       <CtaBand title="اختر المدينة الأقرب لرحلتك." cta="احجز الآن" />
+      </>
+      )}
     </PageShell>
   );
 }

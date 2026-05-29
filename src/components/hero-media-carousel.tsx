@@ -35,7 +35,7 @@ export default function HeroMediaCarousel({
 
     const timer = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % mediaSlides.length);
-    }, 6500);
+    }, 5500);
 
     return () => window.clearInterval(timer);
   }, [hasMultipleSlides, mediaSlides.length]);
@@ -54,7 +54,7 @@ export default function HeroMediaCarousel({
           >
             {isVideo ? (
               <video
-                className={`h-full w-full object-cover ${isActive ? "kenburns-active" : ""}`}
+                className="h-full w-full object-cover kenburns-active"
                 src={slide.source}
                 autoPlay={isActive}
                 loop
@@ -64,7 +64,7 @@ export default function HeroMediaCarousel({
               />
             ) : (
               <Image
-                className={`object-cover ${isActive ? "kenburns-active" : ""}`}
+                className="object-cover kenburns-active"
                 src={slide.source}
                 alt={slide.alt || fallbackAlt}
                 fill

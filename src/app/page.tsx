@@ -6,20 +6,23 @@ import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import HomepageGallery from "@/components/homepage-gallery";
 import { PartnersSection } from "@/components/partners-section";
+import { TestimonialsSection } from "@/components/testimonials-section";
 import { rich } from "@/components/rich-text";
 import { ServiceTiles } from "@/components/service-tiles";
-import { BOOKING_URL, getEditableContent } from "@/lib/editable-content";
+import { BOOKING_URL, getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { ar } = await getEditableContent();
+  const { ar, hiddenSections } = await getEditableContent();
   const home = ar.homepage;
+  const show = (id: string) => !isSectionHidden(hiddenSections, id);
 
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]" dir="rtl">
       <SiteHeader />
 
+      {show("hero") && (
       <section id="top" className="hotel-hero relative overflow-hidden">
         <HeroMediaCarousel
           slides={ar.media.mainHeroSlides}
@@ -32,7 +35,7 @@ export default async function Home() {
         <div className="relative mx-auto flex min-h-[640px] max-w-7xl flex-col justify-between gap-10 px-4 pb-8 pt-20 sm:px-6 lg:min-h-[100svh] lg:px-8">
           <div className="max-w-3xl pt-10 text-white">
             <span className="hero-kicker reveal-slide-down">{rich(home.hero.eyebrow)}</span>
-            <h1 className="mt-5 text-[42px] font-bold leading-[1.12] text-balance sm:text-[64px] lg:text-[76px] reveal-slide-up">
+            <h1 className="t-hero mt-5 reveal-slide-up">
               {rich(home.hero.title)}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/84 sm:text-xl reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
@@ -71,8 +74,10 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      {show("highlights") && (
+      <section className="section-lg mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="insight-grid">
           {home.highlights.map((item, index) => (
             <article
@@ -91,8 +96,10 @@ export default async function Home() {
           ))}
         </div>
       </section>
+      )}
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      {show("properties") && (
+      <section className="section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-right">
           <span className="eyebrow">{rich(home.properties.eyebrow)}</span>
           <h2>{rich(home.properties.title)}</h2>
@@ -123,7 +130,7 @@ export default async function Home() {
                 <p className="mt-3 text-xs font-bold text-[var(--text-tertiary)]">
                   {rich(hotel.type)}
                 </p>
-                <h3 className="mt-3 text-2xl font-bold">{rich(hotel.title)}</h3>
+                <h3 className="mt-3 text-2xl font-extrabold">{rich(hotel.title)}</h3>
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                   {rich(hotel.summary)}
                 </p>
@@ -138,12 +145,14 @@ export default async function Home() {
           ))}
         </div>
       </section>
+      )}
 
-      <section className="brand-band">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
+      {show("loyalty") && (
+      <section className="brand-band section">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
           <div className="reveal-slide-right">
             <span className="eyebrow text-white/72">{rich(home.loyalty.subtitle)}</span>
-            <h2 className="mt-4 text-3xl font-bold leading-tight text-white sm:text-[46px]">
+            <h2 className="t-h2 mt-4 text-white">
               {rich(home.loyalty.title)}
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/76">
@@ -163,10 +172,14 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
-      <HomepageGallery images={ar.media.gallery} locale="ar" />
+      {show("hospitalityGallery") && (
+        <HomepageGallery images={ar.media.gallery} locale="ar" />
+      )}
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      {show("destinations") && (
+      <section className="section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-right">
           <span className="eyebrow">{rich(home.destinations.eyebrow)}</span>
           <h2>{rich(home.destinations.title)}</h2>
@@ -189,7 +202,7 @@ export default async function Home() {
                 />
               </figure>
               <div className="p-5">
-                <h3 className="text-2xl font-bold">{rich(destination.title)}</h3>
+                <h3 className="text-2xl font-extrabold">{rich(destination.title)}</h3>
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                   {rich(destination.text)}
                 </p>
@@ -204,8 +217,10 @@ export default async function Home() {
           ))}
         </div>
       </section>
+      )}
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      {show("offers") && (
+      <section className="section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
           <div className="feature-panel reveal-slide-right">
             <span className="eyebrow">{rich(home.offers.eyebrow)}</span>
@@ -229,11 +244,13 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
+      {show("services") && (
+      <section className="section mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
         <div className="reveal-slide-right">
           <span className="eyebrow">{rich(home.services.eyebrow)}</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
+          <h2 className="t-h2 mt-4">
             {rich(home.services.title)}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
@@ -242,8 +259,10 @@ export default async function Home() {
         </div>
         <ServiceTiles items={home.services.items} locale="ar" />
       </section>
+      )}
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      {show("categories") && (
+      <section className="section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-right">
           <span className="eyebrow">{rich(home.categories.eyebrow)}</span>
           <h2>{rich(home.categories.title)}</h2>
@@ -263,22 +282,30 @@ export default async function Home() {
           ))}
         </div>
       </section>
+      )}
 
       <PartnersSection content={home.partners} locale="ar" />
 
-      <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="rtl">
+      {show("testimonials") && (
+        <TestimonialsSection content={home.testimonials} locale="ar" />
+      )}
+
+      {show("homepageFaq") && (
+      <section className="faq-section section mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" dir="rtl">
         <div className="faq-heading reveal-slide-right">
           <span className="eyebrow">الأسئلة الشائعة</span>
           <h2>إجابات مختصرة قبل الحجز.</h2>
         </div>
         <FaqAccordion items={ar.faq.homepage} />
       </section>
+      )}
 
-      <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">
+      {show("cta") && (
+      <section className="closing-cta section-lg mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
           <div className="relative max-w-3xl">
             <span className="eyebrow text-white/72">{rich(home.cta.eyebrow)}</span>
-            <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">
+            <h2 className="t-h2 mt-4">
               {rich(home.cta.title)}
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
@@ -290,6 +317,7 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
       <SiteFooter />
     </main>

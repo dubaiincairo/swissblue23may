@@ -1,16 +1,18 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function OffersPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.offersPage;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "offersSubpage") && (
+      <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -50,6 +52,8 @@ export default async function OffersPageEn() {
         <FeatureChipGrid items={content.benefits} variant="sparkle" columns={2} />
       </section>
       <CtaBandEn title="Start with the offer that fits your trip." cta="View availability" />
+      </>
+      )}
     </PageShellEn>
   );
 }

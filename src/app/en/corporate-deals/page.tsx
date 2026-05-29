@@ -2,17 +2,19 @@ import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import CorporateDealForm from "@/components/corporate-deal-form";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function CorporateDealsPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.meetingsEvents;
   const heroContent = en.subpages.corporateDealsPage.hero;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "corporateDealsSubpage") && (
+      <>
       <PageHeroEn
         eyebrow={heroContent.eyebrow}
         title={heroContent.title}
@@ -55,6 +57,8 @@ export default async function CorporateDealsPageEn() {
       </section>
       <CorporateDealForm locale="en" />
       <CtaBandEn title="Request a corporate or group proposal." cta="Contact specialist" />
+      </>
+      )}
     </PageShellEn>
   );
 }

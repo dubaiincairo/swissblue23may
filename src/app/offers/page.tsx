@@ -1,16 +1,18 @@
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { rich } from "@/components/rich-text";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function OffersPage() {
-  const { ar } = await getEditableContent();
+  const { ar, hiddenSections } = await getEditableContent();
   const content = ar.subpages.offersPage;
 
   return (
     <PageShell>
+      {!isSectionHidden(hiddenSections, "offersSubpage") && (
+      <>
       <PageHero
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -50,6 +52,8 @@ export default async function OffersPage() {
         <FeatureChipGrid items={content.benefits} variant="sparkle" columns={2} />
       </section>
       <CtaBand title="ابدأ من العرض المناسب لرحلتك." cta="عرض التوفر" />
+      </>
+      )}
     </PageShell>
   );
 }

@@ -1,15 +1,17 @@
 import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function SocialResponsibilityPageEn() {
-  const { en } = await getEditableContent();
+  const { en, hiddenSections } = await getEditableContent();
   const content = en.subpages.csrPage;
 
   return (
     <PageShellEn>
+      {!isSectionHidden(hiddenSections, "csrSubpage") && (
+        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -74,6 +76,8 @@ export default async function SocialResponsibilityPageEn() {
       </section>
 
       <CtaBandEn title="Responsible hospitality that makes a difference." cta="Explore our properties" />
+        </>
+      )}
     </PageShellEn>
   );
 }

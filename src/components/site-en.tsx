@@ -3,6 +3,8 @@ import Link from "next/link";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content-en";
 import { LanguageToggle } from "@/components/site";
 import { rich } from "@/components/rich-text";
+import MobileNav from "@/components/mobile-nav";
+import PaymentMethods from "@/components/payment-methods";
 import { getEditableContent, usableLogo } from "@/lib/editable-content";
 
 function resolveMediaImage(
@@ -27,10 +29,14 @@ function resolveMediaImage(
 export async function SiteHeaderEn() {
   const { ar, en } = await getEditableContent();
   const logo = usableLogo(en.media.logo) || usableLogo(ar.media.arabicLogo);
+  const mobileGroups = en.navGroups.map((group) => ({
+    label: group.label,
+    links: group.links.map((item) => ({ href: item.href, label: item.label })),
+  }));
 
   return (
     <>
-      <nav className="site-nav">
+      <nav className="site-nav" aria-label="Main navigation">
         <div className="nav-shell">
           <Link className="nav-logo" href="/en" aria-label="Swiss Blue Hotels home">
             {logo ? (
@@ -48,7 +54,7 @@ export async function SiteHeaderEn() {
             <div className="nav-group-row">
               {en.navGroups.map((group) => (
                 <div className="nav-dropdown" key={group.label}>
-                  <button className="nav-parent" type="button">
+                  <button className="nav-parent" type="button" aria-haspopup="true">
                     {rich(group.label)}
                   </button>
                   <div className="nav-menu">
@@ -64,9 +70,10 @@ export async function SiteHeaderEn() {
           </div>
           <div className="nav-actions">
             <LanguageToggle current="en" />
-            <a className="btn btn-primary" href={BOOKING_URL}>
+            <a className="btn btn-primary nav-book-btn" href={BOOKING_URL}>
               Book now
             </a>
+            <MobileNav groups={mobileGroups} locale="en" bookingUrl={BOOKING_URL} />
           </div>
         </div>
       </nav>
@@ -83,32 +90,35 @@ async function SiteFooterEnContent() {
   const logo = usableLogo(en.media.logo) || usableLogo(ar.media.arabicLogo);
 
   return (
-    <footer className="site-footer border-t border-[var(--border)] bg-white">
+    <footer className="site-footer border-t border-[var(--border)] bg-white" aria-label="Site footer">
+      <h2 className="sr-only">Swiss Blue information and site links</h2>
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
         <div>
-          {logo ? (
-            <Image
-              className="h-12 w-auto"
-              src={logo}
-              alt="Swiss Blue Hotels"
-              width={190}
-              height={80}
-            />
-          ) : null}
+          <Link href="/en" className="inline-block" aria-label="Swiss Blue Hotels home">
+            {logo ? (
+              <Image
+                className="h-12 w-auto"
+                src={logo}
+                alt="Swiss Blue Hotels"
+                width={190}
+                height={80}
+              />
+            ) : null}
+          </Link>
           <p className="mt-5 max-w-sm leading-7">
             Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            <span className="footer-badge">Jeddah</span>
-            <span className="footer-badge">Riyadh</span>
-            <span className="footer-badge">Jazan</span>
-          </div>
+          <ul className="mt-6 flex flex-wrap gap-2" aria-label="Operating cities">
+            <li className="footer-badge">Jeddah</li>
+            <li className="footer-badge">Riyadh</li>
+            <li className="footer-badge">Jazan</li>
+          </ul>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-3">
+        <nav className="grid gap-8 sm:grid-cols-3" aria-label="Footer links">
           {en.footerSections.map((section) => (
             <div key={section.title}>
-              <h2 className="text-sm font-bold text-[var(--text-primary)]">{rich(section.title)}</h2>
+              <h3 className="text-sm font-bold text-[var(--text-primary)]">{rich(section.title)}</h3>
               <div className="mt-4 grid gap-3">
                 {section.links.map((item) => (
                   <Link
@@ -122,25 +132,30 @@ async function SiteFooterEnContent() {
               </div>
             </div>
           ))}
-        </div>
+        </nav>
 
         <div className="footer-contact">
-          <h2 className="text-sm font-bold text-[var(--text-primary)]">Support & Booking</h2>
+          <h3 className="text-sm font-bold text-[var(--text-primary)]">Support & Booking</h3>
           <ul className="mt-4 grid gap-3">
             {en.footerContact.map((item) => (
               <li key={item}>{rich(item)}</li>
             ))}
           </ul>
-          <a className="btn btn-primary mt-6 justify-center" href={BOOKING_URL}>
+          <a className="btn btn-primary mt-6 w-full justify-center" href={BOOKING_URL}>
             Check availability
           </a>
-          <Link className="btn btn-secondary mt-3 justify-center" href="/en/contact">
+          <Link className="btn btn-secondary mt-3 w-full justify-center" href="/en/contact">
             Contact us
           </Link>
         </div>
       </div>
       <div className="border-t border-[var(--border)]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs font-semibold text-[var(--text-tertiary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <PaymentMethods locale="en" />
+        </div>
+      </div>
+      <div className="border-t border-[var(--border)]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs font-semibold text-[var(--text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>© 2026 SwissBlue Hotels. All rights reserved.</p>
           <p>Direct booking | Saudi hospitality | Corporate and family stays</p>
         </div>
@@ -175,7 +190,7 @@ export async function PageHeroEn({
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.84),rgba(18,70,168,0.56)_52%,rgba(8,28,70,0.14))]" />
       <div className="relative mx-auto max-w-7xl px-4 py-24 text-white sm:px-6 lg:px-8 lg:py-32">
         <span className="hero-kicker reveal-slide-down"> {rich(eyebrow)}</span>
-        <h1 className="mt-5 max-w-4xl text-[38px] font-bold leading-[1.08] text-balance sm:text-[58px] reveal-slide-up">
+        <h1 className="t-h1 mt-5 max-w-4xl reveal-slide-up">
           {rich(title)}
         </h1>
         <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 sm:text-lg reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
@@ -200,7 +215,7 @@ export function CtaBandEn({
       <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
         <div className="relative max-w-3xl">
           <span className="eyebrow text-white/72">Book direct</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[52px]">{rich(title)}</h2>
+          <h2 className="t-h2 mt-4">{rich(title)}</h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">{rich(text)}</p>
           <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
             {rich(cta)}
