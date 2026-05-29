@@ -33,7 +33,7 @@ export default async function Home() {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
 
         <div className="relative mx-auto flex min-h-[640px] max-w-7xl flex-col justify-between gap-10 px-4 pb-8 pt-20 sm:px-6 lg:min-h-[100svh] lg:px-8">
-          <div className="max-w-3xl pt-10 text-white">
+          <div className="max-w-3xl pt-3 text-white">
             <span className="hero-kicker reveal-slide-down">{rich(home.hero.eyebrow)}</span>
             <h1 className="t-hero mt-5 reveal-slide-up">
               {rich(home.hero.title)}
@@ -150,7 +150,7 @@ export default async function Home() {
       {show("loyalty") && (
       <section className="brand-band section">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
-          <div className="reveal-slide-right">
+          <div className="loyalty-intro reveal-slide-right">
             <span className="eyebrow text-white/72">{rich(home.loyalty.subtitle)}</span>
             <h2 className="t-h2 mt-4 text-white">
               {rich(home.loyalty.title)}
@@ -158,15 +158,26 @@ export default async function Home() {
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/76">
               {rich(home.loyalty.description)}
             </p>
+            <div className="loyalty-actions mt-7">
+              <Link className="btn btn-loyalty" href="/loyalty">
+                انضم إلى برنامج الولاء
+              </Link>
+              <span className="loyalty-note">عضوية مجانية ومزايا فورية عند الحجز المباشر</span>
+            </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="loyalty-benefits grid gap-4 sm:grid-cols-2">
             {home.loyalty.benefits.map((benefit, index) => (
               <div
                 className="brand-point reveal-elastic-pop"
                 key={benefit}
                 style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
               >
-                {rich(benefit)}
+                <span className="brand-point-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
+                <span className="brand-point-text">{rich(benefit)}</span>
               </div>
             ))}
           </div>
@@ -237,8 +248,15 @@ export default async function Home() {
                 key={offer.title}
                 style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
               >
+                <span className="offer-card-index" aria-hidden="true">{`0${index + 1}`}</span>
                 <h3>{rich(offer.title)}</h3>
                 <p>{rich(offer.text)}</p>
+                <Link className="offer-card-link" href={home.offers.href}>
+                  اكتشف العرض
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </Link>
               </article>
             ))}
           </div>
@@ -247,8 +265,8 @@ export default async function Home() {
       )}
 
       {show("services") && (
-      <section className="section mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
-        <div className="reveal-slide-right">
+      <section className="home-services section mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
+        <div className="services-intro reveal-slide-right">
           <span className="eyebrow">{rich(home.services.eyebrow)}</span>
           <h2 className="t-h2 mt-4">
             {rich(home.services.title)}
@@ -256,8 +274,11 @@ export default async function Home() {
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
             {rich(home.services.text)}
           </p>
+          <Link className="btn btn-secondary services-cta mt-7" href="/amenities-services">
+            استكشف كل الخدمات
+          </Link>
         </div>
-        <ServiceTiles items={home.services.items} locale="ar" />
+        <ServiceTiles items={home.services.items.slice(0, 9)} locale="ar" />
       </section>
       )}
 
@@ -302,18 +323,41 @@ export default async function Home() {
 
       {show("cta") && (
       <section className="closing-cta section-lg mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
-          <div className="relative max-w-3xl">
-            <span className="eyebrow text-white/72">{rich(home.cta.eyebrow)}</span>
-            <h2 className="t-h2 mt-4">
-              {rich(home.cta.title)}
-            </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
-              {rich(home.cta.text)}
-            </p>
-            <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
-              {rich(home.cta.button)}
-            </a>
+        <div className="closing-cta-card relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
+          <div className="closing-cta-grid relative">
+            <div className="closing-cta-main">
+              <span className="eyebrow text-white/72">{rich(home.cta.eyebrow)}</span>
+              <h2 className="t-h2 mt-4">
+                {rich(home.cta.title)}
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
+                {rich(home.cta.text)}
+              </p>
+              <div className="closing-cta-actions mt-8">
+                <a className="btn btn-hero bg-white text-[var(--primary)]" href={BOOKING_URL}>
+                  {rich(home.cta.button)}
+                </a>
+                <Link className="btn btn-glass" href="/central-reservation">
+                  الحجز المركزي
+                </Link>
+              </div>
+            </div>
+            <div className="closing-cta-panel">
+              <span className="closing-cta-panel-title">ابدأ من هنا</span>
+              {[
+                { href: "/hotels", label: "الفنادق والأجنحة" },
+                { href: "/serviced-apartments", label: "الشقق المخدومة" },
+                { href: "/offers", label: "العروض والمناسبات" },
+                { href: "/contact", label: "تواصل مع فريق الحجوزات" },
+              ].map((item) => (
+                <Link className="closing-cta-link" href={item.href} key={item.href}>
+                  <span>{item.label}</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>

@@ -145,7 +145,7 @@ export default async function EnglishHomePage() {
       {show("loyalty") && (
       <section className="brand-band section">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
-          <div className="reveal-slide-left">
+          <div className="loyalty-intro reveal-slide-left">
             <span className="eyebrow text-white/72">{rich(home.loyalty.subtitle)}</span>
             <h2 className="t-h2 mt-4 text-white">
               {rich(home.loyalty.title)}
@@ -153,15 +153,26 @@ export default async function EnglishHomePage() {
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/76">
               {rich(home.loyalty.description)}
             </p>
+            <div className="loyalty-actions mt-7">
+              <Link className="btn btn-loyalty" href="/en/loyalty">
+                Join the loyalty program
+              </Link>
+              <span className="loyalty-note">Free membership with instant direct-booking perks</span>
+            </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="loyalty-benefits grid gap-4 sm:grid-cols-2">
             {home.loyalty.benefits.map((benefit, index) => (
               <div
                 className="brand-point reveal-elastic-pop"
                 key={benefit}
                 style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
               >
-                {rich(benefit)}
+                <span className="brand-point-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
+                <span className="brand-point-text">{rich(benefit)}</span>
               </div>
             ))}
           </div>
@@ -232,8 +243,15 @@ export default async function EnglishHomePage() {
                 key={offer.title}
                 style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
               >
+                <span className="offer-card-index" aria-hidden="true">{`0${index + 1}`}</span>
                 <h3>{rich(offer.title)}</h3>
                 <p>{rich(offer.text)}</p>
+                <Link className="offer-card-link" href={home.offers.href}>
+                  Explore offer
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </Link>
               </article>
             ))}
           </div>
@@ -242,8 +260,8 @@ export default async function EnglishHomePage() {
       )}
 
       {show("services") && (
-      <section className="section mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
-        <div className="reveal-slide-left">
+      <section className="home-services section mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
+        <div className="services-intro reveal-slide-left">
           <span className="eyebrow">{rich(home.services.eyebrow)}</span>
           <h2 className="t-h2 mt-4">
             {rich(home.services.title)}
@@ -251,8 +269,11 @@ export default async function EnglishHomePage() {
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
             {rich(home.services.text)}
           </p>
+          <Link className="btn btn-secondary services-cta mt-7" href="/en/amenities-services">
+            Explore all services
+          </Link>
         </div>
-        <ServiceTiles items={home.services.items} locale="en" />
+        <ServiceTiles items={home.services.items.slice(0, 9)} locale="en" />
       </section>
       )}
 
@@ -297,18 +318,41 @@ export default async function EnglishHomePage() {
 
       {show("cta") && (
       <section className="closing-cta section-lg mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" dir="ltr">
-        <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
-          <div className="relative max-w-3xl">
-            <span className="eyebrow text-white/72">{rich(home.cta.eyebrow)}</span>
-            <h2 className="t-h2 mt-4">
-              {rich(home.cta.title)}
-            </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
-              {rich(home.cta.text)}
-            </p>
-            <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
-              {rich(home.cta.button)}
-            </a>
+        <div className="closing-cta-card relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
+          <div className="closing-cta-grid relative">
+            <div className="closing-cta-main">
+              <span className="eyebrow text-white/72">{rich(home.cta.eyebrow)}</span>
+              <h2 className="t-h2 mt-4">
+                {rich(home.cta.title)}
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
+                {rich(home.cta.text)}
+              </p>
+              <div className="closing-cta-actions mt-8">
+                <a className="btn btn-hero bg-white text-[var(--primary)]" href={BOOKING_URL}>
+                  {rich(home.cta.button)}
+                </a>
+                <Link className="btn btn-glass" href="/en/central-reservation">
+                  Central reservations
+                </Link>
+              </div>
+            </div>
+            <div className="closing-cta-panel">
+              <span className="closing-cta-panel-title">Start here</span>
+              {[
+                { href: "/en/hotels", label: "Hotels & suites" },
+                { href: "/en/serviced-apartments", label: "Serviced apartments" },
+                { href: "/en/offers", label: "Offers & occasions" },
+                { href: "/en/contact", label: "Talk to reservations" },
+              ].map((item) => (
+                <Link className="closing-cta-link" href={item.href} key={item.href}>
+                  <span>{item.label}</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>

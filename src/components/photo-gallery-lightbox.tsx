@@ -151,7 +151,7 @@ export default function PhotoGalleryLightbox({
               />
 
               <div className="lightbox-bar">
-                <span className="lightbox-counter">
+                <span className="lightbox-counter" dir="ltr">
                   {(activeIndex ?? 0) + 1} / {images.length}
                 </span>
                 <button

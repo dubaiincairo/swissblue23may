@@ -104,7 +104,6 @@ export const footerSectionsEn = [
 export const footerContactEn = [
   "Central reservation support for individual guests",
   "Corporate and group deals specialist",
-  "SwissBlue Concierge AI assistant",
 ];
 
 export const propertyAmenitiesEn = [

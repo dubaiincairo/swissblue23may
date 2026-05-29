@@ -141,9 +141,6 @@ async function SiteFooterEnContent() {
               <li key={item}>{rich(item)}</li>
             ))}
           </ul>
-          <a className="btn btn-primary mt-6 w-full justify-center" href={BOOKING_URL}>
-            Check availability
-          </a>
           <Link className="btn btn-secondary mt-3 w-full justify-center" href="/en/contact">
             Contact us
           </Link>
