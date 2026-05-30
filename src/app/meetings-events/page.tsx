@@ -62,7 +62,7 @@ export default async function MeetingsEventsPage() {
           ))}
         </div>
       </section>
-      <CtaBand title="اطلب عرضا للشركات أو المجموعات." cta="تواصل مع المختص" />
+      <CtaBand title="خطّط لمناسبتك القادمة مع سويس بلو." cta="تواصل مع فريق الفعاليات" />
       </>
       )}
     </PageShell>

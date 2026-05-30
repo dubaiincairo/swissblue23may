@@ -62,7 +62,7 @@ export default async function MeetingsEventsPageEn() {
           ))}
         </div>
       </section>
-      <CtaBandEn title="Request a corporate or group proposal." cta="Contact specialist" />
+      <CtaBandEn title="Plan your next event with Swiss Blue." cta="Talk to the events team" />
       </>
       )}
     </PageShellEn>

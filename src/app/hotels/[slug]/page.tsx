@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { FeatureChipGrid } from "@/components/feature-chip";
-import { PropertyGallery } from "@/components/property-gallery";
+import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import PropertyMap from "@/components/property-map";
 import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
-import { hotels } from "@/lib/content";
+import { hotels, propertyGallerySupplement } from "@/lib/content";
 import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -133,12 +133,17 @@ export default async function HotelDetailPage({
           <h2>لمحة بصرية عن تجربة الإقامة.</h2>
         </div>
         <div className="mt-8">
-          <PropertyGallery
-            images={hotel.gallery.map((image, index) => ({
-              image,
-              title: `${hotel.title} صورة ${index + 1}`,
-            }))}
+          <PhotoGalleryLightbox
+            images={Array.from(
+              new Set([...hotel.gallery, ...propertyGallerySupplement]),
+            )
+              .slice(0, 6)
+              .map((image, index) => ({
+                image,
+                title: `${hotel.title} صورة ${index + 1}`,
+              }))}
             locale="ar"
+            variant="property"
           />
         </div>
       </section>
