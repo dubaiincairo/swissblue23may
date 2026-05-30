@@ -50,7 +50,7 @@ export default async function HotelsPageEn() {
           ))}
         </div>
       </section>
-      <CtaBandEn title="Choose your hotel and book with confidence." cta="Check availability" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.hotels.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.hotels.cta} />
         </>
       )}
     </PageShellEn>

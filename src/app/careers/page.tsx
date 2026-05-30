@@ -67,9 +67,9 @@ export default async function CareersPage() {
         </div>
       </section>
 
-      <CareersOpenings locale="ar" />
+      <CareersOpenings locale="ar" content={content.recruitment} />
 
-      <CtaBand title="ابحث عن دورك القادم في سويس بلو." cta="أرسل سيرتك الذاتية" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.careers.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.careers.cta} />
         </>
       )}
     </PageShell>

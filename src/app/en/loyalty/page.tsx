@@ -104,7 +104,7 @@ export default async function LoyaltyPageEn() {
         </div>
       </section>
 
-      <CtaBandEn title="Start with direct booking for clearer benefits." cta="Check availability" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.loyalty.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.loyalty.cta} />
       </>
       )}
     </PageShellEn>

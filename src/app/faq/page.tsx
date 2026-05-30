@@ -29,7 +29,7 @@ export default async function FaqPage() {
             </div>
             <FaqCategoryList categories={ar.faq.categories} />
           </section>
-          <CtaBand title="ما زلت تحتاج إلى مساعدة؟" cta="تواصل معنا" />
+          <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.faq.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.faq.cta} />
         </>
       )}
     </PageShell>

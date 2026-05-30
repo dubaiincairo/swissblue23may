@@ -97,7 +97,7 @@ export default async function DestinationsPageEn() {
           })}
         </div>
       </section>
-      <CtaBandEn title="Pick the city closest to your trip." cta="Book now" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.destinations.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.destinations.cta} />
       </>
       )}
     </PageShellEn>

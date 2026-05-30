@@ -111,7 +111,7 @@ export default async function ServicedApartmentsPageEn() {
         </div>
       </section>
 
-      <CtaBandEn title="Explore serviced apartments and book direct." cta="Check availability" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.servicedApartments.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.servicedApartments.cta} />
         </>
       )}
     </PageShellEn>

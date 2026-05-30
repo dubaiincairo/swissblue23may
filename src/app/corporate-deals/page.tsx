@@ -55,8 +55,8 @@ export default async function CorporateDealsPage() {
         </div>
         <FeatureChipGrid items={content.documents} variant="check" columns={2} />
       </section>
-      <CorporateDealForm locale="ar" />
-      <CtaBand title="اطلب عرضا للشركات أو المجموعات." cta="تواصل مع المختص" />
+      <CorporateDealForm locale="ar" content={ar.subpages.corporateDealsPage.requestForm} />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.corporateDeals.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.corporateDeals.cta} />
       </>
       )}
     </PageShell>

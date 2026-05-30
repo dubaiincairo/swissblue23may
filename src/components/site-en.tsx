@@ -71,9 +71,15 @@ export async function SiteHeaderEn() {
           <div className="nav-actions">
             <LanguageToggle current="en" />
             <a className="btn btn-primary nav-book-btn" href={BOOKING_URL}>
-              Book now
+              {en.ui.bookNow}
             </a>
-            <MobileNav groups={mobileGroups} locale="en" bookingUrl={BOOKING_URL} />
+            <MobileNav
+              groups={mobileGroups}
+              locale="en"
+              bookingUrl={BOOKING_URL}
+              labels={en.ui.mobileNav}
+              bookLabel={en.ui.bookNow}
+            />
           </div>
         </div>
       </nav>
@@ -105,13 +111,13 @@ async function SiteFooterEnContent() {
               />
             ) : null}
           </Link>
-          <p className="mt-5 max-w-sm leading-7">
-            Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.
-          </p>
+          <p className="mt-5 max-w-sm leading-7">{rich(en.footerMeta.description)}</p>
           <ul className="mt-6 flex flex-wrap gap-2" aria-label="Operating cities">
-            <li className="footer-badge">Jeddah</li>
-            <li className="footer-badge">Riyadh</li>
-            <li className="footer-badge">Jazan</li>
+            {en.footerMeta.cityBadges.map((badge) => (
+              <li className="footer-badge" key={badge}>
+                {rich(badge)}
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -135,26 +141,26 @@ async function SiteFooterEnContent() {
         </nav>
 
         <div className="footer-contact">
-          <h3 className="text-sm font-bold text-[var(--text-primary)]">Support & Booking</h3>
+          <h3 className="text-sm font-bold text-[var(--text-primary)]">{rich(en.footerMeta.supportHeading)}</h3>
           <ul className="mt-4 grid gap-3">
             {en.footerContact.map((item) => (
               <li key={item}>{rich(item)}</li>
             ))}
           </ul>
           <Link className="btn btn-secondary mt-3 w-full justify-center" href="/en/contact">
-            Contact us
+            {rich(en.footerMeta.contactCta)}
           </Link>
         </div>
       </div>
       <div className="border-t border-[var(--border)]">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <PaymentMethods locale="en" />
+          <PaymentMethods locale="en" label={en.ui.payments.label} />
         </div>
       </div>
       <div className="border-t border-[var(--border)]">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs font-semibold text-[var(--text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>© 2026 SwissBlue Hotels. All rights reserved.</p>
-          <p>Direct booking | Saudi hospitality | Corporate and family stays</p>
+          <p>{rich(en.footerMeta.copyright)}</p>
+          <p>{rich(en.footerMeta.tagline)}</p>
         </div>
       </div>
     </footer>
@@ -199,10 +205,12 @@ export async function PageHeroEn({
 }
 
 export function CtaBandEn({
+  eyebrow = "Book direct",
   title = "Find your next Swiss Blue stay.",
   text = "Compare rooms, suites, and serviced apartments with a clear booking journey built for modern hospitality guests.",
   cta = "Book now",
 }: {
+  eyebrow?: string;
   title?: string;
   text?: string;
   cta?: string;
@@ -211,7 +219,7 @@ export function CtaBandEn({
     <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8" dir="ltr">
       <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
         <div className="relative max-w-3xl">
-          <span className="eyebrow text-white/72">Book direct</span>
+          <span className="eyebrow text-white/72">{rich(eyebrow)}</span>
           <h2 className="t-h2 mt-4">{rich(title)}</h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">{rich(text)}</p>
           <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>

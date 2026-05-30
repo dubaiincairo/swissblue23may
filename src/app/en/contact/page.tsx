@@ -42,7 +42,7 @@ export default async function ContactPageEn() {
           </a>
         </div>
       </section>
-      <CtaBandEn title="Choose the right path, and we will help with the next step." cta="Book now" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.contact.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.contact.cta} />
         </>
       )}
     </PageShellEn>

@@ -51,7 +51,7 @@ export default async function OffersPage() {
         </div>
         <FeatureChipGrid items={content.benefits} variant="sparkle" columns={2} />
       </section>
-      <CtaBand title="ابدأ من العرض المناسب لرحلتك." cta="عرض التوفر" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.offers.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.offers.cta} />
       </>
       )}
     </PageShell>

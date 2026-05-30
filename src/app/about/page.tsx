@@ -90,7 +90,7 @@ export default async function AboutPage() {
             </div>
           </section>
 
-          <CtaBand title="استكشف فنادقنا وشققنا الفندقية." cta="عرض الفنادق" />
+          <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.about.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.about.cta} />
         </>
       )}
     </PageShell>

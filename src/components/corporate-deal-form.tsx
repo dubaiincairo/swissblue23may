@@ -2,75 +2,12 @@
 
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
+import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Locale = "ar" | "en";
 
-const fieldText = {
-  en: {
-    eyebrow: "B2B request form",
-    title: "Send a corporate accommodation request.",
-    text: "Share the business need, expected dates, units, and documentation status. The corporate team can use this information to prepare a more accurate proposal.",
-    step1Heading: "Step 1 of 2 · Basic information",
-    step2Heading: "Step 2 of 2 · Stay details",
-    step1Sub: "Tell us who you are and the best way to follow up.",
-    step2Sub: "Now share the stay specifics so the proposal lands accurate.",
-    company: "Company name",
-    sector: "Company sector",
-    contact: "Contact person",
-    jobTitle: "Job title",
-    email: "Business email",
-    phone: "Mobile number",
-    city: "Preferred city",
-    propertyType: "Preferred property type",
-    requestType: "Request type",
-    guests: "Expected guests",
-    units: "Rooms or apartments",
-    arrival: "Expected arrival",
-    departure: "Expected departure",
-    budget: "Target budget",
-    documents: "Documents available",
-    preferredContact: "Preferred contact method",
-    message: "Additional requirements",
-    continue: "Continue to stay details",
-    back: "Back",
-    submit: "Send business request",
-    success: "Request prepared. A corporate specialist will follow up shortly.",
-    closeModal: "Close",
-    summaryHeading: "Step 1 confirmed",
-  },
-  ar: {
-    eyebrow: "نموذج الشركات",
-    title: "أرسل طلب إقامة أو تعاقد للشركات.",
-    text: "شاركنا احتياج الجهة، التواريخ المتوقعة، عدد الوحدات، وحالة المستندات ليتمكن فريق الشركات من تجهيز عرض أدق.",
-    step1Heading: "الخطوة 1 من 2 · المعلومات الأساسية",
-    step2Heading: "الخطوة 2 من 2 · تفاصيل الإقامة",
-    step1Sub: "عرفنا بالجهة وأفضل وسيلة للتواصل.",
-    step2Sub: "أخبرنا الآن بتفاصيل الإقامة لإعداد عرض أدق.",
-    company: "اسم الشركة أو الجهة",
-    sector: "قطاع الشركة",
-    contact: "اسم المسؤول",
-    jobTitle: "المسمى الوظيفي",
-    email: "البريد الرسمي",
-    phone: "رقم الجوال",
-    city: "المدينة المفضلة",
-    propertyType: "نوع المنشأة المفضل",
-    requestType: "نوع الطلب",
-    guests: "عدد الضيوف المتوقع",
-    units: "عدد الغرف أو الشقق",
-    arrival: "تاريخ الوصول المتوقع",
-    departure: "تاريخ المغادرة المتوقع",
-    budget: "الميزانية المستهدفة",
-    documents: "المستندات المتوفرة",
-    preferredContact: "طريقة التواصل المفضلة",
-    message: "متطلبات إضافية",
-    continue: "متابعة إلى تفاصيل الإقامة",
-    back: "رجوع",
-    submit: "إرسال الطلب",
-    success: "تم تجهيز الطلب. سيتابع مختص الشركات معك قريبا.",
-    closeModal: "إغلاق",
-    summaryHeading: "تم تأكيد الخطوة 1",
-  },
-};
+type RequestFormContent =
+  EditableSiteContent["ar"]["subpages"]["corporateDealsPage"]["requestForm"];
 
 type BasicData = {
   company: string;
@@ -90,12 +27,20 @@ const emptyBasic: BasicData = {
   phone: "",
 };
 
-export default function CorporateDealForm({ locale }: { locale: Locale }) {
-  const t = fieldText[locale];
+export default function CorporateDealForm({
+  locale,
+  content,
+}: {
+  locale: Locale;
+  content: RequestFormContent;
+}) {
+  const t = content;
   const isArabic = locale === "ar";
   const [basic, setBasic] = useState<BasicData>(emptyBasic);
   const [modalOpen, setModalOpen] = useState(false);
   const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (typeof document === "undefined") {
@@ -138,17 +83,55 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
       phone: String(form.get("phone") ?? ""),
     });
     setStatus("");
+    setError("");
     setModalOpen(true);
   }
 
-  function handleFinalSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleFinalSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus(t.success);
-    setModalOpen(false);
-    setBasic(emptyBasic);
-    event.currentTarget.reset();
-    const basicForm = document.querySelector<HTMLFormElement>("[data-corporate-form]");
-    basicForm?.reset();
+    const form = event.currentTarget;
+    const stay = new FormData(form);
+    setError("");
+    setSubmitting(true);
+
+    const payload = {
+      ...basic,
+      city: String(stay.get("city") ?? ""),
+      propertyType: String(stay.get("propertyType") ?? ""),
+      requestType: String(stay.get("requestType") ?? ""),
+      guests: String(stay.get("guests") ?? ""),
+      units: String(stay.get("units") ?? ""),
+      budget: String(stay.get("budget") ?? ""),
+      arrival: String(stay.get("arrival") ?? ""),
+      departure: String(stay.get("departure") ?? ""),
+      documents: String(stay.get("documents") ?? ""),
+      preferredContact: String(stay.get("preferredContact") ?? ""),
+      message: String(stay.get("message") ?? ""),
+      locale,
+    };
+
+    try {
+      const response = await fetch("/api/forms/b2b", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      setStatus(t.success);
+      setModalOpen(false);
+      setBasic(emptyBasic);
+      form.reset();
+      const basicForm = document.querySelector<HTMLFormElement>("[data-corporate-form]");
+      basicForm?.reset();
+    } catch {
+      setError(t.error);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -162,15 +145,11 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
           <h2>{t.title}</h2>
           <p>{t.text}</p>
           <ul className="b2b-form-steps">
-            <li>{isArabic ? "تحديد الجهة وبيانات التواصل" : "Identify the entity and contact details"}</li>
-            <li>{isArabic ? "إدخال تفاصيل الإقامة والوثائق" : "Add stay specifics and documentation"}</li>
-            <li>{isArabic ? "تجهيز عرض مناسب للمراجعة" : "Receive a proposal ready for review"}</li>
+            {t.steps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
           </ul>
-          <div className="b2b-form-note">
-            {isArabic
-              ? "مناسب للجهات الحكومية، الشركات، الوفود، الإقامات الشهرية، والاجتماعات."
-              : "Suitable for government entities, companies, delegations, monthly stays, and meetings."}
-          </div>
+          <div className="b2b-form-note">{t.note}</div>
         </div>
 
         <div>
@@ -193,38 +172,36 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
 
           <form className="b2b-form" data-corporate-form onSubmit={handleBasicSubmit}>
             <label>
-              <span>{t.company}</span>
+              <span>{t.fields.company}</span>
               <input name="company" defaultValue={basic.company} required />
             </label>
             <label>
-              <span>{t.sector}</span>
+              <span>{t.fields.sector}</span>
               <select name="sector" defaultValue={basic.sector} required>
-                <option value="">{isArabic ? "اختر القطاع" : "Select sector"}</option>
-                <option>{isArabic ? "جهة حكومية" : "Government entity"}</option>
-                <option>{isArabic ? "شركة خاصة" : "Private company"}</option>
-                <option>{isArabic ? "وكالة سفر أو منظم فعاليات" : "Travel agency or event organizer"}</option>
-                <option>{isArabic ? "منظمة غير ربحية" : "Non-profit organization"}</option>
-                <option>{isArabic ? "قطاع آخر" : "Other sector"}</option>
+                <option value="">{t.sectorPlaceholder}</option>
+                {t.sectorOptions.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
               </select>
             </label>
             <label>
-              <span>{t.contact}</span>
+              <span>{t.fields.contact}</span>
               <input name="contact" defaultValue={basic.contact} required />
             </label>
             <label>
-              <span>{t.jobTitle}</span>
+              <span>{t.fields.jobTitle}</span>
               <input
                 name="jobTitle"
                 defaultValue={basic.jobTitle}
-                placeholder={isArabic ? "مثال: مدير الموارد البشرية" : "Example: HR manager"}
+                placeholder={t.placeholders.jobTitle}
               />
             </label>
             <label>
-              <span>{t.email}</span>
+              <span>{t.fields.email}</span>
               <input name="email" type="email" defaultValue={basic.email} required />
             </label>
             <label>
-              <span>{t.phone}</span>
+              <span>{t.fields.phone}</span>
               <input name="phone" defaultValue={basic.phone} required />
             </label>
 
@@ -233,6 +210,7 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
                 {t.continue} →
               </button>
               {status ? <p>{status}</p> : null}
+              {error ? <p style={{ color: "var(--danger, #c0392b)" }}>{error}</p> : null}
             </div>
           </form>
         </div>
@@ -271,96 +249,91 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
             <div className="b2b-modal-summary">
               <strong>{t.summaryHeading}</strong>
               <dl>
-                <dt>{t.company}</dt>
+                <dt>{t.fields.company}</dt>
                 <dd>{basic.company}</dd>
-                <dt>{t.contact}</dt>
+                <dt>{t.fields.contact}</dt>
                 <dd>{basic.contact}</dd>
-                <dt>{t.email}</dt>
+                <dt>{t.fields.email}</dt>
                 <dd>{basic.email}</dd>
-                <dt>{t.phone}</dt>
+                <dt>{t.fields.phone}</dt>
                 <dd>{basic.phone}</dd>
               </dl>
             </div>
 
             <form className="b2b-modal-form" onSubmit={handleFinalSubmit}>
               <label>
-                <span>{t.city}</span>
+                <span>{t.fields.city}</span>
                 <select name="city" required>
-                  <option value="">{isArabic ? "اختر" : "Select"}</option>
-                  <option>{isArabic ? "جدة" : "Jeddah"}</option>
-                  <option>{isArabic ? "الرياض" : "Riyadh"}</option>
-                  <option>{isArabic ? "جازان" : "Jazan"}</option>
-                  <option>{isArabic ? "أكثر من مدينة" : "Multiple cities"}</option>
+                  <option value="">{t.selectPlaceholder}</option>
+                  {t.cityOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
                 </select>
               </label>
               <label>
-                <span>{t.propertyType}</span>
+                <span>{t.fields.propertyType}</span>
                 <select name="propertyType" required>
-                  <option value="">{isArabic ? "اختر نوع المنشأة" : "Select property type"}</option>
-                  <option>{isArabic ? "فندق" : "Hotel"}</option>
-                  <option>{isArabic ? "شقق فندقية" : "Apart-hotel"}</option>
-                  <option>{isArabic ? "شقق مخدومة" : "Serviced apartments"}</option>
-                  <option>{isArabic ? "مرونة حسب العرض" : "Flexible by proposal"}</option>
+                  <option value="">{t.propertyTypePlaceholder}</option>
+                  {t.propertyTypeOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
                 </select>
               </label>
               <label>
-                <span>{t.requestType}</span>
+                <span>{t.fields.requestType}</span>
                 <select name="requestType" required>
-                  <option value="">{isArabic ? "اختر" : "Select"}</option>
-                  <option>{isArabic ? "سعر شركات" : "Corporate rate"}</option>
-                  <option>{isArabic ? "حجز مجموعة" : "Group booking"}</option>
-                  <option>{isArabic ? "إقامة شهرية" : "Monthly stay"}</option>
-                  <option>{isArabic ? "اجتماعات ومناسبات" : "Meetings and events"}</option>
+                  <option value="">{t.selectPlaceholder}</option>
+                  {t.requestTypeOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
                 </select>
               </label>
               <label>
-                <span>{t.guests}</span>
-                <input name="guests" type="number" min="1" placeholder={isArabic ? "مثال: 45" : "Example: 45"} />
+                <span>{t.fields.guests}</span>
+                <input name="guests" type="number" min="1" placeholder={t.placeholders.guests} />
               </label>
               <label>
-                <span>{t.units}</span>
-                <input name="units" placeholder={isArabic ? "مثال: 20 غرفة" : "Example: 20 rooms"} />
+                <span>{t.fields.units}</span>
+                <input name="units" placeholder={t.placeholders.units} />
               </label>
               <label>
-                <span>{t.budget}</span>
-                <input name="budget" placeholder={isArabic ? "مثال: 450 ريال لليلة" : "Example: SAR 450 per night"} />
+                <span>{t.fields.budget}</span>
+                <input name="budget" placeholder={t.placeholders.budget} />
               </label>
               <label>
-                <span>{t.arrival}</span>
+                <span>{t.fields.arrival}</span>
                 <input name="arrival" type="date" />
               </label>
               <label>
-                <span>{t.departure}</span>
+                <span>{t.fields.departure}</span>
                 <input name="departure" type="date" />
               </label>
               <label>
-                <span>{t.documents}</span>
+                <span>{t.fields.documents}</span>
                 <select name="documents">
-                  <option>{isArabic ? "السجل التجاري وخطاب التفويض متوفران" : "Commercial registration and authorization letter are available"}</option>
-                  <option>{isArabic ? "بعض المستندات متوفرة" : "Some documents are available"}</option>
-                  <option>{isArabic ? "نحتاج إلى قائمة المتطلبات" : "We need the document checklist"}</option>
+                  {t.documentsOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
                 </select>
               </label>
               <label>
-                <span>{t.preferredContact}</span>
+                <span>{t.fields.preferredContact}</span>
                 <select name="preferredContact">
-                  <option>{isArabic ? "مكالمة هاتفية" : "Phone call"}</option>
-                  <option>{isArabic ? "واتساب" : "WhatsApp"}</option>
-                  <option>{isArabic ? "بريد إلكتروني" : "Email"}</option>
+                  {t.contactOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
                 </select>
               </label>
               <label className="span-2">
-                <span>{t.message}</span>
-                <textarea
-                  name="message"
-                  rows={4}
-                  placeholder={
-                    isArabic
-                      ? "اكتب تفاصيل الطلب أو عدد الضيوف أو شروط الدفع"
-                      : "Add guest count, payment terms, room setup, or any special needs"
-                  }
-                />
+                <span>{t.fields.message}</span>
+                <textarea name="message" rows={4} placeholder={t.placeholders.message} />
               </label>
+
+              {error ? (
+                <p className="span-2" style={{ color: "var(--danger, #c0392b)" }}>
+                  {error}
+                </p>
+              ) : null}
 
               <div className="b2b-modal-actions">
                 <button
@@ -370,7 +343,7 @@ export default function CorporateDealForm({ locale }: { locale: Locale }) {
                 >
                   ← {t.back}
                 </button>
-                <button className="btn btn-primary" type="submit">
+                <button className="btn btn-primary" type="submit" disabled={submitting}>
                   {t.submit}
                 </button>
               </div>

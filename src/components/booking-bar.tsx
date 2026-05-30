@@ -2,48 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Property = { slug: string; title: string };
 
 type Locale = "ar" | "en";
 
-const LABELS: Record<
-  Locale,
-  {
-    property: string;
-    checkin: string;
-    checkout: string;
-    guests: string;
-    adult: string;
-    adults: string;
-    search: string;
-    less: string;
-    more: string;
-  }
-> = {
-  ar: {
-    property: "الوجهة",
-    checkin: "تاريخ الوصول",
-    checkout: "تاريخ المغادرة",
-    guests: "الضيوف",
-    adult: "بالغ",
-    adults: "بالغين",
-    search: "تحقق من التوفر",
-    less: "إنقاص عدد البالغين",
-    more: "زيادة عدد البالغين",
-  },
-  en: {
-    property: "Destination",
-    checkin: "Check-in",
-    checkout: "Check-out",
-    guests: "Guests",
-    adult: "adult",
-    adults: "adults",
-    search: "Check availability",
-    less: "Fewer adults",
-    more: "More adults",
-  },
-};
+type BookingLabels = EditableSiteContent["ar"]["ui"]["bookingBar"];
 
 function isoDate(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
@@ -60,11 +25,13 @@ function addDays(iso: string, days: number) {
 export default function BookingBar({
   properties,
   locale,
+  labels,
 }: {
   properties: Property[];
   locale: Locale;
+  labels: BookingLabels;
 }) {
-  const t = LABELS[locale];
+  const t = labels;
   const router = useRouter();
 
   const [slug, setSlug] = useState(properties[0]?.slug ?? "");

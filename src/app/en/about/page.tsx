@@ -90,7 +90,7 @@ export default async function AboutPageEn() {
             </div>
           </section>
 
-          <CtaBandEn title="Explore our hotels and serviced apartments." cta="View hotels" />
+          <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.about.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.about.cta} />
         </>
       )}
     </PageShellEn>

@@ -2,35 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import type { EditableSiteContent } from "@/lib/editable-content";
 
 // Bump this version to re-show the banner to everyone (e.g. after a policy change).
 const STORAGE_KEY = "sb-cookie-consent-v2";
 
-const COPY = {
-  ar: {
-    title: "نحترم خصوصيتك",
-    text: "يستخدم موقع سويس بلو ملفات تعريف الارتباط (الكوكيز) والتقنيات المشابهة لتشغيل الموقع بشكل سليم، وتذكّر تفضيلاتك مثل اللغة والعملة والوجهة، وتحليل أداء الصفحات، وتحسين تجربتك أثناء البحث عن إقامتك وإتمام الحجز. يمكنك قبول جميع ملفات الارتباط أو الاكتفاء بالملفات الضرورية فقط، ولك تغيير اختيارك في أي وقت. لمعرفة المزيد حول كيفية تعاملنا مع بياناتك، يرجى الاطلاع على",
-    accept: "قبول الكل",
-    decline: "الضرورية فقط",
-    policy: "سياسة الخصوصية",
-    policyHref: "/policy",
-    aria: "إشعار ملفات تعريف الارتباط",
-  },
-  en: {
-    title: "We value your privacy",
-    text: "The Swiss Blue website uses cookies and similar technologies to run the site properly, remember your preferences such as language, currency, and destination, analyse page performance, and improve your experience while you search for a stay and complete your booking. You can accept all cookies or keep only the essential ones, and you can change your choice at any time. To learn more about how we handle your data, please read our",
-    accept: "Accept all",
-    decline: "Essential only",
-    policy: "Privacy policy",
-    policyHref: "/en/policy",
-    aria: "Cookie notice",
-  },
-} as const;
+type CookieCopy = EditableSiteContent["ar"]["ui"]["cookie"];
 
-export default function CookieBanner() {
+export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: CookieCopy } }) {
   const pathname = usePathname();
   const locale = pathname?.startsWith("/en") ? "en" : "ar";
-  const t = COPY[locale];
+  const t = copy[locale];
+  const policyHref = locale === "en" ? "/en/policy" : "/policy";
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -68,7 +51,7 @@ export default function CookieBanner() {
           <strong className="cookie-banner-title">{t.title}</strong>
           <p className="cookie-banner-text">
             {t.text}{" "}
-            <a className="cookie-banner-link" href={t.policyHref}>
+            <a className="cookie-banner-link" href={policyHref}>
               {t.policy}
             </a>
           </p>

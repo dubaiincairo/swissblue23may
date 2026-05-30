@@ -86,9 +86,15 @@ export async function SiteHeader() {
           <div className="nav-actions">
             <LanguageToggle current="ar" />
             <a className="btn btn-primary nav-book-btn" href={BOOKING_URL}>
-              احجز الآن
+              {ar.ui.bookNow}
             </a>
-            <MobileNav groups={mobileGroups} locale="ar" bookingUrl={BOOKING_URL} />
+            <MobileNav
+              groups={mobileGroups}
+              locale="ar"
+              bookingUrl={BOOKING_URL}
+              labels={ar.ui.mobileNav}
+              bookLabel={ar.ui.bookNow}
+            />
           </div>
         </div>
       </nav>
@@ -149,14 +155,13 @@ async function SiteFooterContent() {
               />
             ) : null}
           </Link>
-          <p className="mt-5 max-w-sm leading-7">
-            فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة
-            للضيوف الأفراد والشركات والإقامات الطويلة.
-          </p>
+          <p className="mt-5 max-w-sm leading-7">{rich(ar.footerMeta.description)}</p>
           <ul className="mt-6 flex flex-wrap gap-2" aria-label="مدن التشغيل">
-            <li className="footer-badge">جدة</li>
-            <li className="footer-badge">الرياض</li>
-            <li className="footer-badge">جازان</li>
+            {ar.footerMeta.cityBadges.map((badge) => (
+              <li className="footer-badge" key={badge}>
+                {rich(badge)}
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -182,26 +187,26 @@ async function SiteFooterContent() {
         </nav>
 
         <div className="footer-contact">
-          <h3 className="text-sm font-bold text-[var(--text-primary)]">الدعم والحجز</h3>
+          <h3 className="text-sm font-bold text-[var(--text-primary)]">{rich(ar.footerMeta.supportHeading)}</h3>
           <ul className="mt-4 grid gap-3">
             {ar.footerContact.map((item) => (
               <li key={item}>{rich(item)}</li>
             ))}
           </ul>
           <Link className="btn btn-secondary mt-3 w-full justify-center" href="/ar/contact">
-            تواصل معنا
+            {rich(ar.footerMeta.contactCta)}
           </Link>
         </div>
       </div>
       <div className="border-t border-[var(--border)]">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <PaymentMethods locale="ar" />
+          <PaymentMethods locale="ar" label={ar.ui.payments.label} />
         </div>
       </div>
       <div className="border-t border-[var(--border)]">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs font-semibold text-[var(--text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>© 2026 SwissBlue Hotels. جميع الحقوق محفوظة.</p>
-          <p>حجز مباشر | ضيافة سعودية | إقامة للشركات والعائلات</p>
+          <p>{rich(ar.footerMeta.copyright)}</p>
+          <p>{rich(ar.footerMeta.tagline)}</p>
         </div>
       </div>
     </footer>
@@ -246,10 +251,12 @@ export async function PageHero({
 }
 
 export function CtaBand({
+  eyebrow = "احجز مباشرة",
   title = "جاهزون لاستقبالكم",
   text = "قارن بين الغرف والأجنحة والشقق الفندقية ضمن تجربة حجز واضحة تليق بضيوف الضيافة الحديثة.",
   cta = "احجز الآن",
 }: {
+  eyebrow?: string;
   title?: string;
   text?: string;
   cta?: string;
@@ -258,7 +265,7 @@ export function CtaBand({
     <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
         <div className="relative max-w-3xl">
-          <span className="eyebrow text-white/72">احجز مباشرة</span>
+          <span className="eyebrow text-white/72">{rich(eyebrow)}</span>
           <h2 className="t-h2 mt-4">
             {rich(title)}
           </h2>

@@ -5,6 +5,7 @@ import CookieBanner from "@/components/cookie-banner";
 import LiveContentRefresh from "@/components/live-content-refresh";
 import NavScrollState from "@/components/nav-scroll-state";
 import ScrollObserver from "@/components/scroll-observer";
+import { getEditableContent } from "@/lib/editable-content";
 import "./globals.css";
 
 const arabicSans = Noto_Kufi_Arabic({
@@ -24,11 +25,12 @@ export const metadata: Metadata = {
     "Swiss Blue Hotels website for hotels, suites, serviced apartments, direct booking, destinations, and guest services.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { ar, en } = await getEditableContent();
   return (
     <html
       lang="en"
@@ -41,7 +43,7 @@ export default function RootLayout({
         <ScrollObserver />
         {children}
         <ChatbaseWidget />
-        <CookieBanner />
+        <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />
       </body>
     </html>
   );

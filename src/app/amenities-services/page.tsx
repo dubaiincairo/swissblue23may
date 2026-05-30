@@ -57,7 +57,7 @@ export default async function AmenitiesServicesPage() {
         </div>
       </section>
 
-      <CtaBand title="احجز إقامة مدعومة بكل أساسيات الراحة." cta="احجز الآن" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.amenities.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.amenities.cta} />
         </>
       )}
     </PageShell>
