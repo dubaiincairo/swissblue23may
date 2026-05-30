@@ -89,7 +89,7 @@ const categories: ReadonlyArray<Category> = [
     description: "أساسيات تجعل العمل من الغرفة سهلا، سواء لرحلات الأعمال أو الإقامات الطويلة.",
     descriptionEn: "Daily essentials that keep work fast and uninterrupted, whether on a business trip or a long stay.",
     icon: ConnectIcon,
-    match: [/wi-?fi|internet|إنترنت/i],
+    match: [/wi-?fi|internet|smart.?tv|television|satellite|إنترنت/i],
   },
   {
     key: "dining",
@@ -107,7 +107,7 @@ const categories: ReadonlyArray<Category> = [
     description: "تجهيزات تجعل الإقامة أقرب لإحساس البيت، مع راحة فندقية يومية.",
     descriptionEn: "Touches that make the stay feel like home, with the daily comfort of a hotel.",
     icon: InRoomIcon,
-    match: [/coffee|tea|minibar|room\s*service|قهوة|شاي|ميني\s*بار|خدمة\s*الغرف/i],
+    match: [/coffee|tea|minibar|room\s*service|housekeeping|turndown|toiletries|قهوة|شاي|ميني\s*بار|خدمة\s*الغرف|تدبير|غسيل/i],
   },
   {
     key: "wellness",
@@ -116,7 +116,7 @@ const categories: ReadonlyArray<Category> = [
     description: "خيارات للحفاظ على نمط حياة نشط أو الاسترخاء قليلا أثناء الإقامة.",
     descriptionEn: "Options to stay active or simply unwind during the stay.",
     icon: WellnessIcon,
-    match: [/gym|fitness|pool|نادي\s*رياضي|مسبح|سباحة/i],
+    match: [/gym|fitness|pool|sauna|steam\s*room|spa|نادي\s*رياضي|مسبح|سباحة|ساونا/i],
   },
   {
     key: "business",
@@ -143,7 +143,7 @@ const categories: ReadonlyArray<Category> = [
     description: "إجراءات أمان على مدار اليوم لإقامة آمنة وموثوقة.",
     descriptionEn: "Round-the-clock safety steps for a confident, reliable stay.",
     icon: SafetyIcon,
-    match: [/safe|locker|خزنة|آمنة|أمان/i],
+    match: [/safe|locker|security|surveillance|cctv|fire\s*safety|emergency|خزنة|آمنة|أمان|أمن|طوارئ/i],
   },
 ];
 

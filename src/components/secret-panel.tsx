@@ -735,6 +735,12 @@ function shouldShowField(path: Array<string | number>, key: string) {
     return false;
   }
 
+  // Room-number classifications table removed from admin panel — data is no
+  // longer surfaced on the property pages so there is nothing to edit here.
+  if (key === "classifications" && path.some((p) => p === "roomsSuites")) {
+    return false;
+  }
+
   return true;
 }
 
