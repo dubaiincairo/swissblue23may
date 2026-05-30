@@ -12,24 +12,22 @@ type Strings = {
   open: string;
   close: string;
   menu: string;
-  book: string;
-};
-
-const STRINGS: Record<"ar" | "en", Strings> = {
-  ar: { open: "افتح القائمة", close: "إغلاق القائمة", menu: "القائمة", book: "احجز الآن" },
-  en: { open: "Open menu", close: "Close menu", menu: "Menu", book: "Book now" },
 };
 
 export default function MobileNav({
   groups,
   locale,
   bookingUrl,
+  labels,
+  bookLabel,
 }: {
   groups: NavGroup[];
   locale: "ar" | "en";
   bookingUrl: string;
+  labels: Strings;
+  bookLabel: string;
 }) {
-  const t = STRINGS[locale];
+  const t = labels;
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -153,7 +151,7 @@ export default function MobileNav({
             </ul>
 
             <a className="btn btn-primary mobile-nav-cta" href={bookingUrl}>
-              {t.book}
+              {bookLabel}
             </a>
           </nav>
             </div>

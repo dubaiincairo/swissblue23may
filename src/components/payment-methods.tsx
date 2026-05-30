@@ -1,10 +1,5 @@
 type Locale = "ar" | "en";
 
-const COPY: Record<Locale, { label: string }> = {
-  ar: { label: "نقبل الدفع عبر" },
-  en: { label: "We accept" },
-};
-
 function VisaMark() {
   return (
     <span className="pm-wordmark pm-visa" aria-hidden="true">
@@ -64,13 +59,11 @@ const METHODS = [
   { name: "Tabby", Mark: TabbyMark },
 ];
 
-export default function PaymentMethods({ locale }: { locale: Locale }) {
-  const t = COPY[locale];
-
+export default function PaymentMethods({ locale, label }: { locale: Locale; label: string }) {
   return (
     <div className="footer-payments" dir={locale === "ar" ? "rtl" : "ltr"}>
-      <span className="footer-payments-label">{t.label}</span>
-      <ul className="footer-payments-list" aria-label={t.label}>
+      <span className="footer-payments-label">{label}</span>
+      <ul className="footer-payments-list" aria-label={label}>
         {METHODS.map(({ name, Mark }) => (
           <li key={name} className="payment-chip" role="img" aria-label={name} title={name}>
             <Mark />

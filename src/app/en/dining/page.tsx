@@ -56,7 +56,7 @@ export default async function DiningPageEn() {
         </div>
       </section>
 
-      <CtaBandEn title="Pick a stay that makes the day easier." cta="Book your stay" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.dining.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.dining.cta} />
       </>
       )}
     </PageShellEn>

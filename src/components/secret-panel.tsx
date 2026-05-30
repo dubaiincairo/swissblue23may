@@ -68,6 +68,27 @@ const adminSections: AdminSection[] = [
     path: ["footerContact"],
   },
   {
+    id: "footerMeta",
+    group: "Site-wide",
+    label: "Footer text",
+    description: "Footer description, city badges, support heading, contact button, and copyright lines.",
+    path: ["footerMeta"],
+  },
+  {
+    id: "uiText",
+    group: "Site-wide",
+    label: "Site-wide UI text",
+    description: "Book button, booking bar labels, mobile menu, payment label, and cookie banner copy.",
+    path: ["ui"],
+  },
+  {
+    id: "closingCtas",
+    group: "Site-wide",
+    label: "Closing CTAs (page bottoms)",
+    description: "The booking call-to-action band at the bottom of every page: shared eyebrow + body text, and each page's title and button.",
+    path: ["closingCtas"],
+  },
+  {
     id: "hero",
     group: "Homepage",
     label: "Hero & booking",
@@ -215,6 +236,13 @@ const adminSections: AdminSection[] = [
     path: ["subpages", "corporateDealsPage"],
   },
   {
+    id: "b2bForm",
+    group: "Business",
+    label: "B2B — request form",
+    description: "Corporate (B2B) request form: intro, step headings, every field label, and dropdown options.",
+    path: ["subpages", "corporateDealsPage", "requestForm"],
+  },
+  {
     id: "meetingsEventsPage",
     group: "Business",
     label: "Meetings & Events page",
@@ -234,6 +262,13 @@ const adminSections: AdminSection[] = [
     label: "Careers page",
     description: "Hero, why-join cards, departments, and apply panel.",
     path: ["subpages", "careersPage"],
+  },
+  {
+    id: "careersForm",
+    group: "Community",
+    label: "Careers — jobs & application form",
+    description: "Workplace culture cards, the job openings list, and the application form labels and messages.",
+    path: ["subpages", "careersPage", "recruitment"],
   },
   {
     id: "csrSubpage",
@@ -311,6 +346,21 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     group: "إعدادات الموقع",
     label: "دعم الفوتر",
     description: "نقاط الدعم المعروضة بجانب زر الحجز في الفوتر.",
+  },
+  footerMeta: {
+    group: "إعدادات الموقع",
+    label: "نصوص الفوتر",
+    description: "وصف الفوتر، شارات المدن، عنوان الدعم، زر التواصل، وسطور حقوق النشر.",
+  },
+  uiText: {
+    group: "إعدادات الموقع",
+    label: "نصوص واجهة الموقع",
+    description: "زر الحجز، تسميات شريط الحجز، قائمة الجوال، نص الدفع، ونص لافتة الكوكيز.",
+  },
+  closingCtas: {
+    group: "إعدادات الموقع",
+    label: "نداءات الإجراء الختامية",
+    description: "شريط الحجز أسفل كل صفحة: العنوان الفرعي والنص المشترك، وعنوان وزر كل صفحة.",
   },
   hero: {
     group: "الصفحة الرئيسية",
@@ -417,6 +467,11 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     label: "صفحة تعاقدات الشركات",
     description: "بانر صفحة تعاقدات الشركات والتعريف بالحلول.",
   },
+  b2bForm: {
+    group: "الأعمال",
+    label: "نموذج طلب الشركات",
+    description: "نموذج طلب الشركات: التمهيد، عناوين الخطوات، تسميات الحقول، وخيارات القوائم المنسدلة.",
+  },
   meetingsEventsPage: {
     group: "الأعمال",
     label: "صفحة الاجتماعات والمناسبات",
@@ -431,6 +486,11 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     group: "المجتمع",
     label: "صفحة الوظائف",
     description: "البانر، بطاقات لماذا الانضمام، الأقسام، ولوحة التقديم.",
+  },
+  careersForm: {
+    group: "المجتمع",
+    label: "الوظائف ونموذج التقديم",
+    description: "بطاقات ثقافة العمل، قائمة الوظائف المتاحة، وتسميات ورسائل نموذج التقديم.",
   },
   csrSubpage: {
     group: "المجتمع",
@@ -470,6 +530,46 @@ const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
 };
 
 const fieldLabels: Record<string, string> = {
+  defaultText: "Default body text",
+  pages: "Per-page CTAs",
+  hotelDetail: "Hotel detail page",
+  titleTemplate: "Title template ({hotel} = hotel name)",
+  bookNow: "Book button",
+  bookingBar: "Booking bar labels",
+  mobileNav: "Mobile menu labels",
+  payments: "Payment label",
+  cookie: "Cookie banner",
+  accept: "Accept button",
+  decline: "Decline button",
+  policy: "Policy link text",
+  aria: "Accessibility label",
+  checkin: "Check-in label",
+  checkout: "Check-out label",
+  guests: "Guests label",
+  culture: "Workplace culture",
+  openingsIntro: "Job openings intro",
+  jobs: "Job openings",
+  applyLabels: "Apply section labels",
+  applyForm: "Application form fields",
+  responsibilities: "Responsibilities",
+  qualifications: "Qualifications",
+  experience: "Experience",
+  skills: "Skills",
+  fields: "Field labels",
+  placeholders: "Field placeholders",
+  steps: "Steps list",
+  note: "Note",
+  success: "Success message",
+  sectorOptions: "Sector options",
+  cityOptions: "City options",
+  propertyTypeOptions: "Property type options",
+  requestTypeOptions: "Request type options",
+  documentsOptions: "Documents options",
+  contactOptions: "Contact method options",
+  cityBadges: "City badges",
+  supportHeading: "Support heading",
+  contactCta: "Contact button",
+  tagline: "Footer tagline",
   amenities: "Amenities",
   applyIntro: "Apply panel",
   benefits: "Benefits",
@@ -562,6 +662,46 @@ const fieldLabels: Record<string, string> = {
 };
 
 const arabicFieldLabels: Record<string, string> = {
+  defaultText: "النص الافتراضي",
+  pages: "نداءات كل صفحة",
+  hotelDetail: "صفحة تفاصيل الفندق",
+  titleTemplate: "قالب العنوان ({hotel} = اسم الفندق)",
+  bookNow: "زر الحجز",
+  bookingBar: "تسميات شريط الحجز",
+  mobileNav: "تسميات قائمة الجوال",
+  payments: "نص الدفع",
+  cookie: "لافتة الكوكيز",
+  accept: "زر القبول",
+  decline: "زر الرفض",
+  policy: "نص رابط السياسة",
+  aria: "تسمية الوصول",
+  checkin: "تسمية الوصول",
+  checkout: "تسمية المغادرة",
+  guests: "تسمية الضيوف",
+  culture: "ثقافة العمل",
+  openingsIntro: "تمهيد الوظائف",
+  jobs: "الوظائف المتاحة",
+  applyLabels: "تسميات قسم التقديم",
+  applyForm: "حقول نموذج التقديم",
+  responsibilities: "المسؤوليات",
+  qualifications: "المؤهلات",
+  experience: "الخبرة",
+  skills: "المهارات",
+  fields: "تسميات الحقول",
+  placeholders: "النصوص التوضيحية",
+  steps: "قائمة الخطوات",
+  note: "ملاحظة",
+  success: "رسالة النجاح",
+  sectorOptions: "خيارات القطاع",
+  cityOptions: "خيارات المدينة",
+  propertyTypeOptions: "خيارات نوع المنشأة",
+  requestTypeOptions: "خيارات نوع الطلب",
+  documentsOptions: "خيارات المستندات",
+  contactOptions: "خيارات وسيلة التواصل",
+  cityBadges: "شارات المدن",
+  supportHeading: "عنوان الدعم",
+  contactCta: "زر التواصل",
+  tagline: "سطر الفوتر",
   amenities: "المرافق",
   answer: "الإجابة",
   applyIntro: "لوحة التقديم",
@@ -1521,7 +1661,17 @@ function FieldEditor({
 }
 
 // Structural sections that must always render — hiding them would break the site layout.
-const NON_HIDEABLE_SECTIONS = new Set(["navGroups", "media", "footerSections", "footerContact"]);
+const NON_HIDEABLE_SECTIONS = new Set([
+  "navGroups",
+  "media",
+  "footerSections",
+  "footerContact",
+  "footerMeta",
+  "careersForm",
+  "b2bForm",
+  "uiText",
+  "closingCtas",
+]);
 
 export default function SecretPanel({ language = "en" }: { language?: Language }) {
   const [content, setContent] = useState<JsonObject | null>(null);
@@ -1764,11 +1914,24 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
                     : "Hide section"}
               </button>
             ) : null}
+            <a className="admin-preview" href="/secretpanel/submissions">
+              {language === "ar" ? "الطلبات الواردة" : "Submissions"}
+            </a>
             <a className="admin-preview" href={languages[language].previewHref} target="_blank" rel="noreferrer">
               {language === "ar" ? "معاينة الموقع" : "Preview site"}
             </a>
             <button className="admin-save" type="button" onClick={save}>
               {language === "ar" ? "حفظ التغييرات" : "Save changes"}
+            </button>
+            <button
+              type="button"
+              className="admin-preview"
+              onClick={async () => {
+                await fetch("/api/auth/logout", { method: "POST" });
+                window.location.href = "/secretpanel/login";
+              }}
+            >
+              {language === "ar" ? "تسجيل الخروج" : "Sign out"}
             </button>
           </div>
         </header>

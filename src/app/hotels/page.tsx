@@ -66,7 +66,7 @@ export default async function HotelsPage() {
         </div>
       </section>
 
-      <CtaBand title="اختر فندقك واحجز بثقة." cta="تحقق من التوفر" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.hotels.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.hotels.cta} />
         </>
       )}
     </PageShell>

@@ -42,7 +42,7 @@ export default async function ContactPage() {
           </a>
         </div>
       </section>
-      <CtaBand title="اختر المسار الأنسب، وسنساعدك في الخطوة التالية." cta="احجز الآن" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.contact.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.contact.cta} />
         </>
       )}
     </PageShell>

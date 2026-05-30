@@ -95,7 +95,7 @@ export default async function GroupBookingsPageEn() {
         </div>
       </section>
 
-      <CtaBandEn title="Request accommodation coordination for your group." cta="Contact specialist" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.groupBookings.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.groupBookings.cta} />
       </>
       )}
     </PageShellEn>

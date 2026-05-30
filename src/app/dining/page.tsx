@@ -55,7 +55,7 @@ export default async function DiningPage() {
         </div>
       </section>
 
-      <CtaBand title="اختر إقامة تجعل يومك أسهل." cta="احجز إقامتك" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.dining.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.dining.cta} />
       </>
       )}
     </PageShell>

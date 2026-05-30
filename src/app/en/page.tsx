@@ -54,6 +54,7 @@ export default async function EnglishHomePage() {
               title: hotel.title,
             }))}
             locale="en"
+            labels={en.ui.bookingBar}
           />
         </div>
       </section>

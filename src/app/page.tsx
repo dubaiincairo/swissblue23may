@@ -58,6 +58,7 @@ export default async function Home() {
               title: hotel.title,
             }))}
             locale="ar"
+            labels={ar.ui.bookingBar}
           />
         </div>
       </section>

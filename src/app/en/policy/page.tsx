@@ -89,9 +89,10 @@ export default async function HotelPolicyPageEn() {
       </section>
 
       <CtaBandEn
-        title="Have a question about your stay?"
-        text="Our team is on hand around the clock to help with reservations, modifications, and anything related to the stay policies across Swiss Blue hotels and serviced apartments."
-        cta="Contact us"
+        eyebrow={en.closingCtas.eyebrow}
+        title={en.closingCtas.pages.policy.title}
+        text={en.closingCtas.pages.policy.text}
+        cta={en.closingCtas.pages.policy.cta}
       />
     </PageShellEn>
   );

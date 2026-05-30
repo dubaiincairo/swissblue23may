@@ -96,7 +96,7 @@ export default async function DestinationsPage() {
           })}
         </div>
       </section>
-      <CtaBand title="اختر المدينة الأقرب لرحلتك." cta="احجز الآن" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.destinations.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.destinations.cta} />
       </>
       )}
     </PageShell>

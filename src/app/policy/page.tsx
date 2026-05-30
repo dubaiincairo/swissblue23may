@@ -87,9 +87,10 @@ export default async function HotelPolicyPage() {
       </section>
 
       <CtaBand
-        title="هل لديكم سؤال حول الإقامة؟"
-        text="فريقنا متاح على مدار الساعة لمساعدتكم في الحجوزات، التعديلات، وكل ما يتعلق بسياسات الإقامة في فنادق وشقق سويس بلو."
-        cta="تواصل معنا"
+        eyebrow={ar.closingCtas.eyebrow}
+        title={ar.closingCtas.pages.policy.title}
+        text={ar.closingCtas.pages.policy.text}
+        cta={ar.closingCtas.pages.policy.cta}
       />
     </PageShell>
   );
