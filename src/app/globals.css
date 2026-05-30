@@ -2728,8 +2728,9 @@ section:has(> .insight-grid) {
   align-items: center;
   background: white;
   border: 1px solid var(--admin-border);
-  border-radius: 6px 0 0 6px;
-  border-right: none;
+  border-inline-end: none;
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
   color: var(--admin-muted);
   cursor: pointer;
   display: inline-flex;
@@ -2773,7 +2774,8 @@ section:has(> .insight-grid) {
   align-items: center;
   background: white;
   border: 1px solid var(--admin-border);
-  border-radius: 0 6px 6px 0;
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
   color: var(--admin-muted);
   cursor: pointer;
   display: inline-flex;

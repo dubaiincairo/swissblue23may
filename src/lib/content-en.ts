@@ -334,34 +334,29 @@ export const corporateDealsEn = [
   },
 ];
 
+// Curated, validated (HTTP 200) imagery for each city's guest gallery.
 const jeddahPhotosEn = [
   "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1581359338492-d6b59e0fde85?auto=format&fit=crop&w=1400&q=80",
   "https://images.unsplash.com/photo-1578895101408-1a36b834405b?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1604018996850-44c79b35dd5b?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1614956793980-0fcc8b96e88d?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1591631013402-d8e8a7c8c01b?auto=format&fit=crop&w=1400&q=80",
   "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=80",
 ];
 
 const riyadhPhotosEn = [
   "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1583066722055-aa3f4f8c6f9b?auto=format&fit=crop&w=1400&q=80",
   "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1606854083942-5e1f99d92a92?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1577116610894-d3b3d6c1dcdd?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1564769625392-651b2c8b1f4f?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1612392061787-2d078b3e573e?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1400&q=80",
 ];
 
 const jazanPhotosEn = [
-  "https://images.unsplash.com/photo-1493305401554-9f48be0cfca8?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
   "https://images.unsplash.com/photo-1551918120-9739cb430c6d?auto=format&fit=crop&w=1400&q=80",
   "https://images.unsplash.com/photo-1583077874340-79db6564672e?auto=format&fit=crop&w=1400&q=80",
   "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1564769625392-651b2c8b1f4f?auto=format&fit=crop&w=1400&q=80",
-  "https://images.unsplash.com/photo-1612392061787-2d078b3e573e?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1400&q=80",
 ];
 
 export const destinationsEn = [
