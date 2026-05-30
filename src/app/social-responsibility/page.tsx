@@ -75,7 +75,7 @@ export default async function SocialResponsibilityPage() {
         </div>
       </section>
 
-      <CtaBand title="ضيافة مسؤولة، إقامة بفارق ملموس." cta="استكشف منشآتنا" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.socialResponsibility.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.socialResponsibility.cta} />
         </>
       )}
     </PageShell>

@@ -740,11 +740,618 @@ const heroSlidesEn = [
   { ...heroSlides[2], alt: "Natural destination in Jazan" },
 ];
 
+const careersRecruitment = {
+  culture: {
+    eyebrow: "ثقافة العمل لدينا",
+    title: "مجتمع ضيافة مهني تفخر بالانتماء إليه.",
+    text: "في سويس بلو نبني فريقاً يلتزم بأعلى معايير الضيافة في السوق السعودي والخليجي. نؤمن بأن جودة التجربة تبدأ من جودة الأشخاص، لذلك نستثمر في بيئة عمل قائمة على الاحترام والأخلاق والتطوير المستمر.",
+    items: [
+      { title: "الأخلاق والنزاهة", text: "نعمل بشفافية ومصداقية في كل تعامل مع الضيف والزميل والشريك، ونلتزم بأعلى معايير المهنية." },
+      { title: "الاحترافية", text: "معايير تشغيل واضحة، انضباط في الأداء، واهتمام بالتفاصيل في كل قسم من أقسام المنشأة." },
+      { title: "روح الفريق الواحد", text: "نتعاون عبر الأقسام والمنشآت، نتشارك المعرفة، وندعم بعضنا لتقديم تجربة ضيافة متكاملة." },
+      { title: "التميز في الخدمة", text: "نتجاوز توقعات الضيف من خلال خدمة سريعة، دقيقة، وصادقة تعكس كرم الضيافة السعودية." },
+      { title: "الاحترام", text: "نقدّر تنوع فريقنا وضيوفنا، ونتعامل مع الجميع بكرامة وإنصاف في بيئة عمل آمنة وشاملة." },
+      { title: "التطوير المستمر", text: "تدريب منظم، مسارات ترقية داخلية، وفرص نمو حقيقية لكل من يلتزم بمعاييرنا كل يوم." },
+    ],
+  },
+  openingsIntro: {
+    eyebrow: "الوظائف المتاحة",
+    title: "فرص حالية في فنادق وشقق سويس بلو.",
+    text: "اختر الدور الذي يناسب خبرتك، واطلع على التفاصيل الكاملة، ثم قدّم طلبك مباشرة من خلال النموذج المرفق بكل وظيفة.",
+  },
+  applyLabels: {
+    summary: "نبذة عن الدور",
+    responsibilities: "المسؤوليات الرئيسية",
+    qualifications: "المؤهلات المطلوبة",
+    experience: "الخبرة المطلوبة",
+    skills: "المهارات والكفاءات",
+    apply: "قدّم الآن",
+    viewDetails: "عرض التفاصيل والتقديم",
+    hideDetails: "إخفاء التفاصيل",
+    formHeading: "نموذج التقديم",
+    formSub: "املأ بياناتك وأرفق سيرتك الذاتية وسيتواصل معك فريق التوظيف.",
+  },
+  applyForm: {
+    fullName: "الاسم الكامل",
+    email: "البريد الإلكتروني",
+    phone: "رقم الهاتف",
+    nationality: "الجنسية",
+    location: "المدينة / الدولة الحالية",
+    yearsExperience: "سنوات الخبرة",
+    currentTitle: "المسمى الوظيفي الحالي",
+    expectedSalary: "الراتب المتوقع",
+    noticePeriod: "فترة الإشعار",
+    linkedin: "حساب لينكدإن",
+    cv: "إرفاق السيرة الذاتية",
+    cvHint: "PDF أو Word",
+    message: "رسالة قصيرة أو خطاب تعريفي",
+    messagePlaceholder: "أخبرنا لماذا أنت مناسب لهذا الدور…",
+    submit: "إرسال الطلب",
+    submitting: "جارٍ الإرسال…",
+    success: "تم استلام طلبك بنجاح. سيتواصل معك فريق التوظيف خلال خمسة أيام عمل.",
+    error: "تعذّر إرسال الطلب. يرجى المحاولة مرة أخرى.",
+    optional: "اختياري",
+  },
+  jobs: [
+    {
+      title: "مدير مكتب الاستقبال",
+      summary: "قيادة عمليات مكتب الاستقبال على مدار الساعة لضمان تجربة وصول ومغادرة سلسة تعكس معايير سويس بلو.",
+      responsibilities: [
+        "الإشراف على فريق الاستقبال والنوبات وضمان تغطية الخدمة 24/7.",
+        "إدارة إجراءات تسجيل الدخول والمغادرة والتعامل مع طلبات الضيوف وشكاواهم.",
+        "مراقبة معدلات الإشغال والتنسيق مع الحجوزات والتدبير الفندقي.",
+        "تطبيق معايير الجودة والسلامة والامتثال للأنظمة السعودية.",
+      ],
+      qualifications: [
+        "شهادة في إدارة الضيافة أو الفنادق أو مجال ذي صلة.",
+        "إجادة العربية والإنجليزية تحدثاً وكتابة.",
+        "معرفة بأنظمة إدارة الفنادق (Opera أو ما يماثلها).",
+      ],
+      experience: "5+ سنوات في مكتب الاستقبال، منها سنتان في موقع إشرافي.",
+      skills: ["قيادة الفرق", "خدمة الضيوف", "حل المشكلات", "إدارة الإيرادات الأساسية"],
+    },
+    {
+      title: "مدير التدبير الفندقي",
+      summary: "إدارة قسم التدبير الفندقي لضمان أعلى معايير النظافة والجاهزية في الغرف والمساحات العامة.",
+      responsibilities: [
+        "جدولة فرق تنظيف الغرف والمساحات العامة ومراقبة الأداء.",
+        "ضبط مخزون المفروشات ومستلزمات الضيافة ومواد التنظيف.",
+        "تطبيق بروتوكولات التعقيم وفحص الجودة بعد كل مغادرة.",
+        "التنسيق مع الصيانة والاستقبال لجاهزية الوحدات.",
+      ],
+      qualifications: [
+        "خبرة في إدارة التدبير الفندقي في فندق أو شقق فندقية.",
+        "معرفة بمعايير السلامة والصحة المهنية.",
+        "القدرة على إدارة الميزانية والمخزون.",
+      ],
+      experience: "4+ سنوات في التدبير الفندقي، منها خبرة إشرافية.",
+      skills: ["إدارة الجودة", "التنظيم", "قيادة الفرق", "ضبط التكاليف"],
+    },
+    {
+      title: "مشرف الأطعمة والمشروبات",
+      summary: "الإشراف على خدمة الإفطار والمطعم وخدمة الغرف لتقديم تجربة طعام متسقة وعالية الجودة.",
+      responsibilities: [
+        "إدارة فريق الخدمة خلال فترات الذروة وضمان سرعة ودقة التقديم.",
+        "متابعة معايير النظافة وسلامة الغذاء (HACCP).",
+        "التنسيق مع المطبخ لإدارة القوائم والمخزون.",
+        "التعامل مع ملاحظات الضيوف وتحسين الخدمة باستمرار.",
+      ],
+      qualifications: [
+        "شهادة في إدارة الأطعمة والمشروبات أو الضيافة.",
+        "معرفة بأنظمة نقاط البيع (POS).",
+        "شهادة سلامة غذاء سارية تُعد ميزة.",
+      ],
+      experience: "3+ سنوات في خدمة الأطعمة والمشروبات بالفنادق.",
+      skills: ["خدمة العملاء", "سلامة الغذاء", "إدارة الفريق", "العمل تحت الضغط"],
+    },
+    {
+      title: "موظف علاقات الضيوف",
+      summary: "كن الوجه المرحّب لسويس بلو، تبني علاقات مع الضيوف وتضمن تجربة إقامة استثنائية.",
+      responsibilities: [
+        "استقبال ضيوف كبار الشخصيات والضيوف المتكررين وتلبية احتياجاتهم.",
+        "متابعة رضا الضيوف خلال الإقامة وحل الملاحظات فوراً.",
+        "إدارة طلبات الكونسيرج والترتيبات الخاصة.",
+        "جمع آراء الضيوف ورفع تقارير لتحسين الخدمة.",
+      ],
+      qualifications: [
+        "شهادة في الضيافة أو إدارة الأعمال أو ما يعادلها.",
+        "إجادة العربية والإنجليزية، ولغة ثالثة ميزة إضافية.",
+        "مظهر احترافي ومهارات تواصل عالية.",
+      ],
+      experience: "2+ سنة في علاقات الضيوف أو الاستقبال.",
+      skills: ["التواصل", "التعاطف", "حل المشكلات", "الانتباه للتفاصيل"],
+    },
+    {
+      title: "موظف حجوزات",
+      summary: "إدارة الحجوزات المباشرة وعبر القنوات بدقة لتحقيق أفضل إشغال وإيرادات.",
+      responsibilities: [
+        "معالجة طلبات الحجز عبر الهاتف والبريد والقنوات الإلكترونية.",
+        "تحديث الأسعار والتوفر على منصات الحجز ومحرك الحجز المباشر.",
+        "متابعة طلبات الشركات والمجموعات بالتنسيق مع المبيعات.",
+        "ضمان دقة بيانات الحجز وتأكيدها للضيوف.",
+      ],
+      qualifications: [
+        "شهادة دبلوم أو بكالوريوس في مجال ذي صلة.",
+        "إتقان استخدام الحاسب وأنظمة الحجز.",
+        "دقة عالية في إدخال البيانات.",
+      ],
+      experience: "2+ سنة في الحجوزات أو مراكز الاتصال الفندقية.",
+      skills: ["الدقة", "البيع عبر الهاتف", "إدارة القنوات", "خدمة العملاء"],
+    },
+    {
+      title: "فني صيانة وهندسة",
+      summary: "ضمان تشغيل آمن وموثوق لجميع مرافق المنشأة من خلال الصيانة الوقائية والإصلاح السريع.",
+      responsibilities: [
+        "تنفيذ الصيانة الوقائية والدورية للأنظمة الكهربائية والميكانيكية.",
+        "الاستجابة لطلبات الصيانة في الغرف والمساحات العامة بسرعة.",
+        "متابعة أنظمة التكييف والسباكة والإطفاء.",
+        "الالتزام بمعايير السلامة وتوثيق أعمال الصيانة.",
+      ],
+      qualifications: [
+        "دبلوم فني في الكهرباء أو الميكانيكا أو التكييف.",
+        "معرفة بأنظمة السلامة من الحرائق.",
+        "القدرة على العمل ضمن نظام النوبات.",
+      ],
+      experience: "3+ سنوات في صيانة الفنادق أو المباني.",
+      skills: ["الصيانة الكهربائية", "التكييف والتبريد", "السباكة", "السلامة"],
+    },
+    {
+      title: "مدير مبيعات وحسابات الشركات",
+      summary: "تنمية إيرادات الشركات والمجموعات عبر بناء علاقات وعقود طويلة الأمد مع الجهات والشركات.",
+      responsibilities: [
+        "تطوير محفظة حسابات الشركات والجهات الحكومية ووكالات السفر.",
+        "إعداد العروض والتفاوض على العقود والأسعار التفضيلية.",
+        "متابعة طلبات المجموعات والاجتماعات والإقامات الشهرية.",
+        "تحقيق مستهدفات الإيرادات ورفع التقارير الدورية.",
+      ],
+      qualifications: [
+        "بكالوريوس في إدارة الأعمال أو التسويق أو الضيافة.",
+        "سجل مثبت في تحقيق مستهدفات المبيعات.",
+        "رخصة قيادة سارية وقدرة على التنقل.",
+      ],
+      experience: "5+ سنوات في مبيعات الفنادق، منها خبرة في السوق الخليجي.",
+      skills: ["التفاوض", "بناء العلاقات", "إدارة الحسابات", "تحليل السوق"],
+    },
+  ],
+};
+
+const careersRecruitmentEn = {
+  culture: {
+    eyebrow: "Our workplace culture",
+    title: "A professional hospitality community you'll be proud to join.",
+    text: "At Swiss Blue we build a team that lives up to the highest hospitality standards in the Saudi and GCC market. We believe a great guest experience starts with great people, so we invest in a workplace built on respect, ethics, and continuous development.",
+    items: [
+      { title: "Ethics & Integrity", text: "We act with transparency and honesty in every interaction with guests, colleagues, and partners, holding ourselves to the highest professional standards." },
+      { title: "Professionalism", text: "Clear operating standards, disciplined performance, and attention to detail across every department of the property." },
+      { title: "Teamwork", text: "We collaborate across departments and properties, share knowledge, and support one another to deliver a complete hospitality experience." },
+      { title: "Service Excellence", text: "We exceed guest expectations through fast, accurate, and genuine service that reflects authentic Saudi hospitality." },
+      { title: "Respect", text: "We value the diversity of our team and guests, treating everyone with dignity and fairness in a safe, inclusive environment." },
+      { title: "Continuous Development", text: "Structured training, internal promotion paths, and real growth opportunities for everyone who upholds our standards every day." },
+    ],
+  },
+  openingsIntro: {
+    eyebrow: "Current openings",
+    title: "Open roles across Swiss Blue hotels and apartments.",
+    text: "Choose the role that fits your experience, review the full details, then apply directly through the form attached to each position.",
+  },
+  applyLabels: {
+    summary: "Role summary",
+    responsibilities: "Key responsibilities",
+    qualifications: "Required qualifications",
+    experience: "Experience required",
+    skills: "Skills & competencies",
+    apply: "Apply now",
+    viewDetails: "View details & apply",
+    hideDetails: "Hide details",
+    formHeading: "Application form",
+    formSub: "Fill in your details, attach your CV, and our recruitment team will be in touch.",
+  },
+  applyForm: {
+    fullName: "Full name",
+    email: "Email address",
+    phone: "Phone number",
+    nationality: "Nationality",
+    location: "Current city / country",
+    yearsExperience: "Years of experience",
+    currentTitle: "Current job title",
+    expectedSalary: "Expected salary",
+    noticePeriod: "Notice period",
+    linkedin: "LinkedIn profile",
+    cv: "CV upload",
+    cvHint: "PDF or Word",
+    message: "Short message or cover note",
+    messagePlaceholder: "Tell us why you're a great fit for this role…",
+    submit: "Submit application",
+    submitting: "Submitting…",
+    success: "Your application has been received. Our recruitment team will be in touch within five business days.",
+    error: "Could not send your application. Please try again.",
+    optional: "optional",
+  },
+  jobs: [
+    {
+      title: "Front Office Manager",
+      summary: "Lead round-the-clock front office operations to deliver a seamless arrival and departure experience that reflects Swiss Blue standards.",
+      responsibilities: [
+        "Supervise the reception team and shifts, ensuring 24/7 service coverage.",
+        "Manage check-in/check-out procedures and handle guest requests and complaints.",
+        "Monitor occupancy and coordinate with reservations and housekeeping.",
+        "Enforce quality, safety, and compliance with Saudi regulations.",
+      ],
+      qualifications: [
+        "Degree in hospitality, hotel management, or a related field.",
+        "Fluent in Arabic and English, spoken and written.",
+        "Knowledge of property management systems (Opera or similar).",
+      ],
+      experience: "5+ years in front office, including 2 years in a supervisory role.",
+      skills: ["Team leadership", "Guest service", "Problem solving", "Basic revenue management"],
+    },
+    {
+      title: "Executive Housekeeper",
+      summary: "Run the housekeeping department to maintain the highest standards of cleanliness and readiness across rooms and public areas.",
+      responsibilities: [
+        "Schedule room and public-area cleaning teams and monitor performance.",
+        "Control inventory of linen, guest amenities, and cleaning supplies.",
+        "Apply sanitisation protocols and quality checks after every check-out.",
+        "Coordinate with maintenance and reception on unit readiness.",
+      ],
+      qualifications: [
+        "Experience managing housekeeping in a hotel or serviced apartments.",
+        "Knowledge of occupational health and safety standards.",
+        "Ability to manage budgets and inventory.",
+      ],
+      experience: "4+ years in housekeeping, including supervisory experience.",
+      skills: ["Quality management", "Organisation", "Team leadership", "Cost control"],
+    },
+    {
+      title: "Food & Beverage Supervisor",
+      summary: "Oversee breakfast, restaurant, and in-room dining service to deliver a consistent, high-quality food experience.",
+      responsibilities: [
+        "Manage the service team during peak periods, ensuring speed and accuracy.",
+        "Maintain hygiene and food safety standards (HACCP).",
+        "Coordinate with the kitchen on menus and inventory.",
+        "Handle guest feedback and continuously improve service.",
+      ],
+      qualifications: [
+        "Diploma in food & beverage management or hospitality.",
+        "Familiarity with point-of-sale (POS) systems.",
+        "A valid food safety certificate is an advantage.",
+      ],
+      experience: "3+ years in hotel food & beverage service.",
+      skills: ["Customer service", "Food safety", "Team management", "Working under pressure"],
+    },
+    {
+      title: "Guest Relations Officer",
+      summary: "Be the welcoming face of Swiss Blue, building relationships with guests and ensuring an exceptional stay experience.",
+      responsibilities: [
+        "Welcome VIP and returning guests and anticipate their needs.",
+        "Track guest satisfaction during the stay and resolve feedback promptly.",
+        "Manage concierge requests and special arrangements.",
+        "Collect guest feedback and report it to improve service.",
+      ],
+      qualifications: [
+        "Degree in hospitality, business administration, or equivalent.",
+        "Fluent in Arabic and English; a third language is a plus.",
+        "Professional presentation and strong communication skills.",
+      ],
+      experience: "2+ years in guest relations or front office.",
+      skills: ["Communication", "Empathy", "Problem solving", "Attention to detail"],
+    },
+    {
+      title: "Reservations Agent",
+      summary: "Manage direct and channel reservations accurately to maximise occupancy and revenue.",
+      responsibilities: [
+        "Process booking requests via phone, email, and online channels.",
+        "Update rates and availability across booking platforms and the direct engine.",
+        "Follow up on corporate and group requests with the sales team.",
+        "Ensure booking data accuracy and confirm to guests.",
+      ],
+      qualifications: [
+        "Diploma or bachelor's degree in a related field.",
+        "Strong computer and reservation-system skills.",
+        "High accuracy in data entry.",
+      ],
+      experience: "2+ years in reservations or hotel call centres.",
+      skills: ["Accuracy", "Phone sales", "Channel management", "Customer service"],
+    },
+    {
+      title: "Maintenance / Engineering Technician",
+      summary: "Ensure safe, reliable operation of all property facilities through preventive maintenance and fast repairs.",
+      responsibilities: [
+        "Carry out preventive and routine maintenance on electrical and mechanical systems.",
+        "Respond quickly to maintenance requests in rooms and public areas.",
+        "Maintain HVAC, plumbing, and fire-fighting systems.",
+        "Follow safety standards and document maintenance work.",
+      ],
+      qualifications: [
+        "Technical diploma in electrical, mechanical, or HVAC.",
+        "Knowledge of fire safety systems.",
+        "Ability to work on a shift rotation.",
+      ],
+      experience: "3+ years in hotel or building maintenance.",
+      skills: ["Electrical maintenance", "HVAC", "Plumbing", "Safety"],
+    },
+    {
+      title: "Sales & Corporate Account Manager",
+      summary: "Grow corporate and group revenue by building long-term relationships and contracts with companies and entities.",
+      responsibilities: [
+        "Develop a portfolio of corporate, government, and travel-agency accounts.",
+        "Prepare proposals and negotiate contracts and preferential rates.",
+        "Follow up on group, meeting, and monthly-stay requests.",
+        "Achieve revenue targets and provide regular reporting.",
+      ],
+      qualifications: [
+        "Bachelor's degree in business, marketing, or hospitality.",
+        "Proven track record of meeting sales targets.",
+        "Valid driving licence and ability to travel.",
+      ],
+      experience: "5+ years in hotel sales, including GCC market experience.",
+      skills: ["Negotiation", "Relationship building", "Account management", "Market analysis"],
+    },
+  ],
+};
+
+const b2bRequestForm = {
+  eyebrow: "نموذج الشركات",
+  title: "أرسل طلب إقامة أو تعاقد للشركات.",
+  text: "شاركنا احتياج الجهة، التواريخ المتوقعة، عدد الوحدات، وحالة المستندات ليتمكن فريق الشركات من تجهيز عرض أدق.",
+  steps: [
+    "تحديد الجهة وبيانات التواصل",
+    "إدخال تفاصيل الإقامة والوثائق",
+    "تجهيز عرض مناسب للمراجعة",
+  ],
+  note: "مناسب للجهات الحكومية، الشركات، الوفود، الإقامات الشهرية، والاجتماعات.",
+  step1Heading: "الخطوة 1 من 2 · المعلومات الأساسية",
+  step2Heading: "الخطوة 2 من 2 · تفاصيل الإقامة",
+  step1Sub: "عرفنا بالجهة وأفضل وسيلة للتواصل.",
+  step2Sub: "أخبرنا الآن بتفاصيل الإقامة لإعداد عرض أدق.",
+  fields: {
+    company: "اسم الشركة أو الجهة",
+    sector: "قطاع الشركة",
+    contact: "اسم المسؤول",
+    jobTitle: "المسمى الوظيفي",
+    email: "البريد الرسمي",
+    phone: "رقم الجوال",
+    city: "المدينة المفضلة",
+    propertyType: "نوع المنشأة المفضل",
+    requestType: "نوع الطلب",
+    guests: "عدد الضيوف المتوقع",
+    units: "عدد الغرف أو الشقق",
+    arrival: "تاريخ الوصول المتوقع",
+    departure: "تاريخ المغادرة المتوقع",
+    budget: "الميزانية المستهدفة",
+    documents: "المستندات المتوفرة",
+    preferredContact: "طريقة التواصل المفضلة",
+    message: "متطلبات إضافية",
+  },
+  selectPlaceholder: "اختر",
+  sectorPlaceholder: "اختر القطاع",
+  sectorOptions: ["جهة حكومية", "شركة خاصة", "وكالة سفر أو منظم فعاليات", "منظمة غير ربحية", "قطاع آخر"],
+  cityOptions: ["جدة", "الرياض", "جازان", "أكثر من مدينة"],
+  propertyTypePlaceholder: "اختر نوع المنشأة",
+  propertyTypeOptions: ["فندق", "شقق فندقية", "شقق مخدومة", "مرونة حسب العرض"],
+  requestTypeOptions: ["سعر شركات", "حجز مجموعة", "إقامة شهرية", "اجتماعات ومناسبات"],
+  documentsOptions: [
+    "السجل التجاري وخطاب التفويض متوفران",
+    "بعض المستندات متوفرة",
+    "نحتاج إلى قائمة المتطلبات",
+  ],
+  contactOptions: ["مكالمة هاتفية", "واتساب", "بريد إلكتروني"],
+  placeholders: {
+    jobTitle: "مثال: مدير الموارد البشرية",
+    guests: "مثال: 45",
+    units: "مثال: 20 غرفة",
+    budget: "مثال: 450 ريال لليلة",
+    message: "اكتب تفاصيل الطلب أو عدد الضيوف أو شروط الدفع",
+  },
+  continue: "متابعة إلى تفاصيل الإقامة",
+  back: "رجوع",
+  submit: "إرسال الطلب",
+  success: "تم تجهيز الطلب. سيتابع مختص الشركات معك قريبا.",
+  error: "تعذّر إرسال الطلب. يرجى المحاولة مرة أخرى.",
+  closeModal: "إغلاق",
+  summaryHeading: "تم تأكيد الخطوة 1",
+};
+
+const b2bRequestFormEn = {
+  eyebrow: "B2B request form",
+  title: "Send a corporate accommodation request.",
+  text: "Share the business need, expected dates, units, and documentation status. The corporate team can use this information to prepare a more accurate proposal.",
+  steps: [
+    "Identify the entity and contact details",
+    "Add stay specifics and documentation",
+    "Receive a proposal ready for review",
+  ],
+  note: "Suitable for government entities, companies, delegations, monthly stays, and meetings.",
+  step1Heading: "Step 1 of 2 · Basic information",
+  step2Heading: "Step 2 of 2 · Stay details",
+  step1Sub: "Tell us who you are and the best way to follow up.",
+  step2Sub: "Now share the stay specifics so the proposal lands accurate.",
+  fields: {
+    company: "Company name",
+    sector: "Company sector",
+    contact: "Contact person",
+    jobTitle: "Job title",
+    email: "Business email",
+    phone: "Mobile number",
+    city: "Preferred city",
+    propertyType: "Preferred property type",
+    requestType: "Request type",
+    guests: "Expected guests",
+    units: "Rooms or apartments",
+    arrival: "Expected arrival",
+    departure: "Expected departure",
+    budget: "Target budget",
+    documents: "Documents available",
+    preferredContact: "Preferred contact method",
+    message: "Additional requirements",
+  },
+  selectPlaceholder: "Select",
+  sectorPlaceholder: "Select sector",
+  sectorOptions: ["Government entity", "Private company", "Travel agency or event organizer", "Non-profit organization", "Other sector"],
+  cityOptions: ["Jeddah", "Riyadh", "Jazan", "Multiple cities"],
+  propertyTypePlaceholder: "Select property type",
+  propertyTypeOptions: ["Hotel", "Apart-hotel", "Serviced apartments", "Flexible by proposal"],
+  requestTypeOptions: ["Corporate rate", "Group booking", "Monthly stay", "Meetings and events"],
+  documentsOptions: [
+    "Commercial registration and authorization letter are available",
+    "Some documents are available",
+    "We need the document checklist",
+  ],
+  contactOptions: ["Phone call", "WhatsApp", "Email"],
+  placeholders: {
+    jobTitle: "Example: HR manager",
+    guests: "Example: 45",
+    units: "Example: 20 rooms",
+    budget: "Example: SAR 450 per night",
+    message: "Add guest count, payment terms, room setup, or any special needs",
+  },
+  continue: "Continue to stay details",
+  back: "Back",
+  submit: "Send business request",
+  success: "Request prepared. A corporate specialist will follow up shortly.",
+  error: "Could not send your request. Please try again.",
+  closeModal: "Close",
+  summaryHeading: "Step 1 confirmed",
+};
+
+const footerMeta = {
+  description: "فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.",
+  cityBadges: ["جدة", "الرياض", "جازان"],
+  supportHeading: "الدعم والحجز",
+  contactCta: "تواصل معنا",
+  copyright: "© 2026 SwissBlue Hotels. جميع الحقوق محفوظة.",
+  tagline: "حجز مباشر | ضيافة سعودية | إقامة للشركات والعائلات",
+};
+
+const footerMetaEn = {
+  description: "Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.",
+  cityBadges: ["Jeddah", "Riyadh", "Jazan"],
+  supportHeading: "Support & Booking",
+  contactCta: "Contact us",
+  copyright: "© 2026 SwissBlue Hotels. All rights reserved.",
+  tagline: "Direct booking | Saudi hospitality | Corporate and family stays",
+};
+
+const uiText = {
+  bookNow: "احجز الآن",
+  bookingBar: {
+    property: "الوجهة",
+    checkin: "تاريخ الوصول",
+    checkout: "تاريخ المغادرة",
+    guests: "الضيوف",
+    adult: "بالغ",
+    adults: "بالغين",
+    search: "تحقق من التوفر",
+    less: "إنقاص عدد البالغين",
+    more: "زيادة عدد البالغين",
+  },
+  mobileNav: { open: "افتح القائمة", close: "إغلاق القائمة", menu: "القائمة" },
+  payments: { label: "نقبل الدفع عبر" },
+  cookie: {
+    title: "نحترم خصوصيتك",
+    text: "يستخدم موقع سويس بلو ملفات تعريف الارتباط (الكوكيز) والتقنيات المشابهة لتشغيل الموقع بشكل سليم، وتذكّر تفضيلاتك مثل اللغة والعملة والوجهة، وتحليل أداء الصفحات، وتحسين تجربتك أثناء البحث عن إقامتك وإتمام الحجز. يمكنك قبول جميع ملفات الارتباط أو الاكتفاء بالملفات الضرورية فقط، ولك تغيير اختيارك في أي وقت. لمعرفة المزيد حول كيفية تعاملنا مع بياناتك، يرجى الاطلاع على",
+    accept: "قبول الكل",
+    decline: "الضرورية فقط",
+    policy: "سياسة الخصوصية",
+    aria: "إشعار ملفات تعريف الارتباط",
+  },
+};
+
+const uiTextEn = {
+  bookNow: "Book now",
+  bookingBar: {
+    property: "Destination",
+    checkin: "Check-in",
+    checkout: "Check-out",
+    guests: "Guests",
+    adult: "adult",
+    adults: "adults",
+    search: "Check availability",
+    less: "Fewer adults",
+    more: "More adults",
+  },
+  mobileNav: { open: "Open menu", close: "Close menu", menu: "Menu" },
+  payments: { label: "We accept" },
+  cookie: {
+    title: "We value your privacy",
+    text: "The Swiss Blue website uses cookies and similar technologies to run the site properly, remember your preferences such as language, currency, and destination, analyse page performance, and improve your experience while you search for a stay and complete your booking. You can accept all cookies or keep only the essential ones, and you can change your choice at any time. To learn more about how we handle your data, please read our",
+    accept: "Accept all",
+    decline: "Essential only",
+    policy: "Privacy policy",
+    aria: "Cookie notice",
+  },
+};
+
+const closingCtas = {
+  eyebrow: "احجز مباشرة",
+  defaultText: "قارن بين الغرف والأجنحة والشقق الفندقية ضمن تجربة حجز واضحة تليق بضيوف الضيافة الحديثة.",
+  hotelDetail: { titleTemplate: "احجز إقامتك في {hotel}.", cta: "تحقق من التوفر" },
+  pages: {
+    offers: { title: "ابدأ من العرض المناسب لرحلتك.", cta: "عرض التوفر" },
+    corporateDeals: { title: "اطلب عرضا للشركات أو المجموعات.", cta: "تواصل مع المختص" },
+    groupBookings: { title: "اطلب تنسيق إقامة لمجموعتك.", cta: "تواصل مع المختص" },
+    contact: { title: "اختر المسار الأنسب، وسنساعدك في الخطوة التالية.", cta: "احجز الآن" },
+    hotels: { title: "اختر فندقك واحجز بثقة.", cta: "تحقق من التوفر" },
+    amenities: { title: "احجز إقامة مدعومة بكل أساسيات الراحة.", cta: "احجز الآن" },
+    about: { title: "استكشف فنادقنا وشققنا الفندقية.", cta: "عرض الفنادق" },
+    destinations: { title: "اختر المدينة الأقرب لرحلتك.", cta: "احجز الآن" },
+    loyalty: { title: "ابدأ من الحجز المباشر للحصول على مزايا أوضح.", cta: "تحقق من التوفر" },
+    faq: { title: "ما زلت تحتاج إلى مساعدة؟", cta: "تواصل معنا" },
+    careers: { title: "ابحث عن دورك القادم في سويس بلو.", cta: "أرسل سيرتك الذاتية" },
+    centralReservation: { title: "حجز مباشر، أفضل الأسعار، مرونة أعلى.", cta: "تحقق من التوفر" },
+    feedback: { title: "نسمعك. شاركنا ملاحظتك أو اقتراحك الآن.", cta: "راسلنا" },
+    meetingsEvents: { title: "خطّط لمناسبتك القادمة مع سويس بلو.", cta: "تواصل مع فريق الفعاليات" },
+    roomsSuites: { title: "اختر فئتك واحجز وحدتك المفضلة مباشرة.", cta: "احجز وحدتك" },
+    dining: { title: "اختر إقامة تجعل يومك أسهل.", cta: "احجز إقامتك" },
+    servicedApartments: { title: "استكشف الشقق الفندقية واحجز مباشرة.", cta: "استعرض التوفر" },
+    socialResponsibility: { title: "ضيافة مسؤولة، إقامة بفارق ملموس.", cta: "استكشف منشآتنا" },
+    policy: {
+      title: "هل لديكم سؤال حول الإقامة؟",
+      text: "فريقنا متاح على مدار الساعة لمساعدتكم في الحجوزات، التعديلات، وكل ما يتعلق بسياسات الإقامة في فنادق وشقق سويس بلو.",
+      cta: "تواصل معنا",
+    },
+  },
+};
+
+const closingCtasEn = {
+  eyebrow: "Book direct",
+  defaultText: "Compare rooms, suites, and serviced apartments with a clear booking journey built for modern hospitality guests.",
+  hotelDetail: { titleTemplate: "Book your stay at {hotel}.", cta: "Check availability" },
+  pages: {
+    offers: { title: "Start with the offer that fits your trip.", cta: "View availability" },
+    corporateDeals: { title: "Request a corporate or group proposal.", cta: "Contact specialist" },
+    groupBookings: { title: "Request accommodation coordination for your group.", cta: "Contact specialist" },
+    contact: { title: "Choose the right path, and we will help with the next step.", cta: "Book now" },
+    hotels: { title: "Choose your hotel and book with confidence.", cta: "Check availability" },
+    amenities: { title: "Book a stay with the essentials covered.", cta: "Book now" },
+    about: { title: "Explore our hotels and serviced apartments.", cta: "View hotels" },
+    destinations: { title: "Pick the city closest to your trip.", cta: "Book now" },
+    loyalty: { title: "Start with direct booking for clearer benefits.", cta: "Check availability" },
+    faq: { title: "Still need help?", cta: "Contact us" },
+    careers: { title: "Find your next role at Swiss Blue.", cta: "Send your CV" },
+    centralReservation: { title: "Direct booking, best rates, more flexibility.", cta: "Check availability" },
+    feedback: { title: "We listen. Share a complaint or suggestion now.", cta: "Write to us" },
+    meetingsEvents: { title: "Plan your next event with Swiss Blue.", cta: "Talk to the events team" },
+    roomsSuites: { title: "Compare categories and book the right unit.", cta: "Book your unit" },
+    dining: { title: "Pick a stay that makes the day easier.", cta: "Book your stay" },
+    servicedApartments: { title: "Explore serviced apartments and book direct.", cta: "Check availability" },
+    socialResponsibility: { title: "Responsible hospitality that makes a difference.", cta: "Explore our properties" },
+    policy: {
+      title: "Have a question about your stay?",
+      text: "Our team is on hand around the clock to help with reservations, modifications, and anything related to the stay policies across Swiss Blue hotels and serviced apartments.",
+      cta: "Contact us",
+    },
+  },
+};
+
 export const defaultSiteContent = {
   ar: {
     navGroups,
     footerSections,
     footerContact,
+    footerMeta,
+    ui: uiText,
+    closingCtas,
     media: {
       arabicLogo: defaultLogoImage,
       mainHero: heroImage,
@@ -1163,6 +1770,7 @@ export const defaultSiteContent = {
           text: "مسار مهني لحجوزات الفرق والوفود والاجتماعات والإقامات الشهرية، مع تواصل واضح ومتطلبات توثيق تساعد على إنجاز التعاقد بثقة.",
           image: heroImage,
         },
+        requestForm: b2bRequestForm,
       },
       groupBookings: {
         hero: {
@@ -1386,6 +1994,7 @@ export const defaultSiteContent = {
           email: "careers@swissblue.sa",
           cta: "أرسل سيرتك الذاتية",
         },
+        recruitment: careersRecruitment,
       },
       csrPage: {
         hero: {
@@ -1458,139 +2067,250 @@ export const defaultSiteContent = {
         hero: {
           eyebrow: "دعم الحجز المباشر",
           title: "مكتب الحجوزات المركزي.",
-          text: "فريق واحد. رقم واحد. خطّط وعدّل وأكّد حجوزاتك في كل منشآت سويس بلو.",
+          text: "فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في جميع فنادق وشقق سويس بلو في جدة وجازان والرياض — مكالمة أو رسالة واتساب واحدة تكفي.",
           image: heroImage,
         },
         intro: {
-          eyebrow: "متاح 24/7",
-          title: "تواصل مع المختصين في أي وقت، باللغتين العربية والإنجليزية.",
-          text: "فريق الحجوزات يتولى الحجوزات الجديدة، طلبات المجموعات، حسابات الشركات، وتعديلات أثناء الإقامة، بشكل مباشر دون وسطاء.",
+          eyebrow: "فريقك للحجز المباشر",
+          title: "تحدّث إلى مختص حجوزات حقيقي، بالعربية أو الإنجليزية.",
+          text: "مكتب الحجوزات المركزي نقطة اتصال واحدة لكل منشآت سويس بلو. نتولّى الحجوزات الجديدة، وطلبات المجموعات، وحسابات الشركات، والتعديلات أثناء الإقامة — مباشرة، دون وسطاء ودون رسوم إضافية.",
         },
         channels: [
           {
-            title: "الهاتف",
-            value: "+966 12 000 0000",
-            href: "tel:+966120000000",
-            text: "اتصال مباشر بفريق الحجوزات على مدار الساعة.",
+            title: "اتصل بنا",
+            value: "+966 59 597 9064",
+            href: "tel:+966595979064",
+            text: "تحدّث مباشرة مع فريق الحجوزات على مدار الساعة لتأكيد التوفر والأسعار وإتمام حجزك في دقائق.",
           },
           {
             title: "واتساب",
-            value: "+966 50 000 0000",
-            href: "https://wa.me/966500000000",
-            text: "محادثة سريعة لتوفر الغرف، تأكيدات، أو تعديلات.",
+            value: "+966 59 597 9064",
+            href: "https://wa.me/966595979064",
+            text: "أرسل تواريخك وعدد الضيوف، وسنعيد لك خيارات الغرف والأسعار كتابةً.",
           },
           {
             title: "البريد الإلكتروني",
             value: "reservations@swissblue.sa",
             href: "mailto:reservations@swissblue.sa",
-            text: "للحجوزات والطلبات التي تتطلب توثيقاً كتابياً.",
+            text: "للطلبات التي تحتاج توثيقاً كتابياً: عروض المجموعات، وعقود الشركات، والفواتير.",
           },
           {
             title: "في الفندق",
             value: "مكتب الاستقبال",
             href: "",
-            text: "زرنا في أي منشأة لإجراء حجوزاتك مباشرة مع موظف الاستقبال.",
+            text: "زر أي منشأة لإتمام حجزك وجهاً لوجه مع موظف الاستقبال على مدار اليوم.",
           },
         ],
         servicesIntro: {
-          eyebrow: "ماذا نقدم",
-          title: "كل ما يلزم لتجربة حجز سلسة.",
-          text: "نتعامل مع كافة طلبات الحجز من البسيطة إلى المعقدة، ونصلك بفريق المنشأة عند الحاجة.",
+          eyebrow: "ماذا نتولّى",
+          title: "كل ما تحتاجه لحجزٍ سلس، من غرفة واحدة إلى رحلة متعددة المدن.",
+          text: "سواء كانت ليلة عمل واحدة، أو إقامة شهرية لعائلة، أو حجزاً جماعياً لشركة، يتولّى الفريق طلبك من أوله إلى آخره ويوصلك بفريق المنشأة عند الحاجة.",
         },
         services: [
-          "حجوزات جديدة لأفراد وعوائل",
-          "حجوزات المجموعات (10 غرف أو أكثر)",
-          "حسابات وعقود الشركات",
-          "ترتيبات خاصة (احتفالات، شهر العسل، إقامات طويلة)",
-          "تعديل وإلغاء الحجوزات",
-          "دعم أثناء الإقامة",
-          "خطط رحلات متعددة المنشآت",
+          "حجوزات جديدة للأفراد والعائلات",
+          "حجوزات المجموعات (10 غرف أو أكثر) وأسعار خاصة",
+          "حسابات وعقود الشركات والفوترة الآجلة",
+          "إقامات شهرية وطويلة الأمد في الشقق المخدومة",
+          "ترتيبات المناسبات وشهر العسل والطلبات الخاصة",
+          "تعديل وتمديد وإلغاء الحجوزات",
+          "دعم أثناء الإقامة والتنسيق مع المنشأة",
+          "خطط رحلات متعددة المنشآت بين جدة وجازان والرياض",
         ],
         benefitsIntro: {
-          eyebrow: "لماذا الحجز المباشر",
-          title: "ميزات حصرية لا تجدها مع الوسطاء.",
-          text: "حجزك عبر مكتبنا يحفظ لك أفضل سعر، أعلى مرونة، وتنسيقاً شخصياً.",
+          eyebrow: "لماذا الحجز المباشر معنا",
+          title: "ميزات لا تحصل عليها عبر مواقع الحجز الخارجية.",
+          text: "الحجز المباشر عبر مكتبنا يضمن لك أفضل سعر، ومرونة أعلى، وتواصلاً بشرياً يعرف تفاصيل إقامتك قبل وصولك.",
         },
         benefits: [
           {
             title: "ضمان أفضل سعر",
-            text: "سعرنا المباشر مكافئ أو أقل من أي قناة خارجية للوحدة نفسها وفي التاريخ نفسه.",
+            text: "نطابق أو نتفوّق على سعر أي قناة خارجية لنفس الغرفة والتاريخ — أخبرنا إن وجدت سعراً أقل وسنعالجه.",
+          },
+          {
+            title: "بدون رسوم حجز",
+            text: "تتعامل معنا مباشرة، فلا عمولات وسطاء ولا رسوم خدمة مخفية تُضاف إلى فاتورتك.",
           },
           {
             title: "سياسات أكثر مرونة",
-            text: "إلغاء، تعديل، أو تأجيل بشروط أوضح وأسرع من قنوات الحجز الخارجية.",
+            text: "إلغاء وتعديل وتأجيل بشروط أوضح وأسرع من قنوات الحجز الخارجية.",
           },
           {
             title: "تنسيق شخصي",
-            text: "أولوية للترقية عند توفرها، طلبات خاصة، وتنسيق مع فريق المنشأة قبل وصولك.",
+            text: "أولوية للترقية عند توفّرها، وطلبات خاصة قبل الوصول، وملف ضيف يتذكّر تفضيلاتك.",
+          },
+        ],
+        statsIntro: {
+          eyebrow: "لمحة سريعة",
+          title: "لماذا يثق بنا الضيوف.",
+        },
+        stats: [
+          { value: "24/7", label: "دعم حجوزات على مدار الساعة" },
+          { value: "0", label: "رسوم حجز أو عمولات وسطاء" },
+          { value: "3", label: "مدن: جدة وجازان والرياض" },
+          { value: "لغتان", label: "خدمة بالعربية والإنجليزية" },
+        ],
+        prepareIntro: {
+          eyebrow: "قبل أن تتصل",
+          title: "جهّز هذه التفاصيل ليكون حجزك أسرع.",
+          text: "وجود هذه المعلومات في متناولك يختصر المكالمة ويضمن أن نعطيك السعر الصحيح من أول مرة.",
+        },
+        prepare: [
+          "تواريخ الوصول والمغادرة",
+          "المدينة أو المنشأة المفضّلة",
+          "عدد الضيوف (بالغون وأطفال)",
+          "نوع الغرفة أو الجناح المطلوب",
+          "أي طلبات خاصة (طابق، إطلالة، سرير إضافي)",
+          "رقم حساب الشركة أو عضوية الولاء إن وُجد",
+        ],
+        faqsIntro: {
+          eyebrow: "أسئلة شائعة",
+          title: "أسئلة الحجز الأكثر تكراراً.",
+        },
+        faqs: [
+          {
+            question: "هل أحتاج إلى دفع مقدّم لتأكيد الحجز؟",
+            answer: "تختلف سياسة المقدّم حسب نوع التعرفة والموسم. يوضّح لك مختص الحجوزات المبلغ المطلوب وطرق الدفع المتاحة قبل تأكيد أي حجز.",
+          },
+          {
+            question: "ما هي مهلة الإلغاء المجاني؟",
+            answer: "معظم التعرفات المرنة تتيح إلغاءً مجانياً حتى وقت محدّد قبل الوصول. أما التعرفات غير القابلة للاسترداد فتكون أقل سعراً ويُشار إليها صراحةً عند الحجز.",
+          },
+          {
+            question: "كيف أعدّل أو أمدّد حجزاً قائماً؟",
+            answer: "اتصل أو راسلنا على واتساب برقم الحجز، وسنعدّل التواريخ أو الغرفة حسب التوفر — غالباً دون أي رسوم على التعرفات المرنة.",
+          },
+          {
+            question: "هل توجد أسعار خاصة للمجموعات؟",
+            answer: "نعم. للحجوزات من 10 غرف فأكثر لدينا مكتب مجموعات مخصّص يقدّم أسعاراً وشروطاً خاصة. راسلنا على البريد بتفاصيل مجموعتك.",
+          },
+          {
+            question: "هل يمكن إصدار فاتورة باسم شركة مع دفع آجل؟",
+            answer: "نعم، لحسابات الشركات المعتمدة. تواصل معنا لإعداد الحساب والاتفاق على شروط الفوترة والدفع الآجل.",
+          },
+          {
+            question: "وجدت سعراً أقل على موقع آخر، ماذا أفعل؟",
+            answer: "أرسل لنا رابط العرض لنفس الغرفة والتاريخ، وسنطابقه أو نمنحك سعراً أفضل ضمن ضمان أفضل سعر للحجز المباشر.",
           },
         ],
       },
       feedbackPage: {
         hero: {
-          eyebrow: "صوتك يهمنا",
-          title: "الشكاوى والاقتراحات.",
-          text: "ملاحظاتك المباشرة تساعدنا على تحسين كل إقامة. كل رسالة تصل إلى مدير مختص ويتم الرد عليها.",
+          eyebrow: "صوتك يهمّنا",
+          title: "الاقتراحات والشكاوى.",
+          text: "ملاحظتك المباشرة تجعل كل إقامة أفضل. كل رسالة تصل إلى مدير مختص، ويردّ عليك شخص حقيقي — لا رسائل آلية.",
           image: heroImage,
         },
         intro: {
           eyebrow: "وعدنا في الخدمة",
-          title: "تأكيد خلال 4 ساعات. حل خلال 48 ساعة.",
-          text: "حال استلامنا ملاحظتك، يتولى مدير الخدمة متابعتها من البداية للنهاية. سيردّ عليك شخص حقيقي، وليس رسالة آلية.",
+          title: "نؤكّد استلام ملاحظتك خلال 4 ساعات، ونعمل على حلّها خلال 48 ساعة.",
+          text: "بمجرد وصول رسالتك يتولّاها مدير خدمة واحد من البداية إلى الإغلاق، ويبقيك على اطّلاع في كل خطوة.",
         },
         channels: [
           {
-            title: "في الفندق",
-            text: "تحدث مع مدير المنشأة عبر مكتب الاستقبال — ستجد جواباً مباشراً غالباً.",
+            title: "اتصل بنا",
+            text: "اتصل على +966 59 597 9064 في أي وقت أثناء إقامتك للأمور العاجلة، واطلب مدير الخدمة المناوب.",
           },
           {
-            title: "مكتب الحجوزات",
-            text: "اتصل بفريقنا المركزي لتسجيل الملاحظة وتوجيهها للقسم المختص.",
+            title: "واتساب",
+            text: "راسلنا على واتساب +966 59 597 9064 مع رقم الحجز وصور إن لزم، وسنفتح لك تذكرة متابعة فوراً.",
           },
           {
             title: "البريد الإلكتروني",
-            text: "أرسل لنا على feedback@swissblue.sa مع رقم الحجز ومدى الإلحاحية.",
+            text: "اكتب إلى reservations@swissblue.sa بالتفاصيل ورقم الحجز ودرجة الأولوية؛ مناسب للملاحظات التي تحتاج توثيقاً.",
           },
           {
-            title: "النموذج الإلكتروني",
-            text: "استخدم نموذج التواصل في الموقع — يصل مباشرة إلى فريق تجربة الضيف.",
+            title: "في الفندق",
+            text: "تحدّث مع مدير المنشأة عبر الاستقبال — أغلب الأمور تُحلّ في حينها.",
           },
+        ],
+        commitmentsIntro: {
+          eyebrow: "التزاماتنا",
+          title: "ما الذي نتعهّد به تجاه كل ملاحظة.",
+        },
+        commitments: [
+          { value: "4 ساعات", label: "لتأكيد استلام ملاحظتك" },
+          { value: "48 ساعة", label: "لتقديم حلٍّ أو خطة واضحة" },
+          { value: "72 ساعة", label: "لمراجعة أي تصعيد" },
+          { value: "100%", label: "ردّ بشري، لا رسائل آلية" },
         ],
         process: [
           {
             title: "الاستلام والإقرار",
-            text: "تأكيد فوري بأن ملاحظتك وصلت، مع رقم متابعة خلال 4 ساعات كحدّ أقصى.",
+            text: "تأكيد فوري بوصول ملاحظتك مع رقم تذكرة للمتابعة خلال 4 ساعات كحدّ أقصى.",
           },
           {
-            title: "البحث والتقصي",
-            text: "نراجع تفاصيل الحجز، نتحدث مع فريق المنشأة، ونتحقق من جذور الموضوع.",
+            title: "البحث والتقصّي",
+            text: "نراجع تفاصيل حجزك، ونتحدّث مع فريق المنشأة، ونحدّد السبب الجذري بدقّة.",
           },
           {
             title: "الحل والتعويض",
-            text: "نقترح حلاً واضحاً، وعند الحاجة نقدم تعويضاً مناسباً للحالة وملف الضيف.",
+            text: "نقترح حلاً واضحاً، ونقدّم — عند الحاجة — تعويضاً يناسب الحالة وتاريخك معنا.",
           },
           {
             title: "المتابعة والإغلاق",
-            text: "نتواصل معك مرة أخيرة للتأكد من رضاك قبل إغلاق التذكرة.",
+            text: "نعود إليك للتأكد من رضاك التام قبل إغلاق التذكرة، ونوثّق الدرس لتحسين الخدمة.",
           },
         ],
         categoriesIntro: {
           eyebrow: "ما الذي نستقبله",
-          title: "كل ما يخصّ تجربتك يهمنا.",
-          text: "نرحب بالشكاوى والمقترحات وحتى الإشادات. كلها تساعدنا على رفع المعيار.",
+          title: "كل ما يخصّ تجربتك يهمّنا.",
+          text: "نرحّب بالشكاوى والاقتراحات وحتى الإشادات — جميعها تساعدنا على رفع المعيار في كل منشأة.",
         },
         categories: [
-          "شكوى على خدمة محددة",
-          "اقتراح لتحسين عملية تشغيلية",
+          "شكوى على خدمة أو موقف محدّد",
+          "اقتراح لتحسين عملية أو مرفق",
           "إشادة بأحد أفراد الفريق",
           "طلب إصلاح أو صيانة",
-          "ملاحظة تخص الخصوصية أو السلامة",
-          "استفسار عن الفاتورة",
+          "ملاحظة تخصّ الخصوصية أو السلامة",
+          "استفسار أو اعتراض على فاتورة",
+        ],
+        includeIntro: {
+          eyebrow: "كي نساعدك أسرع",
+          title: "ما الذي نحتاجه في رسالتك.",
+          text: "كلما كانت التفاصيل أوضح، أسرعنا في الوصول إلى حلٍّ مناسب من أول تواصل.",
+        },
+        include: [
+          "رقم الحجز أو تواريخ الإقامة",
+          "اسم المنشأة ورقم الغرفة",
+          "وصف ما حدث ومتى",
+          "صور أو مستندات إن وُجدت",
+          "الحل أو النتيجة التي تتمنّاها",
+          "أفضل وسيلة وأوقات للتواصل معك",
+        ],
+        faqsIntro: {
+          eyebrow: "أسئلة شائعة",
+          title: "أسئلة متكرّرة حول الملاحظات.",
+        },
+        faqs: [
+          {
+            question: "كيف أتابع حالة شكواي؟",
+            answer: "ستصلك رسالة تأكيد تحمل رقم تذكرة. احتفظ به وارجع إلينا عبر أي قناة بالرقم نفسه لمعرفة آخر المستجدات.",
+          },
+          {
+            question: "هل يمكنني تقديم ملاحظة دون ذكر اسمي؟",
+            answer: "نعم، نتقبّل الملاحظات المجهولة، لكن ترك وسيلة تواصل يساعدنا على متابعتك وإبلاغك بالحل.",
+          },
+          {
+            question: "هل أحصل على تعويض أو استرداد؟",
+            answer: "عندما تستدعي الحالة ذلك، نقدّم حلاً مناسباً قد يشمل تعويضاً أو استرداداً، يُحدَّد حسب طبيعة الموضوع وتاريخك معنا.",
+          },
+          {
+            question: "كم يستغرق الردّ عادةً؟",
+            answer: "نؤكّد الاستلام خلال 4 ساعات، ونهدف إلى حلٍّ أو خطة واضحة خلال 48 ساعة. الحالات الأعقد قد تحتاج وقتاً أطول، ونبقيك على اطّلاع.",
+          },
+          {
+            question: "بأي لغة يمكنني التواصل؟",
+            answer: "بالعربية أو الإنجليزية — فريق تجربة الضيف يخدمك باللغتين.",
+          },
+          {
+            question: "ماذا لو لم يكن الحل مُرضياً؟",
+            answer: "يمكنك طلب التصعيد إلى الإدارة العامة، ويراجع فريق تجربة الضيف الحالة خلال 72 ساعة (انظر مسار التصعيد أدناه).",
+          },
         ],
         escalationIntro: {
           eyebrow: "مسار التصعيد",
-          title: "إن لم تكن النتيجة مرضية.",
-          text: "يمكنك تصعيد الموضوع إلى الإدارة العامة عبر escalations@swissblue.sa. تذكرة التصعيد تُراجَع من فريق تجربة الضيف خلال 72 ساعة.",
+          title: "إن لم تكن النتيجة مُرضية.",
+          text: "اطلب تصعيد حالتك إلى الإدارة العامة عبر مدير المنشأة، أو راسلنا على reservations@swissblue.sa وضع كلمة «تصعيد» في عنوان الرسالة. يراجع فريق تجربة الضيف كل تصعيد خلال 72 ساعة.",
         },
       },
     },
@@ -1599,6 +2319,9 @@ export const defaultSiteContent = {
     navGroups: navGroupsEn,
     footerSections: footerSectionsEn,
     footerContact: footerContactEn,
+    footerMeta: footerMetaEn,
+    ui: uiTextEn,
+    closingCtas: closingCtasEn,
     media: {
       logo: defaultLogoImage,
       mainHero: heroImage,
@@ -2017,6 +2740,7 @@ export const defaultSiteContent = {
           text: "A professional path for team stays, delegations, meetings, and monthly accommodation, with clear communication and documentation requirements.",
           image: heroImage,
         },
+        requestForm: b2bRequestFormEn,
       },
       groupBookings: {
         hero: {
@@ -2240,6 +2964,7 @@ export const defaultSiteContent = {
           email: "careers@swissblue.sa",
           cta: "Send your CV",
         },
+        recruitment: careersRecruitmentEn,
       },
       csrPage: {
         hero: {
@@ -2312,139 +3037,250 @@ export const defaultSiteContent = {
         hero: {
           eyebrow: "Direct booking support",
           title: "Central Reservation Office.",
-          text: "One team. One number. Plan, modify, and confirm reservations across every Swiss Blue property.",
+          text: "One team, one number. Plan, book, and modify your stay across every Swiss Blue hotel and apartment in Jeddah, Jazan, and Riyadh — one call or WhatsApp away.",
           image: heroImage,
         },
         intro: {
-          eyebrow: "Available 24/7",
-          title: "Reach our specialists any time, in Arabic or English.",
-          text: "Our reservations team handles new bookings, group requests, corporate accounts, and on-stay changes — directly, without intermediaries.",
+          eyebrow: "Your direct booking team",
+          title: "Talk to a real reservations specialist, in Arabic or English.",
+          text: "The Central Reservation Office is a single point of contact for every Swiss Blue property. We handle new bookings, group requests, corporate accounts, and on-stay changes — directly, with no intermediaries and no added fees.",
         },
         channels: [
           {
-            title: "Phone",
-            value: "+966 12 000 0000",
-            href: "tel:+966120000000",
-            text: "Direct line to the reservations team, around the clock.",
+            title: "Call us",
+            value: "+966 59 597 9064",
+            href: "tel:+966595979064",
+            text: "Speak directly with the reservations team, around the clock, to confirm availability and rates and book in minutes.",
           },
           {
             title: "WhatsApp",
-            value: "+966 50 000 0000",
-            href: "https://wa.me/966500000000",
-            text: "Quick chat for availability, confirmations, or changes.",
+            value: "+966 59 597 9064",
+            href: "https://wa.me/966595979064",
+            text: "Send your dates and guest count and we'll reply with room options and prices in writing.",
           },
           {
             title: "Email",
             value: "reservations@swissblue.sa",
             href: "mailto:reservations@swissblue.sa",
-            text: "For reservations and requests that need written documentation.",
+            text: "For requests that need a written trail: group quotes, corporate contracts, and invoices.",
           },
           {
-            title: "In-person",
+            title: "In person",
             value: "Front desk",
             href: "",
-            text: "Visit any property to make your reservation directly with the receptionist.",
+            text: "Visit any property to book face-to-face with the receptionist throughout the day.",
           },
         ],
         servicesIntro: {
           eyebrow: "What we handle",
-          title: "Everything you need for a smooth booking experience.",
-          text: "We cover the full range of reservation requests, from a single room to multi-property itineraries, and loop in property teams when needed.",
+          title: "Everything for a smooth booking — from one room to a multi-city itinerary.",
+          text: "Whether it's a single work night, a family's monthly stay, or a corporate group, the team owns your request end-to-end and loops in the property when needed.",
         },
         services: [
           "New reservations for individuals and families",
-          "Group bookings (10 rooms or more)",
-          "Corporate accounts and contracts",
-          "Special arrangements (celebrations, honeymoon, long stays)",
-          "Modifications and cancellations",
-          "On-stay guest support",
-          "Multi-property itineraries",
+          "Group bookings (10 rooms or more) with special rates",
+          "Corporate accounts, contracts, and credit billing",
+          "Monthly and long-stay serviced-apartment bookings",
+          "Events, honeymoons, and special requests",
+          "Modifications, extensions, and cancellations",
+          "On-stay support and coordination with the property",
+          "Multi-property itineraries across Jeddah, Jazan, and Riyadh",
         ],
         benefitsIntro: {
-          eyebrow: "Why book direct",
-          title: "Exclusive benefits you won't get through intermediaries.",
-          text: "Booking through our office secures the best rate, the most flexibility, and personal coordination.",
+          eyebrow: "Why book direct with us",
+          title: "Benefits you won't get through third-party sites.",
+          text: "Booking direct through our office secures the best rate, more flexibility, and a human who knows your stay before you arrive.",
         },
         benefits: [
           {
-            title: "Best rate guarantee",
-            text: "Our direct rate matches or beats any third-party channel for the same room and dates.",
+            title: "Best-rate guarantee",
+            text: "We match or beat any third-party channel for the same room and dates — tell us if you find lower and we'll handle it.",
+          },
+          {
+            title: "No booking fees",
+            text: "You deal with us directly, so there are no agent commissions or hidden service fees added to your bill.",
           },
           {
             title: "More flexible policies",
-            text: "Cancellation, modification, or postponement on clearer and faster terms than external booking channels.",
+            text: "Cancellation, modification, and postponement on clearer, faster terms than external booking channels.",
           },
           {
             title: "Personal coordination",
-            text: "Priority upgrades when available, special requests, and pre-arrival coordination with the property team.",
+            text: "Priority upgrades when available, pre-arrival special requests, and a guest profile that remembers your preferences.",
+          },
+        ],
+        statsIntro: {
+          eyebrow: "At a glance",
+          title: "Why guests book with us.",
+        },
+        stats: [
+          { value: "24/7", label: "Reservations support, every day" },
+          { value: "0", label: "Booking fees or agent commissions" },
+          { value: "3", label: "Cities: Jeddah, Jazan, Riyadh" },
+          { value: "AR · EN", label: "Service in both languages" },
+        ],
+        prepareIntro: {
+          eyebrow: "Before you call",
+          title: "Have these ready for a faster booking.",
+          text: "Keeping this handy shortens the call and means we quote the right price the first time.",
+        },
+        prepare: [
+          "Check-in and check-out dates",
+          "Preferred city or property",
+          "Number of guests (adults and children)",
+          "Room or suite type you want",
+          "Any special requests (floor, view, extra bed)",
+          "Corporate account or loyalty number, if any",
+        ],
+        faqsIntro: {
+          eyebrow: "FAQ",
+          title: "The booking questions we hear most.",
+        },
+        faqs: [
+          {
+            question: "Do I need to pay a deposit to confirm?",
+            answer: "Deposit policy depends on the rate type and season. Your reservations specialist will explain the amount and the payment methods available before any booking is confirmed.",
+          },
+          {
+            question: "What is the free-cancellation window?",
+            answer: "Most flexible rates allow free cancellation up to a set time before arrival. Non-refundable rates are priced lower and clearly flagged at the time of booking.",
+          },
+          {
+            question: "How do I modify or extend a booking?",
+            answer: "Call or WhatsApp us with your booking reference and we'll change the dates or room subject to availability — usually with no fee on flexible rates.",
+          },
+          {
+            question: "Are there special rates for groups?",
+            answer: "Yes. For 10 rooms or more, our dedicated group desk offers special rates and terms. Email us with your group details.",
+          },
+          {
+            question: "Can you invoice a company and bill on credit?",
+            answer: "Yes, for approved corporate accounts. Contact us to set up the account and agree billing and credit terms.",
+          },
+          {
+            question: "I found a lower price elsewhere — what now?",
+            answer: "Send us the link for the same room and dates and we'll match it or do better under our direct best-rate guarantee.",
           },
         ],
       },
       feedbackPage: {
         hero: {
           eyebrow: "Your voice matters",
-          title: "Complaints & Suggestions.",
-          text: "Direct feedback helps us improve every stay. Every message reaches a manager and gets a response.",
+          title: "Suggestions & Complaints.",
+          text: "Your direct feedback makes every stay better. Every message reaches a dedicated manager, and a real person replies — never an auto-response.",
           image: heroImage,
         },
         intro: {
           eyebrow: "Our service promise",
-          title: "Acknowledged in 4 hours. Resolved in 48.",
-          text: "Once we receive your feedback, a service manager owns it end-to-end. You will hear back from a real person, not an auto-reply.",
+          title: "Acknowledged within 4 hours, worked to resolution within 48.",
+          text: "The moment your message arrives, one service manager owns it from start to close and keeps you updated at every step.",
         },
         channels: [
           {
-            title: "At the hotel",
-            text: "Speak to the property manager via the front desk — most matters get an answer on the spot.",
+            title: "Call us",
+            text: "Call +966 59 597 9064 any time during your stay for anything urgent, and ask for the duty service manager.",
           },
           {
-            title: "Central reservation office",
-            text: "Call our central team to log the issue and route it to the responsible department.",
+            title: "WhatsApp",
+            text: "WhatsApp +966 59 597 9064 with your booking reference and photos if relevant — we'll open a tracked ticket right away.",
           },
           {
             title: "Email",
-            text: "Write to feedback@swissblue.sa with your booking reference and how urgent it is.",
+            text: "Email reservations@swissblue.sa with the details, your booking reference, and priority; best for feedback that needs a record.",
           },
           {
-            title: "Online form",
-            text: "Use the contact form on the website — it lands directly with the guest experience team.",
+            title: "At the hotel",
+            text: "Speak to the property manager via reception — most matters are resolved on the spot.",
           },
+        ],
+        commitmentsIntro: {
+          eyebrow: "Our commitments",
+          title: "What we promise for every message.",
+        },
+        commitments: [
+          { value: "4 hours", label: "To acknowledge your message" },
+          { value: "48 hours", label: "For a resolution or clear plan" },
+          { value: "72 hours", label: "To review any escalation" },
+          { value: "100%", label: "Human reply, never automated" },
         ],
         process: [
           {
             title: "Acknowledge",
-            text: "Immediate confirmation that your message was received, with a tracking reference within 4 hours.",
+            text: "Immediate confirmation that your message arrived, with a tracking reference within 4 hours.",
           },
           {
             title: "Investigate",
-            text: "We review the booking details, speak to the property team, and verify the root cause.",
+            text: "We review your booking details, speak to the property team, and pinpoint the root cause.",
           },
           {
             title: "Resolve",
-            text: "We propose a clear solution and, where appropriate, offer compensation suited to the case and the guest profile.",
+            text: "We propose a clear solution and, where warranted, offer compensation suited to the case and your history with us.",
           },
           {
             title: "Follow up",
-            text: "One final check-in to ensure you are satisfied before we close the ticket.",
+            text: "We check back to confirm you're fully satisfied before closing the ticket, and log the lesson to improve service.",
           },
         ],
         categoriesIntro: {
           eyebrow: "What we accept",
-          title: "Anything that affects your stay matters to us.",
-          text: "We welcome complaints, suggestions, and even compliments. All of them help us raise the bar.",
+          title: "Anything that affects your stay matters.",
+          text: "We welcome complaints, suggestions, and even compliments — all of them help us raise the bar at every property.",
         },
         categories: [
-          "Service complaint",
-          "Process improvement suggestion",
-          "Compliment for a team member",
-          "Repair or maintenance request",
-          "Privacy or safety concern",
-          "Billing question",
+          "A complaint about a specific service or moment",
+          "A suggestion to improve a process or facility",
+          "A compliment for a team member",
+          "A repair or maintenance request",
+          "A privacy or safety concern",
+          "A billing question or dispute",
+        ],
+        includeIntro: {
+          eyebrow: "To help you faster",
+          title: "What to include in your message.",
+          text: "The clearer the details, the faster we reach the right resolution on the first contact.",
+        },
+        include: [
+          "Booking reference or stay dates",
+          "Property name and room number",
+          "What happened, and when",
+          "Photos or documents, if any",
+          "The outcome or resolution you'd like",
+          "The best way and times to reach you",
+        ],
+        faqsIntro: {
+          eyebrow: "FAQ",
+          title: "Common questions about feedback.",
+        },
+        faqs: [
+          {
+            question: "How do I track my complaint?",
+            answer: "You'll get a confirmation with a ticket reference. Keep it and reply on any channel with the same reference for the latest status.",
+          },
+          {
+            question: "Can I send feedback anonymously?",
+            answer: "Yes, we accept anonymous feedback — but leaving a way to reach you lets us follow up and tell you the outcome.",
+          },
+          {
+            question: "Will I get compensation or a refund?",
+            answer: "When the case warrants it, we offer a suitable resolution that may include compensation or a refund, decided by the nature of the issue and your history with us.",
+          },
+          {
+            question: "How long does a reply usually take?",
+            answer: "We acknowledge within 4 hours and aim for a resolution or clear plan within 48. More complex cases can take longer, and we keep you updated.",
+          },
+          {
+            question: "Which language can I use?",
+            answer: "Arabic or English — the guest experience team serves you in both.",
+          },
+          {
+            question: "What if I'm not satisfied with the outcome?",
+            answer: "You can request escalation to the corporate office; the guest experience team reviews it within 72 hours (see the escalation path below).",
+          },
         ],
         escalationIntro: {
           eyebrow: "Escalation path",
-          title: "If you are not satisfied with the outcome.",
-          text: "You can escalate the case to the corporate office at escalations@swissblue.sa. Escalations are reviewed by the guest experience team within 72 hours.",
+          title: "If you're not satisfied with the outcome.",
+          text: "Ask to escalate your case to the corporate office through the property manager, or email reservations@swissblue.sa with 'Escalation' in the subject. The guest experience team reviews every escalation within 72 hours.",
         },
       },
     },
@@ -3138,11 +3974,13 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
  * one giant singleton. The full `{ ar, en }` tree is ~5,250 attributes, far over
  * Sanity's hard limit of 1,000 attributes per document, which made saving the
  * monolithic singleton fail. Each chunk below stays comfortably under 1,000:
- *   shell ~141 · faq ~669 · homepage ~580 · rooms ~466 · subpages(rest) ~769
+ *   shell ~150 · faq ~669 · homepage ~580 · rooms ~466 · subpages(rest) ~720 · forms ~310
+ * The `forms` chunk holds careersPage + corporateDealsPage (recruitment / B2B
+ * form content, jobs, and dropdowns) so the `subpages` doc keeps its headroom.
  * The in-memory shape is unchanged — only storage is chunked, transparently.
  */
 const LANGS = ["ar", "en"] as const;
-const CHUNK_KINDS = ["shell", "faq", "homepage", "rooms", "subpages"] as const;
+const CHUNK_KINDS = ["shell", "faq", "homepage", "rooms", "subpages", "forms"] as const;
 const METADATA_ID = "site-content--meta";
 
 type AnyRecord = Record<string, unknown>;
@@ -3167,13 +4005,18 @@ function splitLang(langContent: AnyRecord): Record<(typeof CHUNK_KINDS)[number],
     subpages,
     ...rest
   } = langContent;
-  const { roomsSuites, ...subpagesRest } = (subpages as AnyRecord) ?? {};
+  // careersPage + corporateDealsPage carry the editable recruitment/B2B form
+  // content (jobs, labels, dropdowns), so they get their own chunk to keep the
+  // main `subpages` document well under Sanity's 1,000-attribute-per-doc limit.
+  const { roomsSuites, careersPage, corporateDealsPage, ...subpagesRest } =
+    (subpages as AnyRecord) ?? {};
   return {
     shell: { navGroups, footerSections, footerContact, media, ...rest },
     faq: { faq },
     homepage: { homepage },
     rooms: { subpages: { roomsSuites } },
     subpages: { subpages: subpagesRest },
+    forms: { subpages: { careersPage, corporateDealsPage } },
   };
 }
 
@@ -3201,7 +4044,7 @@ function assembleChunks(byId: Map<string, AnyRecord>): Partial<EditableSiteConte
       const slice = byId.get(chunkId(lang, kind));
       if (!slice) continue;
       langFound = true;
-      if (kind === "rooms" || kind === "subpages") {
+      if (kind === "rooms" || kind === "subpages" || kind === "forms") {
         Object.assign(subpages, (slice.subpages as AnyRecord) ?? {});
       } else {
         Object.assign(langOut, slice);

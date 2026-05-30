@@ -159,7 +159,7 @@ export default async function HotelDetailPageEn({
       </section>
       )}
 
-      <CtaBandEn title={`Book your stay at ${hotel.title}.`} cta="Check availability" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.hotelDetail.titleTemplate.replace("{hotel}", hotel.title)} text={en.closingCtas.defaultText} cta={en.closingCtas.hotelDetail.cta} />
     </PageShellEn>
   );
 }

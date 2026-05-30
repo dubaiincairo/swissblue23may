@@ -62,7 +62,7 @@ export default async function MeetingsEventsPage() {
           ))}
         </div>
       </section>
-      <CtaBand title="خطّط لمناسبتك القادمة مع سويس بلو." cta="تواصل مع فريق الفعاليات" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.meetingsEvents.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.meetingsEvents.cta} />
       </>
       )}
     </PageShell>

@@ -95,7 +95,7 @@ export default async function GroupBookingsPage() {
         </div>
       </section>
 
-      <CtaBand title="اطلب تنسيق إقامة لمجموعتك." cta="تواصل مع المختص" />
+      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.pages.groupBookings.title} text={ar.closingCtas.defaultText} cta={ar.closingCtas.pages.groupBookings.cta} />
       </>
       )}
     </PageShell>

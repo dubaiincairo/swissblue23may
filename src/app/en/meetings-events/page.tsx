@@ -62,7 +62,7 @@ export default async function MeetingsEventsPageEn() {
           ))}
         </div>
       </section>
-      <CtaBandEn title="Plan your next event with Swiss Blue." cta="Talk to the events team" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.meetingsEvents.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.meetingsEvents.cta} />
       </>
       )}
     </PageShellEn>

@@ -58,7 +58,7 @@ export default async function AmenitiesServicesPageEn() {
         </div>
       </section>
 
-      <CtaBandEn title="Book a stay with the essentials covered." cta="Book now" />
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.amenities.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.amenities.cta} />
         </>
       )}
     </PageShellEn>

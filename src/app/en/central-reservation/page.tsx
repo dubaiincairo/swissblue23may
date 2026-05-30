@@ -1,4 +1,5 @@
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { rich } from "@/components/rich-text";
 import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
@@ -47,6 +48,31 @@ export default async function CentralReservationPageEn() {
               )}
               <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                 {rich(channel.text)}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="reveal-slide-up">
+          <span className="eyebrow">{rich(content.statsIntro.eyebrow)}</span>
+          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
+            {rich(content.statsIntro.title)}
+          </h2>
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {(content.stats ?? []).map((stat, index) => (
+            <article
+              className="content-card reveal-slide-up"
+              key={stat.label}
+              style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
+            >
+              <span className="text-3xl font-black text-[var(--primary)]">
+                {rich(stat.value)}
+              </span>
+              <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                {rich(stat.label)}
               </p>
             </article>
           ))}
@@ -102,7 +128,42 @@ export default async function CentralReservationPageEn() {
         </div>
       </section>
 
-      <CtaBandEn title="Direct booking, best rates, more flexibility." cta="Check availability" />
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
+        <div className="reveal-slide-up">
+          <span className="eyebrow">{rich(content.prepareIntro.eyebrow)}</span>
+          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
+            {rich(content.prepareIntro.title)}
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
+            {rich(content.prepareIntro.text)}
+          </p>
+        </div>
+        <div className="amenity-grid">
+          {(content.prepare ?? []).map((item, index) => (
+            <div
+              className="amenity-pill reveal-elastic-pop"
+              key={item}
+              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
+            >
+              {rich(item)}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="reveal-slide-up">
+          <span className="eyebrow">{rich(content.faqsIntro.eyebrow)}</span>
+          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
+            {rich(content.faqsIntro.title)}
+          </h2>
+        </div>
+        <div className="mt-10">
+          <FaqAccordion items={content.faqs ?? []} />
+        </div>
+      </section>
+
+      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.centralReservation.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.centralReservation.cta} />
         </>
       )}
     </PageShellEn>
