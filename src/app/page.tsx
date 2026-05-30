@@ -4,6 +4,7 @@ import { AnimatedCounter } from "@/components/animated-counter";
 import { FaqAccordion } from "@/components/faq-accordion";
 import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { SiteFooter, SiteHeader } from "@/components/site";
+import BookingBar from "@/components/booking-bar";
 import HomepageGallery from "@/components/homepage-gallery";
 import { PartnersSection } from "@/components/partners-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
@@ -51,27 +52,13 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="booking-bar reveal-scale-up" style={{ "--delay": "450ms" } as React.CSSProperties}>
-            <div className="booking-field">
-              <span>الوجهة</span>
-              <strong>{rich(home.hero.destination)}</strong>
-            </div>
-            <div className="booking-field">
-              <span>تاريخ الوصول</span>
-              <strong>19 مايو 2026</strong>
-            </div>
-            <div className="booking-field">
-              <span>تاريخ المغادرة</span>
-              <strong>20 مايو 2026</strong>
-            </div>
-            <div className="booking-field">
-              <span>الضيوف</span>
-              <strong>بالغان</strong>
-            </div>
-            <a className="btn btn-primary min-h-[54px] justify-center" href={BOOKING_URL}>
-              تحقق من التوفر
-            </a>
-          </div>
+          <BookingBar
+            properties={home.properties.items.map((hotel) => ({
+              slug: hotel.slug,
+              title: hotel.title,
+            }))}
+            locale="ar"
+          />
         </div>
       </section>
       )}
