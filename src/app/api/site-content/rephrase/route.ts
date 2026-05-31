@@ -133,8 +133,10 @@ export async function POST(request: Request) {
 
   if (!response.ok) {
     const detail = await response.text().catch(() => "");
+    // Log upstream diagnostics server-side; don't echo them to the client.
+    console.error(`Gemini rephrase failed (${response.status}): ${detail.slice(0, 500)}`);
     return NextResponse.json(
-      { error: `Rephrase failed (${response.status}).`, detail: detail.slice(0, 200) },
+      { error: `Rephrase failed (${response.status}).` },
       { status: response.status === 429 ? 429 : 502 },
     );
   }
