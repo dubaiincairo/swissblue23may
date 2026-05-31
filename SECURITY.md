@@ -7,9 +7,9 @@ names and procedures.
 ## Reporting a vulnerability
 
 If you discover a security issue, please report it privately to
-**[set a security contact — e.g. security@swissblue.sa]** rather than opening a
-public issue. Include steps to reproduce and the affected URL/route. We aim to
-acknowledge reports within a few business days.
+**security@swissblue.sa** rather than opening a public issue. Include steps to
+reproduce and the affected URL/route. We aim to acknowledge reports within a few
+business days.
 
 Please do **not** run automated scanners or load/stress tests against the
 production site.
