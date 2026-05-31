@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getFormsClient, isFormsConfigured } from "@/sanity/lib/forms";
+import { HONEYPOT_FIELD, getClientIp, honeypotTripped, rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -29,11 +30,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Submissions are not configured." }, { status: 500 });
   }
 
+  // Anti-abuse: cap submissions per IP (burst + hourly) before doing any work.
+  const ip = getClientIp(request);
+  const tooMany =
+    !(await rateLimit("forms-b2b", ip, 5, 60)).success ||
+    !(await rateLimit("forms-b2b-hr", ip, 20, 3600)).success;
+  if (tooMany) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again shortly." },
+      { status: 429 },
+    );
+  }
+
   let body: Record<string, unknown>;
   try {
     body = (await request.json()) as Record<string, unknown>;
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+
+  // Honeypot: real users never fill this hidden field — silently accept & drop.
+  if (honeypotTripped(body[HONEYPOT_FIELD])) {
+    return NextResponse.json({ ok: true });
   }
 
   const value = (key: string) => {

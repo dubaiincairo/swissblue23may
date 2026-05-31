@@ -142,6 +142,13 @@ function JobCard({
             ) : (
               <form className="b2b-form" onSubmit={handleSubmit} dir={isArabic ? "rtl" : "ltr"}>
                 <input type="hidden" name="position" value={job.title} />
+                {/* Honeypot — hidden from real users; bots that fill it are dropped server-side. */}
+                <div
+                  aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
+                >
+                  <input name="company_url" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
                 <label>
                   <span>{form.fullName}</span>
                   <input name="fullName" required autoComplete="name" />

@@ -21,6 +21,8 @@ const frameProtection = [
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["isomorphic-dompurify", "jsdom"],
+  // Don't advertise the framework/version in responses.
+  poweredByHeader: false,
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
