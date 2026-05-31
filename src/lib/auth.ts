@@ -63,23 +63,36 @@ export function verifyCredentials(username: string, password: string): boolean {
   return userOk && passOk;
 }
 
+/** Optional kill-switch: bump ADMIN_SESSION_VERSION to invalidate all sessions. */
+function getSessionVersion(): string {
+  return process.env.ADMIN_SESSION_VERSION ?? "1";
+}
+
+/**
+ * The message we actually HMAC. Binding the signature to the current password
+ * and session version means a password change OR a version bump invalidates
+ * every existing token — revocation without a server-side session store. The
+ * password is only ever hashed, never placed in the token itself.
+ */
+function signedMessage(expiry: number): string {
+  return `${expiry}:${getSessionVersion()}:${getAdminPassword()}`;
+}
+
 /** Mint a signed session token of the form `<expiryMs>.<signature>`. */
 export async function createSessionToken(): Promise<string> {
   const expiry = Date.now() + SESSION_MAX_AGE * 1000;
-  const payload = String(expiry);
-  const signature = await sign(payload);
-  return `${payload}.${signature}`;
+  const signature = await sign(signedMessage(expiry));
+  return `${expiry}.${signature}`;
 }
 
-/** Verify a session cookie value: valid signature and not expired. */
+/** Verify a session cookie value: valid signature, bound creds, not expired. */
 export async function verifySessionToken(token: string | undefined | null): Promise<boolean> {
   if (!token || !getSecret()) return false;
   const dot = token.indexOf(".");
   if (dot <= 0) return false;
-  const payload = token.slice(0, dot);
   const signature = token.slice(dot + 1);
-  const expiry = Number(payload);
+  const expiry = Number(token.slice(0, dot));
   if (!Number.isFinite(expiry) || expiry < Date.now()) return false;
-  const expected = await sign(payload);
+  const expected = await sign(signedMessage(expiry));
   return timingSafeEqual(signature, expected);
 }
