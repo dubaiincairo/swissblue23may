@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { allowedCvTypes, getFormsClient, isFormsConfigured, maxCvBytes } from "@/sanity/lib/forms";
 import { HONEYPOT_FIELD, getClientIp, honeypotTripped, rateLimit } from "@/lib/rate-limit";
+import { sniffMime } from "@/lib/file-signature";
 
 export const dynamic = "force-dynamic";
 
@@ -81,6 +82,19 @@ export async function POST(request: Request) {
 
     try {
       const buffer = Buffer.from(await cv.arrayBuffer());
+      // Verify the bytes really are a PDF / Word doc, not a spoofed Content-Type.
+      const sniffed = sniffMime(buffer);
+      const cvOk =
+        sniffed === "application/pdf" ||
+        sniffed === "application/msword" ||
+        (sniffed === "application/zip" &&
+          cv.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+      if (!cvOk) {
+        return NextResponse.json(
+          { error: "CV must be a valid PDF or Word document." },
+          { status: 400 },
+        );
+      }
       const asset = await client.assets.upload("file", buffer, {
         filename: cv.name,
         contentType: cv.type,
