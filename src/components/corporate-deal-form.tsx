@@ -107,6 +107,7 @@ export default function CorporateDealForm({
       documents: String(stay.get("documents") ?? ""),
       preferredContact: String(stay.get("preferredContact") ?? ""),
       message: String(stay.get("message") ?? ""),
+      company_url: String(stay.get("company_url") ?? ""),
       locale,
     };
 
@@ -261,6 +262,13 @@ export default function CorporateDealForm({
             </div>
 
             <form className="b2b-modal-form" onSubmit={handleFinalSubmit}>
+              {/* Honeypot — hidden from real users; bots that fill it are dropped server-side. */}
+              <div
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
+              >
+                <input name="company_url" type="text" tabIndex={-1} autoComplete="off" />
+              </div>
               <label>
                 <span>{t.fields.city}</span>
                 <select name="city" required>

@@ -18,6 +18,18 @@ function badRequest(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
 }
 
+/** True only when the URL points at this source's allowlisted image hosts. */
+function hostAllowed(rawUrl: string, source: "unsplash" | "pexels"): boolean {
+  try {
+    const host = new URL(rawUrl).hostname;
+    return source === "unsplash"
+      ? host === "api.unsplash.com" || host.endsWith(".unsplash.com")
+      : host.endsWith(".pexels.com");
+  } catch {
+    return false;
+  }
+}
+
 function sanitizeFilename(input: string, source: "unsplash" | "pexels") {
   const fallback = `${source}-photo`;
   const cleaned = input
@@ -69,19 +81,7 @@ export async function POST(request: Request) {
     return badRequest("downloadUrl must be an https URL.");
   }
 
-  let allowedHost = false;
-  try {
-    const host = new URL(downloadUrl).hostname;
-    if (source === "unsplash") {
-      allowedHost = host === "api.unsplash.com" || host.endsWith(".unsplash.com");
-    } else {
-      allowedHost = host.endsWith(".pexels.com");
-    }
-  } catch {
-    return badRequest("downloadUrl is not a valid URL.");
-  }
-
-  if (!allowedHost) {
+  if (!hostAllowed(downloadUrl, source)) {
     return badRequest("downloadUrl host is not allowed for this source.");
   }
 
@@ -110,12 +110,24 @@ export async function POST(request: Request) {
     }
   }
 
+  // Re-validate the final URL (e.g. Unsplash's tracking-redirect target) so the
+  // server only ever fetches from the allowlisted image hosts — no SSRF pivot.
+  if (!imageUrl.startsWith("https://") || !hostAllowed(imageUrl, source)) {
+    return NextResponse.json({ error: "Resolved image URL is not allowed." }, { status: 502 });
+  }
+
   const imageResponse = await fetch(imageUrl);
   if (!imageResponse.ok) {
     return NextResponse.json(
       { error: `Could not fetch the image (${imageResponse.status}).` },
       { status: 502 },
     );
+  }
+
+  // Reject oversized payloads up front when the host declares a content length.
+  const declaredLength = Number(imageResponse.headers.get("content-length") ?? "");
+  if (Number.isFinite(declaredLength) && declaredLength > maxImageBytes) {
+    return NextResponse.json({ error: "Image must be 8 MB or smaller." }, { status: 413 });
   }
 
   const contentType = imageResponse.headers.get("content-type")?.split(";")[0]?.trim() ?? "image/jpeg";

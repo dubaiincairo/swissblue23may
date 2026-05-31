@@ -70,8 +70,10 @@ export async function POST(request: Request) {
 
   if (!response.ok) {
     const detail = await response.text().catch(() => "");
+    // Log upstream diagnostics server-side; don't echo them to the client.
+    console.error(`DeepL translate failed (${response.status}): ${detail.slice(0, 500)}`);
     return NextResponse.json(
-      { error: `Translation failed (${response.status}).`, detail: detail.slice(0, 200) },
+      { error: `Translation failed (${response.status}).` },
       { status: response.status === 456 ? 402 : 502 },
     );
   }

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { allowedCvTypes, getFormsClient, isFormsConfigured, maxCvBytes } from "@/sanity/lib/forms";
+import { HONEYPOT_FIELD, getClientIp, honeypotTripped, rateLimit } from "@/lib/rate-limit";
+import { sniffMime } from "@/lib/file-signature";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +26,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Submissions are not configured." }, { status: 500 });
   }
 
+  // Anti-abuse: cap submissions per IP (burst + hourly). CV uploads are heavy,
+  // so this also guards against storage/bandwidth abuse.
+  const ip = getClientIp(request);
+  const tooMany =
+    !(await rateLimit("forms-careers", ip, 5, 60)).success ||
+    !(await rateLimit("forms-careers-hr", ip, 20, 3600)).success;
+  if (tooMany) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again shortly." },
+      { status: 429 },
+    );
+  }
+
   const client = getFormsClient();
   if (!client) {
     return NextResponse.json({ error: "Submissions are not configured." }, { status: 500 });
@@ -34,6 +49,11 @@ export async function POST(request: Request) {
     formData = await request.formData();
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+
+  // Honeypot: real users never fill this hidden field — silently accept & drop.
+  if (honeypotTripped(formData.get(HONEYPOT_FIELD))) {
+    return NextResponse.json({ ok: true });
   }
 
   const fullName = String(formData.get("fullName") ?? "").trim();
@@ -62,6 +82,19 @@ export async function POST(request: Request) {
 
     try {
       const buffer = Buffer.from(await cv.arrayBuffer());
+      // Verify the bytes really are a PDF / Word doc, not a spoofed Content-Type.
+      const sniffed = sniffMime(buffer);
+      const cvOk =
+        sniffed === "application/pdf" ||
+        sniffed === "application/msword" ||
+        (sniffed === "application/zip" &&
+          cv.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+      if (!cvOk) {
+        return NextResponse.json(
+          { error: "CV must be a valid PDF or Word document." },
+          { status: 400 },
+        );
+      }
       const asset = await client.assets.upload("file", buffer, {
         filename: cv.name,
         contentType: cv.type,

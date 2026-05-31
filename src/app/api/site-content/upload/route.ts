@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import DOMPurify from "isomorphic-dompurify";
 import {
   allowedAssetTypes,
   isUploadConfigured,
@@ -6,6 +7,7 @@ import {
   maxVideoBytes,
   uploadAssetToSanity,
 } from "@/sanity/lib/asset-upload";
+import { looksLikeSvg, sniffMime } from "@/lib/file-signature";
 
 export const dynamic = "force-dynamic";
 
@@ -38,10 +40,36 @@ export async function POST(request: Request) {
     );
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
+  let buffer = Buffer.from(await file.arrayBuffer());
+  let mimeType = file.type;
+
+  // Validate the actual bytes, not the spoofable client Content-Type.
+  if (file.type === "image/svg+xml") {
+    // SVG is XML and can carry <script> / event handlers — sanitise before storing.
+    const text = buffer.toString("utf8");
+    if (!looksLikeSvg(text)) {
+      return NextResponse.json({ error: "That doesn't look like a valid SVG." }, { status: 400 });
+    }
+    const clean = DOMPurify.sanitize(text, { USE_PROFILES: { svg: true, svgFilters: true } });
+    if (!clean.trim()) {
+      return NextResponse.json({ error: "SVG could not be sanitised." }, { status: 400 });
+    }
+    buffer = Buffer.from(clean, "utf8");
+  } else {
+    const sniffed = sniffMime(buffer);
+    const sniffedIsVideo = sniffed?.startsWith("video/") ?? false;
+    if (!sniffed || !allowedAssetTypes.has(sniffed) || sniffedIsVideo !== isVideo) {
+      return NextResponse.json(
+        { error: "File contents don't match a supported media type." },
+        { status: 400 },
+      );
+    }
+    mimeType = sniffed; // trust the detected type for the upload, not the client's claim
+  }
+
   const asset = await uploadAssetToSanity({
     buffer,
-    mimeType: file.type,
+    mimeType,
     filename: file.name,
   });
 
