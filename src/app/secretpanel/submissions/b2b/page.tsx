@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getFormsClient } from "@/sanity/lib/forms";
+import { requireAuthority } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +62,7 @@ function Field({ label, value }: { label: string; value?: string }) {
 }
 
 export default async function B2bSubmissionsPage() {
+  await requireAuthority("submissions");
   const requests = await getRequests();
 
   return (

@@ -1,16 +1,33 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import {
+  ENV_OWNER_UID,
   SESSION_COOKIE,
   SESSION_MAX_AGE,
   createSessionToken,
   isAuthConfigured,
+  ownerPerms,
   verifyCredentials,
 } from "@/lib/auth";
+import { getUserByUsername, recordLogin } from "@/lib/admin-users";
+import { verifyPassword } from "@/lib/admin-crypto";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 const TOO_MANY = { error: "Too many attempts. Please try again later." };
+const BAD_CREDS = { error: "Incorrect username or password." };
+
+function setSessionCookie(token: string) {
+  const response = NextResponse.json({ ok: true });
+  response.cookies.set(SESSION_COOKIE, token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: SESSION_MAX_AGE,
+  });
+  return response;
+}
 
 export async function POST(request: Request) {
   if (!isAuthConfigured()) {
@@ -44,19 +61,34 @@ export async function POST(request: Request) {
     return NextResponse.json(TOO_MANY, { status: 429 });
   }
 
-  if (!verifyCredentials(username, password)) {
-    console.warn(`[auth] failed login attempt ip=${ip} user=${userKey}`);
-    return NextResponse.json({ error: "Incorrect username or password." }, { status: 401 });
+  // 1) Permanent env owner — works with no datastore, full authorities.
+  if (verifyCredentials(username, password)) {
+    return setSessionCookie(
+      await createSessionToken({ uid: ENV_OWNER_UID, role: "owner", perms: ownerPerms(), tv: 0 }),
+    );
   }
 
-  const token = await createSessionToken();
-  const response = NextResponse.json({ ok: true });
-  response.cookies.set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: SESSION_MAX_AGE,
-  });
-  return response;
+  // 2) Managed user — look up, verify password, must be active.
+  const stored = await getUserByUsername(username).catch(() => null);
+  if (stored && stored.secret.active) {
+    const ok = await verifyPassword(password, {
+      hash: stored.secret.passwordHash,
+      salt: stored.secret.passwordSalt,
+      iterations: stored.secret.iterations,
+    });
+    if (ok) {
+      const token = await createSessionToken({
+        uid: stored.userKey,
+        role: stored.secret.role,
+        perms: stored.secret.authorities,
+        tv: stored.secret.tokenVersion || 1,
+      });
+      const response = setSessionCookie(token);
+      after(() => recordLogin(stored.userKey));
+      return response;
+    }
+  }
+
+  console.warn(`[auth] failed login attempt ip=${ip} user=${userKey}`);
+  return NextResponse.json(BAD_CREDS, { status: 401 });
 }
