@@ -28,7 +28,7 @@ export default async function EnglishHomePage() {
           fallbackImage={en.media.mainHero}
           fallbackAlt="Red Sea coastline near Swiss Blue Hotels"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.78),rgba(18,70,168,0.46)_48%,rgba(8,28,70,0.1))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.86),rgba(18,70,168,0.58)_48%,rgba(8,28,70,0.12))]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
         <div className="relative mx-auto flex min-h-[640px] max-w-7xl flex-col justify-between gap-10 px-4 pb-8 pt-20 sm:px-6 lg:min-h-[100svh] lg:px-8">
           <div className="max-w-3xl pt-3 text-white">
@@ -36,7 +36,7 @@ export default async function EnglishHomePage() {
             <h1 className="t-hero mt-5 reveal-slide-up">
               {rich(home.hero.title)}
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-white/82 sm:text-xl reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/84 sm:text-xl reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
               {rich(home.hero.text)}
             </p>
             <div className="mt-8 flex flex-wrap gap-3 reveal-slide-up" style={{ "--delay": "300ms" } as React.CSSProperties}>
@@ -98,7 +98,7 @@ export default async function EnglishHomePage() {
             >
               <figure className="relative h-72 overflow-hidden">
                 <Image
-                  className="object-cover"
+                  className="object-cover transition duration-500 hover:scale-105"
                   src={hotel.image}
                   alt={hotel.title}
                   fill
