@@ -128,6 +128,15 @@ body {
   font-family: var(--font-arabic-sans), Arial, Helvetica, sans-serif;
 }
 
+/* English tree uses a Latin-optimized font; Arabic keeps Noto Kufi Arabic. */
+html[lang="en"] {
+  --font-sans: var(--font-latin-sans);
+}
+
+html[lang="en"] body {
+  font-family: var(--font-latin-sans), "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
 html {
   scroll-behavior: smooth;
   scrollbar-gutter: stable both-edges;
