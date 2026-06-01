@@ -50,8 +50,10 @@ export default function CorporateDealForm({
     if (modalOpen) {
       const previous = document.body.style.overflow;
       document.body.style.overflow = "hidden";
+      document.body.classList.add("overlay-open");
       return () => {
         document.body.style.overflow = previous;
+        document.body.classList.remove("overlay-open");
       };
     }
   }, [modalOpen]);
