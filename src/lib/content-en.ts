@@ -559,21 +559,6 @@ export const roomClassificationsEn = [
   },
 ];
 
-export const stayCategoriesEn = [
-  { title: "Hotels", subtitle: "Rooms and suites", text: "Full hotel service for short stays, business travel, and guests who want a direct hotel experience." },
-  { title: "Apart-hotels", subtitle: "Apartment space with hotel comfort", text: "Flexible layouts for families, medium-length stays, and guests who want more living space." },
-  { title: "Serviced Apartments", subtitle: "Long-stay privacy", text: "More space and daily practicality for corporate assignments, relocations, and monthly stays." },
-];
-
-export const apartmentBenefitsEn = [
-  "Studio, one-bedroom, two-bedroom, and selected three-bedroom layouts",
-  "Living space for families and longer stays",
-  "Practical comfort with hotel services",
-  "Locations in Jeddah, Jazan, and Riyadh",
-  "Suitable for business relocation and monthly stays",
-  "More privacy with direct booking support",
-];
-
 export const faqsEn = [
   {
     question: "What are the check-in and check-out times at Swiss Blue Hotels?",

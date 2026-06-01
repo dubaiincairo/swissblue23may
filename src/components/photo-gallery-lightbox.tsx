@@ -68,6 +68,7 @@ export default function PhotoGalleryLightbox({
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.body.classList.add("overlay-open");
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") close();
@@ -79,6 +80,7 @@ export default function PhotoGalleryLightbox({
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
+      document.body.classList.remove("overlay-open");
     };
   }, [isOpen, close, next, previous]);
 

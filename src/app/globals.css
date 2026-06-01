@@ -128,9 +128,27 @@ body {
   font-family: var(--font-arabic-sans), Arial, Helvetica, sans-serif;
 }
 
+/* English tree uses a Latin-optimized font; Arabic keeps Noto Kufi Arabic. */
+html[lang="en"] {
+  --font-sans: var(--font-latin-sans);
+}
+
+html[lang="en"] body {
+  font-family: var(--font-latin-sans), "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
 html {
   scroll-behavior: smooth;
-  scrollbar-gutter: stable both-edges;
+  scrollbar-gutter: stable;
+}
+
+/* `both-edges` keeps the centered layout from shifting when a scrollbar toggles
+   on desktop; on smaller screens a single reserved gutter avoids trimming
+   usable width on classic-scrollbar browsers. */
+@media (min-width: 1024px) {
+  html {
+    scrollbar-gutter: stable both-edges;
+  }
 }
 
 a,
@@ -1307,6 +1325,7 @@ section:has(> .insight-grid) {
   inset-inline: 0;
   justify-content: center;
   padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
   pointer-events: none;
   position: fixed;
   z-index: 70;
@@ -1380,6 +1399,7 @@ section:has(> .insight-grid) {
 @media (max-width: 640px) {
   .cookie-banner {
     padding: 12px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
 
   .cookie-banner-card {
@@ -1391,6 +1411,32 @@ section:has(> .insight-grid) {
 
   .cookie-banner-actions .cookie-banner-btn {
     flex: 1 1 auto;
+  }
+}
+
+/* The third-party chat bubble uses an extremely high z-index; hide it while a
+   full-screen overlay (mobile nav, B2B modal, gallery lightbox) is open so it
+   can't float over the overlay's controls. Graceful no-op if the widget's DOM
+   ids ever change. */
+body.overlay-open #chatbase-bubble-button,
+body.overlay-open #chatbase-bubble-window,
+body.overlay-open iframe[src*="chatbase.co"] {
+  display: none !important;
+}
+
+/* Comfortable touch targets on touch devices (≈44px recommended). */
+@media (pointer: coarse) {
+  .booking-step {
+    height: 40px;
+    width: 40px;
+  }
+
+  .language-toggle a {
+    min-height: 40px;
+  }
+
+  .mobile-nav-link {
+    padding-block: 13px;
   }
 }
 
@@ -2595,7 +2641,9 @@ section:has(> .insight-grid) {
 
 .admin-topbar {
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.88);
+  /* Opaque: the bar is sticky and has no backdrop blur, so a translucent
+     background let scrolled content ghost through behind the actions. */
+  background: var(--admin-panel);
   border: 1px solid var(--admin-border);
   border-radius: 8px;
   box-shadow: 0 18px 45px rgba(16, 24, 40, 0.08);
@@ -3585,7 +3633,7 @@ section:has(> .insight-grid) {
   cursor: pointer;
   display: grid;
   gap: 12px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
   list-style: none;
   padding: 13px 14px;
 }
@@ -3624,7 +3672,7 @@ section:has(> .insight-grid) {
   border-radius: 8px;
   display: grid;
   gap: 10px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
   padding: 12px;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
@@ -3658,6 +3706,37 @@ section:has(> .insight-grid) {
 
 .admin-remove:hover {
   background: #fff1f3;
+}
+
+/* Keyboard/touch reorder controls — an accessible alternative to drag-and-drop. */
+.admin-move {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-move button {
+  align-items: center;
+  background: transparent;
+  border-radius: 5px;
+  color: #98a2b3;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 950;
+  height: 18px;
+  justify-content: center;
+  line-height: 1;
+  width: 28px;
+}
+
+.admin-move button:hover:not(:disabled) {
+  background: #eef4ff;
+  color: var(--primary);
+}
+
+.admin-move button:disabled {
+  cursor: not-allowed;
+  opacity: 0.32;
 }
 
 .admin-help {
@@ -5276,8 +5355,11 @@ section:has(> .insight-grid) {
 }
 
 @media (max-width: 1023px) {
+  /* Sit a fixed gap above the stacked booking bar, whose height is published as
+     --hero-booking-h by the booking-bar component (replaces a brittle fixed
+     offset that broke when the bar's height changed). */
   .hotel-hero .hero-carousel-dots {
-    bottom: 428px;
+    bottom: calc(var(--hero-booking-h, 360px) + 56px);
   }
 
   .insight-grid {
@@ -5317,6 +5399,9 @@ section:has(> .insight-grid) {
   .admin-sidebar {
     height: auto;
     position: relative;
+    max-height: 52vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .admin-editor-head {
@@ -5327,6 +5412,18 @@ section:has(> .insight-grid) {
   .admin-image-control {
     grid-template-columns: 1fr;
   }
+
+  /* The top bar's actions block has a 360px min-width that overflows narrow
+     phones; stack it under the heading and let it use the full width. */
+  .admin-topbar {
+    flex-direction: column;
+  }
+
+  .admin-actions {
+    min-width: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 640px) {
@@ -5336,6 +5433,23 @@ section:has(> .insight-grid) {
 
   .booking-bar {
     border-radius: 16px;
+    /* Two date fields share a row on normal phones, but fall back to a single
+       column on very narrow (<~345px) screens so the native date controls stay
+       legible. */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  /* property, guests, and the search button span full width; the two date
+     fields share a row so the stacked bar is far shorter on phones. */
+  .booking-bar > :nth-child(1),
+  .booking-bar > :nth-child(4),
+  .booking-bar > .booking-search {
+    grid-column: 1 / -1;
+  }
+
+  .booking-field {
+    min-height: 60px;
+    padding: 10px 14px;
   }
 
   .lightbox {

@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { allowedCvTypes, getFormsClient, isFormsConfigured, maxCvBytes } from "@/sanity/lib/forms";
 import { HONEYPOT_FIELD, getClientIp, honeypotTripped, rateLimit } from "@/lib/rate-limit";
 import { sniffMime } from "@/lib/file-signature";
+import { notifyCareerApplication } from "@/lib/notify";
 
 export const dynamic = "force-dynamic";
 
@@ -71,6 +72,7 @@ export async function POST(request: Request) {
     doc[key] = String(formData.get(key) ?? "");
   }
 
+  let cvMeta: { filename: string; base64: string; contentType: string; url?: string } | undefined;
   const cv = formData.get("cv");
   if (cv instanceof File && cv.size > 0) {
     if (!allowedCvTypes.has(cv.type)) {
@@ -100,6 +102,7 @@ export async function POST(request: Request) {
         contentType: cv.type,
       });
       doc.cv = { _type: "file", asset: { _type: "reference", _ref: asset._id } };
+      cvMeta = { filename: cv.name, base64: buffer.toString("base64"), contentType: cv.type, url: asset.url };
     } catch {
       return NextResponse.json({ error: "Could not upload the CV." }, { status: 502 });
     }
@@ -110,6 +113,9 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Could not save the application." }, { status: 502 });
   }
+
+  // Best-effort email (with CV attached) + WhatsApp notification, after response.
+  after(() => notifyCareerApplication(doc, cvMeta));
 
   return NextResponse.json({ ok: true });
 }

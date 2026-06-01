@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
 
 type ChatbaseFn = ((...args: unknown[]) => unknown) & { q?: unknown[] };
 
@@ -23,35 +24,62 @@ export default function ChatbaseWidget() {
     if (!chatbotId) {
       return;
     }
+    // chatbotId is narrowed to string here; capture it so the nested inject()
+    // closure keeps the non-undefined type.
+    const resolvedId = chatbotId;
 
-    // Avoid double-injecting (route changes, fast refresh).
-    if (document.getElementById(chatbotId)) {
+    function inject() {
+      // Avoid double-injecting (route changes, fast refresh, repeated events).
+      if (document.getElementById(resolvedId)) {
+        return;
+      }
+
+      // Queue shim so chatbase(...) calls before the script loads are buffered.
+      if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+        const stub: ChatbaseFn = (...args: unknown[]) => {
+          if (!stub.q) {
+            stub.q = [];
+          }
+          stub.q.push(args);
+        };
+        window.chatbase = new Proxy(stub, {
+          get(target, prop: string) {
+            if (prop === "q") {
+              return target.q;
+            }
+            return (...args: unknown[]) => target(prop, ...args);
+          },
+        });
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://www.chatbase.co/embed.min.js";
+      script.id = resolvedId;
+      script.setAttribute("domain", "www.chatbase.co");
+      document.body.appendChild(script);
+    }
+
+    // Defer the bubble until the visitor has dealt with the cookie banner, so
+    // the (very high z-index) bubble never overlaps the fixed consent bar on
+    // mobile. Returning visitors who already chose get it immediately; if
+    // storage is blocked we don't withhold the bubble.
+    let consented = true;
+    try {
+      consented = Boolean(window.localStorage.getItem(CONSENT_STORAGE_KEY));
+    } catch {
+      consented = true;
+    }
+
+    if (consented) {
+      inject();
       return;
     }
 
-    // Queue shim so chatbase(...) calls before the script loads are buffered.
-    if (!window.chatbase || window.chatbase("getState") !== "initialized") {
-      const stub: ChatbaseFn = (...args: unknown[]) => {
-        if (!stub.q) {
-          stub.q = [];
-        }
-        stub.q.push(args);
-      };
-      window.chatbase = new Proxy(stub, {
-        get(target, prop: string) {
-          if (prop === "q") {
-            return target.q;
-          }
-          return (...args: unknown[]) => target(prop, ...args);
-        },
-      });
+    function onConsent() {
+      inject();
     }
-
-    const script = document.createElement("script");
-    script.src = "https://www.chatbase.co/embed.min.js";
-    script.id = chatbotId;
-    script.setAttribute("domain", "www.chatbase.co");
-    document.body.appendChild(script);
+    window.addEventListener(CONSENT_EVENT, onConsent);
+    return () => window.removeEventListener(CONSENT_EVENT, onConsent);
   }, []);
 
   return null;

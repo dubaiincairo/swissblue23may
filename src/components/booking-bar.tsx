@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
@@ -39,6 +39,24 @@ export default function BookingBar({
   const [checkout, setCheckout] = useState("");
   const [today, setToday] = useState("");
   const [adults, setAdults] = useState(2);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // Publish the rendered bar height so the hero carousel dots can sit a fixed
+  // gap above the (variable-height) stacked bar on mobile, instead of relying
+  // on a brittle hard-coded offset.
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const root = document.documentElement;
+    const apply = () => root.style.setProperty("--hero-booking-h", `${el.offsetHeight}px`);
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--hero-booking-h");
+    };
+  }, []);
 
   // Compute dates on the client only to avoid SSR/hydration mismatch.
   useEffect(() => {
@@ -68,6 +86,7 @@ export default function BookingBar({
 
   return (
     <div
+      ref={rootRef}
       className="booking-bar reveal-scale-up"
       style={{ "--delay": "450ms" } as React.CSSProperties}
     >

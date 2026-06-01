@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Noto_Kufi_Arabic } from "next/font/google";
+import { Geist_Mono, Inter, Noto_Kufi_Arabic } from "next/font/google";
+import { headers } from "next/headers";
 import ChatbaseWidget from "@/components/chatbase-widget";
 import CookieBanner from "@/components/cookie-banner";
 import LiveContentRefresh from "@/components/live-content-refresh";
@@ -11,6 +12,13 @@ import "./globals.css";
 const arabicSans = Noto_Kufi_Arabic({
   variable: "--font-arabic-sans",
   subsets: ["arabic"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+// Latin-optimized font used on the English (/en) tree; Arabic keeps Noto Kufi Arabic.
+const latinSans = Inter({
+  variable: "--font-latin-sans",
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
 });
 
@@ -31,11 +39,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { ar, en } = await getEditableContent();
+  const requestHeaders = await headers();
+  const locale = requestHeaders.get("x-locale") === "ar" ? "ar" : "en";
+  const dir = locale === "ar" ? "rtl" : "ltr";
   return (
     <html
-      lang="en"
-      dir="ltr"
-      className={`${arabicSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang={locale}
+      dir={dir}
+      className={`${arabicSans.variable} ${latinSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <LiveContentRefresh />
