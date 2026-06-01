@@ -2641,7 +2641,9 @@ body.overlay-open iframe[src*="chatbase.co"] {
 
 .admin-topbar {
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.88);
+  /* Opaque: the bar is sticky and has no backdrop blur, so a translucent
+     background let scrolled content ghost through behind the actions. */
+  background: var(--admin-panel);
   border: 1px solid var(--admin-border);
   border-radius: 8px;
   box-shadow: 0 18px 45px rgba(16, 24, 40, 0.08);
@@ -3631,7 +3633,7 @@ body.overlay-open iframe[src*="chatbase.co"] {
   cursor: pointer;
   display: grid;
   gap: 12px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
   list-style: none;
   padding: 13px 14px;
 }
@@ -3670,7 +3672,7 @@ body.overlay-open iframe[src*="chatbase.co"] {
   border-radius: 8px;
   display: grid;
   gap: 10px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
   padding: 12px;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
@@ -3704,6 +3706,37 @@ body.overlay-open iframe[src*="chatbase.co"] {
 
 .admin-remove:hover {
   background: #fff1f3;
+}
+
+/* Keyboard/touch reorder controls — an accessible alternative to drag-and-drop. */
+.admin-move {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-move button {
+  align-items: center;
+  background: transparent;
+  border-radius: 5px;
+  color: #98a2b3;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 950;
+  height: 18px;
+  justify-content: center;
+  line-height: 1;
+  width: 28px;
+}
+
+.admin-move button:hover:not(:disabled) {
+  background: #eef4ff;
+  color: var(--primary);
+}
+
+.admin-move button:disabled {
+  cursor: not-allowed;
+  opacity: 0.32;
 }
 
 .admin-help {
@@ -5366,7 +5399,7 @@ body.overlay-open iframe[src*="chatbase.co"] {
   .admin-sidebar {
     height: auto;
     position: relative;
-    max-height: 70vh;
+    max-height: 52vh;
     overflow-y: auto;
     overscroll-behavior: contain;
   }
