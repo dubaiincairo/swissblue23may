@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getFormsClient } from "@/sanity/lib/forms";
+import { requireAuthority } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,7 @@ async function getCounts() {
 }
 
 export default async function SubmissionsIndexPage() {
+  await requireAuthority("submissions");
   const { careers, b2b, configured } = await getCounts();
 
   return (

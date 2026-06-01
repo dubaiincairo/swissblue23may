@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
+import { SESSION_COOKIE, readSession, type SessionInfo } from "@/lib/auth";
+import {
+  firstAllowedPath,
+  hasAnyContentAuthority,
+  hasAuthority,
+  type AuthorityId,
+} from "@/lib/authorities";
 
 const LOGIN_PATH = "/secretpanel/login";
 
-/** Admin areas that require a valid session (login page itself is exempt). */
+/** Admin areas that require a valid session (the login page itself is exempt). */
 function needsAuth(pathname: string): boolean {
   if (pathname === LOGIN_PATH) return false;
   return (
@@ -12,20 +18,45 @@ function needsAuth(pathname: string): boolean {
     pathname.startsWith("/secretpanel/") ||
     pathname === "/studio" ||
     pathname.startsWith("/studio/") ||
-    pathname.startsWith("/api/site-content")
+    pathname.startsWith("/api/site-content") ||
+    pathname.startsWith("/api/admin/")
   );
+}
+
+/**
+ * Authority a path requires. Order matters: the specific /secretpanel/* areas
+ * are matched before the generic English-content fallback. "content-any" means
+ * any content authority (the content API writes the whole {ar,en} tree).
+ */
+function requiredAuthority(pathname: string): AuthorityId | "content-any" | null {
+  if (pathname === "/secretpanel/users" || pathname.startsWith("/secretpanel/users/")) return "users";
+  if (pathname.startsWith("/api/admin/users")) return "users";
+  if (pathname === "/secretpanel/submissions" || pathname.startsWith("/secretpanel/submissions/")) return "submissions";
+  if (pathname === "/studio" || pathname.startsWith("/studio/")) return "studio";
+  if (pathname.startsWith("/api/site-content")) return "content-any";
+  if (pathname === "/secretpanel/ar" || pathname.startsWith("/secretpanel/ar/")) return "content.ar";
+  if (pathname === "/secretpanel" || pathname.startsWith("/secretpanel/")) return "content.en";
+  return null;
+}
+
+function authorized(session: SessionInfo, required: AuthorityId | "content-any"): boolean {
+  return required === "content-any"
+    ? hasAnyContentAuthority(session.perms)
+    : hasAuthority(session.perms, required);
 }
 
 export async function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
   const { pathname } = url;
 
-  // --- Admin authentication gate ---
+  // --- Admin authentication + authorization gate ---
   if (needsAuth(pathname)) {
+    const isApi = pathname.startsWith("/api/");
     const token = request.cookies.get(SESSION_COOKIE)?.value;
-    const authed = await verifySessionToken(token);
-    if (!authed) {
-      if (pathname.startsWith("/api/")) {
+    const session = await readSession(token);
+
+    if (!session) {
+      if (isApi) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
       const loginUrl = request.nextUrl.clone();
@@ -33,6 +64,24 @@ export async function proxy(request: NextRequest) {
       loginUrl.search = "";
       loginUrl.searchParams.set("from", pathname);
       return NextResponse.redirect(loginUrl);
+    }
+
+    const required = requiredAuthority(pathname);
+    if (required && !authorized(session, required)) {
+      if (isApi) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      // Authenticated but unauthorized: send them somewhere they CAN go.
+      const dest = firstAllowedPath(session.perms);
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.search = "";
+      if (dest && dest !== pathname) {
+        redirectUrl.pathname = dest;
+      } else {
+        redirectUrl.pathname = LOGIN_PATH;
+        redirectUrl.searchParams.set("denied", "1");
+      }
+      return NextResponse.redirect(redirectUrl);
     }
   }
 
@@ -80,5 +129,6 @@ export const config = {
     "/studio/:path*",
     "/api/site-content",
     "/api/site-content/:path*",
+    "/api/admin/:path*",
   ],
 };

@@ -6,6 +6,7 @@ import { RichEditor } from "@/components/rich-editor";
 import { RephraseButton } from "@/components/rephrase-button";
 import { StockPhotoPicker } from "@/components/stock-photo-picker";
 import { TranslateButton } from "@/components/translate-button";
+import { hasAuthority } from "@/lib/authorities";
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type JsonObject = { [key: string]: JsonValue };
@@ -1673,7 +1674,13 @@ const NON_HIDEABLE_SECTIONS = new Set([
   "closingCtas",
 ]);
 
-export default function SecretPanel({ language = "en" }: { language?: Language }) {
+export default function SecretPanel({
+  language = "en",
+  perms = [],
+}: {
+  language?: Language;
+  perms?: string[];
+}) {
   const [content, setContent] = useState<JsonObject | null>(null);
   const [hiddenSections, setHiddenSections] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState("hero");
@@ -1806,6 +1813,12 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
     }
   }
 
+  // --- Authority-aware navigation (perms come from the signed session) ---
+  const canEditThisLanguage = hasAuthority(perms, language === "ar" ? "content.ar" : "content.en");
+  const canSeeSubmissions = hasAuthority(perms, "submissions");
+  const canManageUsers = hasAuthority(perms, "users");
+  const canSwitchPanel = hasAuthority(perms, language === "ar" ? "content.en" : "content.ar");
+
   return (
     <main className="admin-shell" dir={language === "ar" ? "rtl" : "ltr"}>
       <aside className="admin-sidebar">
@@ -1824,9 +1837,11 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
               ? "هذه اللوحة مخصصة لتعديل النسخة العربية فقط."
               : "This panel edits the English website only."}
           </p>
-          <a href={language === "ar" ? "/secretpanel" : "/secretpanel/ar"}>
-            {language === "ar" ? "الانتقال للوحة الإنجليزية" : "Switch to Arabic panel"}
-          </a>
+          {canSwitchPanel ? (
+            <a href={language === "ar" ? "/secretpanel" : "/secretpanel/ar"}>
+              {language === "ar" ? "الانتقال للوحة الإنجليزية" : "Switch to Arabic panel"}
+            </a>
+          ) : null}
         </div>
 
         <label className="admin-search">
@@ -1914,13 +1929,20 @@ export default function SecretPanel({ language = "en" }: { language?: Language }
                     : "Hide section"}
               </button>
             ) : null}
-            <a className="admin-preview" href="/secretpanel/submissions">
-              {language === "ar" ? "الطلبات الواردة" : "Submissions"}
-            </a>
+            {canSeeSubmissions ? (
+              <a className="admin-preview" href="/secretpanel/submissions">
+                {language === "ar" ? "الطلبات الواردة" : "Submissions"}
+              </a>
+            ) : null}
+            {canManageUsers ? (
+              <a className="admin-preview" href="/secretpanel/users">
+                {language === "ar" ? "المستخدمون" : "Users"}
+              </a>
+            ) : null}
             <a className="admin-preview" href={languages[language].previewHref} target="_blank" rel="noreferrer">
               {language === "ar" ? "معاينة الموقع" : "Preview site"}
             </a>
-            <button className="admin-save" type="button" onClick={save}>
+            <button className="admin-save" type="button" onClick={save} disabled={!canEditThisLanguage}>
               {language === "ar" ? "حفظ التغييرات" : "Save changes"}
             </button>
             <button
