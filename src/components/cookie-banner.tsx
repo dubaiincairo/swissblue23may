@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
 import type { EditableSiteContent } from "@/lib/editable-content";
-
-// Bump this version to re-show the banner to everyone (e.g. after a policy change).
-const STORAGE_KEY = "sb-cookie-consent-v2";
 
 type CookieCopy = EditableSiteContent["ar"]["ui"]["cookie"];
 
@@ -18,7 +16,7 @@ export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: Coo
 
   useEffect(() => {
     try {
-      if (!window.localStorage.getItem(STORAGE_KEY)) {
+      if (!window.localStorage.getItem(CONSENT_STORAGE_KEY)) {
         setVisible(true);
       }
     } catch {
@@ -28,11 +26,14 @@ export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: Coo
 
   function dismiss(value: "accepted" | "declined") {
     try {
-      window.localStorage.setItem(STORAGE_KEY, value);
+      window.localStorage.setItem(CONSENT_STORAGE_KEY, value);
     } catch {
       // ignore
     }
     setVisible(false);
+    // Let consent-gated widgets (e.g. the Chatbase bubble) load now that the
+    // banner is dismissed and can no longer overlap it.
+    window.dispatchEvent(new CustomEvent(CONSENT_EVENT));
   }
 
   if (!visible) {
