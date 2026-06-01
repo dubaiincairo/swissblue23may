@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { getFormsClient, isFormsConfigured } from "@/sanity/lib/forms";
 import { HONEYPOT_FIELD, getClientIp, honeypotTripped, rateLimit } from "@/lib/rate-limit";
+import { notifyCorporateRequest } from "@/lib/notify";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +85,9 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Could not save the request." }, { status: 502 });
   }
+
+  // Best-effort email + WhatsApp notification, after the response is sent.
+  after(() => notifyCorporateRequest(doc));
 
   return NextResponse.json({ ok: true });
 }
