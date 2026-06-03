@@ -5,6 +5,7 @@ import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import PropertyMap from "@/components/property-map";
 import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
+import SocialShare from "@/components/social-share";
 import { hotelsEn } from "@/lib/content-en";
 import { propertyGallerySupplement } from "@/lib/content";
 import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
@@ -39,6 +40,10 @@ export default async function HotelDetailPageEn({
         text={hotel.summary}
         image={hotel.image}
       />
+
+      <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+        <SocialShare label="Share" copiedLabel="Link copied!" />
+      </div>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
         <div className="feature-panel reveal-scale-up">

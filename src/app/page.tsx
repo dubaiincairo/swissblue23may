@@ -4,6 +4,7 @@ import { AnimatedCounter } from "@/components/animated-counter";
 import { FaqAccordion } from "@/components/faq-accordion";
 import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { SiteFooter, SiteHeader } from "@/components/site";
+import SocialShare from "@/components/social-share";
 import BookingBar from "@/components/booking-bar";
 import HomepageGallery from "@/components/homepage-gallery";
 import { PartnersSection } from "@/components/partners-section";
@@ -350,6 +351,10 @@ export default async function Home() {
         </div>
       </section>
       )}
+
+      <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+        <SocialShare label="شارك هذه الصفحة" copiedLabel="تم نسخ الرابط!" />
+      </div>
 
       <SiteFooter />
     </main>

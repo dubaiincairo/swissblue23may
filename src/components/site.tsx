@@ -3,6 +3,7 @@ import Link from "next/link";
 import { rich } from "@/components/rich-text";
 import MobileNav from "@/components/mobile-nav";
 import PaymentMethods from "@/components/payment-methods";
+import { SocialLinks, mergeSocial } from "@/components/social-links";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
 import { getEditableContent, usableLogo } from "@/lib/editable-content";
 
@@ -138,6 +139,7 @@ export function SiteFooter() {
 async function SiteFooterContent() {
   const { ar, en } = await getEditableContent();
   const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
+  const social = mergeSocial(ar.social, en.social);
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white" aria-label="تذييل الموقع">
@@ -163,6 +165,7 @@ async function SiteFooterContent() {
               </li>
             ))}
           </ul>
+          <SocialLinks social={social} heading="تابعنا" />
         </div>
 
         <nav className="grid gap-8 sm:grid-cols-3" aria-label="روابط التذييل">
