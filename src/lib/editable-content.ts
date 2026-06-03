@@ -1346,6 +1346,20 @@ const closingCtasEn = {
 
 export const defaultSiteContent = {
   ar: {
+    seo: {
+      siteTitle: "سويس بلو للفنادق | غرف وأجنحة وشقق فندقية",
+      metaDescription:
+        "موقع سويس بلو للفنادق: فنادق وأجنحة وشقق فندقية وحجز مباشر ووجهات وخدمات الضيوف.",
+      keywords: "سويس بلو, فنادق جدة, شقق فندقية, حجز مباشر, أجنحة",
+      ogTitle: "",
+      ogDescription: "",
+      ogImage: "",
+      favicon: "",
+      twitterCard: "summary_large_image",
+      twitterHandle: "",
+      themeColor: "#2b6fe8",
+      siteUrl: "https://swissblue23may.vercel.app",
+    },
     navGroups,
     footerSections,
     footerContact,
@@ -2316,6 +2330,20 @@ export const defaultSiteContent = {
     },
   },
   en: {
+    seo: {
+      siteTitle: "Swiss Blue Hotels | Rooms, Suites, and Serviced Apartments",
+      metaDescription:
+        "Swiss Blue Hotels website for hotels, suites, serviced apartments, direct booking, destinations, and guest services.",
+      keywords: "Swiss Blue, Jeddah hotels, serviced apartments, direct booking, suites",
+      ogTitle: "",
+      ogDescription: "",
+      ogImage: "",
+      favicon: "",
+      twitterCard: "summary_large_image",
+      twitterHandle: "",
+      themeColor: "#2b6fe8",
+      siteUrl: "https://swissblue23may.vercel.app",
+    },
     navGroups: navGroupsEn,
     footerSections: footerSectionsEn,
     footerContact: footerContactEn,

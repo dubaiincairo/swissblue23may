@@ -16,6 +16,8 @@ export function isImageField(name: string, path: Array<string | number>, value: 
     "mainHero",
     "jeddah",
     "jazan",
+    "ogImage",
+    "favicon",
   ]);
   const isGalleryImage = path.some((segment) => segment === "gallery") && name === "image";
   const isHeroSlideSource = path.some((segment) => segment === "mainHeroSlides") && name === "source";
@@ -28,6 +30,14 @@ export function isImageField(name: string, path: Array<string | number>, value: 
 
 export function imageGuidance(name: string, path: Array<string | number>) {
   const location = path.join(".");
+
+  if (name === "ogImage") {
+    return "Recommended: 1200 x 630 px landscape — the preview image shown when the site is shared on social media / chat. Accepted: JPG, PNG, WebP.";
+  }
+
+  if (name === "favicon") {
+    return "Recommended: square PNG or SVG, 512 x 512 px — the small icon in the browser tab. Accepted: PNG, SVG.";
+  }
 
   if (name === "logo" || name === "arabicLogo") {
     return "Recommended: SVG or transparent PNG, around 380 x 160 px. The same logo is used everywhere; over the dark hero it is auto-inverted to white. Accepted: JPG, PNG, WebP, AVIF, SVG.";
@@ -54,6 +64,14 @@ export function localizedImageGuidance(name: string, path: Array<string | number
   }
 
   const location = path.join(".");
+
+  if (name === "ogImage") {
+    return "المقاس المقترح: 1200 x 630 بكسل أفقية — صورة المعاينة التي تظهر عند مشاركة الموقع على وسائل التواصل أو التطبيقات. الصيغ المقبولة: JPG, PNG, WebP.";
+  }
+
+  if (name === "favicon") {
+    return "المقاس المقترح: مربعة PNG أو SVG بحجم 512 x 512 بكسل — الأيقونة الصغيرة في تبويب المتصفح. الصيغ المقبولة: PNG, SVG.";
+  }
 
   if (name === "logo" || name === "arabicLogo") {
     return "المقاس المقترح: SVG أو PNG شفاف بحجم يقارب 380 x 160 بكسل. يتم استخدام نفس الشعار في كل مكان، ويتم قلب لونه تلقائيا إلى الأبيض فوق البانر الداكن. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
