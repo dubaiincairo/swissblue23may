@@ -1398,19 +1398,38 @@ section:has(> .insight-grid) {
 
 @media (max-width: 640px) {
   .cookie-banner {
-    padding: 12px;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    padding: 10px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
   }
 
   .cookie-banner-card {
     align-items: stretch;
+    border-radius: 16px;
     flex-direction: column;
-    gap: 14px;
-    padding: 16px;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .cookie-banner-title {
+    font-size: 14.5px;
+    margin-bottom: 4px;
+  }
+
+  /* Keep the banner a compact bottom sheet on phones: the long policy text
+     scrolls inside a capped area so it can't swallow the hero / booking bar. */
+  .cookie-banner-body {
+    max-height: 30vh;
+    overflow-y: auto;
+  }
+
+  .cookie-banner-text {
+    font-size: 12.5px;
+    line-height: 1.55;
   }
 
   .cookie-banner-actions .cookie-banner-btn {
     flex: 1 1 auto;
+    min-height: 44px;
   }
 }
 
@@ -1422,6 +1441,15 @@ body.overlay-open #chatbase-bubble-button,
 body.overlay-open #chatbase-bubble-window,
 body.overlay-open iframe[src*="chatbase.co"] {
   display: none !important;
+}
+
+/* The Chatbase auto-greeting balloons float over page content (booking bar,
+   etc.) on narrow screens. Hide those popups on mobile so the layout stays
+   clean; the chat bubble button itself remains tappable. */
+@media (max-width: 768px) {
+  #chatbase-message-bubbles {
+    display: none !important;
+  }
 }
 
 /* Comfortable touch targets on touch devices (≈44px recommended). */
