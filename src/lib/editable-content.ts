@@ -1386,6 +1386,15 @@ export const defaultSiteContent = {
     footerSections,
     footerContact,
     footerMeta,
+    social: {
+      instagram: "",
+      facebook: "",
+      x: "",
+      tiktok: "",
+      snapchat: "",
+      youtube: "",
+      linkedin: "",
+    },
     ui: uiText,
     closingCtas,
     media: {
@@ -2392,6 +2401,15 @@ export const defaultSiteContent = {
     footerSections: footerSectionsEn,
     footerContact: footerContactEn,
     footerMeta: footerMetaEn,
+    social: {
+      instagram: "",
+      facebook: "",
+      x: "",
+      tiktok: "",
+      snapchat: "",
+      youtube: "",
+      linkedin: "",
+    },
     ui: uiTextEn,
     closingCtas: closingCtasEn,
     media: {
@@ -3975,6 +3993,10 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
           ...(content?.ar?.seo?.pages ?? {}),
         },
       },
+      social: {
+        ...defaultSiteContent.ar.social,
+        ...(content?.ar?.social ?? {}),
+      },
       media: {
         ...defaultSiteContent.ar.media,
         ...(content?.ar?.media ?? {}),
@@ -4019,6 +4041,10 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
           ...defaultSiteContent.en.seo.pages,
           ...(content?.en?.seo?.pages ?? {}),
         },
+      },
+      social: {
+        ...defaultSiteContent.en.social,
+        ...(content?.en?.social ?? {}),
       },
       media: {
         ...defaultSiteContent.en.media,

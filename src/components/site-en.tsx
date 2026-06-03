@@ -5,6 +5,7 @@ import { LanguageToggle } from "@/components/site";
 import { rich } from "@/components/rich-text";
 import MobileNav from "@/components/mobile-nav";
 import PaymentMethods from "@/components/payment-methods";
+import { SocialLinks, mergeSocial } from "@/components/social-links";
 import { getEditableContent, usableLogo } from "@/lib/editable-content";
 
 function resolveMediaImage(
@@ -94,6 +95,7 @@ export function SiteFooterEn() {
 async function SiteFooterEnContent() {
   const { ar, en } = await getEditableContent();
   const logo = usableLogo(en.media.logo) || usableLogo(ar.media.arabicLogo);
+  const social = mergeSocial(en.social, ar.social);
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white" aria-label="Site footer">
@@ -119,6 +121,7 @@ async function SiteFooterEnContent() {
               </li>
             ))}
           </ul>
+          <SocialLinks social={social} heading="Follow us" />
         </div>
 
         <nav className="grid gap-8 sm:grid-cols-3" aria-label="Footer links">

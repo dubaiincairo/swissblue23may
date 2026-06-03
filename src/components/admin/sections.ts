@@ -66,6 +66,14 @@ export const adminSections: AdminSection[] = [
     path: ["footerMeta"],
   },
   {
+    id: "social",
+    group: "Site-wide",
+    label: "Social media links",
+    description:
+      "Profile URLs for the clickable social icons in the footer. Leave a field blank to hide that icon. Set a link in either language and it shows everywhere.",
+    path: ["social"],
+  },
+  {
     id: "uiText",
     group: "Site-wide",
     label: "Site-wide UI text",
@@ -325,6 +333,12 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     description:
       "عنوان ووصف وصورة مشاركة اختيارية لكل صفحة على حدة. تتجاوز الإعدادات العامة، والحقول الفارغة تعود تلقائيا للقيم الافتراضية.",
   },
+  social: {
+    group: "إعدادات الموقع",
+    label: "روابط التواصل الاجتماعي",
+    description:
+      "روابط حسابات التواصل للأيقونات القابلة للنقر في الفوتر. اترك الحقل فارغا لإخفاء الأيقونة. ضع الرابط في أي لغة ليظهر في كل مكان.",
+  },
   navGroups: {
     group: "إعدادات الموقع",
     label: "القائمة الرئيسية",
@@ -552,6 +566,13 @@ export const fieldLabels: Record<string, string> = {
   "group-bookings": "Group Bookings",
   "social-responsibility": "Social Responsibility",
   "central-reservation": "Central Reservation",
+  instagram: "Instagram",
+  facebook: "Facebook",
+  x: "X (Twitter)",
+  tiktok: "TikTok",
+  snapchat: "Snapchat",
+  youtube: "YouTube",
+  linkedin: "LinkedIn",
   defaultText: "Default body text",
   pages: "Per-page CTAs",
   hotelDetail: "Hotel detail page",
@@ -703,6 +724,13 @@ export const arabicFieldLabels: Record<string, string> = {
   "group-bookings": "حجوزات المجموعات",
   "social-responsibility": "المسؤولية الاجتماعية",
   "central-reservation": "الحجز المركزي",
+  instagram: "إنستغرام",
+  facebook: "فيسبوك",
+  x: "إكس (تويتر)",
+  tiktok: "تيك توك",
+  snapchat: "سناب شات",
+  youtube: "يوتيوب",
+  linkedin: "لينكدإن",
   defaultText: "النص الافتراضي",
   pages: "نداءات كل صفحة",
   hotelDetail: "صفحة تفاصيل الفندق",
@@ -938,6 +966,7 @@ export function shouldShowField(path: Array<string | number>, key: string) {
 export const NON_HIDEABLE_SECTIONS = new Set([
   "seo",
   "seoPages",
+  "social",
   "navGroups",
   "media",
   "footerSections",
