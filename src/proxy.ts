@@ -106,6 +106,8 @@ export async function proxy(request: NextRequest) {
   const locale = isEnglish || isAdmin ? "en" : "ar";
   const localeHeaders = new Headers(request.headers);
   localeHeaders.set("x-locale", locale);
+  // Tag the page path so the root layout can emit per-page SEO metadata.
+  localeHeaders.set("x-pathname", pathname);
 
   if (pathname === "/ar") {
     url.pathname = "/";
