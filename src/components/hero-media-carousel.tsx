@@ -7,6 +7,7 @@ type HeroSlide = {
   kind: string;
   source: string;
   alt: string;
+  focus?: string;
 };
 
 export default function HeroMediaCarousel({
@@ -45,6 +46,7 @@ export default function HeroMediaCarousel({
       {mediaSlides.map((slide, index) => {
         const isActive = index === activeIndex;
         const isVideo = slide.kind === "video" || /\.(mp4|mov|webm)(\?|$)/i.test(slide.source);
+        const objectPosition = slide.focus || "center";
 
         return (
           <div
@@ -55,6 +57,7 @@ export default function HeroMediaCarousel({
             {isVideo ? (
               <video
                 className="h-full w-full object-cover kenburns-active"
+                style={{ objectPosition }}
                 src={slide.source}
                 autoPlay={isActive}
                 loop
@@ -65,6 +68,7 @@ export default function HeroMediaCarousel({
             ) : (
               <Image
                 className="object-cover kenburns-active"
+                style={{ objectPosition }}
                 src={slide.source}
                 alt={slide.alt || fallbackAlt}
                 fill

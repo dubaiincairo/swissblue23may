@@ -95,6 +95,7 @@ export async function SiteHeader() {
               bookingUrl={BOOKING_URL}
               labels={ar.ui.mobileNav}
               bookLabel={ar.ui.bookNow}
+              logo={logo}
             />
           </div>
         </div>
@@ -144,8 +145,8 @@ async function SiteFooterContent() {
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white" aria-label="تذييل الموقع">
       <h2 className="sr-only">معلومات سويس بلو وروابط الموقع</h2>
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
-        <div>
+      <div className="footer-main text-sm text-[var(--text-secondary)]">
+        <div className="footer-brand">
           <Link href="/ar" className="inline-block" aria-label="الرئيسية لفنادق سويس بلو">
             {logo ? (
               <Image
@@ -157,8 +158,8 @@ async function SiteFooterContent() {
               />
             ) : null}
           </Link>
-          <p className="mt-5 max-w-sm leading-7">{rich(ar.footerMeta.description)}</p>
-          <ul className="mt-6 flex flex-wrap gap-2" aria-label="مدن التشغيل">
+          <p className="footer-desc">{rich(ar.footerMeta.description)}</p>
+          <ul className="footer-badges" aria-label="مدن التشغيل">
             {ar.footerMeta.cityBadges.map((badge) => (
               <li className="footer-badge" key={badge}>
                 {rich(badge)}
@@ -168,35 +169,34 @@ async function SiteFooterContent() {
           <SocialLinks social={social} heading="تابعنا" />
         </div>
 
-        <nav className="grid gap-8 sm:grid-cols-3" aria-label="روابط التذييل">
-          {ar.footerSections.map((section) => (
-            <div key={section.title}>
-              <h3 className="text-sm font-bold text-[var(--text-primary)]">
-                {rich(section.title)}
-              </h3>
-              <div className="mt-4 grid gap-3">
-                {section.links.map((item) => (
-                  <Link
-                    className="font-semibold leading-5 transition hover:text-[var(--primary)]"
-                    href={arabicHref(item.href)}
-                    key={`${section.title}-${item.href}`}
-                  >
-                    {rich(item.label)}
-                  </Link>
-                ))}
+        <nav className="footer-links" aria-label="روابط التذييل">
+          {ar.footerSections
+            .filter((section) => section.links.length > 0)
+            .map((section) => (
+              <div key={section.title}>
+                <h3 className="footer-col-title">{rich(section.title)}</h3>
+                <div className="footer-col-links">
+                  {section.links.map((item) => (
+                    <Link
+                      href={arabicHref(item.href)}
+                      key={`${section.title}-${item.href}`}
+                    >
+                      {rich(item.label)}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </nav>
 
         <div className="footer-contact">
-          <h3 className="text-sm font-bold text-[var(--text-primary)]">{rich(ar.footerMeta.supportHeading)}</h3>
-          <ul className="mt-4 grid gap-3">
+          <h3 className="footer-contact-title">{rich(ar.footerMeta.supportHeading)}</h3>
+          <ul className="footer-contact-list">
             {ar.footerContact.map((item) => (
               <li key={item}>{rich(item)}</li>
             ))}
           </ul>
-          <Link className="btn btn-secondary mt-3 w-full justify-center" href="/ar/contact">
+          <Link className="btn btn-primary footer-contact-cta" href="/ar/contact">
             {rich(ar.footerMeta.contactCta)}
           </Link>
         </div>

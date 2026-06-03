@@ -145,7 +145,8 @@ export default function BookingBar({
             </svg>
           </button>
           <span className="booking-step-value" aria-live="polite">
-            {adults} {adults === 1 ? t.adult : t.adults}
+            {adults}
+            <span className="booking-step-unit"> {adults === 1 ? t.adult : t.adults}</span>
           </span>
           <button
             type="button"

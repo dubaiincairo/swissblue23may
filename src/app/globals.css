@@ -584,16 +584,16 @@ summary:focus:not(:focus-visible) {
 
 .mobile-nav-panel {
   background: var(--background-card);
-  box-shadow: var(--shadow-lg);
+  box-shadow: -24px 0 60px rgba(8, 28, 70, 0.22);
   display: flex;
   flex-direction: column;
   height: 100%;
   inset-inline-end: 0;
-  max-width: 360px;
+  max-width: 384px;
   position: absolute;
   top: 0;
-  width: min(86vw, 360px);
-  animation: mobile-nav-in-ltr 300ms var(--ease-out);
+  width: min(88vw, 384px);
+  animation: mobile-nav-in-ltr 320ms var(--ease-out);
 }
 
 [dir="rtl"] .mobile-nav-panel {
@@ -620,10 +620,17 @@ summary:focus:not(:focus-visible) {
 
 .mobile-nav-head {
   align-items: center;
+  background: linear-gradient(180deg, var(--bluehost-foam), transparent);
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
-  padding: 18px 20px;
+  padding: 16px 18px;
+}
+
+.mobile-nav-logo {
+  height: 34px;
+  object-fit: contain;
+  width: auto;
 }
 
 .mobile-nav-title {
@@ -634,90 +641,67 @@ summary:focus:not(:focus-visible) {
 
 .mobile-nav-close {
   align-items: center;
-  background: var(--bluehost-foam);
-  border: 1px solid rgba(43, 111, 232, 0.12);
-  border-radius: var(--radius-md);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 999px;
   color: var(--text-primary);
   cursor: pointer;
   display: inline-flex;
-  font-size: 22px;
-  height: 38px;
+  flex: 0 0 auto;
+  height: 40px;
   justify-content: center;
-  line-height: 1;
-  width: 38px;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+  width: 40px;
+}
+
+.mobile-nav-close:hover {
+  background: var(--bluehost-foam);
+  border-color: rgba(43, 111, 232, 0.3);
+  color: var(--primary);
 }
 
 .mobile-nav-body {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   overflow-y: auto;
-  padding: 16px 20px 24px;
+  overscroll-behavior: contain;
+  padding: 18px 16px 24px;
 }
 
-.mobile-nav-groups {
+.mobile-nav-group {
   display: grid;
   gap: 4px;
 }
 
-.mobile-nav-group-trigger {
-  align-items: center;
-  background: transparent;
-  border: 0;
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-  cursor: pointer;
-  display: flex;
-  font-size: 15px;
+.mobile-nav-group-label {
+  color: var(--primary);
+  font-size: 11px;
   font-weight: 800;
-  justify-content: space-between;
-  padding: 13px 12px;
-  text-align: start;
-  width: 100%;
+  letter-spacing: 0.08em;
+  padding-bottom: 2px;
+  padding-inline: 14px;
+  text-transform: uppercase;
 }
 
-.mobile-nav-group-trigger:hover {
-  background: var(--bluehost-foam);
-}
-
-.mobile-nav-chevron {
-  border-inline-end: 2px solid var(--text-tertiary);
-  border-block-end: 2px solid var(--text-tertiary);
-  display: inline-block;
-  height: 8px;
-  transform: rotate(45deg);
-  transition: transform 220ms var(--ease-out);
-  width: 8px;
-}
-
-.mobile-nav-chevron.is-open {
-  transform: rotate(-135deg);
-}
-
-.mobile-nav-sublist {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition:
-    max-height 260ms var(--ease-out),
-    opacity 200ms ease;
-}
-
-.mobile-nav-sublist.is-open {
-  max-height: 520px;
-  opacity: 1;
-  padding-block: 2px 6px;
+.mobile-nav-group-links {
+  display: grid;
+  gap: 2px;
 }
 
 .mobile-nav-link {
-  border-radius: 10px;
-  color: var(--text-secondary);
-  display: block;
-  font-size: 14px;
+  align-items: center;
+  border-radius: 12px;
+  color: var(--text-primary);
+  display: flex;
+  font-size: 15px;
   font-weight: 650;
-  padding: 10px 12px;
-  padding-inline-start: 22px;
+  justify-content: space-between;
+  padding: 12px 14px;
   transition:
     background-color 160ms ease,
     color 160ms ease;
@@ -729,9 +713,40 @@ summary:focus:not(:focus-visible) {
   color: var(--primary);
 }
 
+.mobile-nav-link-arrow {
+  color: var(--text-tertiary);
+  flex: 0 0 auto;
+  opacity: 0.55;
+  transition:
+    transform 200ms var(--ease-out),
+    opacity 160ms ease,
+    color 160ms ease;
+}
+
+[dir="rtl"] .mobile-nav-link-arrow {
+  transform: scaleX(-1);
+}
+
+.mobile-nav-link:hover .mobile-nav-link-arrow,
+.mobile-nav-link:focus-visible .mobile-nav-link-arrow {
+  color: var(--primary);
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+[dir="rtl"] .mobile-nav-link:hover .mobile-nav-link-arrow,
+[dir="rtl"] .mobile-nav-link:focus-visible .mobile-nav-link-arrow {
+  transform: scaleX(-1) translateX(3px);
+}
+
+.mobile-nav-foot {
+  border-top: 1px solid var(--border);
+  padding: 16px 18px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
 .mobile-nav-cta {
   justify-content: center;
-  margin-top: auto;
   width: 100%;
 }
 
@@ -963,7 +978,10 @@ summary:focus:not(:focus-visible) {
   border-color: rgba(43, 111, 232, 0.22);
 }
 
-.booking-field span {
+/* Direct child only: this styles the field's caption (e.g. "Guests"). Without
+   the child combinator it also captured the stepper's value/unit spans, forcing
+   them to display:block and overriding their own styles. */
+.booking-field > span {
   color: var(--text-tertiary);
   display: block;
   font-size: 11px;
@@ -1190,6 +1208,101 @@ section:has(> .insight-grid) {
   box-shadow: 0 -18px 48px rgba(18, 70, 168, 0.05);
 }
 
+/* ===== Footer layout =====
+   Responsive grid that stays balanced regardless of how many links/social
+   profiles the admin fills in: brand | link columns | support card on desktop,
+   collapsing to a compact stack (with two-up link lists) on phones so the
+   footer never becomes one endless tall column. */
+.footer-main {
+  display: grid;
+  gap: 40px;
+  margin: 0 auto;
+  max-width: 80rem;
+  padding: 56px 16px 44px;
+}
+
+@media (min-width: 640px) {
+  .footer-main {
+    padding-inline: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-main {
+    grid-template-columns: 1.2fr 2fr 1.1fr;
+    align-items: start;
+    gap: 48px;
+    padding-inline: 32px;
+  }
+}
+
+.footer-brand {
+  max-width: 30rem;
+}
+
+.footer-desc {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  margin-top: 18px;
+}
+
+.footer-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.footer-links {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .footer-links {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+.footer-col-title {
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footer-col-links {
+  display: grid;
+  gap: 11px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+@media (min-width: 640px) {
+  .footer-col-links {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-col-links a {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Keep the footer compact on phones: surface only the top 4 links per column
+   (they're ordered by importance); the rest stay in the DOM for desktop + SEO. */
+@media (max-width: 639px) {
+  .footer-col-links a:nth-child(n + 5) {
+    display: none;
+  }
+}
+
 /* ===== Footer payment methods ===== */
 .footer-payments {
   align-items: center;
@@ -1297,10 +1410,22 @@ section:has(> .insight-grid) {
 }
 
 .footer-contact {
-  background: var(--bluehost-foam);
-  border: 1px solid rgba(43, 111, 232, 0.12);
+  background: linear-gradient(160deg, var(--bluehost-foam), rgba(255, 255, 255, 0.6));
+  border: 1px solid rgba(43, 111, 232, 0.14);
   border-radius: var(--radius-lg);
   padding: 24px;
+}
+
+.footer-contact-title {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.footer-contact-list {
+  display: grid;
+  gap: 0;
+  margin-top: 14px;
 }
 
 .footer-contact li {
@@ -1314,6 +1439,12 @@ section:has(> .insight-grid) {
   border-top: 1px solid rgba(43, 111, 232, 0.1);
   margin-block-start: 12px;
   padding-block-start: 12px;
+}
+
+.footer-contact-cta {
+  justify-content: center;
+  margin-top: 18px;
+  width: 100%;
 }
 
 /* ==========================================
@@ -1391,6 +1522,7 @@ section:has(> .insight-grid) {
 }
 
 .cookie-banner-btn {
+  justify-content: center;
   min-height: 42px;
   padding-inline: 18px;
   white-space: nowrap;
@@ -1449,6 +1581,26 @@ body.overlay-open iframe[src*="chatbase.co"] {
 @media (max-width: 768px) {
   #chatbase-message-bubbles {
     display: none !important;
+  }
+}
+
+/* On phones Chatbase opens its chat window full-screen (width:100%; height:100dvh;
+   border-radius:0; inset:0) via inline styles, so it reads like a separate page
+   takeover. Override those inline styles (hence !important) so it floats as a
+   contained popup anchored above the bubble — same in-page widget, just windowed. */
+@media (max-width: 640px) {
+  #chatbase-bubble-window {
+    inset: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: 12px !important;
+    bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+    width: min(calc(100vw - 24px), 420px) !important;
+    height: min(72dvh, 600px) !important;
+    max-height: min(72dvh, 600px) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 24px 70px rgba(8, 28, 70, 0.4) !important;
+    overflow: hidden !important;
   }
 }
 
@@ -1651,6 +1803,23 @@ body.overlay-open iframe[src*="chatbase.co"] {
 .unit-card {
   min-height: 220px;
   padding: 24px;
+}
+
+/* On phones the fixed min-height left a big empty band under the short
+   category copy. Let the card hug its content and tighten the inner gaps. */
+@media (max-width: 640px) {
+  .stay-card {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .stay-card h3 {
+    margin-top: 12px;
+  }
+
+  .stay-card p {
+    margin-top: 10px;
+  }
 }
 
 .feature-panel {
@@ -2203,6 +2372,39 @@ body.overlay-open iframe[src*="chatbase.co"] {
   }
 }
 
+/* On phones the two-up tiles are too narrow for the icon + text to sit side by
+   side (labels broke mid-word). Stack the icon above the text so the label gets
+   the full card width, and cap the grid at 8 tiles (4 rows) — enough for a
+   homepage teaser. */
+@media (max-width: 767px) {
+  .service-tile {
+    align-items: start;
+    gap: 12px;
+    grid-template-columns: 1fr;
+    padding: 16px 14px;
+  }
+
+  .service-tile-icon {
+    height: 46px;
+    width: 46px;
+  }
+
+  .service-tile-icon svg {
+    height: 22px;
+    width: 22px;
+  }
+
+  .service-tile-label {
+    font-size: 14px;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .service-tile-grid > .service-tile:nth-child(n + 9) {
+    display: none;
+  }
+}
+
 /* Homepage services: balance the heading column against the tile grid so the
    two sides read as aligned instead of a short heading beside tall tiles. */
 @media (min-width: 1024px) {
@@ -2533,7 +2735,8 @@ body.overlay-open iframe[src*="chatbase.co"] {
 
 .admin-search input:focus,
 .admin-field input:focus,
-.admin-field textarea:focus {
+.admin-field textarea:focus,
+.admin-field select:focus {
   border-color: rgba(43, 111, 232, 0.58);
   box-shadow: 0 0 0 3px rgba(43, 111, 232, 0.12);
   outline: none;
@@ -3370,7 +3573,8 @@ body.overlay-open iframe[src*="chatbase.co"] {
 }
 
 .admin-field input,
-.admin-field textarea {
+.admin-field textarea,
+.admin-field select {
   background: white;
   border: 1px solid var(--admin-border);
   border-radius: 8px;
@@ -3380,6 +3584,11 @@ body.overlay-open iframe[src*="chatbase.co"] {
   line-height: 1.6;
   padding: 11px 12px;
   width: 100%;
+}
+
+.admin-focal-field small {
+  color: var(--admin-muted, #6b7280);
+  font-size: 12px;
 }
 
 .admin-rich-editor {
@@ -5386,18 +5595,64 @@ body.overlay-open iframe[src*="chatbase.co"] {
 }
 
 @media (max-width: 640px) {
+  /* Horizontal carousel: ~2 cards per view (3 swipes for the 6 reviews), with a
+     one-time nudge that hints the row scrolls. */
   .testimonials-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+    grid-auto-columns: 46%;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    gap: 14px;
+    margin-top: 26px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 10px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .testimonials-grid::-webkit-scrollbar {
+    display: none;
   }
 
   .testimonial-card {
     border-radius: 18px;
-    padding: 24px 22px 20px;
+    padding: 22px 18px 18px;
+    scroll-snap-align: start;
   }
 
   .testimonial-quote {
-    font-size: 14.5px;
+    font-size: 14px;
+  }
+
+  .testimonial-avatar {
+    height: 46px;
+    width: 46px;
+  }
+
+  /* Scroll affordance: nudge the row (and back) once it scrolls into view. */
+  .testimonials-grid.in-view {
+    animation: testi-scroll-hint 1.7s ease-in-out 0.5s 2;
+  }
+
+  [dir="rtl"] .testimonials-grid.in-view {
+    animation-name: testi-scroll-hint-rtl;
+  }
+}
+
+@keyframes testi-scroll-hint {
+  0%, 18%, 100% { transform: translateX(0); }
+  40%, 60% { transform: translateX(-26px); }
+}
+
+@keyframes testi-scroll-hint-rtl {
+  0%, 18%, 100% { transform: translateX(0); }
+  40%, 60% { transform: translateX(26px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonials-grid.in-view {
+    animation: none;
   }
 }
 
@@ -5578,11 +5833,12 @@ body.overlay-open iframe[src*="chatbase.co"] {
 }
 
 @media (max-width: 1023px) {
-  /* Sit a fixed gap above the stacked booking bar, whose height is published as
-     --hero-booking-h by the booking-bar component (replaces a brittle fixed
-     offset that broke when the bar's height changed). */
+  /* On stacked (mobile/tablet) layouts the hero text + CTAs and the booking bar
+     are pushed to opposite ends, leaving the manual carousel dots nowhere to sit
+     without overlapping the "Book your stay" / "Explore properties" CTAs. The
+     hero rotates on its own timer, so drop the manual dots here. */
   .hotel-hero .hero-carousel-dots {
-    bottom: calc(var(--hero-booking-h, 360px) + 56px);
+    display: none;
   }
 
   .insight-grid {
@@ -5650,29 +5906,83 @@ body.overlay-open iframe[src*="chatbase.co"] {
 }
 
 @media (max-width: 640px) {
+  /* Keep the four stat cards as a compact 2×2 grid on phones instead of one tall
+     full-width column, so the row stays short. Cards are tightened to match. */
   .insight-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
+  .insight-card {
+    min-height: 0;
+    padding: 15px 14px;
+    gap: 7px;
+    border-radius: 16px;
+  }
+
+  .insight-card div {
+    gap: 4px;
+  }
+
+  .insight-card strong {
+    font-size: 1.7rem;
+    line-height: 1;
+  }
+
+  .insight-card span {
+    font-size: 12.5px;
+    line-height: 1.3;
+  }
+
+  .insight-card p {
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+
+  /* Compact booking widget: a flex-wrap layout keeps it to three short rows —
+     destination (full width), the two dates (half each), then the micro guests
+     stepper sharing the last row with the search CTA, instead of the guests
+     control hogging a whole row of its own. */
   .booking-bar {
     border-radius: 16px;
-    /* Two date fields share a row on normal phones, but fall back to a single
-       column on very narrow (<~345px) screens so the native date controls stay
-       legible. */
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
-  /* property, guests, and the search button span full width; the two date
-     fields share a row so the stacked bar is far shorter on phones. */
-  .booking-bar > :nth-child(1),
-  .booking-bar > :nth-child(4),
+  .booking-bar > :nth-child(1) {
+    flex: 1 1 100%;
+  }
+
+  .booking-bar > :nth-child(2),
+  .booking-bar > :nth-child(3) {
+    flex: 1 1 calc(50% - 3px);
+    min-width: 0;
+  }
+
+  .booking-bar > :nth-child(4) {
+    flex: 0 0 auto;
+  }
+
   .booking-bar > .booking-search {
-    grid-column: 1 / -1;
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   .booking-field {
-    min-height: 60px;
+    min-height: 56px;
     padding: 10px 14px;
+  }
+
+  /* Drop the "adults" word on phones — the "Guests" label above already gives
+     context — so the stepper collapses to a micro − N + control. */
+  .booking-step-unit {
+    display: none;
+  }
+
+  .booking-step-value {
+    min-width: 0;
+    padding-inline: 2px;
   }
 
   .lightbox {

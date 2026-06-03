@@ -80,6 +80,7 @@ export async function SiteHeaderEn() {
               bookingUrl={BOOKING_URL}
               labels={en.ui.mobileNav}
               bookLabel={en.ui.bookNow}
+              logo={logo}
             />
           </div>
         </div>
@@ -100,8 +101,8 @@ async function SiteFooterEnContent() {
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white" aria-label="Site footer">
       <h2 className="sr-only">Swiss Blue information and site links</h2>
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 text-sm text-[var(--text-secondary)] sm:px-6 lg:grid-cols-[1.05fr_1.65fr_0.9fr] lg:items-start lg:px-8">
-        <div>
+      <div className="footer-main text-sm text-[var(--text-secondary)]">
+        <div className="footer-brand">
           <Link href="/en" className="inline-block" aria-label="Swiss Blue Hotels home">
             {logo ? (
               <Image
@@ -113,8 +114,8 @@ async function SiteFooterEnContent() {
               />
             ) : null}
           </Link>
-          <p className="mt-5 max-w-sm leading-7">{rich(en.footerMeta.description)}</p>
-          <ul className="mt-6 flex flex-wrap gap-2" aria-label="Operating cities">
+          <p className="footer-desc">{rich(en.footerMeta.description)}</p>
+          <ul className="footer-badges" aria-label="Operating cities">
             {en.footerMeta.cityBadges.map((badge) => (
               <li className="footer-badge" key={badge}>
                 {rich(badge)}
@@ -124,33 +125,31 @@ async function SiteFooterEnContent() {
           <SocialLinks social={social} heading="Follow us" />
         </div>
 
-        <nav className="grid gap-8 sm:grid-cols-3" aria-label="Footer links">
-          {en.footerSections.map((section) => (
-            <div key={section.title}>
-              <h3 className="text-sm font-bold text-[var(--text-primary)]">{rich(section.title)}</h3>
-              <div className="mt-4 grid gap-3">
-                {section.links.map((item) => (
-                  <Link
-                    className="font-semibold leading-5 transition hover:text-[var(--primary)]"
-                    href={item.href}
-                    key={`${section.title}-${item.href}`}
-                  >
-                    {rich(item.label)}
-                  </Link>
-                ))}
+        <nav className="footer-links" aria-label="Footer links">
+          {en.footerSections
+            .filter((section) => section.links.length > 0)
+            .map((section) => (
+              <div key={section.title}>
+                <h3 className="footer-col-title">{rich(section.title)}</h3>
+                <div className="footer-col-links">
+                  {section.links.map((item) => (
+                    <Link href={item.href} key={`${section.title}-${item.href}`}>
+                      {rich(item.label)}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </nav>
 
         <div className="footer-contact">
-          <h3 className="text-sm font-bold text-[var(--text-primary)]">{rich(en.footerMeta.supportHeading)}</h3>
-          <ul className="mt-4 grid gap-3">
+          <h3 className="footer-contact-title">{rich(en.footerMeta.supportHeading)}</h3>
+          <ul className="footer-contact-list">
             {en.footerContact.map((item) => (
               <li key={item}>{rich(item)}</li>
             ))}
           </ul>
-          <Link className="btn btn-secondary mt-3 w-full justify-center" href="/en/contact">
+          <Link className="btn btn-primary footer-contact-cta" href="/en/contact">
             {rich(en.footerMeta.contactCta)}
           </Link>
         </div>
