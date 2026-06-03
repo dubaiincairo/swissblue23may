@@ -10,9 +10,12 @@ import {
 
 const LOGIN_PATH = "/secretpanel/login";
 
-/** Admin areas that require a valid session (the login page itself is exempt). */
+// Public admin pages reachable without a session: login + the password-recovery flow.
+const PUBLIC_ADMIN_PATHS = new Set([LOGIN_PATH, "/secretpanel/forgot", "/secretpanel/reset"]);
+
+/** Admin areas that require a valid session (login + recovery pages are exempt). */
 function needsAuth(pathname: string): boolean {
-  if (pathname === LOGIN_PATH) return false;
+  if (PUBLIC_ADMIN_PATHS.has(pathname)) return false;
   return (
     pathname === "/secretpanel" ||
     pathname.startsWith("/secretpanel/") ||
@@ -103,6 +106,8 @@ export async function proxy(request: NextRequest) {
   const locale = isEnglish || isAdmin ? "en" : "ar";
   const localeHeaders = new Headers(request.headers);
   localeHeaders.set("x-locale", locale);
+  // Tag the page path so the root layout can emit per-page SEO metadata.
+  localeHeaders.set("x-pathname", pathname);
 
   if (pathname === "/ar") {
     url.pathname = "/";
