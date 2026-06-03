@@ -22,6 +22,7 @@ export default function SecretPanel({
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("loading");
   const [statusTone, setStatusTone] = useState<StatusTone>("ready");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/site-content", { cache: "no-store" })
@@ -288,63 +289,104 @@ export default function SecretPanel({
 
           <div className="admin-actions">
             <span className={`admin-status ${statusTone}`}>{statusLabel(status, language)}</span>
-            {selectedHideable ? (
-              <button
-                type="button"
-                className={`admin-hide-toggle${selectedHidden ? " is-hidden" : ""}`}
-                onClick={() => toggleHidden(selectedSection.id)}
-                aria-pressed={selectedHidden}
-              >
-                {selectedHidden
-                  ? language === "ar"
-                    ? "إظهار القسم"
-                    : "Show section"
-                  : language === "ar"
-                    ? "إخفاء القسم"
-                    : "Hide section"}
-              </button>
-            ) : null}
-            {canSeeSubmissions ? (
-              <a
-                className="admin-preview"
-                href="/secretpanel/submissions"
-                onClick={(event) => {
-                  if (!confirmLeave()) event.preventDefault();
-                }}
-              >
-                {language === "ar" ? "الطلبات الواردة" : "Submissions"}
-              </a>
-            ) : null}
-            {canManageUsers ? (
-              <a
-                className="admin-preview"
-                href="/secretpanel/users"
-                onClick={(event) => {
-                  if (!confirmLeave()) event.preventDefault();
-                }}
-              >
-                {language === "ar" ? "المستخدمون" : "Users"}
-              </a>
-            ) : null}
-            <a className="admin-preview" href={languages[language].previewHref} target="_blank" rel="noreferrer">
-              {language === "ar" ? "معاينة الموقع" : "Preview site"}
-            </a>
             <button className="admin-save" type="button" onClick={save} disabled={!canEditThisLanguage}>
               {language === "ar" ? "حفظ التغييرات" : "Save changes"}
             </button>
-            <button
-              type="button"
-              className="admin-preview"
-              onClick={async () => {
-                if (!confirmLeave()) {
-                  return;
-                }
-                await fetch("/api/auth/logout", { method: "POST" });
-                window.location.href = "/secretpanel/login";
-              }}
-            >
-              {language === "ar" ? "تسجيل الخروج" : "Sign out"}
-            </button>
+            <div className="admin-menu">
+              <button
+                type="button"
+                className={`admin-menu-trigger${menuOpen ? " is-open" : ""}`}
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((open) => !open)}
+              >
+                <span className="admin-menu-dots" aria-hidden="true">⋯</span>
+                <span>{language === "ar" ? "المزيد" : "Menu"}</span>
+              </button>
+              {menuOpen ? (
+                <>
+                  <button
+                    type="button"
+                    className="admin-menu-backdrop"
+                    aria-label={language === "ar" ? "إغلاق القائمة" : "Close menu"}
+                    onClick={() => setMenuOpen(false)}
+                  />
+                  <div className="admin-menu-pop" role="menu">
+                    {selectedHideable ? (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="admin-menu-item"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          toggleHidden(selectedSection.id);
+                        }}
+                      >
+                        {selectedHidden
+                          ? language === "ar"
+                            ? "إظهار القسم"
+                            : "Show section"
+                          : language === "ar"
+                            ? "إخفاء القسم"
+                            : "Hide section"}
+                      </button>
+                    ) : null}
+                    {canSeeSubmissions ? (
+                      <a
+                        role="menuitem"
+                        className="admin-menu-item"
+                        href="/secretpanel/submissions"
+                        onClick={(event) => {
+                          if (!confirmLeave()) event.preventDefault();
+                          else setMenuOpen(false);
+                        }}
+                      >
+                        {language === "ar" ? "الطلبات الواردة" : "Submissions"}
+                      </a>
+                    ) : null}
+                    {canManageUsers ? (
+                      <a
+                        role="menuitem"
+                        className="admin-menu-item"
+                        href="/secretpanel/users"
+                        onClick={(event) => {
+                          if (!confirmLeave()) event.preventDefault();
+                          else setMenuOpen(false);
+                        }}
+                      >
+                        {language === "ar" ? "المستخدمون" : "Users"}
+                      </a>
+                    ) : null}
+                    <a
+                      role="menuitem"
+                      className="admin-menu-item"
+                      href={languages[language].previewHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {language === "ar" ? "معاينة الموقع" : "Preview site"}
+                    </a>
+                    <div className="admin-menu-sep" aria-hidden="true" />
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="admin-menu-item admin-menu-danger"
+                      onClick={async () => {
+                        setMenuOpen(false);
+                        if (!confirmLeave()) {
+                          return;
+                        }
+                        await fetch("/api/auth/logout", { method: "POST" });
+                        window.location.href = "/secretpanel/login";
+                      }}
+                    >
+                      {language === "ar" ? "تسجيل الخروج" : "Sign out"}
+                    </button>
+                  </div>
+                </>
+              ) : null}
+            </div>
           </div>
         </header>
 

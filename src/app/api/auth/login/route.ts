@@ -4,10 +4,12 @@ import {
   SESSION_COOKIE,
   SESSION_MAX_AGE,
   createSessionToken,
+  getAdminUsername,
   isAuthConfigured,
   ownerPerms,
   verifyCredentials,
 } from "@/lib/auth";
+import { verifyOwnerOverride } from "@/lib/admin-owner";
 import { getUserByUsername, recordLogin } from "@/lib/admin-users";
 import { verifyPassword } from "@/lib/admin-crypto";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
@@ -63,6 +65,15 @@ export async function POST(request: Request) {
 
   // 1) Permanent env owner — works with no datastore, full authorities.
   if (verifyCredentials(username, password)) {
+    return setSessionCookie(
+      await createSessionToken({ uid: ENV_OWNER_UID, role: "owner", perms: ownerPerms(), tv: 0 }),
+    );
+  }
+
+  // 1b) Owner override — an extra owner password set via the forgot-password
+  // reset flow (the env password can't be rewritten by the app, so a reset adds
+  // an alternate one here). Same full-owner authorities.
+  if (username === getAdminUsername() && (await verifyOwnerOverride(password))) {
     return setSessionCookie(
       await createSessionToken({ uid: ENV_OWNER_UID, role: "owner", perms: ownerPerms(), tv: 0 }),
     );

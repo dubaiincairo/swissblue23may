@@ -189,3 +189,53 @@ export async function readSession(token: string | undefined | null): Promise<Ses
 export async function verifySessionToken(token: string | undefined | null): Promise<boolean> {
   return (await readSession(token)) !== null;
 }
+
+// --- Password-reset tokens (the "forgot password" owner-recovery flow) ---
+
+const RESET_MAX_AGE = 30 * 60 * 1000; // 30 minutes (ms)
+
+type ResetPayload = { p: "reset"; rv: number; exp: number };
+
+function resetMessage(payloadJson: string): string {
+  return `reset:${payloadJson}:${getSessionVersion()}`;
+}
+
+/** Mint a short-lived signed reset token bound to the current owner reset version. */
+export async function createResetToken(resetVersion: number): Promise<string> {
+  const payload: ResetPayload = { p: "reset", rv: resetVersion, exp: Date.now() + RESET_MAX_AGE };
+  const payloadJson = JSON.stringify(payload);
+  const signature = await sign(resetMessage(payloadJson));
+  return `${encodeStringB64Url(payloadJson)}.${signature}`;
+}
+
+/** Verify a reset token; returns its bound reset version, or null if invalid/expired. */
+export async function readResetToken(token: string | undefined | null): Promise<{ rv: number } | null> {
+  if (!token || !getSecret()) return null;
+  const dot = token.indexOf(".");
+  if (dot <= 0) return null;
+  const payloadB64 = token.slice(0, dot);
+  const signature = token.slice(dot + 1);
+
+  let payloadJson: string;
+  try {
+    payloadJson = decodeStringB64Url(payloadB64);
+  } catch {
+    return null;
+  }
+
+  let payload: Partial<ResetPayload>;
+  try {
+    payload = JSON.parse(payloadJson) as Partial<ResetPayload>;
+  } catch {
+    return null;
+  }
+
+  if (payload.p !== "reset") return null;
+  const exp = Number(payload.exp);
+  if (!Number.isFinite(exp) || exp < Date.now()) return null;
+
+  const expected = await sign(resetMessage(payloadJson));
+  if (!timingSafeEqual(signature, expected)) return null;
+
+  return { rv: Number(payload.rv) || 0 };
+}

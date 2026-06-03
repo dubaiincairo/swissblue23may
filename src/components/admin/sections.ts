@@ -8,6 +8,14 @@ export const languages: Record<Language, { label: string; short: string; preview
 
 export const adminSections: AdminSection[] = [
   {
+    id: "seo",
+    group: "SEO & Social",
+    label: "Search & social preview",
+    description:
+      "Site title, meta description, keywords, favicon, theme color, and the Open Graph / Twitter image shown when the site is shared.",
+    path: ["seo"],
+  },
+  {
     id: "navGroups",
     group: "Site-wide",
     label: "Navigation",
@@ -297,6 +305,12 @@ export const adminSections: AdminSection[] = [
 ];
 
 export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
+  seo: {
+    group: "تحسين محركات البحث",
+    label: "البحث ومعاينة المشاركة",
+    description:
+      "عنوان الموقع، وصف ميتا، الكلمات المفتاحية، أيقونة الموقع، لون السمة، وصورة المشاركة على وسائل التواصل.",
+  },
   navGroups: {
     group: "إعدادات الموقع",
     label: "القائمة الرئيسية",
@@ -505,6 +519,17 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
 };
 
 export const fieldLabels: Record<string, string> = {
+  siteTitle: "Main page title",
+  metaDescription: "Meta description",
+  keywords: "Keywords (comma-separated)",
+  ogTitle: "Social share title (optional)",
+  ogDescription: "Social share description (optional)",
+  ogImage: "Social preview image (OG / 1200×630)",
+  favicon: "Favicon (browser-tab icon)",
+  twitterCard: "Twitter card type",
+  twitterHandle: "Twitter @handle",
+  themeColor: "Theme color (hex)",
+  siteUrl: "Site URL (canonical base)",
   defaultText: "Default body text",
   pages: "Per-page CTAs",
   hotelDetail: "Hotel detail page",
@@ -637,6 +662,17 @@ export const fieldLabels: Record<string, string> = {
 };
 
 export const arabicFieldLabels: Record<string, string> = {
+  siteTitle: "عنوان الصفحة الرئيسي",
+  metaDescription: "وصف ميتا",
+  keywords: "الكلمات المفتاحية (مفصولة بفواصل)",
+  ogTitle: "عنوان المشاركة (اختياري)",
+  ogDescription: "وصف المشاركة (اختياري)",
+  ogImage: "صورة معاينة المشاركة (OG / 1200×630)",
+  favicon: "أيقونة الموقع (Favicon)",
+  twitterCard: "نوع بطاقة تويتر",
+  twitterHandle: "حساب تويتر @",
+  themeColor: "لون السمة (Hex)",
+  siteUrl: "رابط الموقع (الأساسي)",
   defaultText: "النص الافتراضي",
   pages: "نداءات كل صفحة",
   hotelDetail: "صفحة تفاصيل الفندق",
@@ -862,6 +898,7 @@ export function shouldShowField(path: Array<string | number>, key: string) {
 
 // Structural sections that must always render — hiding them would break the site layout.
 export const NON_HIDEABLE_SECTIONS = new Set([
+  "seo",
   "navGroups",
   "media",
   "footerSections",

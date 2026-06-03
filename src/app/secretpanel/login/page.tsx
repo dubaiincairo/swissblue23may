@@ -84,6 +84,15 @@ export default function AdminLoginPage() {
           <button className="btn btn-primary mt-2 w-full justify-center" type="submit" disabled={submitting}>
             {submitting ? "Signing in…" : "Sign in"}
           </button>
+
+          <p className="text-center text-sm">
+            <a
+              href="/secretpanel/forgot"
+              className="font-semibold text-[var(--primary)] hover:underline"
+            >
+              Forgot password?
+            </a>
+          </p>
         </form>
       </div>
     </main>
