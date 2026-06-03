@@ -256,6 +256,56 @@ export function StringFieldEditor({
   );
 }
 
+const FOCUS_OPTIONS: Array<{ value: string; en: string; ar: string }> = [
+  { value: "center", en: "Center", ar: "المنتصف" },
+  { value: "top", en: "Top", ar: "الأعلى" },
+  { value: "bottom", en: "Bottom", ar: "الأسفل" },
+  { value: "left", en: "Left", ar: "اليسار" },
+  { value: "right", en: "Right", ar: "اليمين" },
+  { value: "top left", en: "Top-left", ar: "أعلى اليسار" },
+  { value: "top right", en: "Top-right", ar: "أعلى اليمين" },
+  { value: "bottom left", en: "Bottom-left", ar: "أسفل اليسار" },
+  { value: "bottom right", en: "Bottom-right", ar: "أسفل اليمين" },
+];
+
+// Focal point for a banner photo: which part stays in frame when the wide image
+// is cropped to a narrow (mobile) container. Stored as a CSS object-position value.
+export function FocalFieldEditor({
+  name,
+  value,
+  path,
+  language,
+  onChange,
+}: {
+  name: string;
+  value: string;
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+}) {
+  return (
+    <label className="admin-field admin-focal-field">
+      <span>{labelFor(name, language)}</span>
+      <select
+        className="admin-focal-select"
+        value={value || "center"}
+        onChange={(event) => onChange(path, event.target.value)}
+      >
+        {FOCUS_OPTIONS.map((option) => (
+          <option key={option.value} value={option.value}>
+            {language === "ar" ? option.ar : option.en}
+          </option>
+        ))}
+      </select>
+      <small>
+        {language === "ar"
+          ? "الجزء الذي يبقى ظاهرًا عند اقتصاص الصورة في عرض الجوال."
+          : "Which part of the photo stays in view when it's cropped on mobile."}
+      </small>
+    </label>
+  );
+}
+
 export function FieldEditor({
   name,
   value,
@@ -277,6 +327,10 @@ export function FieldEditor({
 
   if (typeof value === "string" || typeof value === "number") {
     const stringValue = String(value);
+
+    if (typeof value === "string" && name === "focus") {
+      return <FocalFieldEditor name={name} value={value} path={path} language={language} onChange={onChange} />;
+    }
 
     if (typeof value === "string" && isImageField(name, path, value)) {
       return <ImageFieldEditor name={name} value={value} path={path} language={language} onChange={onChange} />;

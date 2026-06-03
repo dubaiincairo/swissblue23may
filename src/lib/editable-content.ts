@@ -721,16 +721,19 @@ const heroSlides = [
     kind: "image",
     source: heroImage,
     alt: "إطلالة ساحلية بالقرب من وجهات سويس بلو",
+    focus: "center",
   },
   {
     kind: "image",
     source: jeddahImage,
     alt: "مشهد حضري في جدة",
+    focus: "center",
   },
   {
     kind: "image",
     source: jazanImage,
     alt: "وجهة طبيعية في جازان",
+    focus: "center",
   },
 ];
 
@@ -3415,6 +3418,16 @@ function sharedImageValue(
   return [left, right] as const;
 }
 
+// A banner's crop focus is a property of the photo, not the language, so mirror
+// whichever locale set a non-default focus onto both (set once, applies to both).
+function sharedFocusValue(left: string | undefined, right: string | undefined) {
+  const l = left || "center";
+  const r = right || "center";
+  if (l === "center" && r !== "center") return [r, r] as const;
+  if (r === "center" && l !== "center") return [l, l] as const;
+  return [l, r] as const;
+}
+
 function syncMediaGallery(
   arGallery: EditableSiteContent["ar"]["media"]["gallery"],
   enGallery: EditableSiteContent["en"]["media"]["gallery"],
@@ -3492,8 +3505,9 @@ function syncHeroSlides(
         defaultSiteContent.ar.media.mainHeroSlides[index]?.source ?? arItem.source,
         defaultSiteContent.en.media.mainHeroSlides[index]?.source ?? enItem.source,
       );
+      const [focus] = sharedFocusValue(arItem.focus, enItem.focus);
 
-      return { ...arItem, kind: arItem.kind || enItem.kind, source };
+      return { ...arItem, kind: arItem.kind || enItem.kind, source, focus };
     }).filter(Boolean) as EditableSiteContent["ar"]["media"]["mainHeroSlides"],
     en: Array.from({ length: maxLength }, (_, index) => {
       const arItem = arSlides[index] ?? defaultSiteContent.ar.media.mainHeroSlides[index];
@@ -3513,8 +3527,9 @@ function syncHeroSlides(
         defaultSiteContent.ar.media.mainHeroSlides[index]?.source ?? arItem.source,
         defaultSiteContent.en.media.mainHeroSlides[index]?.source ?? enItem.source,
       );
+      const [, focus] = sharedFocusValue(arItem.focus, enItem.focus);
 
-      return { ...enItem, kind: enItem.kind || arItem.kind, source };
+      return { ...enItem, kind: enItem.kind || arItem.kind, source, focus };
     }).filter(Boolean) as EditableSiteContent["en"]["media"]["mainHeroSlides"],
   };
 }
