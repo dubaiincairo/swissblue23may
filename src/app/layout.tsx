@@ -8,6 +8,7 @@ import LiveContentRefresh from "@/components/live-content-refresh";
 import NavScrollState from "@/components/nav-scroll-state";
 import ScrollObserver from "@/components/scroll-observer";
 import { getEditableContent } from "@/lib/editable-content";
+import { defaultPageTitle, pageKeyFromPath } from "@/lib/page-seo";
 import "./globals.css";
 
 const arabicSans = Noto_Kufi_Arabic({
@@ -40,29 +41,44 @@ function toUrl(value: string): URL | undefined {
   }
 }
 
+type PageSeo = { title?: string; description?: string; ogImage?: string };
+
 /**
- * Resolve the active locale's editable SEO settings, falling back to the other
- * locale for shared visual assets (OG image, favicon, theme color, site URL) so
- * the admin only has to set those once.
+ * Resolve SEO for the current request: per-page title/description/OG image
+ * (from content[lang].seo.pages, keyed by the request pathname) layered over the
+ * global SEO, which itself falls back to the other locale for shared assets
+ * (OG image, favicon, theme color, site URL) so they only need setting once.
  */
 async function currentSeo() {
   const { ar, en } = await loadContent();
   const requestHeaders = await headers();
   const locale = requestHeaders.get("x-locale") === "ar" ? "ar" : "en";
+  const pathname = requestHeaders.get("x-pathname") || "";
+  const pageKey = pageKeyFromPath(pathname);
+
   const s = locale === "ar" ? ar.seo : en.seo;
   const o = locale === "ar" ? en.seo : ar.seo;
+  const sp: PageSeo = (s.pages as Record<string, PageSeo>)?.[pageKey] ?? {};
+  const op: PageSeo = (o.pages as Record<string, PageSeo>)?.[pageKey] ?? {};
+
+  const siteTitle = s.siteTitle || o.siteTitle || "Swiss Blue Hotels";
+  const title = sp.title || defaultPageTitle(pageKey, locale, siteTitle);
+  const description = sp.description || s.metaDescription || o.metaDescription || "";
+  const ogImage = sp.ogImage || op.ogImage || s.ogImage || o.ogImage || "";
+
   return {
-    siteTitle: s.siteTitle || o.siteTitle || "Swiss Blue Hotels",
-    metaDescription: s.metaDescription || o.metaDescription || "",
+    siteTitle: title,
+    metaDescription: description,
     keywords: s.keywords || o.keywords || "",
-    ogTitle: s.ogTitle || s.siteTitle || o.siteTitle || "Swiss Blue Hotels",
-    ogDescription: s.ogDescription || s.metaDescription || o.metaDescription || "",
-    ogImage: s.ogImage || o.ogImage || "",
+    ogTitle: title,
+    ogDescription: description || s.ogDescription || o.ogDescription || "",
+    ogImage,
     favicon: s.favicon || o.favicon || "",
     twitterCard: s.twitterCard || o.twitterCard || "summary_large_image",
     twitterHandle: s.twitterHandle || o.twitterHandle || "",
     themeColor: s.themeColor || o.themeColor || "#2b6fe8",
     siteUrl: s.siteUrl || o.siteUrl || "",
+    pathname,
   };
 }
 
@@ -75,17 +91,26 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await currentSeo();
   const base = toUrl(seo.siteUrl);
   const card = seo.twitterCard === "summary" ? "summary" : "summary_large_image";
+  let canonical: string | undefined;
+  if (base) {
+    try {
+      canonical = new URL(seo.pathname || "/", base).toString();
+    } catch {
+      canonical = base.toString();
+    }
+  }
   return {
     title: seo.siteTitle,
     description: seo.metaDescription || undefined,
     keywords: seo.keywords || undefined,
     ...(base ? { metadataBase: base } : {}),
+    ...(canonical ? { alternates: { canonical } } : {}),
     openGraph: {
       title: seo.ogTitle,
       description: seo.ogDescription || undefined,
       type: "website",
       siteName: "Swiss Blue Hotels",
-      ...(base ? { url: base.toString() } : {}),
+      ...(canonical ? { url: canonical } : {}),
       ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
     },
     twitter: {
