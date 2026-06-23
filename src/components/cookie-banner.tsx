@@ -1,28 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
 type CookieCopy = EditableSiteContent["ar"]["ui"]["cookie"];
 
+const CONSENT_PENDING = "__pending";
+const CONSENT_UNSET = "__unset";
+
+function subscribeToConsent(onStoreChange: () => void) {
+  window.addEventListener(CONSENT_EVENT, onStoreChange);
+  window.addEventListener("storage", onStoreChange);
+  const timeout = window.setTimeout(onStoreChange, 0);
+  return () => {
+    window.removeEventListener(CONSENT_EVENT, onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+    window.clearTimeout(timeout);
+  };
+}
+
+function getConsentSnapshot() {
+  try {
+    return window.localStorage.getItem(CONSENT_STORAGE_KEY) ?? CONSENT_UNSET;
+  } catch {
+    return "accepted";
+  }
+}
+
+function getServerConsentSnapshot() {
+  return CONSENT_PENDING;
+}
+
 export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: CookieCopy } }) {
   const pathname = usePathname();
   const locale = pathname?.startsWith("/en") ? "en" : "ar";
   const t = copy[locale];
   const policyHref = locale === "en" ? "/en/policy" : "/policy";
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    try {
-      if (!window.localStorage.getItem(CONSENT_STORAGE_KEY)) {
-        setVisible(true);
-      }
-    } catch {
-      // ignore storage errors (private mode, etc.)
-    }
-  }, []);
+  const consent = useSyncExternalStore(
+    subscribeToConsent,
+    getConsentSnapshot,
+    getServerConsentSnapshot,
+  );
+  const [dismissedInMemory, setDismissedInMemory] = useState(false);
+  const visible = !dismissedInMemory && consent === CONSENT_UNSET;
 
   function dismiss(value: "accepted" | "declined") {
     try {
@@ -30,7 +52,7 @@ export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: Coo
     } catch {
       // ignore
     }
-    setVisible(false);
+    setDismissedInMemory(true);
     // Let consent-gated widgets (e.g. the Chatbase bubble) load now that the
     // banner is dismissed and can no longer overlap it.
     window.dispatchEvent(new CustomEvent(CONSENT_EVENT));

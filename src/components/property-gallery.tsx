@@ -42,7 +42,7 @@ export function PropertyGallery({
             alt={main.title}
             fill
             sizes="(min-width: 1024px) 80vw, 100vw"
-            priority
+            loading="eager"
           />
         </button>
         {thumbs.length ? (
@@ -127,7 +127,7 @@ export function PropertyGallery({
                   alt={images[activeIndex].title}
                   fill
                   sizes="min(1180px, 92vw)"
-                  priority
+                  loading="eager"
                 />
               </figure>
               {images.length > 1 ? (
