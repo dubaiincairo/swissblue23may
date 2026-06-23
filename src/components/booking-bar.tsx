@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
@@ -22,6 +22,19 @@ function addDays(iso: string, days: number) {
   return isoDate(d);
 }
 
+function subscribeToClientDate(onStoreChange: () => void) {
+  const timeout = window.setTimeout(onStoreChange, 0);
+  return () => window.clearTimeout(timeout);
+}
+
+function getClientToday() {
+  return isoDate(new Date());
+}
+
+function getServerToday() {
+  return "";
+}
+
 export default function BookingBar({
   properties,
   locale,
@@ -35,11 +48,19 @@ export default function BookingBar({
   const router = useRouter();
 
   const [slug, setSlug] = useState(properties[0]?.slug ?? "");
-  const [checkin, setCheckin] = useState("");
-  const [checkout, setCheckout] = useState("");
-  const [today, setToday] = useState("");
+  const [selectedCheckin, setSelectedCheckin] = useState("");
+  const [selectedCheckout, setSelectedCheckout] = useState("");
+  const today = useSyncExternalStore(subscribeToClientDate, getClientToday, getServerToday);
   const [adults, setAdults] = useState(2);
   const rootRef = useRef<HTMLDivElement>(null);
+  const defaultCheckin = today ? addDays(today, 1) : "";
+  const defaultCheckout = today ? addDays(today, 2) : "";
+  const checkin = selectedCheckin || defaultCheckin;
+  const requestedCheckout = selectedCheckout || defaultCheckout;
+  const checkout =
+    checkin && requestedCheckout && requestedCheckout <= checkin
+      ? addDays(checkin, 1)
+      : requestedCheckout;
 
   // Publish the rendered bar height so the hero carousel dots can sit a fixed
   // gap above the (variable-height) stacked bar on mobile, instead of relying
@@ -57,22 +78,6 @@ export default function BookingBar({
       root.style.removeProperty("--hero-booking-h");
     };
   }, []);
-
-  // Compute dates on the client only to avoid SSR/hydration mismatch.
-  useEffect(() => {
-    const now = new Date();
-    const todayIso = isoDate(now);
-    setToday(todayIso);
-    setCheckin(addDays(todayIso, 1));
-    setCheckout(addDays(todayIso, 2));
-  }, []);
-
-  // Keep checkout strictly after checkin.
-  useEffect(() => {
-    if (checkin && checkout && checkout <= checkin) {
-      setCheckout(addDays(checkin, 1));
-    }
-  }, [checkin, checkout]);
 
   function search() {
     if (!slug) return;
@@ -113,7 +118,7 @@ export default function BookingBar({
           type="date"
           value={checkin}
           min={today || undefined}
-          onChange={(event) => setCheckin(event.target.value)}
+          onChange={(event) => setSelectedCheckin(event.target.value)}
           aria-label={t.checkin}
         />
       </label>
@@ -125,7 +130,7 @@ export default function BookingBar({
           type="date"
           value={checkout}
           min={checkin ? addDays(checkin, 1) : today || undefined}
-          onChange={(event) => setCheckout(event.target.value)}
+          onChange={(event) => setSelectedCheckout(event.target.value)}
           aria-label={t.checkout}
         />
       </label>

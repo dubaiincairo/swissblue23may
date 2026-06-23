@@ -72,7 +72,7 @@ export default function HeroMediaCarousel({
                 src={slide.source}
                 alt={slide.alt || fallbackAlt}
                 fill
-                priority={index === 0}
+                loading="eager"
                 sizes="100vw"
               />
             )}

@@ -2,13 +2,26 @@
 
 import Image from "next/image";
 import { createPortal } from "react-dom";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { rich } from "@/components/rich-text";
 
 type GalleryImage = {
   image: string;
   title: string;
 };
+
+function subscribeToMounted(onStoreChange: () => void) {
+  const timeout = window.setTimeout(onStoreChange, 0);
+  return () => window.clearTimeout(timeout);
+}
+
+function getMountedSnapshot() {
+  return true;
+}
+
+function getServerMountedSnapshot() {
+  return false;
+}
 
 export default function PhotoGalleryLightbox({
   images,
@@ -21,7 +34,11 @@ export default function PhotoGalleryLightbox({
 }) {
   const isArabic = locale === "ar";
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    subscribeToMounted,
+    getMountedSnapshot,
+    getServerMountedSnapshot,
+  );
   const galleryClass = variant === "property" ? "gallery-grid" : "hotel-showcase-grid";
   const touchStartX = useRef<number | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -36,10 +53,6 @@ export default function PhotoGalleryLightbox({
     }),
     [isArabic],
   );
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const isOpen = activeIndex !== null;
   const activeImage = activeIndex === null ? null : images[activeIndex];
@@ -206,7 +219,7 @@ export default function PhotoGalleryLightbox({
                     alt={activeImage.title}
                     fill
                     sizes="min(1200px, 94vw)"
-                    priority
+                    loading="eager"
                   />
                 </figure>
 

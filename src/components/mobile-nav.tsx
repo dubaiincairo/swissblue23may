@@ -4,7 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 
 type NavLink = { href: string; label: string };
 type NavGroup = { label: string; links: NavLink[] };
@@ -14,6 +14,19 @@ type Strings = {
   close: string;
   menu: string;
 };
+
+function subscribeToMounted(onStoreChange: () => void) {
+  const timeout = window.setTimeout(onStoreChange, 0);
+  return () => window.clearTimeout(timeout);
+}
+
+function getMountedSnapshot() {
+  return true;
+}
+
+function getServerMountedSnapshot() {
+  return false;
+}
 
 export default function MobileNav({
   groups,
@@ -32,15 +45,14 @@ export default function MobileNav({
 }) {
   const t = labels;
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    subscribeToMounted,
+    getMountedSnapshot,
+    getServerMountedSnapshot,
+  );
   const panelId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-
-  // Portal target is only available after mount (avoids SSR mismatch)
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Lock body scroll while open
   useEffect(() => {
