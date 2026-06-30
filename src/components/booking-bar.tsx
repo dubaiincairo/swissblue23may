@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
+import { DatePicker } from "@/components/date-picker";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Property = { slug: string; title: string };
@@ -113,25 +114,27 @@ export default function BookingBar({
 
       <label className="booking-field">
         <span>{t.checkin}</span>
-        <input
-          className="booking-control booking-date"
-          type="date"
+        <DatePicker
           value={checkin}
           min={today || undefined}
-          onChange={(event) => setSelectedCheckin(event.target.value)}
-          aria-label={t.checkin}
+          locale={locale}
+          ariaLabel={t.checkin}
+          variant="booking"
+          allowClear={false}
+          onChange={setSelectedCheckin}
         />
       </label>
 
       <label className="booking-field">
         <span>{t.checkout}</span>
-        <input
-          className="booking-control booking-date"
-          type="date"
+        <DatePicker
           value={checkout}
           min={checkin ? addDays(checkin, 1) : today || undefined}
-          onChange={(event) => setSelectedCheckout(event.target.value)}
-          aria-label={t.checkout}
+          locale={locale}
+          ariaLabel={t.checkout}
+          variant="booking"
+          allowClear={false}
+          onChange={setSelectedCheckout}
         />
       </label>
 
