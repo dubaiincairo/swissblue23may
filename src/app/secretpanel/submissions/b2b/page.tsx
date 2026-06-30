@@ -71,7 +71,7 @@ export default async function B2bSubmissionsPage() {
         <Link href="/secretpanel/submissions" className="text-sm font-semibold text-[var(--primary)]">
           ← All submissions
         </Link>
-        <h1 className="mt-4 text-3xl font-bold">Corporate (B2B) requests</h1>
+        <h1 className="mt-4 text-3xl font-bold">Corporate Requests</h1>
         <p className="mt-2 text-sm text-[var(--text-secondary)]">
           {requests.length} request{requests.length === 1 ? "" : "s"} received.
         </p>

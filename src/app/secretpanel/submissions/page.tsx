@@ -53,7 +53,7 @@ export default async function SubmissionsIndexPage() {
               <span className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">
                 Business
               </span>
-              <h2 className="mt-2 text-xl font-bold">Corporate (B2B) requests</h2>
+              <h2 className="mt-2 text-xl font-bold">Corporate Requests</h2>
               <p className="mt-3 text-3xl font-extrabold text-[var(--primary)]">{b2b}</p>
               <p className="mt-1 text-sm text-[var(--text-secondary)]">total received</p>
             </Link>
