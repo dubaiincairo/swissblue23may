@@ -4431,6 +4431,24 @@ body.overlay-open iframe[src*="chatbase.co"] {
   width: 100%;
 }
 
+.b2b-success {
+  background: rgba(34, 160, 95, 0.1);
+  border: 1px solid rgba(34, 160, 95, 0.3);
+  border-radius: 12px;
+  color: var(--success);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.7;
+  margin-bottom: 18px;
+  padding: 18px 20px;
+}
+
+.b2b-success:focus,
+.careers-success:focus {
+  outline: 3px solid rgba(34, 160, 95, 0.24);
+  outline-offset: 3px;
+}
+
 .b2b-modal {
   align-items: center;
   display: grid;
