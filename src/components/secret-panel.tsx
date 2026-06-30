@@ -1,12 +1,15 @@
 "use client";
 
 // Swiss Blue content studio (admin panel) shell: load/save, sidebar, topbar, layout.
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { AdminSection, JsonObject, JsonValue, Language, StatusTone } from "./admin/types";
 import { adminSections, languages, NON_HIDEABLE_SECTIONS, sectionCopy } from "./admin/sections";
 import { getAtPath, reorderAtPath, sectionMeta, setAtPath, statusLabel } from "./admin/content-path";
 import { FieldEditor } from "./admin/field-editors";
 import { hasAuthority } from "@/lib/authorities";
+
+const LANGUAGE_FADE_OUT_MS = 120;
+const LANGUAGE_FADE_IN_MS = 260;
 
 export default function SecretPanel({
   language: initialLanguage = "en",
@@ -23,6 +26,9 @@ export default function SecretPanel({
   const [status, setStatus] = useState("loading");
   const [statusTone, setStatusTone] = useState<StatusTone>("ready");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [languageMotion, setLanguageMotion] = useState<"idle" | "out" | "in">("idle");
+  const [pendingLanguage, setPendingLanguage] = useState<Language | null>(null);
+  const languageSwitchTimers = useRef<number[]>([]);
 
   useEffect(() => {
     fetch("/api/site-content", { cache: "no-store" })
@@ -37,6 +43,12 @@ export default function SecretPanel({
         setStatus("loadError");
         setStatusTone("error");
       });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
+    };
   }, []);
 
   // Warn before a hard browser navigation / tab close while edits are unsaved.
@@ -174,14 +186,50 @@ export default function SecretPanel({
     );
   }
 
+  function switchLanguage(nextLanguage: Language) {
+    if (nextLanguage === language || languageMotion !== "idle") {
+      return;
+    }
+
+    languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
+    languageSwitchTimers.current = [];
+    setMenuOpen(false);
+    setPendingLanguage(nextLanguage);
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLanguage(nextLanguage);
+      setPendingLanguage(null);
+      return;
+    }
+
+    setLanguageMotion("out");
+    languageSwitchTimers.current.push(
+      window.setTimeout(() => {
+        setLanguage(nextLanguage);
+        setLanguageMotion("in");
+        languageSwitchTimers.current.push(
+          window.setTimeout(() => {
+            setLanguageMotion("idle");
+            setPendingLanguage(null);
+          }, LANGUAGE_FADE_IN_MS),
+        );
+      }, LANGUAGE_FADE_OUT_MS),
+    );
+  }
+
   // --- Authority-aware navigation (perms come from the signed session) ---
   const canEditThisLanguage = hasAuthority(perms, language === "ar" ? "content.ar" : "content.en");
   const canSeeSubmissions = hasAuthority(perms, "submissions");
   const canManageUsers = hasAuthority(perms, "users");
   const canSwitchPanel = hasAuthority(perms, language === "ar" ? "content.en" : "content.ar");
+  const isLanguageSwitching = languageMotion !== "idle";
 
   return (
-    <main className="admin-shell" dir={language === "ar" ? "rtl" : "ltr"}>
+    <main
+      className={`admin-shell${isLanguageSwitching ? ` is-language-${languageMotion}` : ""}`}
+      dir={language === "ar" ? "rtl" : "ltr"}
+      aria-busy={isLanguageSwitching}
+    >
       <aside className="admin-sidebar">
         <div className="admin-brand">
           <span className="admin-brand-mark">SB</span>
@@ -203,9 +251,15 @@ export default function SecretPanel({
                 <button
                   key={code}
                   type="button"
-                  className={language === code ? "active" : ""}
+                  className={[
+                    language === code ? "active" : "",
+                    pendingLanguage === code ? "is-pending" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                   aria-pressed={language === code}
-                  onClick={() => setLanguage(code)}
+                  disabled={isLanguageSwitching}
+                  onClick={() => switchLanguage(code)}
                 >
                   {languages[code].label}
                 </button>
