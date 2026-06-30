@@ -1813,7 +1813,15 @@ section:has(> .insight-grid) {
    ids ever change. */
 body.overlay-open #chatbase-bubble-button,
 body.overlay-open #chatbase-bubble-window,
+body.overlay-open #chatbase-message-bubbles,
 body.overlay-open iframe[src*="chatbase.co"] {
+  display: none !important;
+}
+
+body.admin-chat-hidden #chatbase-bubble-button,
+body.admin-chat-hidden #chatbase-bubble-window,
+body.admin-chat-hidden #chatbase-message-bubbles,
+body.admin-chat-hidden iframe[src*="chatbase.co"] {
   display: none !important;
 }
 

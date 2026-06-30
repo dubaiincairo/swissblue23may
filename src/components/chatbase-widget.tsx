@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
 
 type ChatbaseFn = ((...args: unknown[]) => unknown) & { q?: unknown[] };
@@ -11,6 +12,15 @@ declare global {
   }
 }
 
+function isAdminPath(pathname: string | null) {
+  return Boolean(
+    pathname === "/secretpanel" ||
+      pathname === "/studio" ||
+      pathname?.startsWith("/secretpanel/") ||
+      pathname?.startsWith("/studio/"),
+  );
+}
+
 /**
  * Embeds the Chatbase chat bubble using the official loader pattern.
  *
@@ -19,7 +29,19 @@ declare global {
  * renders normally — set the id in .env.local (and in Vercel) to enable it.
  */
 export default function ChatbaseWidget() {
+  const pathname = usePathname();
+  const adminPath = isAdminPath(pathname);
+
   useEffect(() => {
+    document.body.classList.toggle("admin-chat-hidden", adminPath);
+    return () => document.body.classList.remove("admin-chat-hidden");
+  }, [adminPath]);
+
+  useEffect(() => {
+    if (adminPath) {
+      return;
+    }
+
     const chatbotId = process.env.NEXT_PUBLIC_CHATBASE_ID;
     if (!chatbotId) {
       return;
@@ -80,7 +102,7 @@ export default function ChatbaseWidget() {
     }
     window.addEventListener(CONSENT_EVENT, onConsent);
     return () => window.removeEventListener(CONSENT_EVENT, onConsent);
-  }, []);
+  }, [adminPath]);
 
   return null;
 }
