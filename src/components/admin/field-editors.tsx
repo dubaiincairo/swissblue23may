@@ -1,5 +1,6 @@
 "use client";
 
+import type { DragEvent } from "react";
 import { useState } from "react";
 import { RichEditor } from "@/components/rich-editor";
 import { RephraseButton } from "@/components/rephrase-button";
@@ -324,6 +325,7 @@ export function FieldEditor({
   onReorder: (path: Array<string | number>, from: number, to: number) => void;
 }) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   if (typeof value === "string" || typeof value === "number") {
     const stringValue = String(value);
@@ -364,6 +366,33 @@ export function FieldEditor({
   if (Array.isArray(value)) {
     const primitiveList = value.every((item) => !isPlainObject(item) && !Array.isArray(item));
 
+    function clearDragState() {
+      setDragIndex(null);
+      setDragOverIndex(null);
+    }
+
+    function handleDragStart(event: DragEvent, index: number) {
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", String(index));
+      setDragIndex(index);
+      setDragOverIndex(null);
+    }
+
+    function handleDragOver(event: DragEvent, index: number) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+      if (dragIndex !== null && dragIndex !== index) {
+        setDragOverIndex(index);
+      }
+    }
+
+    function handleDrop(index: number) {
+      if (dragIndex !== null && dragIndex !== index) {
+        onReorder(path, dragIndex, index);
+      }
+      clearDragState();
+    }
+
     return (
       <section className="admin-array">
         <div className="admin-array-head">
@@ -387,43 +416,24 @@ export function FieldEditor({
             if (primitiveList) {
               return (
                 <div
-                  className="admin-list-row"
+                  className={[
+                    "admin-list-row",
+                    dragIndex === index ? "is-dragging" : "",
+                    dragOverIndex === index && dragIndex !== null && dragIndex !== index ? "is-drop-target" : "",
+                  ].filter(Boolean).join(" ")}
                   key={`${path.join(".")}-${index}`}
-                  onDragOver={(event) => event.preventDefault()}
-                  onDrop={() => {
-                    if (dragIndex !== null) {
-                      onReorder(path, dragIndex, index);
-                      setDragIndex(null);
-                    }
-                  }}
+                  onDragLeave={() => setDragOverIndex((current) => (current === index ? null : current))}
+                  onDragOver={(event) => handleDragOver(event, index)}
+                  onDrop={() => handleDrop(index)}
                 >
                   <span
                     className="admin-drag-handle"
                     draggable
                     aria-label={language === "ar" ? "اسحب لتغيير ترتيب العنصر" : "Drag item to reorder"}
-                    onDragStart={() => setDragIndex(index)}
-                    onDragEnd={() => setDragIndex(null)}
-                  >
-                    ::
-                  </span>
-                  <span className="admin-move">
-                    <button
-                      type="button"
-                      aria-label={language === "ar" ? "تحريك لأعلى" : "Move up"}
-                      disabled={index === 0}
-                      onClick={() => onReorder(path, index, index - 1)}
-                    >
-                      ↑
-                    </button>
-                    <button
-                      type="button"
-                      aria-label={language === "ar" ? "تحريك لأسفل" : "Move down"}
-                      disabled={index === value.length - 1}
-                      onClick={() => onReorder(path, index, index + 1)}
-                    >
-                      ↓
-                    </button>
-                  </span>
+                    title={language === "ar" ? "اسحب لتغيير الترتيب" : "Drag to reorder"}
+                    onDragStart={(event) => handleDragStart(event, index)}
+                    onDragEnd={clearDragState}
+                  />
                   <FieldEditor
                     name={name}
                     value={item}
@@ -445,51 +455,26 @@ export function FieldEditor({
 
             return (
               <details
-                className="admin-array-item"
+                className={[
+                  "admin-array-item",
+                  dragIndex === index ? "is-dragging" : "",
+                  dragOverIndex === index && dragIndex !== null && dragIndex !== index ? "is-drop-target" : "",
+                ].filter(Boolean).join(" ")}
                 key={`${path.join(".")}-${index}`}
-                onDragOver={(event) => event.preventDefault()}
-                onDrop={() => {
-                  if (dragIndex !== null) {
-                    onReorder(path, dragIndex, index);
-                    setDragIndex(null);
-                  }
-                }}
+                onDragLeave={() => setDragOverIndex((current) => (current === index ? null : current))}
+                onDragOver={(event) => handleDragOver(event, index)}
+                onDrop={() => handleDrop(index)}
               >
                 <summary className="admin-item-summary">
                   <span
                     className="admin-drag-handle"
                     draggable
                     aria-label={language === "ar" ? "اسحب لتغيير ترتيب العنصر" : "Drag item to reorder"}
+                    title={language === "ar" ? "اسحب لتغيير الترتيب" : "Drag to reorder"}
                     onClick={(event) => event.preventDefault()}
-                    onDragStart={() => setDragIndex(index)}
-                    onDragEnd={() => setDragIndex(null)}
-                  >
-                    ::
-                  </span>
-                  <span className="admin-move">
-                    <button
-                      type="button"
-                      aria-label={language === "ar" ? "تحريك لأعلى" : "Move up"}
-                      disabled={index === 0}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        onReorder(path, index, index - 1);
-                      }}
-                    >
-                      ↑
-                    </button>
-                    <button
-                      type="button"
-                      aria-label={language === "ar" ? "تحريك لأسفل" : "Move down"}
-                      disabled={index === value.length - 1}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        onReorder(path, index, index + 1);
-                      }}
-                    >
-                      ↓
-                    </button>
-                  </span>
+                    onDragStart={(event) => handleDragStart(event, index)}
+                    onDragEnd={clearDragState}
+                  />
                   <span>
                     <strong>{itemTitle(item, fallback)}</strong>
                     <small>{fallback}</small>
