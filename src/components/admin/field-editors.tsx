@@ -6,7 +6,8 @@ import { RichEditor } from "@/components/rich-editor";
 import { RephraseButton } from "@/components/rephrase-button";
 import { StockPhotoPicker } from "@/components/stock-photo-picker";
 import { TranslateButton } from "@/components/translate-button";
-import type { JsonValue, Language } from "./types";
+import { PAGE_KEYS, PAGE_NAMES } from "@/lib/page-seo";
+import type { JsonObject, JsonValue, Language } from "./types";
 import { labelFor, orderedEntries, shouldShowField } from "./sections";
 import { cloneTemplate, isPlainObject, itemTitle } from "./content-path";
 import { acceptsVideo, isImageField, isLogoField, isLongField, localizedImageGuidance, removeLogoBackground } from "./image-utils";
@@ -307,6 +308,180 @@ export function FocalFieldEditor({
   );
 }
 
+const SEO_PAGE_FIELDS = ["title", "description", "ogImage"] as const;
+
+function humanizePageKey(key: string) {
+  return key
+    .split("-")
+    .filter(Boolean)
+    .map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
+    .join(" ") || key;
+}
+
+function pageRouteForKey(key: string, language: Language) {
+  return key === "home" ? `/${language}` : `/${language}/${key}`;
+}
+
+function seoFieldValue(page: JsonObject, field: string) {
+  const value = page[field];
+  return typeof value === "string" ? value : "";
+}
+
+function SeoPagesEditor({
+  value,
+  path,
+  level,
+  language,
+  onChange,
+  onReorder,
+}: {
+  value: JsonObject;
+  path: Array<string | number>;
+  level: number;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+  onReorder: (path: Array<string | number>, from: number, to: number) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const [selectedPageKey, setSelectedPageKey] = useState(PAGE_KEYS[0] ?? "home");
+  const allPageKeys = Array.from(new Set([...PAGE_KEYS, ...Object.keys(value)]));
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const pageItems = allPageKeys.map((key) => {
+    const names = PAGE_NAMES[key] ?? { en: humanizePageKey(key), ar: humanizePageKey(key) };
+    const pageValue = isPlainObject(value[key]) ? value[key] : {};
+    const completedFields = SEO_PAGE_FIELDS.filter((field) => seoFieldValue(pageValue, field).trim()).length;
+    const route = pageRouteForKey(key, language);
+    const label = names[language] || names.en || humanizePageKey(key);
+    const alternateLabel = language === "ar" ? names.en : names.ar;
+
+    return {
+      key,
+      label,
+      alternateLabel,
+      route,
+      completedFields,
+      totalFields: SEO_PAGE_FIELDS.length,
+    };
+  });
+  const filteredPageItems = pageItems.filter((page) => {
+    if (!normalizedQuery) {
+      return true;
+    }
+
+    return [page.label, page.alternateLabel, page.key, page.route]
+      .filter(Boolean)
+      .some((candidate) => candidate.toLocaleLowerCase().includes(normalizedQuery));
+  });
+  const selectedPageVisible = filteredPageItems.some((page) => page.key === selectedPageKey);
+  const activePageKey = selectedPageVisible ? selectedPageKey : filteredPageItems[0]?.key;
+  const activePage = pageItems.find((page) => page.key === activePageKey);
+  const activeValue =
+    activePageKey && isPlainObject(value[activePageKey]) ? value[activePageKey] : {};
+
+  function handleSelectedPageChange(fieldPath: Array<string | number>, nextValue: JsonValue) {
+    if (!activePageKey) {
+      return;
+    }
+
+    const fieldName = fieldPath.at(-1);
+    if (typeof fieldName === "string" && !isPlainObject(value[activePageKey])) {
+      onChange([...path, activePageKey], {
+        title: "",
+        description: "",
+        ogImage: "",
+        [fieldName]: nextValue,
+      });
+      return;
+    }
+
+    onChange(fieldPath, nextValue);
+  }
+
+  return (
+    <section className="admin-seo-pages" aria-label={language === "ar" ? "تحسين الصفحات" : "Per-page SEO"}>
+      <div className="admin-seo-pages-toolbar">
+        <label className="admin-seo-search">
+          <span>{language === "ar" ? "البحث عن صفحة" : "Find a page"}</span>
+          <input
+            type="search"
+            value={query}
+            placeholder={language === "ar" ? "اكتب اسم الصفحة أو الرابط" : "Type a page name or route"}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
+        <div className="admin-seo-result-count" aria-live="polite">
+          <strong>{filteredPageItems.length}</strong>
+          <span>{language === "ar" ? "صفحة" : filteredPageItems.length === 1 ? "page" : "pages"}</span>
+        </div>
+      </div>
+
+      <div className="admin-seo-pages-grid">
+        <nav className="admin-seo-page-list" aria-label={language === "ar" ? "الصفحات" : "Pages"}>
+          {filteredPageItems.length ? (
+            filteredPageItems.map((page) => (
+              <button
+                key={page.key}
+                type="button"
+                className={page.key === activePageKey ? "admin-seo-page-button is-active" : "admin-seo-page-button"}
+                aria-current={page.key === activePageKey ? "page" : undefined}
+                onClick={() => setSelectedPageKey(page.key)}
+              >
+                <span className="admin-seo-page-copy">
+                  <strong>{page.label}</strong>
+                  <small>{page.route}</small>
+                </span>
+                <span className="admin-seo-page-progress">
+                  {page.completedFields}/{page.totalFields}
+                </span>
+              </button>
+            ))
+          ) : (
+            <p className="admin-seo-empty">
+              {language === "ar" ? "لا توجد صفحة بهذا البحث." : "No pages match this search."}
+            </p>
+          )}
+        </nav>
+
+        <section className="admin-seo-editor">
+          {activePage && activePageKey ? (
+            <>
+              <div className="admin-seo-editor-head">
+                <div>
+                  <h3>{activePage.label}</h3>
+                  <p>{activePage.route}</p>
+                </div>
+                <span>
+                  {language === "ar"
+                    ? `${activePage.completedFields} من ${activePage.totalFields} مكتمل`
+                    : `${activePage.completedFields} of ${activePage.totalFields} filled`}
+                </span>
+              </div>
+              <div className="admin-seo-field-grid">
+                {SEO_PAGE_FIELDS.map((field) => (
+                  <FieldEditor
+                    key={`${path.join(".")}-${activePageKey}-${field}`}
+                    name={field}
+                    value={seoFieldValue(activeValue, field)}
+                    path={[...path, activePageKey, field]}
+                    level={level + 1}
+                    language={language}
+                    onChange={handleSelectedPageChange}
+                    onReorder={onReorder}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <p className="admin-seo-empty">
+              {language === "ar" ? "اختر صفحة لتعديل بياناتها." : "Select a page to edit its SEO."}
+            </p>
+          )}
+        </section>
+      </div>
+    </section>
+  );
+}
+
 export function FieldEditor({
   name,
   value,
@@ -510,6 +685,19 @@ export function FieldEditor({
   }
 
   if (isPlainObject(value)) {
+    if (name === "seoPages") {
+      return (
+        <SeoPagesEditor
+          value={value}
+          path={path}
+          level={level}
+          language={language}
+          onChange={onChange}
+          onReorder={onReorder}
+        />
+      );
+    }
+
     return (
       <section className={level === 0 ? "admin-object admin-object-root" : "admin-object"}>
         {level > 0 ? <h3>{labelFor(name, language)}</h3> : null}

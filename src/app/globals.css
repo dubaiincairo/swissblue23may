@@ -3491,6 +3491,235 @@ body.overlay-open iframe[src*="chatbase.co"] {
   min-width: 0;
 }
 
+.admin-seo-pages {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-seo-pages-toolbar {
+  align-items: end;
+  background: #f8fafc;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 12px;
+}
+
+.admin-seo-search {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.admin-seo-search span,
+.admin-seo-result-count span,
+.admin-seo-editor-head span {
+  color: #475467;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.admin-seo-search input {
+  background: white;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  color: var(--admin-ink);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 11px 12px;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+  width: 100%;
+}
+
+.admin-seo-search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(43, 111, 232, 0.12);
+  outline: none;
+}
+
+.admin-seo-result-count {
+  align-items: center;
+  background: white;
+  border: 1px solid rgba(152, 162, 179, 0.24);
+  border-radius: 8px;
+  color: var(--admin-muted);
+  display: inline-flex;
+  gap: 7px;
+  justify-content: center;
+  min-height: 46px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.admin-seo-result-count strong {
+  color: var(--admin-ink);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.admin-seo-pages-grid {
+  align-items: start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(220px, 35%) minmax(340px, 1fr);
+}
+
+.admin-seo-page-list {
+  display: grid;
+  gap: 8px;
+  max-height: min(66vh, 720px);
+  overflow: auto;
+  padding-inline-end: 2px;
+}
+
+.admin-seo-page-button {
+  align-items: center;
+  background: white;
+  border: 1px solid rgba(152, 162, 179, 0.2);
+  border-inline-start: 4px solid transparent;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  color: var(--admin-ink);
+  cursor: pointer;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 68px;
+  padding: 12px;
+  text-align: start;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.admin-seo-page-button:hover {
+  border-color: rgba(43, 111, 232, 0.22);
+  box-shadow: 0 12px 28px rgba(16, 24, 40, 0.08);
+  transform: translateY(-1px);
+}
+
+.admin-seo-page-button:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(43, 111, 232, 0.12);
+  outline: none;
+}
+
+.admin-seo-page-button.is-active {
+  background: #f7faff;
+  border-color: rgba(43, 111, 232, 0.32);
+  border-inline-start-color: var(--primary);
+  box-shadow:
+    0 0 0 3px rgba(43, 111, 232, 0.08),
+    0 14px 30px rgba(18, 70, 168, 0.1);
+}
+
+.admin-seo-page-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.admin-seo-page-copy strong {
+  color: var(--admin-ink);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-seo-page-copy small,
+.admin-seo-editor-head p {
+  color: var(--admin-muted);
+  direction: ltr;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+
+.admin-seo-page-progress {
+  align-items: center;
+  background: #eef4ff;
+  border-radius: 999px;
+  color: var(--primary);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 900;
+  justify-content: center;
+  min-width: 42px;
+  padding: 6px 9px;
+}
+
+.admin-seo-editor {
+  background: #fbfcfe;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  padding: 14px;
+}
+
+.admin-seo-editor-head {
+  align-items: flex-start;
+  background: white;
+  border: 1px solid rgba(152, 162, 179, 0.18);
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.admin-seo-editor-head h3 {
+  color: var(--admin-ink);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.admin-seo-editor-head p {
+  margin-top: 4px;
+}
+
+.admin-seo-editor-head > span {
+  background: #f8fafc;
+  border: 1px solid rgba(152, 162, 179, 0.24);
+  border-radius: 999px;
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  white-space: nowrap;
+}
+
+.admin-seo-field-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-seo-empty {
+  background: white;
+  border: 1px dashed rgba(152, 162, 179, 0.45);
+  border-radius: 8px;
+  color: var(--admin-muted);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.5;
+  padding: 18px;
+  text-align: center;
+}
+
 .admin-field span,
 .admin-check span {
   color: #475467;
@@ -3867,6 +4096,23 @@ body.overlay-open iframe[src*="chatbase.co"] {
 .admin-content-panel[dir="rtl"] .admin-field input[type="url"] {
   direction: ltr;
   text-align: left;
+}
+
+.admin-content-panel[dir="rtl"] .admin-seo-pages-toolbar,
+.admin-content-panel[dir="rtl"] .admin-seo-page-button,
+.admin-content-panel[dir="rtl"] .admin-seo-editor-head {
+  direction: rtl;
+}
+
+.admin-content-panel[dir="rtl"] .admin-seo-search input {
+  direction: rtl;
+  text-align: right;
+}
+
+.admin-content-panel[dir="rtl"] .admin-seo-page-copy small,
+.admin-content-panel[dir="rtl"] .admin-seo-editor-head p {
+  direction: ltr;
+  text-align: right;
 }
 
 .admin-content-panel[dir="rtl"] .admin-image-control,
@@ -4390,8 +4636,41 @@ body.overlay-open iframe[src*="chatbase.co"] {
 @media (prefers-reduced-motion: reduce) {
   .admin-array-item,
   .admin-list-row,
-  .admin-drag-handle {
+  .admin-drag-handle,
+  .admin-seo-page-button,
+  .admin-seo-search input {
     transition: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .admin-seo-pages-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-seo-page-list {
+    max-height: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-seo-pages-toolbar {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  .admin-seo-result-count {
+    justify-content: flex-start;
+  }
+
+  .admin-seo-editor-head {
+    display: grid;
+  }
+
+  .admin-seo-page-copy strong {
+    overflow-wrap: anywhere;
+    text-overflow: clip;
+    white-space: normal;
   }
 }
 
