@@ -37,6 +37,8 @@ import { faqCategoriesEn, homepageFaqsEn, propertyFaqsEn } from "@/lib/faq-conte
 import { apiVersion, dataset, projectId } from "@/sanity/env";
 
 const documentId = "site-content-singleton";
+const B2B_REQUEST_FORM_EYEBROW_EN = "B2B Request Form";
+const LEGACY_B2B_REQUEST_FORM_EYEBROW_EN = "B2B request form";
 
 const homeOffers = [
   {
@@ -1156,7 +1158,7 @@ const b2bRequestForm = {
 };
 
 const b2bRequestFormEn = {
-  eyebrow: "B2B request form",
+  eyebrow: B2B_REQUEST_FORM_EYEBROW_EN,
   title: "Send a corporate accommodation request.",
   text: "Share the business need, expected dates, units, and documentation status. The corporate team can use this information to prepare a more accurate proposal.",
   steps: [
@@ -3385,6 +3387,31 @@ export type EditableSiteContent = typeof defaultSiteContent;
 const DEPRECATED_MEDIA_KEYS_SHARED = ["lightLogo", "arabicLightLogo"] as const;
 const DEPRECATED_MEDIA_KEYS_AR = [...DEPRECATED_MEDIA_KEYS_SHARED, "logo"] as const;
 
+function normalizeClientFacingContent(content: EditableSiteContent): EditableSiteContent {
+  const requestForm = content.en.subpages.corporateDealsPage.requestForm;
+
+  if (requestForm.eyebrow !== LEGACY_B2B_REQUEST_FORM_EYEBROW_EN) {
+    return content;
+  }
+
+  return {
+    ...content,
+    en: {
+      ...content.en,
+      subpages: {
+        ...content.en.subpages,
+        corporateDealsPage: {
+          ...content.en.subpages.corporateDealsPage,
+          requestForm: {
+            ...requestForm,
+            eyebrow: B2B_REQUEST_FORM_EYEBROW_EN,
+          },
+        },
+      },
+    },
+  };
+}
+
 function stripKeys<T extends Record<string, unknown>>(media: T, keys: readonly string[]): T {
   const next = { ...media };
   for (const key of keys) {
@@ -3996,7 +4023,7 @@ function getSanityClient(token?: string) {
 }
 
 function mergeContent(content: Partial<EditableSiteContent> | null): EditableSiteContent {
-  return syncSharedImages({
+  return normalizeClientFacingContent(syncSharedImages({
     ar: {
       ...defaultSiteContent.ar,
       ...(content?.ar ?? {}),
@@ -4095,7 +4122,7 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
         feedbackPage: { ...defaultSiteContent.en.subpages.feedbackPage, ...(content?.en?.subpages?.feedbackPage ?? {}) },
       },
     },
-  });
+  }));
 }
 
 /**
