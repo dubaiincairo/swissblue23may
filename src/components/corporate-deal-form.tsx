@@ -2,6 +2,7 @@
 
 import type { FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import { DatePicker } from "@/components/date-picker";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Locale = "ar" | "en";
@@ -325,11 +326,22 @@ export default function CorporateDealForm({
               </label>
               <label>
                 <span>{t.fields.arrival}</span>
-                <input name="arrival" type="date" />
+                <DatePicker
+                  name="arrival"
+                  locale={locale}
+                  ariaLabel={t.fields.arrival}
+                  placeholder={isArabic ? "يوم/شهر/سنة" : "dd/mm/yyyy"}
+                />
               </label>
               <label>
                 <span>{t.fields.departure}</span>
-                <input name="departure" type="date" />
+                <DatePicker
+                  name="departure"
+                  locale={locale}
+                  ariaLabel={t.fields.departure}
+                  placeholder={isArabic ? "يوم/شهر/سنة" : "dd/mm/yyyy"}
+                  align="end"
+                />
               </label>
               <label>
                 <span>{t.fields.documents}</span>
