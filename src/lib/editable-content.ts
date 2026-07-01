@@ -2115,94 +2115,94 @@ export const defaultSiteContent = {
       },
       reservationOfficePage: {
         hero: {
-          eyebrow: "دعم الحجز المباشر",
-          title: "مكتب الحجوزات المركزي.",
-          text: "فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في جميع فنادق وشقق سويس بلو في جدة وجازان والرياض — مكالمة أو رسالة واتساب واحدة تكفي.",
+          eyebrow: "مكتب الحجز المباشر",
+          title: "مكتب الحجوزات المركزي",
+          text: "احجز أو عدّل إقامتك عبر فريق واحد يعرف جميع منشآت سويس بلو في جدة وجازان والرياض. مكالمة أو رسالة واتساب واحدة تكفي للوصول إلى الخيار الأنسب.",
           image: heroImage,
         },
         intro: {
-          eyebrow: "فريقك للحجز المباشر",
-          title: "تحدّث إلى مختص حجوزات حقيقي، بالعربية أو الإنجليزية.",
-          text: "مكتب الحجوزات المركزي نقطة اتصال واحدة لكل منشآت سويس بلو. نتولّى الحجوزات الجديدة، وطلبات المجموعات، وحسابات الشركات، والتعديلات أثناء الإقامة — مباشرة، دون وسطاء ودون رسوم إضافية.",
+          eyebrow: "نقطة اتصال واحدة",
+          title: "اختصر البحث بين الفنادق والشقق والأسعار في محادثة واحدة.",
+          text: "يساعدك فريق الحجوزات المركزي على اختيار المنشأة المناسبة، مقارنة الغرف والشقق، تأكيد السعر، وتوثيق الحجز كتابةً. نتولى حجوزات الأفراد والعائلات، الإقامات الطويلة، المجموعات، الشركات، والتعديلات قبل الوصول أو أثناء الإقامة.",
         },
         channels: [
           {
             title: "اتصل بنا",
             value: "+966 59 597 9064",
             href: "tel:+966595979064",
-            text: "تحدّث مباشرة مع فريق الحجوزات على مدار الساعة لتأكيد التوفر والأسعار وإتمام حجزك في دقائق.",
+            text: "أفضل خيار للحجز العاجل أو عندما ترغب في مقارنة أكثر من منشأة بسرعة مع مختص حجوزات.",
           },
           {
             title: "واتساب",
             value: "+966 59 597 9064",
             href: "https://wa.me/966595979064",
-            text: "أرسل تواريخك وعدد الضيوف، وسنعيد لك خيارات الغرف والأسعار كتابةً.",
+            text: "أرسل التواريخ وعدد الضيوف والمدينة المطلوبة، وسيصلك عرض واضح بالخيارات والأسعار.",
           },
           {
             title: "البريد الإلكتروني",
             value: "reservations@swissblue.sa",
             href: "mailto:reservations@swissblue.sa",
-            text: "للطلبات التي تحتاج توثيقاً كتابياً: عروض المجموعات، وعقود الشركات، والفواتير.",
+            text: "مناسب لعروض المجموعات، طلبات الشركات، الفواتير، والحالات التي تحتاج مرجعاً كتابياً.",
           },
           {
             title: "في الفندق",
             value: "مكتب الاستقبال",
             href: "",
-            text: "زر أي منشأة لإتمام حجزك وجهاً لوجه مع موظف الاستقبال على مدار اليوم.",
+            text: "يمكنك زيارة أي فرع والتحدث مع مكتب الاستقبال لإتمام الحجز أو تعديل بيانات الوصول.",
           },
         ],
         servicesIntro: {
-          eyebrow: "ماذا نتولّى",
-          title: "كل ما تحتاجه لحجزٍ سلس، من غرفة واحدة إلى رحلة متعددة المدن.",
-          text: "سواء كانت ليلة عمل واحدة، أو إقامة شهرية لعائلة، أو حجزاً جماعياً لشركة، يتولّى الفريق طلبك من أوله إلى آخره ويوصلك بفريق المنشأة عند الحاجة.",
+          eyebrow: "ما الذي نديره لك",
+          title: "من غرفة واحدة إلى برنامج إقامة كامل، ننسق التفاصيل من البداية.",
+          text: "الفكرة بسيطة: لا تحتاج للتواصل مع كل منشأة على حدة. فريق الحجوزات يجمع التوفر، يراجع المتطلبات، ويربطك بالفندق المناسب عند الحاجة.",
         },
         services: [
-          "حجوزات جديدة للأفراد والعائلات",
-          "حجوزات المجموعات (10 غرف أو أكثر) وأسعار خاصة",
-          "حسابات وعقود الشركات والفوترة الآجلة",
-          "إقامات شهرية وطويلة الأمد في الشقق المخدومة",
-          "ترتيبات المناسبات وشهر العسل والطلبات الخاصة",
-          "تعديل وتمديد وإلغاء الحجوزات",
-          "دعم أثناء الإقامة والتنسيق مع المنشأة",
-          "خطط رحلات متعددة المنشآت بين جدة وجازان والرياض",
+          "حجوزات اليوم نفسه والحجوزات المستقبلية للأفراد والعائلات",
+          "مقارنة المنشآت والغرف والشقق المخدومة حسب المدينة والميزانية",
+          "إقامات شهرية وطويلة الأمد للضيوف والشركات",
+          "حجوزات المجموعات مع أسعار وشروط خاصة عند توفرها",
+          "طلبات الشركات، الفواتير، العقود، وترتيبات الدفع المعتمدة",
+          "تعديلات الحجز، التمديد، الإلغاء، وتحديث بيانات الوصول",
+          "طلبات ما قبل الوصول مثل الأسرة الإضافية، الطابق، أو وقت الوصول",
+          "تنسيق متعدد المدن بين جدة وجازان والرياض ضمن رحلة واحدة",
         ],
         benefitsIntro: {
-          eyebrow: "لماذا الحجز المباشر معنا",
-          title: "ميزات لا تحصل عليها عبر مواقع الحجز الخارجية.",
-          text: "الحجز المباشر عبر مكتبنا يضمن لك أفضل سعر، ومرونة أعلى، وتواصلاً بشرياً يعرف تفاصيل إقامتك قبل وصولك.",
+          eyebrow: "لماذا الحجز المباشر",
+          title: "تجربة أوضح من مواقع الحجز، ومرونة أعلى عند تغير خطتك.",
+          text: "عندما تحجز مباشرة، يتعامل معك فريق يعرف المنشآت والسياسات والتوفر الفعلي. هذا يمنحك سعراً واضحاً، تأكيداً أسرع، ومتابعة إن تغيرت تفاصيل الرحلة.",
         },
         benefits: [
           {
-            title: "ضمان أفضل سعر",
-            text: "نطابق أو نتفوّق على سعر أي قناة خارجية لنفس الغرفة والتاريخ — أخبرنا إن وجدت سعراً أقل وسنعالجه.",
+            title: "سعر مباشر وواضح",
+            text: "نشرح لك التعرفة وما يشمله السعر قبل التأكيد، مع توضيح الضرائب أو أي شروط خاصة.",
           },
           {
-            title: "بدون رسوم حجز",
-            text: "تتعامل معنا مباشرة، فلا عمولات وسطاء ولا رسوم خدمة مخفية تُضاف إلى فاتورتك.",
+            title: "بدون وسطاء",
+            text: "تتعامل مع سويس بلو مباشرة، مما يقلل الالتباس ويجعل تعديل الحجز أسرع وأسهل.",
           },
           {
-            title: "سياسات أكثر مرونة",
-            text: "إلغاء وتعديل وتأجيل بشروط أوضح وأسرع من قنوات الحجز الخارجية.",
+            title: "مرونة عند الحاجة",
+            text: "نساعدك في التعديل أو التمديد أو الإلغاء حسب التوفر وسياسة السعر الذي اخترته.",
           },
           {
-            title: "تنسيق شخصي",
-            text: "أولوية للترقية عند توفّرها، وطلبات خاصة قبل الوصول، وملف ضيف يتذكّر تفضيلاتك.",
+            title: "تنسيق قبل الوصول",
+            text: "نرسل متطلباتك للفندق مبكراً حتى تكون تجربة الوصول أكثر سلاسة ووضوحاً.",
           },
         ],
         statsIntro: {
           eyebrow: "لمحة سريعة",
-          title: "لماذا يثق بنا الضيوف.",
+          title: "خدمة حجز مباشرة وواضحة.",
         },
         stats: [
-          { value: "24/7", label: "دعم حجوزات على مدار الساعة" },
-          { value: "0", label: "رسوم حجز أو عمولات وسطاء" },
-          { value: "3", label: "مدن: جدة وجازان والرياض" },
+          { value: "24/7", label: "دعم للحجوزات والاستفسارات" },
+          { value: "1", label: "فريق واحد لكل منشآت سويس بلو" },
+          { value: "0", label: "رسوم حجز مخفية أو عمولات وسطاء" },
           { value: "لغتان", label: "خدمة بالعربية والإنجليزية" },
         ],
         prepareIntro: {
           eyebrow: "قبل أن تتصل",
-          title: "جهّز هذه التفاصيل ليكون حجزك أسرع.",
-          text: "وجود هذه المعلومات في متناولك يختصر المكالمة ويضمن أن نعطيك السعر الصحيح من أول مرة.",
+          title: "كلما كانت التفاصيل جاهزة، كان العرض أسرع وأدق.",
+          text: "هذه المعلومات تساعد فريق الحجوزات على اختيار السعر والمنشأة المناسبة من أول تواصل، خاصة للمجموعات والإقامات الطويلة.",
         },
         prepare: [
           "تواريخ الوصول والمغادرة",
@@ -2214,7 +2214,7 @@ export const defaultSiteContent = {
         ],
         faqsIntro: {
           eyebrow: "أسئلة شائعة",
-          title: "أسئلة الحجز الأكثر تكراراً.",
+          title: "إجابات سريعة قبل الحجز.",
         },
         faqs: [
           {
@@ -3130,94 +3130,94 @@ export const defaultSiteContent = {
       },
       reservationOfficePage: {
         hero: {
-          eyebrow: "Direct booking support",
-          title: "Central Reservation Office.",
-          text: "One team, one number. Plan, book, and modify your stay across every Swiss Blue hotel and apartment in Jeddah, Jazan, and Riyadh — one call or WhatsApp away.",
+          eyebrow: "Direct booking desk",
+          title: "Central Reservation Office",
+          text: "Book or modify your stay through one team that knows every Swiss Blue property in Jeddah, Jazan, and Riyadh. One call or WhatsApp message gets you to the right option faster.",
           image: heroImage,
         },
         intro: {
-          eyebrow: "Your direct booking team",
-          title: "Talk to a real reservations specialist, in Arabic or English.",
-          text: "The Central Reservation Office is a single point of contact for every Swiss Blue property. We handle new bookings, group requests, corporate accounts, and on-stay changes — directly, with no intermediaries and no added fees.",
+          eyebrow: "One point of contact",
+          title: "Compare hotels, serviced apartments, rates, and stay options in one conversation.",
+          text: "The Central Reservation Office helps you choose the right property, compare rooms and apartments, confirm the rate, and receive a written booking trail. We support individual stays, families, long stays, groups, corporate requests, and changes before arrival or during the stay.",
         },
         channels: [
           {
             title: "Call us",
             value: "+966 59 597 9064",
             href: "tel:+966595979064",
-            text: "Speak directly with the reservations team, around the clock, to confirm availability and rates and book in minutes.",
+            text: "Best for urgent bookings or when you want a specialist to compare more than one property quickly.",
           },
           {
             title: "WhatsApp",
             value: "+966 59 597 9064",
             href: "https://wa.me/966595979064",
-            text: "Send your dates and guest count and we'll reply with room options and prices in writing.",
+            text: "Send dates, guest count, and preferred city. We will reply with clear options and rates in writing.",
           },
           {
             title: "Email",
             value: "reservations@swissblue.sa",
             href: "mailto:reservations@swissblue.sa",
-            text: "For requests that need a written trail: group quotes, corporate contracts, and invoices.",
+            text: "Ideal for group quotes, corporate requests, invoices, and anything that needs a formal record.",
           },
           {
             title: "In person",
             value: "Front desk",
             href: "",
-            text: "Visit any property to book face-to-face with the receptionist throughout the day.",
+            text: "Visit any branch and our reception team can help you book, update arrival details, or connect with reservations.",
           },
         ],
         servicesIntro: {
-          eyebrow: "What we handle",
-          title: "Everything for a smooth booking — from one room to a multi-city itinerary.",
-          text: "Whether it's a single work night, a family's monthly stay, or a corporate group, the team owns your request end-to-end and loops in the property when needed.",
+          eyebrow: "What we manage",
+          title: "From one room to a complete stay program, we coordinate the details from the start.",
+          text: "You do not need to contact each property separately. The reservations team gathers availability, reviews requirements, and connects with the right hotel team when needed.",
         },
         services: [
-          "New reservations for individuals and families",
-          "Group bookings (10 rooms or more) with special rates",
-          "Corporate accounts, contracts, and credit billing",
-          "Monthly and long-stay serviced-apartment bookings",
-          "Events, honeymoons, and special requests",
-          "Modifications, extensions, and cancellations",
-          "On-stay support and coordination with the property",
-          "Multi-property itineraries across Jeddah, Jazan, and Riyadh",
+          "Same-day and future bookings for individuals and families",
+          "Property, room, and serviced-apartment comparison by city and budget",
+          "Monthly and long-stay reservations for guests and companies",
+          "Group bookings with special rates and terms when available",
+          "Corporate requests, invoices, contracts, and approved payment arrangements",
+          "Booking changes, extensions, cancellations, and arrival updates",
+          "Pre-arrival requests such as extra beds, floors, or arrival time",
+          "Multi-city coordination across Jeddah, Jazan, and Riyadh",
         ],
         benefitsIntro: {
-          eyebrow: "Why book direct with us",
-          title: "Benefits you won't get through third-party sites.",
-          text: "Booking direct through our office secures the best rate, more flexibility, and a human who knows your stay before you arrive.",
+          eyebrow: "Why book direct",
+          title: "A clearer experience than booking sites, with more flexibility when plans change.",
+          text: "When you book direct, you work with people who know the properties, policies, and real availability. That means clearer rates, faster confirmation, and follow-up if your travel details change.",
         },
         benefits: [
           {
-            title: "Best-rate guarantee",
-            text: "We match or beat any third-party channel for the same room and dates — tell us if you find lower and we'll handle it.",
+            title: "Clear direct rate",
+            text: "We explain the rate, what it includes, and any taxes or conditions before you confirm.",
           },
           {
-            title: "No booking fees",
-            text: "You deal with us directly, so there are no agent commissions or hidden service fees added to your bill.",
+            title: "No middle layer",
+            text: "You deal with Swiss Blue directly, which reduces confusion and makes changes easier to manage.",
           },
           {
-            title: "More flexible policies",
-            text: "Cancellation, modification, and postponement on clearer, faster terms than external booking channels.",
+            title: "Flexibility when needed",
+            text: "We help with changes, extensions, and cancellations according to availability and the rate policy you selected.",
           },
           {
-            title: "Personal coordination",
-            text: "Priority upgrades when available, pre-arrival special requests, and a guest profile that remembers your preferences.",
+            title: "Pre-arrival coordination",
+            text: "We share your requirements with the property early so arrival feels smoother and more prepared.",
           },
         ],
         statsIntro: {
           eyebrow: "At a glance",
-          title: "Why guests book with us.",
+          title: "Direct booking, clearly handled.",
         },
         stats: [
-          { value: "24/7", label: "Reservations support, every day" },
-          { value: "0", label: "Booking fees or agent commissions" },
-          { value: "3", label: "Cities: Jeddah, Jazan, Riyadh" },
+          { value: "24/7", label: "Support for bookings and enquiries" },
+          { value: "1", label: "Team for every Swiss Blue property" },
+          { value: "0", label: "Hidden booking fees or agent commissions" },
           { value: "AR · EN", label: "Service in both languages" },
         ],
         prepareIntro: {
           eyebrow: "Before you call",
-          title: "Have these ready for a faster booking.",
-          text: "Keeping this handy shortens the call and means we quote the right price the first time.",
+          title: "The clearer the details, the faster and more accurate the quote.",
+          text: "These details help the reservations team choose the right rate and property from the first conversation, especially for groups and longer stays.",
         },
         prepare: [
           "Check-in and check-out dates",
@@ -3229,7 +3229,7 @@ export const defaultSiteContent = {
         ],
         faqsIntro: {
           eyebrow: "FAQ",
-          title: "The booking questions we hear most.",
+          title: "Quick answers before you book.",
         },
         faqs: [
           {
@@ -3387,21 +3387,278 @@ export type EditableSiteContent = typeof defaultSiteContent;
 const DEPRECATED_MEDIA_KEYS_SHARED = ["lightLogo", "arabicLightLogo"] as const;
 const DEPRECATED_MEDIA_KEYS_AR = [...DEPRECATED_MEDIA_KEYS_SHARED, "logo"] as const;
 
-function normalizeClientFacingContent(content: EditableSiteContent): EditableSiteContent {
-  const requestForm = content.en.subpages.corporateDealsPage.requestForm;
+const legacyReservationOfficePage = {
+  ar: {
+    hero: {
+      eyebrow: "دعم الحجز المباشر",
+      title: "مكتب الحجوزات المركزي.",
+      text: "فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في جميع فنادق وشقق سويس بلو في جدة وجازان والرياض — مكالمة أو رسالة واتساب واحدة تكفي.",
+    },
+    intro: {
+      eyebrow: "فريقك للحجز المباشر",
+      title: "تحدّث إلى مختص حجوزات حقيقي، بالعربية أو الإنجليزية.",
+      text: "مكتب الحجوزات المركزي نقطة اتصال واحدة لكل منشآت سويس بلو. نتولّى الحجوزات الجديدة، وطلبات المجموعات، وحسابات الشركات، والتعديلات أثناء الإقامة — مباشرة، دون وسطاء ودون رسوم إضافية.",
+    },
+    channels: [
+      {
+        title: "اتصل بنا",
+        text: "تحدّث مباشرة مع فريق الحجوزات على مدار الساعة لتأكيد التوفر والأسعار وإتمام حجزك في دقائق.",
+      },
+      {
+        title: "واتساب",
+        text: "أرسل تواريخك وعدد الضيوف، وسنعيد لك خيارات الغرف والأسعار كتابةً.",
+      },
+      {
+        title: "البريد الإلكتروني",
+        text: "للطلبات التي تحتاج توثيقاً كتابياً: عروض المجموعات، وعقود الشركات، والفواتير.",
+      },
+      {
+        title: "في الفندق",
+        text: "زر أي منشأة لإتمام حجزك وجهاً لوجه مع موظف الاستقبال على مدار اليوم.",
+      },
+    ],
+    servicesIntro: {
+      eyebrow: "ماذا نتولّى",
+      title: "كل ما تحتاجه لحجزٍ سلس، من غرفة واحدة إلى رحلة متعددة المدن.",
+      text: "سواء كانت ليلة عمل واحدة، أو إقامة شهرية لعائلة، أو حجزاً جماعياً لشركة، يتولّى الفريق طلبك من أوله إلى آخره ويوصلك بفريق المنشأة عند الحاجة.",
+    },
+    services: [
+      "حجوزات جديدة للأفراد والعائلات",
+      "حجوزات المجموعات (10 غرف أو أكثر) وأسعار خاصة",
+      "حسابات وعقود الشركات والفوترة الآجلة",
+      "إقامات شهرية وطويلة الأمد في الشقق المخدومة",
+      "ترتيبات المناسبات وشهر العسل والطلبات الخاصة",
+      "تعديل وتمديد وإلغاء الحجوزات",
+      "دعم أثناء الإقامة والتنسيق مع المنشأة",
+      "خطط رحلات متعددة المنشآت بين جدة وجازان والرياض",
+    ],
+    benefitsIntro: {
+      eyebrow: "لماذا الحجز المباشر معنا",
+      title: "ميزات لا تحصل عليها عبر مواقع الحجز الخارجية.",
+      text: "الحجز المباشر عبر مكتبنا يضمن لك أفضل سعر، ومرونة أعلى، وتواصلاً بشرياً يعرف تفاصيل إقامتك قبل وصولك.",
+    },
+    benefits: [
+      {
+        title: "ضمان أفضل سعر",
+        text: "نطابق أو نتفوّق على سعر أي قناة خارجية لنفس الغرفة والتاريخ — أخبرنا إن وجدت سعراً أقل وسنعالجه.",
+      },
+      {
+        title: "بدون رسوم حجز",
+        text: "تتعامل معنا مباشرة، فلا عمولات وسطاء ولا رسوم خدمة مخفية تُضاف إلى فاتورتك.",
+      },
+      {
+        title: "سياسات أكثر مرونة",
+        text: "إلغاء وتعديل وتأجيل بشروط أوضح وأسرع من قنوات الحجز الخارجية.",
+      },
+      {
+        title: "تنسيق شخصي",
+        text: "أولوية للترقية عند توفّرها، وطلبات خاصة قبل الوصول، وملف ضيف يتذكّر تفضيلاتك.",
+      },
+    ],
+    statsIntro: {
+      title: "لماذا يثق بنا الضيوف.",
+    },
+    stats: [
+      { value: "24/7", label: "دعم حجوزات على مدار الساعة" },
+      { value: "0", label: "رسوم حجز أو عمولات وسطاء" },
+      { value: "3", label: "مدن: جدة وجازان والرياض" },
+      { value: "لغتان", label: "خدمة بالعربية والإنجليزية" },
+    ],
+    prepareIntro: {
+      title: "جهّز هذه التفاصيل ليكون حجزك أسرع.",
+      text: "وجود هذه المعلومات في متناولك يختصر المكالمة ويضمن أن نعطيك السعر الصحيح من أول مرة.",
+    },
+    faqsIntro: {
+      title: "أسئلة الحجز الأكثر تكراراً.",
+    },
+  },
+  en: {
+    hero: {
+      eyebrow: "Direct booking support",
+      title: "Central Reservation Office.",
+      text: "One team, one number. Plan, book, and modify your stay across every Swiss Blue hotel and apartment in Jeddah, Jazan, and Riyadh — one call or WhatsApp away.",
+    },
+    intro: {
+      eyebrow: "Your direct booking team",
+      title: "Talk to a real reservations specialist, in Arabic or English.",
+      text: "The Central Reservation Office is a single point of contact for every Swiss Blue property. We handle new bookings, group requests, corporate accounts, and on-stay changes — directly, with no intermediaries and no added fees.",
+    },
+    channels: [
+      {
+        title: "Call us",
+        text: "Speak directly with the reservations team, around the clock, to confirm availability and rates and book in minutes.",
+      },
+      {
+        title: "WhatsApp",
+        text: "Send your dates and guest count and we'll reply with room options and prices in writing.",
+      },
+      {
+        title: "Email",
+        text: "For requests that need a written trail: group quotes, corporate contracts, and invoices.",
+      },
+      {
+        title: "In person",
+        text: "Visit any property to book face-to-face with the receptionist throughout the day.",
+      },
+    ],
+    servicesIntro: {
+      eyebrow: "What we handle",
+      title: "Everything for a smooth booking — from one room to a multi-city itinerary.",
+      text: "Whether it's a single work night, a family's monthly stay, or a corporate group, the team owns your request end-to-end and loops in the property when needed.",
+    },
+    services: [
+      "New reservations for individuals and families",
+      "Group bookings (10 rooms or more) with special rates",
+      "Corporate accounts, contracts, and credit billing",
+      "Monthly and long-stay serviced-apartment bookings",
+      "Events, honeymoons, and special requests",
+      "Modifications, extensions, and cancellations",
+      "On-stay support and coordination with the property",
+      "Multi-property itineraries across Jeddah, Jazan, and Riyadh",
+    ],
+    benefitsIntro: {
+      eyebrow: "Why book direct with us",
+      title: "Benefits you won't get through third-party sites.",
+      text: "Booking direct through our office secures the best rate, more flexibility, and a human who knows your stay before you arrive.",
+    },
+    benefits: [
+      {
+        title: "Best-rate guarantee",
+        text: "We match or beat any third-party channel for the same room and dates — tell us if you find lower and we'll handle it.",
+      },
+      {
+        title: "No booking fees",
+        text: "You deal with us directly, so there are no agent commissions or hidden service fees added to your bill.",
+      },
+      {
+        title: "More flexible policies",
+        text: "Cancellation, modification, and postponement on clearer, faster terms than external booking channels.",
+      },
+      {
+        title: "Personal coordination",
+        text: "Priority upgrades when available, pre-arrival special requests, and a guest profile that remembers your preferences.",
+      },
+    ],
+    statsIntro: {
+      title: "Why guests book with us.",
+    },
+    stats: [
+      { value: "24/7", label: "Reservations support, every day" },
+      { value: "0", label: "Booking fees or agent commissions" },
+      { value: "3", label: "Cities: Jeddah, Jazan, Riyadh" },
+      { value: "AR · EN", label: "Service in both languages" },
+    ],
+    prepareIntro: {
+      title: "Have these ready for a faster booking.",
+      text: "Keeping this handy shortens the call and means we quote the right price the first time.",
+    },
+    faqsIntro: {
+      title: "The booking questions we hear most.",
+    },
+  },
+} as const;
 
-  if (requestForm.eyebrow !== LEGACY_B2B_REQUEST_FORM_EYEBROW_EN) {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function replaceLegacyValues(current: unknown, legacy: unknown, replacement: unknown): unknown {
+  if (current === legacy) {
+    return replacement;
+  }
+
+  if (Array.isArray(current) && Array.isArray(legacy) && Array.isArray(replacement)) {
+    if (JSON.stringify(current) === JSON.stringify(legacy)) {
+      return replacement;
+    }
+
+    let changed = false;
+    const next = current.map((item, index) => {
+      if (index >= legacy.length || index >= replacement.length) {
+        return item;
+      }
+      const value = replaceLegacyValues(item, legacy[index], replacement[index]);
+      changed ||= value !== item;
+      return value;
+    });
+
+    return changed ? next : current;
+  }
+
+  if (isRecord(current) && isRecord(legacy) && isRecord(replacement)) {
+    let changed = false;
+    const next = { ...current };
+
+    for (const key of Object.keys(legacy)) {
+      if (!(key in current) || !(key in replacement)) {
+        continue;
+      }
+
+      const value = replaceLegacyValues(current[key], legacy[key], replacement[key]);
+      changed ||= value !== current[key];
+      next[key] = value;
+    }
+
+    return changed ? next : current;
+  }
+
+  return current;
+}
+
+function normalizeReservationOfficeContent(content: EditableSiteContent): EditableSiteContent {
+  const arReservationOfficePage = replaceLegacyValues(
+    content.ar.subpages.reservationOfficePage,
+    legacyReservationOfficePage.ar,
+    defaultSiteContent.ar.subpages.reservationOfficePage,
+  ) as EditableSiteContent["ar"]["subpages"]["reservationOfficePage"];
+  const enReservationOfficePage = replaceLegacyValues(
+    content.en.subpages.reservationOfficePage,
+    legacyReservationOfficePage.en,
+    defaultSiteContent.en.subpages.reservationOfficePage,
+  ) as EditableSiteContent["en"]["subpages"]["reservationOfficePage"];
+
+  if (
+    arReservationOfficePage === content.ar.subpages.reservationOfficePage &&
+    enReservationOfficePage === content.en.subpages.reservationOfficePage
+  ) {
     return content;
   }
 
   return {
     ...content,
+    ar: {
+      ...content.ar,
+      subpages: {
+        ...content.ar.subpages,
+        reservationOfficePage: arReservationOfficePage,
+      },
+    },
     en: {
       ...content.en,
       subpages: {
         ...content.en.subpages,
+        reservationOfficePage: enReservationOfficePage,
+      },
+    },
+  };
+}
+
+function normalizeClientFacingContent(content: EditableSiteContent): EditableSiteContent {
+  const contentWithReservationOffice = normalizeReservationOfficeContent(content);
+  const requestForm = contentWithReservationOffice.en.subpages.corporateDealsPage.requestForm;
+
+  if (requestForm.eyebrow !== LEGACY_B2B_REQUEST_FORM_EYEBROW_EN) {
+    return contentWithReservationOffice;
+  }
+
+  return {
+    ...contentWithReservationOffice,
+    en: {
+      ...contentWithReservationOffice.en,
+      subpages: {
+        ...contentWithReservationOffice.en.subpages,
         corporateDealsPage: {
-          ...content.en.subpages.corporateDealsPage,
+          ...contentWithReservationOffice.en.subpages.corporateDealsPage,
           requestForm: {
             ...requestForm,
             eyebrow: B2B_REQUEST_FORM_EYEBROW_EN,
