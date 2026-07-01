@@ -391,12 +391,13 @@ export default function SecretPanel({
               <button
                 type="button"
                 className={`admin-menu-trigger${menuOpen ? " is-open" : ""}`}
+                aria-label={language === "ar" ? "إجراءات إضافية" : "More actions"}
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
+                title={language === "ar" ? "إجراءات إضافية" : "More actions"}
                 onClick={() => setMenuOpen((open) => !open)}
               >
                 <span className="admin-menu-dots" aria-hidden="true">⋯</span>
-                <span>{language === "ar" ? "المزيد" : "Menu"}</span>
               </button>
               {menuOpen ? (
                 <>
