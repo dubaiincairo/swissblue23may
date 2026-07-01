@@ -87,7 +87,7 @@ export function ImageFieldEditor({
   }
 
   return (
-    <div className="admin-field admin-image-field">
+    <div className={`admin-field admin-image-field${name === "ogImage" ? " admin-image-field-og" : ""}`}>
       <span>{labelFor(name, language)}</span>
       <div className="admin-image-control">
         <div className="admin-image-preview">

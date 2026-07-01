@@ -3165,10 +3165,23 @@ body.admin-chat-hidden iframe[src*="chatbase.co"] {
   padding: 10px 22px 10px 12px;
 }
 
+.admin-shell[dir="rtl"] .admin-section-list .admin-nav-group-toggle {
+  font-size: 13px;
+  letter-spacing: 0;
+  line-height: 1.45;
+  min-height: 38px;
+  text-transform: none;
+}
+
 .admin-section-trigger span {
   font-size: 13px;
   font-weight: 900;
   line-height: 1.25;
+}
+
+.admin-shell[dir="rtl"] .admin-section-trigger span {
+  font-size: 14.5px;
+  line-height: 1.45;
 }
 
 .admin-section-trigger small {
@@ -3176,6 +3189,11 @@ body.admin-chat-hidden iframe[src*="chatbase.co"] {
   font-size: 11px;
   font-weight: 650;
   line-height: 1.4;
+}
+
+.admin-shell[dir="rtl"] .admin-section-trigger small {
+  font-size: 12.5px;
+  line-height: 1.55;
 }
 
 .admin-section-nav-row:hover,
@@ -3431,14 +3449,14 @@ body.admin-chat-hidden iframe[src*="chatbase.co"] {
   display: inline-flex;
   font-size: 13px;
   font-weight: 850;
-  gap: 6px;
+  height: 42px;
   justify-content: center;
-  min-height: 38px;
-  padding: 9px 13px;
+  padding: 0;
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
     color 160ms ease;
+  width: 42px;
 }
 
 .admin-menu-trigger:hover,
@@ -3449,9 +3467,10 @@ body.admin-chat-hidden iframe[src*="chatbase.co"] {
 }
 
 .admin-menu-dots {
-  font-size: 18px;
-  letter-spacing: 1px;
+  font-size: 24px;
+  letter-spacing: 0;
   line-height: 1;
+  margin-top: -4px;
 }
 
 .admin-menu-backdrop {
@@ -4422,6 +4441,39 @@ body.admin-chat-hidden iframe[src*="chatbase.co"] {
   height: 100%;
   object-fit: cover;
   width: 100%;
+}
+
+.admin-image-field-og .admin-image-control {
+  background: white;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+
+.admin-image-field-og .admin-image-preview {
+  aspect-ratio: 1200 / 630;
+  background:
+    linear-gradient(135deg, rgba(43, 111, 232, 0.05), rgba(255, 255, 255, 0.75)),
+    white;
+  min-height: 220px;
+}
+
+.admin-image-field-og .admin-image-tools {
+  align-items: start;
+  background: #f8fafc;
+  border: 1px solid rgba(152, 162, 179, 0.22);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+  padding: 12px;
+}
+
+.admin-image-field-og .admin-image-tools p {
+  max-width: 54ch;
+}
+
+.admin-image-field-og .admin-image-actions {
+  justify-content: flex-start;
 }
 
 .admin-image-tools {
