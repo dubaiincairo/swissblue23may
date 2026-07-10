@@ -53,7 +53,7 @@ export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: Coo
       // ignore
     }
     setDismissedInMemory(true);
-    // Let consent-gated widgets (e.g. the Chatbase bubble) load now that the
+    // Let consent-gated widgets (e.g. the website assistant) load now that the
     // banner is dismissed and can no longer overlap it.
     window.dispatchEvent(new CustomEvent(CONSENT_EVENT));
   }
