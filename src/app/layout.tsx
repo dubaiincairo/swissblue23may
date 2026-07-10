@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { cache } from "react";
 import { Geist_Mono, Inter, Noto_Kufi_Arabic } from "next/font/google";
 import { headers } from "next/headers";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import ChatbaseWidget from "@/components/chatbase-widget";
 import CookieBanner from "@/components/cookie-banner";
 import LiveContentRefresh from "@/components/live-content-refresh";
@@ -146,6 +147,7 @@ export default async function RootLayout({
         {children}
         <ChatbaseWidget />
         <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />
+        <SpeedInsights />
       </body>
     </html>
   );
