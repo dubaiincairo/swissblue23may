@@ -20,6 +20,14 @@ function upstashConfig(): { url: string; token: string } | null {
   return url && token ? { url, token } : null;
 }
 
+/**
+ * Whether this deployment has the shared limiter required for endpoints where
+ * a local, best-effort fallback would be unsafe (for example, paid AI calls).
+ */
+export function hasDurableRateLimitStore(): boolean {
+  return upstashConfig() !== null;
+}
+
 type Bucket = { count: number; expiresAt: number };
 const memory = new Map<string, Bucket>();
 
@@ -96,6 +104,33 @@ export async function rateLimit(
   }
 
   return { success: count <= limit, remaining: Math.max(0, limit - count), reset };
+}
+
+/**
+ * A fail-closed limiter for paid or otherwise high-risk endpoints. Unlike the
+ * form limiter above, it never falls back to per-instance memory: every allowed
+ * request must be counted by the shared Upstash store first.
+ */
+export async function durableRateLimit(
+  name: string,
+  id: string,
+  limit: number,
+  windowSec: number,
+): Promise<RateLimitResult | null> {
+  const cfg = upstashConfig();
+  if (!cfg) return null;
+
+  const windowMs = windowSec * 1000;
+  const bucket = Math.floor(Date.now() / windowMs);
+  const key = `${KEY_PREFIX}:${name}:${id}:${bucket}`;
+  const reset = (bucket + 1) * windowMs;
+
+  try {
+    const count = await upstashHit(cfg, key, windowSec);
+    return { success: count <= limit, remaining: Math.max(0, limit - count), reset };
+  } catch {
+    return null;
+  }
 }
 
 /** Best-effort client IP from Vercel / proxy headers. */

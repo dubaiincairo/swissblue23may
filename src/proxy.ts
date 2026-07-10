@@ -111,6 +111,12 @@ export async function proxy(request: NextRequest) {
   // Tag the page path so the root layout can emit per-page SEO metadata.
   localeHeaders.set("x-pathname", publicPathname);
 
+  // Let the /ar compatibility rewrite render the Arabic root without falling
+  // through to the public English-root redirect below.
+  if (pathname === "/" && isArabicHomeRewrite) {
+    return NextResponse.next({ request: { headers: localeHeaders } });
+  }
+
   if (pathname === "/ar") {
     url.pathname = "/";
     url.searchParams.set("__sb_locale", "ar");
