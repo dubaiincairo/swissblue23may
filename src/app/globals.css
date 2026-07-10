@@ -2308,50 +2308,254 @@ a.reservation-channel-action:hover {
   }
 }
 
-/* The third-party chat bubble uses an extremely high z-index; hide it while a
-   full-screen overlay (mobile nav, B2B modal, gallery lightbox) is open so it
-   can't float over the overlay's controls. Graceful no-op if the widget's DOM
-   ids ever change. */
-body.overlay-open #chatbase-bubble-button,
-body.overlay-open #chatbase-bubble-window,
-body.overlay-open #chatbase-message-bubbles,
-body.overlay-open iframe[src*="chatbase.co"] {
-  display: none !important;
+/* Native website assistant: kept out of mobile navigation, form modals, and
+   galleries so those focused overlays always retain the top interaction layer. */
+body.overlay-open .sb-ai-chat {
+  display: none;
 }
 
-body.admin-chat-hidden #chatbase-bubble-button,
-body.admin-chat-hidden #chatbase-bubble-window,
-body.admin-chat-hidden #chatbase-message-bubbles,
-body.admin-chat-hidden iframe[src*="chatbase.co"] {
-  display: none !important;
+.sb-ai-chat {
+  bottom: max(20px, env(safe-area-inset-bottom));
+  position: fixed;
+  right: 20px;
+  z-index: 90;
 }
 
-/* The Chatbase auto-greeting balloons float over page content (booking bar,
-   etc.) on narrow screens. Hide those popups on mobile so the layout stays
-   clean; the chat bubble button itself remains tappable. */
-@media (max-width: 768px) {
-  #chatbase-message-bubbles {
-    display: none !important;
+html[dir="rtl"] .sb-ai-chat {
+  left: 20px;
+  right: auto;
+}
+
+.sb-ai-chat-trigger,
+.sb-ai-chat-icon-button,
+.sb-ai-chat-send {
+  align-items: center;
+  border: 0;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.sb-ai-chat-trigger {
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 14px 30px rgba(18, 70, 168, 0.28);
+  color: #fff;
+  height: 56px;
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  width: 56px;
+}
+
+.sb-ai-chat-trigger:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 18px 36px rgba(18, 70, 168, 0.34);
+  transform: translateY(-2px);
+}
+
+.sb-ai-chat-trigger svg,
+.sb-ai-chat-heading-icon svg {
+  fill: none;
+  height: 25px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+  width: 25px;
+}
+
+.sb-ai-chat-panel {
+  background: var(--background-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  bottom: 68px;
+  box-shadow: 0 24px 60px rgba(8, 28, 70, 0.22);
+  display: flex;
+  flex-direction: column;
+  height: min(560px, 68dvh);
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  width: min(376px, calc(100vw - 32px));
+}
+
+html[dir="rtl"] .sb-ai-chat-panel {
+  left: 0;
+  right: auto;
+}
+
+.sb-ai-chat-header {
+  align-items: center;
+  background: var(--bluehost-deep);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 10px 12px 10px 16px;
+}
+
+html[dir="rtl"] .sb-ai-chat-header {
+  padding: 10px 16px 10px 12px;
+}
+
+.sb-ai-chat-heading {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  font-weight: 800;
+  gap: 9px;
+}
+
+.sb-ai-chat-heading-icon {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.sb-ai-chat-heading-icon svg {
+  height: 17px;
+  width: 17px;
+}
+
+.sb-ai-chat-icon-button {
+  background: transparent;
+  border-radius: 6px;
+  color: #fff;
+  height: 44px;
+  width: 44px;
+}
+
+.sb-ai-chat-icon-button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.sb-ai-chat-icon-button svg,
+.sb-ai-chat-send svg {
+  fill: none;
+  height: 19px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  width: 19px;
+}
+
+.sb-ai-chat-messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px;
+}
+
+.sb-ai-chat-welcome,
+.sb-ai-chat-message,
+.sb-ai-chat-typing,
+.sb-ai-chat-error {
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.sb-ai-chat-welcome,
+.sb-ai-chat-message.is-assistant {
+  align-self: flex-start;
+  color: var(--foreground);
+  max-width: 89%;
+}
+
+.sb-ai-chat-message.is-user {
+  align-self: flex-end;
+  background: var(--primary);
+  border-radius: 8px;
+  color: #fff;
+  max-width: 89%;
+  padding: 9px 11px;
+}
+
+.sb-ai-chat-typing {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.sb-ai-chat-error {
+  color: #b42318;
+}
+
+.sb-ai-chat-form {
+  align-items: flex-end;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+}
+
+.sb-ai-chat-form textarea {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--foreground);
+  flex: 1;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+  max-height: 100px;
+  min-height: 44px;
+  padding: 10px 11px;
+  resize: none;
+}
+
+.sb-ai-chat-form textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.sb-ai-chat-send {
+  background: var(--primary);
+  border-radius: 8px;
+  color: #fff;
+  flex: 0 0 44px;
+  height: 44px;
+  transition: background-color 160ms ease, transform 160ms ease;
+  width: 44px;
+}
+
+.sb-ai-chat-send:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.sb-ai-chat-send:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+@media (max-width: 640px) {
+  .sb-ai-chat {
+    bottom: max(12px, env(safe-area-inset-bottom));
+    right: 12px;
+  }
+
+  html[dir="rtl"] .sb-ai-chat {
+    left: 12px;
+    right: auto;
+  }
+
+  .sb-ai-chat-panel {
+    bottom: 66px;
+    height: min(560px, 70dvh);
+    width: calc(100vw - 24px);
   }
 }
 
-/* On phones Chatbase opens its chat window full-screen (width:100%; height:100dvh;
-   border-radius:0; inset:0) via inline styles, so it reads like a separate page
-   takeover. Override those inline styles (hence !important) so it floats as a
-   contained popup anchored above the bubble — same in-page widget, just windowed. */
-@media (max-width: 640px) {
-  #chatbase-bubble-window {
-    inset: auto !important;
-    top: auto !important;
-    left: auto !important;
-    right: 12px !important;
-    bottom: calc(76px + env(safe-area-inset-bottom)) !important;
-    width: min(calc(100vw - 24px), 420px) !important;
-    height: min(72dvh, 600px) !important;
-    max-height: min(72dvh, 600px) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 24px 70px rgba(8, 28, 70, 0.4) !important;
-    overflow: hidden !important;
+@media (prefers-reduced-motion: reduce) {
+  .sb-ai-chat-trigger,
+  .sb-ai-chat-send {
+    transition: none;
   }
 }
 

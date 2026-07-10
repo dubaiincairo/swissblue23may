@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { cache } from "react";
 import { Geist_Mono, Inter, Noto_Kufi_Arabic } from "next/font/google";
 import { headers } from "next/headers";
-import ChatbaseWidget from "@/components/chatbase-widget";
+import AiChatWidget from "@/components/ai-chat-widget";
 import CookieBanner from "@/components/cookie-banner";
 import LiveContentRefresh from "@/components/live-content-refresh";
 import NavScrollState from "@/components/nav-scroll-state";
@@ -144,7 +144,7 @@ export default async function RootLayout({
         <NavScrollState />
         <ScrollObserver />
         {children}
-        <ChatbaseWidget />
+        <AiChatWidget />
         <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />
       </body>
     </html>
