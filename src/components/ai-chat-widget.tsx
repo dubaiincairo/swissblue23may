@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
 import AiChatLeadForm from "@/components/ai-chat-lead-form";
@@ -11,6 +12,8 @@ type ChatMessage = {
   role: "assistant" | "user";
   text: string;
 };
+
+const SARAH_AVATAR_SRC = "/images/sarah-al-otaibi-concierge.jpg";
 
 function isAdminPath(pathname: string | null) {
   return Boolean(
@@ -65,10 +68,13 @@ export default function AiChatWidget() {
 
   const copy = isArabic
     ? {
-        title: "مساعد سويس بلو",
-        open: "فتح مساعد سويس بلو",
-        close: "إغلاق المساعد",
-        welcome: "مرحباً، كيف يمكنني مساعدتك في فنادق وشقق سويس بلو؟",
+        title: "سارة العتيبي",
+        role: "مساعدتك الافتراضية في سويس بلو",
+        status: "متاحة الآن",
+        open: "بدء محادثة مع سارة العتيبي",
+        close: "إغلاق محادثة سارة",
+        avatarAlt: "صورة رمزية لسارة، المساعدة الافتراضية",
+        welcome: "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
         placeholder: "اكتب سؤالك...",
         send: "إرسال",
         typing: "يكتب الآن...",
@@ -84,10 +90,13 @@ export default function AiChatWidget() {
         },
       }
     : {
-        title: "Swiss Blue Assistant",
-        open: "Open Swiss Blue Assistant",
-        close: "Close assistant",
-        welcome: "Hello, how can I help with Swiss Blue hotels and apartments?",
+        title: "Sarah Al-Otaibi",
+        role: "Swiss Blue virtual concierge",
+        status: "Online now",
+        open: "Start a chat with Sarah Al-Otaibi",
+        close: "Close Sarah's chat",
+        avatarAlt: "Illustrated portrait of Sarah, the virtual concierge",
+        welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
         placeholder: "Type your question...",
         send: "Send",
         typing: "Thinking...",
@@ -207,9 +216,13 @@ export default function AiChatWidget() {
       {open ? (
         <section className="sb-ai-chat-panel" role="dialog" aria-label={copy.title}>
           <header className="sb-ai-chat-header">
-            <div className="sb-ai-chat-heading">
-              <span className="sb-ai-chat-heading-icon"><ChatIcon /></span>
-              <span>{copy.title}</span>
+            <div className="sb-ai-chat-profile">
+              <Image className="sb-ai-chat-avatar" src={SARAH_AVATAR_SRC} alt={copy.avatarAlt} width={48} height={48} />
+              <div className="sb-ai-chat-profile-copy">
+                <strong>{copy.title}</strong>
+                <span>{copy.role}</span>
+                <span className="sb-ai-chat-status"><i aria-hidden="true" />{copy.status}</span>
+              </div>
             </div>
             <button type="button" className="sb-ai-chat-icon-button" onClick={close} aria-label={copy.close}>
               <CloseIcon />
@@ -225,7 +238,10 @@ export default function AiChatWidget() {
               />
             ) : (
               <>
-                <p className="sb-ai-chat-welcome">{copy.welcome}</p>
+                <div className="sb-ai-chat-welcome">
+                  <Image className="sb-ai-chat-welcome-avatar" src={SARAH_AVATAR_SRC} alt="" aria-hidden="true" width={32} height={32} />
+                  <p>{copy.welcome}</p>
+                </div>
                 {messages.length === 0 ? (
                   <div className="sb-ai-chat-actions" aria-label={isArabic ? "طرق يمكننا مساعدتك بها" : "Ways we can help"}>
                     {(Object.keys(copy.leadActions) as ChatLeadKind[]).map((kind) => (
@@ -267,7 +283,11 @@ export default function AiChatWidget() {
         </section>
       ) : null}
       <button ref={triggerRef} type="button" className="sb-ai-chat-trigger" onClick={() => setOpen(true)} aria-label={copy.open}>
-        <ChatIcon />
+        <span className="sb-ai-chat-trigger-avatar">
+          <Image src={SARAH_AVATAR_SRC} alt="" aria-hidden="true" width={64} height={64} />
+        </span>
+        <span className="sb-ai-chat-trigger-badge"><ChatIcon /></span>
+        <span className="sb-ai-chat-trigger-presence" aria-hidden="true" />
       </button>
     </aside>
   );
