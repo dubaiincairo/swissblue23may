@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
+import AiChatLeadForm from "@/components/ai-chat-lead-form";
+import { detectChatLeadKind, type ChatLeadKind } from "@/lib/chat-leads";
 
 type ChatMessage = {
   id: number;
@@ -47,7 +49,7 @@ function SendIcon() {
 
 export default function AiChatWidget() {
   const pathname = usePathname();
-  const locale = pathname?.startsWith("/en") ? "en" : "ar";
+  const locale = pathname === "/en" || pathname?.startsWith("/en/") ? "en" : "ar";
   const isArabic = locale === "ar";
   const [consentResolved, setConsentResolved] = useState(false);
   const [open, setOpen] = useState(false);
@@ -55,6 +57,7 @@ export default function AiChatWidget() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
+  const [activeLead, setActiveLead] = useState<ChatLeadKind | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -69,6 +72,16 @@ export default function AiChatWidget() {
         placeholder: "اكتب سؤالك...",
         send: "إرسال",
         typing: "يكتب الآن...",
+        leadComplete: {
+          booking: "تم إرسال طلب الحجز إلى فريق الحجوزات. سيتواصل معك قريباً.",
+          corporate: "تم إرسال طلب الشركات إلى فريق الحجوزات. سيتواصل معك قريباً.",
+          career: "تم إرسال طلبك إلى فريق التوظيف. سيتواصل معك قريباً.",
+        },
+        leadActions: {
+          booking: "طلب حجز",
+          corporate: "طلب شركات",
+          career: "استفسار وظيفي",
+        },
       }
     : {
         title: "Swiss Blue Assistant",
@@ -78,6 +91,16 @@ export default function AiChatWidget() {
         placeholder: "Type your question...",
         send: "Send",
         typing: "Thinking...",
+        leadComplete: {
+          booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
+          corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
+          career: "Your career enquiry has been sent to the careers team. They will contact you shortly.",
+        },
+        leadActions: {
+          booking: "Booking help",
+          corporate: "Corporate help",
+          career: "Career help",
+        },
       };
 
   useEffect(() => {
@@ -117,7 +140,7 @@ export default function AiChatWidget() {
     const messagesElement = messagesRef.current;
     if (!messagesElement) return;
     messagesElement.scrollTo({ top: messagesElement.scrollHeight, behavior: "smooth" });
-  }, [error, messages, sending]);
+  }, [activeLead, error, messages, sending]);
 
   if (
     process.env.NEXT_PUBLIC_AI_CHAT_ENABLED !== "true" ||
@@ -131,6 +154,16 @@ export default function AiChatWidget() {
     setMessages((current) => [...current, { id: nextId.current++, role, text }]);
   }
 
+  function openLead(kind: ChatLeadKind) {
+    setError("");
+    setActiveLead(kind);
+  }
+
+  function completeLead(kind: ChatLeadKind) {
+    setActiveLead(null);
+    addMessage("assistant", copy.leadComplete[kind]);
+  }
+
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const text = message.replace(/\s+/g, " ").trim();
@@ -139,6 +172,12 @@ export default function AiChatWidget() {
     setMessage("");
     setError("");
     addMessage("user", text);
+    const leadKind = detectChatLeadKind(text);
+    if (leadKind) {
+      openLead(leadKind);
+      return;
+    }
+
     setSending(true);
     try {
       const response = await fetch("/api/ai-chat", {
@@ -160,7 +199,11 @@ export default function AiChatWidget() {
   }
 
   return (
-    <aside className={`sb-ai-chat${open ? " is-open" : ""}`} dir={isArabic ? "rtl" : "ltr"}>
+    <aside
+      className={`sb-ai-chat ${isArabic ? "is-rtl" : "is-ltr"}${open ? " is-open" : ""}`}
+      dir={isArabic ? "rtl" : "ltr"}
+      lang={isArabic ? "ar" : "en"}
+    >
       {open ? (
         <section className="sb-ai-chat-panel" role="dialog" aria-label={copy.title}>
           <header className="sb-ai-chat-header">
@@ -173,10 +216,28 @@ export default function AiChatWidget() {
             </button>
           </header>
           <div ref={messagesRef} className="sb-ai-chat-messages" aria-live="polite">
-            <p className="sb-ai-chat-welcome">{copy.welcome}</p>
-            {messages.map((item) => (
-              <p className={`sb-ai-chat-message is-${item.role}`} key={item.id}>{item.text}</p>
-            ))}
+            {activeLead ? (
+              <AiChatLeadForm
+                kind={activeLead}
+                locale={locale}
+                onCancel={() => setActiveLead(null)}
+                onComplete={completeLead}
+              />
+            ) : (
+              <>
+                <p className="sb-ai-chat-welcome">{copy.welcome}</p>
+                {messages.length === 0 ? (
+                  <div className="sb-ai-chat-actions" aria-label={isArabic ? "طرق يمكننا مساعدتك بها" : "Ways we can help"}>
+                    {(Object.keys(copy.leadActions) as ChatLeadKind[]).map((kind) => (
+                      <button key={kind} type="button" onClick={() => openLead(kind)}>{copy.leadActions[kind]}</button>
+                    ))}
+                  </div>
+                ) : null}
+                {messages.map((item) => (
+                  <p className={`sb-ai-chat-message is-${item.role}`} key={item.id}>{item.text}</p>
+                ))}
+              </>
+            )}
             {sending ? <p className="sb-ai-chat-typing">{copy.typing}</p> : null}
             {error ? <p className="sb-ai-chat-error" role="alert">{error}</p> : null}
           </div>
@@ -193,11 +254,13 @@ export default function AiChatWidget() {
               }}
               placeholder={copy.placeholder}
               aria-label={copy.placeholder}
+              dir={isArabic ? "rtl" : "ltr"}
+              lang={isArabic ? "ar" : "en"}
               rows={1}
               maxLength={800}
-              disabled={sending}
+              disabled={sending || Boolean(activeLead)}
             />
-            <button type="submit" className="sb-ai-chat-send" aria-label={copy.send} disabled={sending || !message.trim()}>
+            <button type="submit" className="sb-ai-chat-send" aria-label={copy.send} disabled={sending || Boolean(activeLead) || !message.trim()}>
               <SendIcon />
             </button>
           </form>

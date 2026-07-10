@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { aiInstructions, type ChatLocale, websiteContext } from "@/lib/ai-chat";
+import { aiInstructions, type ChatLocale, unsupportedAnswer, websiteContext } from "@/lib/ai-chat";
 import { getEditableContent } from "@/lib/editable-content";
 import { durableRateLimit, getClientIp, hasDurableRateLimitStore } from "@/lib/rate-limit";
 
@@ -77,14 +77,6 @@ async function allowRequest(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (
-    process.env.AI_CHAT_ENABLED !== "true" ||
-    !process.env.OPENAI_API_KEY ||
-    !hasDurableRateLimitStore()
-  ) {
-    return NextResponse.json({ error: "The assistant is not available." }, { status: 503 });
-  }
-
   if (!sameOrigin(request)) {
     return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
   }
@@ -99,6 +91,17 @@ export async function POST(request: Request) {
   }
 
   const locale: ChatLocale = body.locale === "ar" ? "ar" : "en";
+  if (
+    process.env.AI_CHAT_ENABLED !== "true" ||
+    !process.env.OPENAI_API_KEY ||
+    !hasDurableRateLimitStore()
+  ) {
+    return NextResponse.json(
+      { error: localized(locale, "The assistant is not available.", "المساعد غير متاح حالياً.") },
+      { status: 503 },
+    );
+  }
+
   const message = typeof body.message === "string" ? body.message.replace(/\s+/g, " ").trim() : "";
   if (message.length < 2 || message.length > MAX_MESSAGE_CHARS) {
     return NextResponse.json(
@@ -116,8 +119,12 @@ export async function POST(request: Request) {
   }
 
   const content = await getEditableContent();
-  const context = websiteContext(content, locale, message);
+  const websiteKnowledge = websiteContext(content, locale, message);
   const vectorStoreId = process.env.OPENAI_VECTOR_STORE_ID?.trim();
+  if (!websiteKnowledge.hasRelevantSource && !vectorStoreId) {
+    return NextResponse.json({ answer: unsupportedAnswer(locale) });
+  }
+
   const tools = vectorStoreId
     ? [{ type: "file_search", vector_store_ids: [vectorStoreId], max_num_results: 3 }]
     : undefined;
@@ -133,11 +140,11 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         model: process.env.OPENAI_CHAT_MODEL || "gpt-5-mini",
-        instructions: aiInstructions(locale, context),
+        instructions: aiInstructions(locale, websiteKnowledge.context),
         input: message,
         max_output_tokens: MAX_OUTPUT_TOKENS,
         store: false,
-        ...(tools ? { tools } : {}),
+        ...(tools ? { tools, tool_choice: "required" } : {}),
       }),
       cache: "no-store",
       signal: controller.signal,

@@ -93,11 +93,6 @@ export async function proxy(request: NextRequest) {
   // Tag every page request with `x-locale` so the shared root layout can emit the correct
   // <html lang/dir> during SSR (important for accessibility and SEO). Admin/api keep the
   // English default (their UI is LTR) to avoid any change to existing behavior.
-  if (pathname === "/") {
-    url.pathname = "/en";
-    return NextResponse.redirect(url);
-  }
-
   const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
   const isAdmin =
     pathname.startsWith("/secretpanel") ||
@@ -108,6 +103,12 @@ export async function proxy(request: NextRequest) {
   localeHeaders.set("x-locale", locale);
   // Tag the page path so the root layout can emit per-page SEO metadata.
   localeHeaders.set("x-pathname", pathname);
+
+  // The Arabic site owns the root route. Returning it directly also prevents
+  // the /ar compatibility rewrite from being redirected back to English.
+  if (pathname === "/") {
+    return NextResponse.next({ request: { headers: localeHeaders } });
+  }
 
   if (pathname === "/ar") {
     url.pathname = "/";

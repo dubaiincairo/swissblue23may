@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 
 export const corporateRequestType = defineType({
   name: "corporateRequest",
-  title: "Corporate (B2B) request",
+  title: "Corporate Request",
   type: "document",
   fields: [
     defineField({ name: "company", title: "Company / entity", type: "string" }),

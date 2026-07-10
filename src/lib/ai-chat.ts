@@ -2,6 +2,11 @@ import type { EditableSiteContent } from "@/lib/editable-content";
 
 export type ChatLocale = "ar" | "en";
 
+export type WebsiteKnowledge = {
+  context: string;
+  hasRelevantSource: boolean;
+};
+
 type TextLeaf = {
   path: string;
   text: string;
@@ -16,15 +21,6 @@ const OMITTED_KEYS = new Set([
   "cropFocus",
   "backgroundPosition",
 ]);
-
-const CORE_PATHS = [
-  "footerContact",
-  "homepage.properties",
-  "faq",
-  "subpages.reservationOfficePage",
-  "subpages.corporateDealsPage",
-  "subpages.careersPage",
-];
 
 const MAX_CONTEXT_CHARS = 9_500;
 
@@ -71,8 +67,7 @@ function questionTerms(question: string) {
 function scoreLeaf(leaf: TextLeaf, terms: string[]) {
   const haystack = `${leaf.path} ${leaf.text}`.toLocaleLowerCase();
   const matches = terms.reduce((total, term) => total + (haystack.includes(term) ? 1 : 0), 0);
-  const coreBoost = CORE_PATHS.some((path) => leaf.path.startsWith(path)) ? 1 : 0;
-  return matches * 8 + coreBoost;
+  return matches * 10;
 }
 
 /**
@@ -83,12 +78,13 @@ export function websiteContext(
   content: EditableSiteContent,
   locale: ChatLocale,
   question: string,
-) {
+): WebsiteKnowledge {
   const leaves: TextLeaf[] = [];
   collectText(content[locale], "", leaves);
   const terms = questionTerms(question);
   const ranked = leaves
     .map((leaf) => ({ leaf, score: scoreLeaf(leaf, terms) }))
+    .filter(({ score }) => score > 0)
     .sort((left, right) => right.score - left.score || left.leaf.path.localeCompare(right.leaf.path));
 
   const selected: TextLeaf[] = [];
@@ -100,15 +96,26 @@ export function websiteContext(
     size += line.length + 1;
   }
 
-  return selected.map((leaf) => `${leaf.path}: ${leaf.text}`).join("\n");
+  return {
+    context: selected.map((leaf) => `${leaf.path}: ${leaf.text}`).join("\n"),
+    hasRelevantSource: selected.length > 0,
+  };
 }
 
 export function aiInstructions(locale: ChatLocale, context: string) {
   const language = locale === "ar" ? "Arabic" : "English";
   return `You are the Swiss Blue Hotels website assistant. Reply in ${language}.
 
-Use only the website knowledge and the uploaded business documents available to you. Do not invent property features, live availability, rates, policies, contact details, or offers. If the answer is not supported by the knowledge, say so clearly and direct the visitor to the reservations team. Do not claim that a reservation is confirmed. Keep replies helpful, concise, and under 140 words.
+Use only the retrieved website knowledge below and approved documents returned by file search. Search approved documents before giving a factual answer whenever file search is available. Never use general knowledge or make assumptions.
+
+Do not invent property features, live availability, rates, policies, contact details, offers, or careers information. If the exact answer is not supported by the retrieved sources, say that you do not have verified information and ask the visitor to contact reservations. Do not claim that a reservation is confirmed. Keep replies helpful, concise, and under 140 words. Use ${language} only; do not mix languages.
 
 Current Swiss Blue website knowledge:
 ${context}`;
+}
+
+export function unsupportedAnswer(locale: ChatLocale) {
+  return locale === "ar"
+    ? "لا أملك معلومات موثقة للإجابة عن ذلك. يرجى التواصل مع فريق الحجوزات لمساعدتك."
+    : "I do not have verified information for that. Please contact reservations for assistance.";
 }
