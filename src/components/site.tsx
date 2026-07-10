@@ -62,7 +62,7 @@ export async function SiteHeader() {
                 alt="فنادق سويس بلو"
                 width={210}
                 height={88}
-                priority
+                loading="eager"
               />
             ) : null}
           </Link>
@@ -236,7 +236,7 @@ export async function PageHero({
         src={resolveMediaImage(image, ar.media)}
         alt=""
         fill
-        priority
+        preload
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(8,28,70,0.84),rgba(18,70,168,0.56)_52%,rgba(8,28,70,0.14))]" />

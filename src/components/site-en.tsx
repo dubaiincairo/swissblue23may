@@ -47,7 +47,7 @@ export async function SiteHeaderEn() {
                 alt="Swiss Blue Hotels"
                 width={210}
                 height={88}
-                priority
+                loading="eager"
               />
             ) : null}
           </Link>
@@ -189,7 +189,7 @@ export async function PageHeroEn({
         src={resolveMediaImage(image, en.media)}
         alt=""
         fill
-        priority
+        preload
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.84),rgba(18,70,168,0.56)_52%,rgba(8,28,70,0.14))]" />
