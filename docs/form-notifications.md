@@ -4,8 +4,8 @@ Both website forms now notify the hotel the moment a submission is saved:
 
 | Form | Endpoint | Email goes to | WhatsApp |
 | --- | --- | --- | --- |
-| Job applicants (Careers) | `POST /api/forms/careers` | `CAREERS_NOTIFY_TO` (default `careers@swissblue.sa`) — CV attached | yes |
-| B2B / corporate requests | `POST /api/forms/b2b` | `B2B_NOTIFY_TO` (default `reservations@swissblue.sa`) | yes |
+| Job applicants (Careers) | `POST /api/forms/careers` | `careers@swissblue.sa` — CV attached | yes |
+| B2B / corporate requests | `POST /api/forms/b2b` | `reservations@swissblue.sa` | yes |
 
 Implementation:
 - `src/lib/notify.ts` — channel senders (`sendEmail`, `sendWhatsAppTemplate`) + per-form builders (`notifyCareerApplication`, `notifyCorporateRequest`). No third-party SDKs; uses `fetch`.
@@ -20,7 +20,7 @@ Implementation:
 2. **Authenticate the `swissblue.sa` domain** (Brevo → Senders, Domains & Dedicated IPs → Domains). This lets you send from any `@swissblue.sa` address.
 3. **Disable Authorized IPs** (Brevo → Security → [Authorized IPs](https://app.brevo.com/security/authorised_ips)). ⚠️ Required: Vercel functions send from rotating IPs, so if this restriction is on, the API returns `401 unauthorized` ("unrecognised IP address"). Turn it off (allow all IPs).
 4. Set `BREVO_FROM_EMAIL` to a sender on the authenticated domain, e.g. `notifications@swissblue.sa`, and `BREVO_FROM_NAME` (default `Swiss Blue`).
-5. (Optional) Change `CAREERS_NOTIFY_TO` / `B2B_NOTIFY_TO` to route each form elsewhere.
+5. Job applications always go to `careers@swissblue.sa`; B2B / corporate requests always go to `reservations@swissblue.sa`.
 
 Reply-To is set to the applicant/contact's own email, so hitting "Reply" answers them directly. The careers email has the CV attached.
 
@@ -70,8 +70,6 @@ If you change the number of variables in the template, update `sendWhatsAppTempl
 BREVO_API_KEY
 BREVO_FROM_EMAIL
 BREVO_FROM_NAME
-CAREERS_NOTIFY_TO
-B2B_NOTIFY_TO
 WHATSAPP_PHONE_NUMBER_ID
 WHATSAPP_ACCESS_TOKEN
 WHATSAPP_TO

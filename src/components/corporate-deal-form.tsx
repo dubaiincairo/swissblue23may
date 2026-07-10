@@ -1,7 +1,8 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { DatePicker } from "@/components/date-picker";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Locale = "ar" | "en";
@@ -41,6 +42,7 @@ export default function CorporateDealForm({
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof document === "undefined") {
@@ -72,6 +74,13 @@ export default function CorporateDealForm({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [modalOpen]);
+
+  useEffect(() => {
+    if (!status || modalOpen) return;
+
+    successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    successRef.current?.focus({ preventScroll: true });
+  }, [modalOpen, status]);
 
   function handleBasicSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -164,6 +173,12 @@ export default function CorporateDealForm({
             <span className={`b2b-step-dot ${modalOpen ? "active" : ""}`}>2</span>
           </div>
 
+          {status ? (
+            <div className="b2b-success" ref={successRef} role="status" tabIndex={-1}>
+              {status}
+            </div>
+          ) : null}
+
           <div className="b2b-modal-head" style={{ marginBottom: 18 }}>
             <div>
               <span className="eyebrow">{t.step1Heading}</span>
@@ -212,7 +227,6 @@ export default function CorporateDealForm({
               <button className="btn btn-primary" type="submit">
                 {t.continue} →
               </button>
-              {status ? <p>{status}</p> : null}
               {error ? <p style={{ color: "var(--danger, #c0392b)" }}>{error}</p> : null}
             </div>
           </form>
@@ -312,11 +326,22 @@ export default function CorporateDealForm({
               </label>
               <label>
                 <span>{t.fields.arrival}</span>
-                <input name="arrival" type="date" />
+                <DatePicker
+                  name="arrival"
+                  locale={locale}
+                  ariaLabel={t.fields.arrival}
+                  placeholder={isArabic ? "يوم/شهر/سنة" : "dd/mm/yyyy"}
+                />
               </label>
               <label>
                 <span>{t.fields.departure}</span>
-                <input name="departure" type="date" />
+                <DatePicker
+                  name="departure"
+                  locale={locale}
+                  ariaLabel={t.fields.departure}
+                  placeholder={isArabic ? "يوم/شهر/سنة" : "dd/mm/yyyy"}
+                  align="end"
+                />
               </label>
               <label>
                 <span>{t.fields.documents}</span>

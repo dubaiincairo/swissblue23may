@@ -72,7 +72,7 @@ export function TestimonialsSection({
         <p>{rich(content.text)}</p>
       </div>
 
-      <div className="testimonials-grid">
+      <div className="testimonials-grid reveal-fade">
         {content.items.map((item, index) => {
           const rating = clampRating(item.rating);
           const accent = accentFor(item.platform);

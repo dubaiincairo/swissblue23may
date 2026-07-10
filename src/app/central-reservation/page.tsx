@@ -20,147 +20,126 @@ export default async function CentralReservationPage() {
         image={content.hero.image}
       />
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
-        <div className="feature-panel reveal-scale-up">
-          <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
-          <h2>{rich(content.intro.title)}</h2>
-          <p>{rich(content.intro.text)}</p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {content.channels.map((channel, index) => (
-            <article
-              className="content-card reveal-slide-up"
-              key={channel.title}
-              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
-            >
-              <span className="eyebrow">{rich(channel.title)}</span>
-              {channel.href ? (
-                <a
-                  className="mt-3 inline-block text-lg font-bold text-[var(--primary)] hover:underline"
-                  href={channel.href}
-                  dir="ltr"
+      <section className="reservation-command-section">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
+          <div className="reservation-command-copy reveal-slide-up">
+            <span className="eyebrow">{rich(content.intro.eyebrow)}</span>
+            <h2>{rich(content.intro.title)}</h2>
+            <p>{rich(content.intro.text)}</p>
+            <div className="reservation-stat-strip" aria-label={content.statsIntro.title}>
+              {(content.stats ?? []).map((stat, index) => (
+                <div
+                  className="reservation-stat reveal-scale-up"
+                  key={stat.label}
+                  style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
                 >
-                  {rich(channel.value)}
-                </a>
-              ) : (
-                <p className="mt-3 text-lg font-bold text-[var(--primary)]" dir="ltr">
-                  {rich(channel.value)}
-                </p>
-              )}
-              <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                {rich(channel.text)}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="reveal-slide-up">
-          <span className="eyebrow">{rich(content.statsIntro.eyebrow)}</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {rich(content.statsIntro.title)}
-          </h2>
-        </div>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {(content.stats ?? []).map((stat, index) => (
-            <article
-              className="content-card reveal-slide-up"
-              key={stat.label}
-              style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
-            >
-              <span className="text-3xl font-black text-[var(--primary)]">
-                {rich(stat.value)}
-              </span>
-              <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                {rich(stat.label)}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
-        <div className="reveal-slide-up">
-          <span className="eyebrow">{rich(content.servicesIntro.eyebrow)}</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {rich(content.servicesIntro.title)}
-          </h2>
-          <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-            {rich(content.servicesIntro.text)}
-          </p>
-        </div>
-        <div className="amenity-grid">
-          {content.services.map((service, index) => (
-            <div
-              className="amenity-pill reveal-elastic-pop"
-              key={service}
-              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
-            >
-              {rich(service)}
+                  <strong dir="auto">{rich(stat.value)}</strong>
+                  <span>{rich(stat.label)}</span>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div className="reservation-channel-grid" aria-label="قنوات الحجز المباشر">
+            {content.channels.map((channel, index) => (
+              <article
+                className="reservation-channel-card reveal-slide-up"
+                key={channel.title}
+                style={{ "--delay": `${index * 70}ms` } as React.CSSProperties}
+              >
+                <div className="reservation-channel-topline">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{rich(channel.title)}</h3>
+                </div>
+                <p>{rich(channel.text)}</p>
+                {channel.href ? (
+                  <a className="reservation-channel-action" href={channel.href} dir="ltr">
+                    {rich(channel.value)}
+                  </a>
+                ) : (
+                  <span className="reservation-channel-action" aria-label={channel.value} dir="auto">
+                    {rich(channel.value)}
+                  </span>
+                )}
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="reveal-slide-up">
-          <span className="eyebrow">{rich(content.benefitsIntro.eyebrow)}</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {rich(content.benefitsIntro.title)}
-          </h2>
-          <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--text-secondary)]">
-            {rich(content.benefitsIntro.text)}
-          </p>
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">{rich(content.servicesIntro.eyebrow)}</span>
+          <h2>{rich(content.servicesIntro.title)}</h2>
+          <p>{rich(content.servicesIntro.text)}</p>
         </div>
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          {content.benefits.map((item, index) => (
+        <div className="reservation-service-grid mt-8">
+          {content.services.map((service, index) => (
             <article
-              className="content-card reveal-slide-up"
-              key={item.title}
-              style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
+              className="reservation-service-card reveal-slide-up"
+              key={service}
+              style={{ "--delay": `${index * 55}ms` } as React.CSSProperties}
             >
-              <span className="eyebrow">{rich(item.title)}</span>
-              <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                {rich(item.text)}
-              </p>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <p>{rich(service)}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
-        <div className="reveal-slide-up">
-          <span className="eyebrow">{rich(content.prepareIntro.eyebrow)}</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {rich(content.prepareIntro.title)}
-          </h2>
-          <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-            {rich(content.prepareIntro.text)}
-          </p>
+      <section className="reservation-benefits-band">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
+          <div className="reservation-benefits-copy reveal-slide-up">
+            <span className="eyebrow">{rich(content.benefitsIntro.eyebrow)}</span>
+            <h2>{rich(content.benefitsIntro.title)}</h2>
+            <p>{rich(content.benefitsIntro.text)}</p>
+          </div>
+          <div className="reservation-benefit-grid">
+            {content.benefits.map((item, index) => (
+              <article
+                className="reservation-benefit-card reveal-slide-up"
+                key={item.title}
+                style={{ "--delay": `${index * 70}ms` } as React.CSSProperties}
+              >
+                <span className="reservation-benefit-mark" aria-hidden="true">
+                  ✓
+                </span>
+                <h3>{rich(item.title)}</h3>
+                <p>{rich(item.text)}</p>
+              </article>
+            ))}
+          </div>
         </div>
-        <div className="amenity-grid">
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">{rich(content.prepareIntro.eyebrow)}</span>
+          <h2>{rich(content.prepareIntro.title)}</h2>
+          <p>{rich(content.prepareIntro.text)}</p>
+        </div>
+        <div className="reservation-prep-panel reveal-scale-up">
           {(content.prepare ?? []).map((item, index) => (
             <div
-              className="amenity-pill reveal-elastic-pop"
+              className="reservation-prep-item"
               key={item}
-              style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
+              style={{ "--delay": `${index * 50}ms` } as React.CSSProperties}
             >
-              {rich(item)}
+              <span aria-hidden="true">✓</span>
+              <p>{rich(item)}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="reveal-slide-up">
-          <span className="eyebrow">{rich(content.faqsIntro.eyebrow)}</span>
-          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[44px]">
-            {rich(content.faqsIntro.title)}
-          </h2>
-        </div>
-        <div className="mt-10">
-          <FaqAccordion items={content.faqs ?? []} />
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="reservation-faq-shell">
+          <div className="section-heading reveal-slide-up">
+            <span className="eyebrow">{rich(content.faqsIntro.eyebrow)}</span>
+            <h2>{rich(content.faqsIntro.title)}</h2>
+          </div>
+          <div className="mt-8">
+            <FaqAccordion items={content.faqs ?? []} />
+          </div>
         </div>
       </section>
 

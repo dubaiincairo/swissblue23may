@@ -1,12 +1,31 @@
 "use client";
 
 // Swiss Blue content studio (admin panel) shell: load/save, sidebar, topbar, layout.
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { AdminSection, JsonObject, JsonValue, Language, StatusTone } from "./admin/types";
 import { adminSections, languages, NON_HIDEABLE_SECTIONS, sectionCopy } from "./admin/sections";
 import { getAtPath, reorderAtPath, sectionMeta, setAtPath, statusLabel } from "./admin/content-path";
 import { FieldEditor } from "./admin/field-editors";
 import { hasAuthority } from "@/lib/authorities";
+
+const LANGUAGE_FADE_OUT_MS = 120;
+const LANGUAGE_FADE_IN_MS = 260;
+
+function SectionVisibilityIcon({ hidden }: { hidden: boolean }) {
+  return hidden ? (
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path d="M3 3l18 18" />
+      <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+      <path d="M9.2 5.5A9.6 9.6 0 0 1 12 5c4.5 0 7.8 3.5 9 7a11.7 11.7 0 0 1-2.3 3.7" />
+      <path d="M6.5 6.7A11.7 11.7 0 0 0 3 12c1.2 3.5 4.5 7 9 7 1.1 0 2.1-.2 3-.6" />
+    </svg>
+  ) : (
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path d="M3 12c1.2-3.5 4.5-7 9-7s7.8 3.5 9 7c-1.2 3.5-4.5 7-9 7s-7.8-3.5-9-7Z" />
+      <path d="M12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z" />
+    </svg>
+  );
+}
 
 export default function SecretPanel({
   language: initialLanguage = "en",
@@ -23,6 +42,9 @@ export default function SecretPanel({
   const [status, setStatus] = useState("loading");
   const [statusTone, setStatusTone] = useState<StatusTone>("ready");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [languageMotion, setLanguageMotion] = useState<"idle" | "out" | "in">("idle");
+  const [pendingLanguage, setPendingLanguage] = useState<Language | null>(null);
+  const languageSwitchTimers = useRef<number[]>([]);
 
   useEffect(() => {
     fetch("/api/site-content", { cache: "no-store" })
@@ -37,6 +59,12 @@ export default function SecretPanel({
         setStatus("loadError");
         setStatusTone("error");
       });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
+    };
   }, []);
 
   // Warn before a hard browser navigation / tab close while edits are unsaved.
@@ -56,7 +84,6 @@ export default function SecretPanel({
   const selectedSectionCopy = sectionCopy(selectedSection, language);
   const activePath = [language, ...selectedSection.path];
   const sectionValue = content ? getAtPath(content, activePath) : null;
-  const selectedHideable = !NON_HIDEABLE_SECTIONS.has(selectedSection.id);
   const selectedHidden = hiddenSections.includes(selectedSection.id);
 
   const filteredSections = useMemo(() => {
@@ -174,14 +201,50 @@ export default function SecretPanel({
     );
   }
 
+  function switchLanguage(nextLanguage: Language) {
+    if (nextLanguage === language || languageMotion !== "idle") {
+      return;
+    }
+
+    languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
+    languageSwitchTimers.current = [];
+    setMenuOpen(false);
+    setPendingLanguage(nextLanguage);
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLanguage(nextLanguage);
+      setPendingLanguage(null);
+      return;
+    }
+
+    setLanguageMotion("out");
+    languageSwitchTimers.current.push(
+      window.setTimeout(() => {
+        setLanguage(nextLanguage);
+        setLanguageMotion("in");
+        languageSwitchTimers.current.push(
+          window.setTimeout(() => {
+            setLanguageMotion("idle");
+            setPendingLanguage(null);
+          }, LANGUAGE_FADE_IN_MS),
+        );
+      }, LANGUAGE_FADE_OUT_MS),
+    );
+  }
+
   // --- Authority-aware navigation (perms come from the signed session) ---
   const canEditThisLanguage = hasAuthority(perms, language === "ar" ? "content.ar" : "content.en");
   const canSeeSubmissions = hasAuthority(perms, "submissions");
   const canManageUsers = hasAuthority(perms, "users");
   const canSwitchPanel = hasAuthority(perms, language === "ar" ? "content.en" : "content.ar");
+  const isLanguageSwitching = languageMotion !== "idle";
 
   return (
-    <main className="admin-shell" dir={language === "ar" ? "rtl" : "ltr"}>
+    <main
+      className={`admin-shell${isLanguageSwitching ? ` is-language-${languageMotion}` : ""}`}
+      dir={language === "ar" ? "rtl" : "ltr"}
+      aria-busy={isLanguageSwitching}
+    >
       <aside className="admin-sidebar">
         <div className="admin-brand">
           <span className="admin-brand-mark">SB</span>
@@ -203,9 +266,15 @@ export default function SecretPanel({
                 <button
                   key={code}
                   type="button"
-                  className={language === code ? "active" : ""}
+                  className={[
+                    language === code ? "active" : "",
+                    pendingLanguage === code ? "is-pending" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                   aria-pressed={language === code}
-                  onClick={() => setLanguage(code)}
+                  disabled={isLanguageSwitching}
+                  onClick={() => switchLanguage(code)}
                 >
                   {languages[code].label}
                 </button>
@@ -250,24 +319,50 @@ export default function SecretPanel({
                 {isOpen
                   ? sections.map((section) => {
                       const copy = sectionCopy(section, language);
+                      const isSelected = selectedSection.id === section.id;
+                      const isHidden = hiddenSections.includes(section.id);
+                      const isHideable = !NON_HIDEABLE_SECTIONS.has(section.id);
+                      const visibilityLabel = isHidden
+                        ? language === "ar"
+                          ? `إظهار قسم ${copy.label}`
+                          : `Show ${copy.label} section`
+                        : language === "ar"
+                          ? `إخفاء قسم ${copy.label}`
+                          : `Hide ${copy.label} section`;
 
                       return (
-                        <button
-                          className={selectedSection.id === section.id ? "active" : ""}
+                        <div
+                          className={[
+                            "admin-section-nav-row",
+                            isSelected ? "active" : "",
+                            isHidden ? "is-hidden" : "",
+                            isHideable ? "is-hideable" : "",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
                           key={section.id}
-                          type="button"
-                          onClick={() => setSelectedId(section.id)}
                         >
-                          <span>
-                            {copy.label}
-                            {hiddenSections.includes(section.id) ? (
-                              <span className="admin-hidden-badge">
-                                {language === "ar" ? "مخفي" : "Hidden"}
-                              </span>
-                            ) : null}
-                          </span>
-                          <small>{copy.description}</small>
-                        </button>
+                          <button
+                            className="admin-section-trigger"
+                            type="button"
+                            onClick={() => setSelectedId(section.id)}
+                          >
+                            <span>{copy.label}</span>
+                            <small>{copy.description}</small>
+                          </button>
+                          {isHideable ? (
+                            <button
+                              aria-label={visibilityLabel}
+                              aria-pressed={isHidden}
+                              className={`admin-section-visibility${isHidden ? " is-hidden" : ""}`}
+                              title={visibilityLabel}
+                              type="button"
+                              onClick={() => toggleHidden(section.id)}
+                            >
+                              <SectionVisibilityIcon hidden={isHidden} />
+                            </button>
+                          ) : null}
+                        </div>
                       );
                     })
                   : null}
@@ -296,12 +391,13 @@ export default function SecretPanel({
               <button
                 type="button"
                 className={`admin-menu-trigger${menuOpen ? " is-open" : ""}`}
+                aria-label={language === "ar" ? "إجراءات إضافية" : "More actions"}
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
+                title={language === "ar" ? "إجراءات إضافية" : "More actions"}
                 onClick={() => setMenuOpen((open) => !open)}
               >
                 <span className="admin-menu-dots" aria-hidden="true">⋯</span>
-                <span>{language === "ar" ? "المزيد" : "Menu"}</span>
               </button>
               {menuOpen ? (
                 <>
@@ -312,25 +408,6 @@ export default function SecretPanel({
                     onClick={() => setMenuOpen(false)}
                   />
                   <div className="admin-menu-pop" role="menu">
-                    {selectedHideable ? (
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className="admin-menu-item"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          toggleHidden(selectedSection.id);
-                        }}
-                      >
-                        {selectedHidden
-                          ? language === "ar"
-                            ? "إظهار القسم"
-                            : "Show section"
-                          : language === "ar"
-                            ? "إخفاء القسم"
-                            : "Hide section"}
-                      </button>
-                    ) : null}
                     {canSeeSubmissions ? (
                       <a
                         role="menuitem"

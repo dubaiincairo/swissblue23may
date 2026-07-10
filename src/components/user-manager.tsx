@@ -74,17 +74,20 @@ export default function UserManager() {
   const [notice, setNotice] = useState("");
 
   async function load() {
-    setLoadError("");
     try {
       const res = await fetch("/api/admin/users", { cache: "no-store" });
       if (!res.ok) throw new Error(String(res.status));
-      setData((await res.json()) as ApiData);
+      const nextData = (await res.json()) as ApiData;
+      setLoadError("");
+      setData(nextData);
     } catch {
       setLoadError("Could not load users.");
     }
   }
 
   useEffect(() => {
+    // Initial admin data comes from the browser-only admin API after the panel mounts.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
   }, []);
 
@@ -394,7 +397,7 @@ export default function UserManager() {
                   onChange={(e) => setForm((c) => (c ? { ...c, username: e.target.value } : c))}
                 />
                 {form.id !== null ? (
-                  <span className="text-xs text-[var(--text-secondary)]">Usernames can't be changed.</span>
+                  <span className="text-xs text-[var(--text-secondary)]">Usernames cannot be changed.</span>
                 ) : null}
               </label>
 

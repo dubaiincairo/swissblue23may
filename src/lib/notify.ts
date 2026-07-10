@@ -1,7 +1,7 @@
 /**
  * Form-submission notifications: email (Brevo) + WhatsApp (Meta Cloud API).
  *
- * Both channels are best-effort and fully env-driven. If the relevant
+ * Both channels are best-effort and credential-driven. If the relevant
  * credentials are missing the channel is skipped (logged, never thrown), so a
  * submission is always saved to Sanity regardless of notification config.
  *
@@ -10,8 +10,6 @@
  *     BREVO_API_KEY          - Brevo API key (starts with "xkeysib-")
  *     BREVO_FROM_EMAIL       - sender on an authenticated domain, e.g. notifications@swissblue.sa
  *     BREVO_FROM_NAME        - sender display name (default "Swiss Blue")
- *     CAREERS_NOTIFY_TO      - recipient for job applications (default careers@swissblue.sa)
- *     B2B_NOTIFY_TO          - recipient for B2B requests (default reservations@swissblue.sa)
  *   WhatsApp (Meta Cloud API):
  *     WHATSAPP_PHONE_NUMBER_ID  - sender phone-number id
  *     WHATSAPP_ACCESS_TOKEN     - permanent (system-user) access token
@@ -25,6 +23,8 @@
  */
 
 const BRAND = "#2b6fe8";
+const CAREERS_NOTIFY_TO = "careers@swissblue.sa";
+const CORPORATE_NOTIFY_TO = "reservations@swissblue.sa";
 
 function env(name: string): string {
   const v = process.env[name];
@@ -251,7 +251,7 @@ export async function notifyCareerApplication(
   await runAll(
     [
       sendEmail({
-        to: env("CAREERS_NOTIFY_TO") || "careers@swissblue.sa",
+        to: CAREERS_NOTIFY_TO,
         subject: `New job application — ${fullName || "Applicant"}${position ? ` · ${position}` : ""}`,
         html,
         replyTo: email || undefined,
@@ -303,7 +303,7 @@ export async function notifyCorporateRequest(doc: Record<string, unknown>): Prom
   await runAll(
     [
       sendEmail({
-        to: env("B2B_NOTIFY_TO") || "reservations@swissblue.sa",
+        to: CORPORATE_NOTIFY_TO,
         subject: `New B2B request — ${company || "Company"}`,
         html,
         replyTo: email || undefined,

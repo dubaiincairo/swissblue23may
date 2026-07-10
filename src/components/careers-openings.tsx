@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Locale = "ar" | "en";
@@ -34,6 +34,14 @@ function JobCard({
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const successRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!submitted) return;
+
+    successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    successRef.current?.focus({ preventScroll: true });
+  }, [submitted]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -136,7 +144,7 @@ function JobCard({
             </div>
 
             {submitted ? (
-              <div className="careers-success" role="status">
+              <div className="careers-success" ref={successRef} role="status" tabIndex={-1}>
                 {form.success}
               </div>
             ) : (
