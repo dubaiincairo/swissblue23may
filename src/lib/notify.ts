@@ -319,3 +319,53 @@ export async function notifyCorporateRequest(doc: Record<string, unknown>): Prom
     "corporateRequest",
   );
 }
+
+/** Routes assistant-captured leads to the same teams that own website forms. */
+export async function notifyChatLead(doc: Record<string, unknown>): Promise<void> {
+  const get = (key: string) => text(doc[key]);
+  const kind = get("kind");
+  const fullName = get("fullName");
+  const contact = get("contact");
+  const email = get("email");
+  const phone = get("phone");
+  const request = get("request");
+  const label = kind === "career"
+    ? "Career help"
+    : kind === "corporate"
+      ? "Corporate request"
+      : "Booking request";
+  const recipient = kind === "career" ? CAREERS_NOTIFY_TO : CORPORATE_NOTIFY_TO;
+
+  const html = emailShell(
+    `New chat lead — ${label}`,
+    fullName,
+    [
+      ["Lead type", label],
+      ["Name", fullName],
+      ["Contact", contact],
+      ["Email", email],
+      ["Phone", phone],
+      ["Request", request],
+      ["Language", get("locale")],
+    ],
+  );
+
+  await runAll(
+    [
+      sendEmail({
+        to: recipient,
+        subject: `New chat lead — ${label}${fullName ? ` · ${fullName}` : ""}`,
+        html,
+        replyTo: email || undefined,
+      }),
+      sendWhatsAppTemplate([
+        `Chat Lead: ${label}`,
+        fullName,
+        email || contact,
+        phone,
+        request,
+      ]),
+    ],
+    "chatLead",
+  );
+}
