@@ -60,6 +60,7 @@ async function allowRequest(request: Request) {
   const checks = [
     ["ai-chat-ip-minute", ip, asPositiveInt(process.env.OPENAI_CHAT_IP_PER_MINUTE, 3), 60],
     ["ai-chat-ip-day", ip, asPositiveInt(process.env.OPENAI_CHAT_IP_PER_DAY, 20), DAY_SECONDS],
+    ["ai-chat-site-minute", "all", asPositiveInt(process.env.OPENAI_CHAT_SITE_PER_MINUTE, 8), 60],
     ["ai-chat-site-day", "all", asPositiveInt(process.env.OPENAI_CHAT_DAILY_LIMIT, 400), DAY_SECONDS],
     ["ai-chat-site-month", "all", asPositiveInt(process.env.OPENAI_CHAT_MONTHLY_LIMIT, 6_000), MONTH_SECONDS],
   ] as const;
