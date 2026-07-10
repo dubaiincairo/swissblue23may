@@ -73,6 +73,7 @@ export default function HeroMediaCarousel({
                 alt={slide.alt || fallbackAlt}
                 fill
                 loading="eager"
+                fetchPriority={index === 0 ? "high" : "auto"}
                 sizes="100vw"
               />
             )}

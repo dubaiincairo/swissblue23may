@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body > main {
+  overflow-x: clip;
+}
+
+@supports not (overflow: clip) {
+  html,
+  body,
+  body > main {
+    overflow-x: hidden;
+  }
+}
+
 :root {
   --primary: #2b6fe8;
   --primary-light: #eaf2ff;
@@ -190,7 +208,7 @@ summary:focus:not(:focus-visible) {
   display: inline-flex;
   font-size: 14px;
   font-weight: 700;
-  min-height: 42px;
+  min-height: 44px;
   padding: 10px 16px;
   transition:
     background-color 160ms ease,
@@ -244,7 +262,7 @@ summary:focus:not(:focus-visible) {
   border-radius: 999px;
   display: inline-grid;
   gap: 2px;
-  grid-template-columns: repeat(2, minmax(34px, 1fr));
+  grid-template-columns: repeat(2, minmax(44px, 1fr));
   padding: 3px;
 }
 
@@ -256,7 +274,7 @@ summary:focus:not(:focus-visible) {
   font-size: 12px;
   font-weight: 800;
   justify-content: center;
-  min-height: 32px;
+  min-height: 44px;
   padding: 6px 10px;
   text-decoration: none;
 }
@@ -509,9 +527,9 @@ summary:focus:not(:focus-visible) {
   color: white;
   cursor: pointer;
   display: inline-flex;
-  height: 42px;
+  height: 44px;
   justify-content: center;
-  width: 42px;
+  width: 44px;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   transition:
@@ -648,13 +666,13 @@ summary:focus:not(:focus-visible) {
   cursor: pointer;
   display: inline-flex;
   flex: 0 0 auto;
-  height: 40px;
+  height: 44px;
   justify-content: center;
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
     color 160ms ease;
-  width: 40px;
+  width: 44px;
 }
 
 .mobile-nav-close:hover {
@@ -850,6 +868,7 @@ summary:focus:not(:focus-visible) {
 }
 
 .hero-media-carousel {
+  contain: paint;
   overflow: hidden;
   /* Own stacking context: keeps slide z-index contained so the layered
      cross-dissolve can never paint over the hero text / CTAs / booking bar. */
@@ -984,7 +1003,7 @@ summary:focus:not(:focus-visible) {
 .booking-field > span {
   color: var(--text-tertiary);
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0;
 }
@@ -1183,8 +1202,8 @@ summary:focus:not(:focus-visible) {
 .booking-stepper {
   align-items: center;
   display: flex;
-  gap: 10px;
-  margin-top: 4px;
+  gap: 8px;
+  margin-top: 2px;
 }
 
 .booking-step {
@@ -1196,12 +1215,12 @@ summary:focus:not(:focus-visible) {
   cursor: pointer;
   display: inline-flex;
   flex: 0 0 auto;
-  height: 28px;
+  height: 44px;
   justify-content: center;
   transition:
     background-color 140ms ease,
     border-color 140ms ease;
-  width: 28px;
+  width: 44px;
 }
 
 .booking-step:hover:not(:disabled) {
@@ -1465,7 +1484,7 @@ summary:focus:not(:focus-visible) {
   color: var(--text-primary);
   font-size: 14px;
   font-weight: 750;
-  min-width: 70px;
+  min-width: 56px;
   text-align: center;
 }
 
@@ -2754,12 +2773,18 @@ html[dir="rtl"] .sb-ai-chat-header {
 /* Comfortable touch targets on touch devices (≈44px recommended). */
 @media (pointer: coarse) {
   .booking-step {
-    height: 40px;
-    width: 40px;
+    height: 44px;
+    width: 44px;
   }
 
   .language-toggle a {
-    min-height: 40px;
+    min-height: 44px;
+  }
+
+  .mobile-nav-toggle,
+  .mobile-nav-close {
+    height: 44px;
+    width: 44px;
   }
 
   .mobile-nav-link {
@@ -7167,6 +7192,7 @@ html[dir="rtl"] .sb-ai-chat-header {
    ========================================== */
 
 .testimonials-section {
+  overflow-x: clip;
   position: relative;
 }
 
@@ -7718,11 +7744,49 @@ html[dir="rtl"] .sb-ai-chat-header {
   }
 
   .lightbox {
-    padding: 10px;
+    gap: 8px;
+    justify-content: space-between;
+    padding: calc(10px + env(safe-area-inset-top)) 10px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .lightbox-bar,
+  .lightbox-stage,
+  .lightbox-thumbs {
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+  }
+
+  .lightbox-bar {
+    flex: 0 0 auto;
+    min-height: 44px;
+  }
+
+  .lightbox-stage {
+    flex: 1 1 auto;
+    min-height: 0;
   }
 
   .lightbox-figure {
-    height: 64vh;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 18px;
+    height: min(62dvh, 560px);
+  }
+
+  .lightbox-close,
+  .lightbox-arrow {
+    height: 44px;
+    width: 44px;
+  }
+
+  .lightbox-caption {
+    font-size: 12.5px;
+    line-height: 1.5;
+    max-width: calc(100vw - 28px);
+  }
+
+  .lightbox-thumb {
+    flex-basis: 64px;
+    height: 44px;
   }
 
   .b2b-form {
@@ -7775,6 +7839,10 @@ html[dir="rtl"] .sb-ai-chat-header {
 
 .reveal-scale-up {
   transform: scale(0.96) translateY(12px);
+}
+
+.booking-bar.reveal-scale-up {
+  transform: translateY(12px);
 }
 
 .reveal-elastic-pop {

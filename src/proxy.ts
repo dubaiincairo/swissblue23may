@@ -93,31 +93,44 @@ export async function proxy(request: NextRequest) {
   // Tag every page request with `x-locale` so the shared root layout can emit the correct
   // <html lang/dir> during SSR (important for accessibility and SEO). Admin/api keep the
   // English default (their UI is LTR) to avoid any change to existing behavior.
+  const isArabicHomeRewrite = pathname === "/" && url.searchParams.get("__sb_locale") === "ar";
   const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
   const isAdmin =
     pathname.startsWith("/secretpanel") ||
     pathname.startsWith("/studio") ||
     pathname.startsWith("/api");
-  const locale = isEnglish || isAdmin ? "en" : "ar";
+  const publicPathname =
+    isArabicHomeRewrite || pathname === "/ar"
+      ? "/"
+      : pathname.startsWith("/ar/")
+        ? pathname.replace(/^\/ar/, "") || "/"
+        : pathname;
+  const locale = isArabicHomeRewrite || (!isEnglish && !isAdmin) ? "ar" : "en";
   const localeHeaders = new Headers(request.headers);
   localeHeaders.set("x-locale", locale);
   // Tag the page path so the root layout can emit per-page SEO metadata.
-  localeHeaders.set("x-pathname", pathname);
+  localeHeaders.set("x-pathname", publicPathname);
 
-  // The Arabic site owns the root route. Returning it directly also prevents
-  // the /ar compatibility rewrite from being redirected back to English.
-  if (pathname === "/") {
+  // Let the /ar compatibility rewrite render the Arabic root without falling
+  // through to the public English-root redirect below.
+  if (pathname === "/" && isArabicHomeRewrite) {
     return NextResponse.next({ request: { headers: localeHeaders } });
   }
 
   if (pathname === "/ar") {
     url.pathname = "/";
+    url.searchParams.set("__sb_locale", "ar");
     return NextResponse.rewrite(url, { request: { headers: localeHeaders } });
   }
 
   if (pathname.startsWith("/ar/")) {
-    url.pathname = pathname.replace(/^\/ar/, "") || "/";
+    url.pathname = publicPathname;
     return NextResponse.rewrite(url, { request: { headers: localeHeaders } });
+  }
+
+  if (pathname === "/" && !isArabicHomeRewrite) {
+    url.pathname = "/en";
+    return NextResponse.redirect(url);
   }
 
   return NextResponse.next({ request: { headers: localeHeaders } });
