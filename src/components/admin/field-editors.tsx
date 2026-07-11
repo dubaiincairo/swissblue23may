@@ -270,6 +270,58 @@ const FOCUS_OPTIONS: Array<{ value: string; en: string; ar: string }> = [
   { value: "bottom right", en: "Bottom-right", ar: "أسفل اليمين" },
 ];
 
+const ADMIN_AUTH_LAYOUT_OPTIONS = [
+  { value: "tiles", en: "Editorial tiles", ar: "بلاطات تحريرية" },
+  { value: "slices", en: "Vertical slices", ar: "شرائح عمودية" },
+] as const;
+
+function isAdminAuthBackdropPath(path: Array<string | number>) {
+  return path.some((segment) => segment === "adminAuthBackdrop");
+}
+
+function AdminAuthBackdropLayoutField({
+  name,
+  value,
+  path,
+  language,
+  onChange,
+}: {
+  name: string;
+  value: string;
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+}) {
+  const selected = value === "slices" ? "slices" : "tiles";
+
+  return (
+    <fieldset className="admin-layout-field">
+      <legend>{labelFor(name, language)}</legend>
+      <div className="admin-layout-options">
+        {ADMIN_AUTH_LAYOUT_OPTIONS.map((option) => (
+          <button
+            aria-pressed={selected === option.value}
+            className={`admin-layout-option${selected === option.value ? " is-selected" : ""}`}
+            key={option.value}
+            type="button"
+            onClick={() => onChange(path, option.value)}
+          >
+            <span className={`admin-layout-preview is-${option.value}`} aria-hidden="true">
+              {Array.from({ length: 6 }, (_, index) => <i key={index} />)}
+            </span>
+            <span>{language === "ar" ? option.ar : option.en}</span>
+          </button>
+        ))}
+      </div>
+      <small>
+        {language === "ar"
+          ? "اختر البلاطات المتوازنة أو الشرائح العمودية الطويلة."
+          : "Choose a balanced tile grid or tall vertical slices."}
+      </small>
+    </fieldset>
+  );
+}
+
 // Focal point for a banner photo: which part stays in frame when the wide image
 // is cropped to a narrow (mobile) container. Stored as a CSS object-position value.
 export function FocalFieldEditor({
@@ -285,6 +337,8 @@ export function FocalFieldEditor({
   language: Language;
   onChange: (path: Array<string | number>, value: JsonValue) => void;
 }) {
+  const isAdminAuthPhoto = isAdminAuthBackdropPath(path);
+
   return (
     <label className="admin-field admin-focal-field">
       <span>{labelFor(name, language)}</span>
@@ -301,8 +355,12 @@ export function FocalFieldEditor({
       </select>
       <small>
         {language === "ar"
-          ? "الجزء الذي يبقى ظاهرًا عند اقتصاص الصورة في عرض الجوال."
-          : "Which part of the photo stays in view when it's cropped on mobile."}
+          ? isAdminAuthPhoto
+            ? "حدد الجزء الذي يبقى ظاهرًا عند اقتصاص صورة الخلفية."
+            : "الجزء الذي يبقى ظاهرًا عند اقتصاص الصورة في عرض الجوال."
+          : isAdminAuthPhoto
+            ? "Choose which part stays visible when this background photo is cropped."
+            : "Which part of the photo stays in view when it's cropped on mobile."}
       </small>
     </label>
   );
@@ -505,6 +563,18 @@ export function FieldEditor({
   if (typeof value === "string" || typeof value === "number") {
     const stringValue = String(value);
 
+    if (typeof value === "string" && name === "layout" && isAdminAuthBackdropPath(path)) {
+      return (
+        <AdminAuthBackdropLayoutField
+          name={name}
+          value={value}
+          path={path}
+          language={language}
+          onChange={onChange}
+        />
+      );
+    }
+
     if (typeof value === "string" && name === "focus") {
       return <FocalFieldEditor name={name} value={value} path={path} language={language} onChange={onChange} />;
     }
@@ -540,6 +610,7 @@ export function FieldEditor({
 
   if (Array.isArray(value)) {
     const primitiveList = value.every((item) => !isPlainObject(item) && !Array.isArray(item));
+    const isFixedAdminAuthPhotos = name === "photos" && isAdminAuthBackdropPath(path);
 
     function clearDragState() {
       setDragIndex(null);
@@ -579,9 +650,11 @@ export function FieldEditor({
                   : `${value.length} items. Use the drag handle to reorder.`}
               </p>
           </div>
-          <button type="button" onClick={() => onChange(path, [...value, cloneTemplate(value[0] ?? "")])}>
-            {language === "ar" ? "إضافة عنصر" : "Add item"}
-          </button>
+          {isFixedAdminAuthPhotos ? null : (
+            <button type="button" onClick={() => onChange(path, [...value, cloneTemplate(value[0] ?? "")])}>
+              {language === "ar" ? "إضافة عنصر" : "Add item"}
+            </button>
+          )}
         </div>
 
         <div className={primitiveList ? "admin-list-editor" : "admin-array-list"}>
@@ -617,13 +690,15 @@ export function FieldEditor({
                     onChange={onChange}
                     onReorder={onReorder}
                   />
-                  <button
-                    className="admin-remove"
-                    type="button"
-                    onClick={() => onChange(path, value.filter((_, itemIndex) => itemIndex !== index))}
-                  >
-                    {language === "ar" ? "حذف" : "Delete"}
-                  </button>
+                  {isFixedAdminAuthPhotos ? null : (
+                    <button
+                      className="admin-remove"
+                      type="button"
+                      onClick={() => onChange(path, value.filter((_, itemIndex) => itemIndex !== index))}
+                    >
+                      {language === "ar" ? "حذف" : "Delete"}
+                    </button>
+                  )}
                 </div>
               );
             }
@@ -654,16 +729,18 @@ export function FieldEditor({
                     <strong>{itemTitle(item, fallback)}</strong>
                     <small>{fallback}</small>
                   </span>
-                  <button
-                    className="admin-remove"
-                    type="button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      onChange(path, value.filter((_, itemIndex) => itemIndex !== index));
-                    }}
-                  >
-                    {language === "ar" ? "حذف" : "Delete"}
-                  </button>
+                  {isFixedAdminAuthPhotos ? null : (
+                    <button
+                      className="admin-remove"
+                      type="button"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        onChange(path, value.filter((_, itemIndex) => itemIndex !== index));
+                      }}
+                    >
+                      {language === "ar" ? "حذف" : "Delete"}
+                    </button>
+                  )}
                 </summary>
                 <div className="admin-nested">
                   <FieldEditor

@@ -32,6 +32,10 @@ export function isImageField(name: string, path: Array<string | number>, value: 
 export function imageGuidance(name: string, path: Array<string | number>) {
   const location = path.join(".");
 
+  if (location.includes("adminAuthBackdrop")) {
+    return "Recommended: at least 1600 x 1000 px. Keep the main subject near the selected crop focus; each photo may be cropped to a tile or a tall vertical slice. Accepted: JPG, PNG, WebP, AVIF, SVG.";
+  }
+
   if (name === "ogImage") {
     return "Recommended: 1200 x 630 px landscape — the preview image shown when the site is shared on social media / chat. Accepted: JPG, PNG, WebP.";
   }
@@ -69,6 +73,10 @@ export function localizedImageGuidance(name: string, path: Array<string | number
   }
 
   const location = path.join(".");
+
+  if (location.includes("adminAuthBackdrop")) {
+    return "المقاس المقترح: 1600 x 1000 بكسل على الأقل. ضع العنصر الرئيسي قرب نقطة الاقتصاص المختارة؛ قد يتم اقتصاص كل صورة كبلاطة أو كشريحة عمودية طويلة. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
+  }
 
   if (name === "ogImage") {
     return "المقاس المقترح: 1200 x 630 بكسل أفقية — صورة المعاينة التي تظهر عند مشاركة الموقع على وسائل التواصل أو التطبيقات. الصيغ المقبولة: JPG, PNG, WebP.";
