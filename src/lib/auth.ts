@@ -1,5 +1,5 @@
 /**
- * Session auth for the CMS (/secretpanel + /studio + admin APIs).
+ * Session auth for the CMS (/admin + /studio + admin APIs).
  *
  * The session cookie is an HMAC-signed token that now carries the signed-in
  * identity AND its authorities, so the edge proxy can authorise a request with

@@ -105,9 +105,9 @@ function getAssistantCopy(locale: ChatLocale, settings?: AssistantSettings): Ass
 
 function isAdminPath(pathname: string | null) {
   return Boolean(
-    pathname === "/secretpanel" ||
+    pathname === "/admin" ||
       pathname === "/studio" ||
-      pathname?.startsWith("/secretpanel/") ||
+      pathname?.startsWith("/admin/") ||
       pathname?.startsWith("/studio/"),
   );
 }

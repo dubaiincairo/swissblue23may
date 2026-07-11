@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     try {
       const token = await createResetToken(await getOwnerResetVersion());
       const origin = new URL(request.url).origin;
-      const link = `${origin}/secretpanel/reset?token=${encodeURIComponent(token)}`;
+      const link = `${origin}/admin/reset?token=${encodeURIComponent(token)}`;
       await sendEmail({
         to: recovery,
         subject: "Swiss Blue admin — password reset link",
