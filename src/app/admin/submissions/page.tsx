@@ -20,9 +20,9 @@ export default async function SubmissionsIndexPage() {
   const { careers, b2b, chatLeads, configured } = await getCounts();
 
   return (
-    <main className="min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8">
+    <main className="admin-secondary-page min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
-        <Link href="/admin" className="text-sm font-semibold text-[var(--primary)]">
+        <Link href="/admin" className="admin-secondary-back text-sm font-semibold text-[var(--primary)]">
           ← Back to content panel
         </Link>
         <h1 className="mt-4 text-3xl font-bold">Form submissions</h1>

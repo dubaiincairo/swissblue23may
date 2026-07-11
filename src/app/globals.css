@@ -4326,6 +4326,14 @@ html[dir="rtl"] .sb-ai-chat-header {
   min-height: 100vh;
 }
 
+.admin-shell[dir="rtl"],
+.admin-shell[dir="rtl"] button,
+.admin-shell[dir="rtl"] input,
+.admin-shell[dir="rtl"] textarea,
+.admin-shell[dir="rtl"] select {
+  font-family: var(--font-arabic-sans), Tahoma, Arial, sans-serif;
+}
+
 .admin-sidebar {
   background: rgba(255, 255, 255, 0.94);
   border-right: 1px solid var(--admin-border);
@@ -5783,12 +5791,52 @@ html[dir="rtl"] .sb-ai-chat-header {
   gap: 6px;
 }
 
+.admin-rephrase-panel-head {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
 .admin-rephrase-panel-label {
   color: var(--admin-muted);
   font-size: 10px;
   font-weight: 850;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.admin-rephrase-panel-close {
+  align-items: center;
+  background: #f2f5fa;
+  border: 1px solid rgba(102, 112, 133, 0.2);
+  border-radius: 6px;
+  color: var(--admin-ink);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 30px;
+  justify-content: center;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  width: 30px;
+}
+
+.admin-rephrase-panel-close svg {
+  fill: none;
+  height: 15px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  width: 15px;
+}
+
+.admin-rephrase-panel-close:hover,
+.admin-rephrase-panel-close:focus-visible {
+  background: white;
+  border-color: rgba(43, 111, 232, 0.36);
+  color: var(--primary);
+  outline: none;
 }
 
 .admin-rephrase-instructions {
@@ -5830,6 +5878,43 @@ html[dir="rtl"] .sb-ai-chat-header {
 .admin-rephrase-apply:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.admin-secondary-back {
+  align-items: center;
+  display: inline-flex;
+  min-height: 44px;
+  padding-inline: 4px;
+}
+
+.admin-modal-close {
+  align-items: center;
+  background: #f2f5fa;
+  border: 1px solid rgba(102, 112, 133, 0.2);
+  border-radius: 6px;
+  color: var(--admin-ink);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.admin-modal-close svg {
+  fill: none;
+  height: 16px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  width: 16px;
+}
+
+.admin-modal-close:hover,
+.admin-modal-close:focus-visible {
+  background: white;
+  border-color: rgba(43, 111, 232, 0.36);
+  color: var(--primary);
+  outline: none;
 }
 
 .admin-field input,
@@ -8366,12 +8451,12 @@ html[dir="rtl"] .sb-ai-chat-header {
     color: var(--admin-ink);
     cursor: pointer;
     display: inline-flex;
-    height: 38px;
+    height: 44px;
     inset-block-start: 18px;
     inset-inline-end: 16px;
     justify-content: center;
     position: absolute;
-    width: 38px;
+    width: 44px;
   }
 
   .admin-mobile-nav-close svg,
@@ -8409,10 +8494,10 @@ html[dir="rtl"] .sb-ai-chat-header {
     color: var(--primary);
     cursor: pointer;
     display: inline-flex;
-    flex: 0 0 40px;
-    height: 40px;
+    flex: 0 0 44px;
+    height: 44px;
     justify-content: center;
-    width: 40px;
+    width: 44px;
   }
 
   .admin-mobile-nav-trigger:hover,
@@ -8524,13 +8609,85 @@ html[dir="rtl"] .sb-ai-chat-header {
   }
 
   .admin-section-nav-row {
-    grid-template-columns: minmax(0, 1fr) 42px;
+    grid-template-columns: minmax(0, 1fr) 50px;
   }
 
   .admin-section-visibility {
-    height: 36px;
+    height: 44px;
     margin-inline-end: 4px;
+    width: 44px;
+  }
+
+  .admin-language button,
+  .admin-search input,
+  .admin-section-list .admin-nav-group-toggle,
+  .admin-preview,
+  .admin-save,
+  .admin-array-head button,
+  .admin-remove,
+  .admin-hide-toggle {
+    min-height: 44px;
+  }
+
+  .admin-menu-trigger {
+    height: 44px;
+    min-height: 44px;
+    min-width: 44px;
+    width: 44px;
+  }
+
+  .admin-rephrase-button,
+  .admin-translate-button {
+    min-height: 36px;
+    padding-block: 7px;
+  }
+
+  .admin-rephrase-caret {
+    min-height: 36px;
+    min-width: 36px;
+    padding-inline: 0;
+  }
+
+  .admin-rephrase-panel-close {
+    height: 36px;
     width: 36px;
+  }
+
+  .admin-rephrase-apply {
+    min-height: 44px;
+  }
+
+  .admin-rich-editor-toolbar {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .admin-rich-editor-toolbar button {
+    height: 36px;
+    width: 36px;
+  }
+
+  .admin-drag-handle {
+    height: 44px;
+    width: 44px;
+  }
+
+  .admin-secondary-page .btn,
+  .admin-modal-close,
+  .admin-user-form input,
+  .admin-user-form select {
+    min-height: 44px;
+  }
+
+  .admin-modal-close {
+    height: 44px;
+    width: 44px;
+  }
+
+  .admin-shell[dir="rtl"] .admin-mobile-section-bar p,
+  .admin-shell[dir="rtl"] .admin-rephrase-panel-label {
+    letter-spacing: 0;
+    text-transform: none;
   }
 
   .admin-rephrase-panel {

@@ -220,9 +220,9 @@ export default function UserManager() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8" dir="ltr">
+    <main className="admin-secondary-page min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8" dir="ltr">
       <div className="mx-auto max-w-5xl">
-        <Link href="/admin" className="text-sm font-semibold text-[var(--primary)]">
+        <Link href="/admin" className="admin-secondary-back text-sm font-semibold text-[var(--primary)]">
           ← Back to content panel
         </Link>
 
@@ -380,12 +380,21 @@ export default function UserManager() {
           <div className="w-full max-w-lg rounded-2xl border border-[var(--border)] bg-white p-6 shadow-lg">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold">{form.id ? "Edit user" : "Add user"}</h2>
-              <button type="button" className="text-sm text-[var(--text-secondary)] hover:underline" onClick={closeForm}>
-                Cancel
+              <button
+                type="button"
+                className="admin-modal-close"
+                onClick={closeForm}
+                aria-label="Close user form"
+                title="Close user form"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m6 6 12 12" />
+                  <path d="m18 6-12 12" />
+                </svg>
               </button>
             </div>
 
-            <div className="mt-5 grid gap-4">
+            <div className="admin-user-form mt-5 grid gap-4">
               <label className="grid gap-1.5">
                 <span className="text-sm font-semibold">Username</span>
                 <input
