@@ -9,28 +9,34 @@ type AdminAuthShellProps = {
 
 const destinationPhotos = [
   {
-    city: "Jeddah",
-    image: "https://images.unsplash.com/photo-1707449908429-e0189297d671?auto=format&fit=crop&w=900&q=82",
+    category: "Red Sea coast",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/King_Fahd%E2%80%99s_Fountain.jpg/1280px-King_Fahd%E2%80%99s_Fountain.jpg",
+    position: "center 72%",
   },
   {
-    city: "Riyadh",
-    image: "https://images.unsplash.com/photo-1663900108404-a05e8bf82cda?auto=format&fit=crop&w=900&q=82",
+    category: "Riyadh skyline",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Riyadh_Skyline.jpg/1280px-Riyadh_Skyline.jpg",
+    position: "center center",
   },
   {
-    city: "AlUla",
-    image: "https://images.unsplash.com/photo-1590959914819-b767b9fe4cfb?auto=format&fit=crop&w=900&q=82",
+    category: "Hegra heritage",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Hegra%2C_Al-Ula%2C_Saudi_Arabia.png/1280px-Hegra%2C_Al-Ula%2C_Saudi_Arabia.png",
+    position: "66% center",
   },
   {
-    city: "Abha",
-    image: "https://images.unsplash.com/photo-1660841699513-bd3d3322c17f?auto=format&fit=crop&w=900&q=82",
+    category: "Asir highlands",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Sarawat_Mountains%2C_Asir_Region%2C_Saudi_Arabia_%282%29.jpg/1280px-Sarawat_Mountains%2C_Asir_Region%2C_Saudi_Arabia_%282%29.jpg",
+    position: "center 72%",
   },
   {
-    city: "Dammam",
-    image: "https://images.unsplash.com/photo-1578895101408-1a36b834405b?auto=format&fit=crop&w=900&q=82",
+    category: "Empty Quarter reserve",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Uruq_Bani_Ma%27arid_Reserve%2C_Saudi_Arabia_%282025%29.jpg/1280px-Uruq_Bani_Ma%27arid_Reserve%2C_Saudi_Arabia_%282025%29.jpg",
+    position: "center center",
   },
   {
-    city: "Madinah",
-    image: "https://images.unsplash.com/photo-1572358899655-f63ece97bfa5?auto=format&fit=crop&w=900&q=82",
+    category: "Historic Jeddah",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Old_Jeddah_%28Al_Balad%29%2C_Saudi_Arabia_in_November_2022.jpg/1280px-Old_Jeddah_%28Al_Balad%29%2C_Saudi_Arabia_in_November_2022.jpg",
+    position: "center center",
   },
 ];
 
@@ -39,11 +45,15 @@ export default function AdminAuthShell({ title, description, children }: AdminAu
     <main className="admin-auth-shell" dir="ltr">
       <div className="admin-auth-mosaic" aria-hidden="true">
         {destinationPhotos.map((photo) => (
-          <span
-            className="admin-auth-photo"
-            key={photo.city}
-            style={{ backgroundImage: `url(${photo.image})` }}
-          />
+          <span className="admin-auth-photo" key={photo.category}>
+            <Image
+              alt=""
+              fill
+              sizes="(max-width: 700px) 50vw, 34vw"
+              src={photo.image}
+              style={{ objectFit: "cover", objectPosition: photo.position }}
+            />
+          </span>
         ))}
       </div>
       <div className="admin-auth-shade" aria-hidden="true" />

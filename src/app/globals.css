@@ -4061,41 +4061,38 @@ html[dir="rtl"] .sb-ai-chat-header {
 }
 
 .admin-auth-mosaic {
+  background: #092656;
   display: grid;
-  gap: 7px;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  inset: -26px;
+  gap: 6px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  inset: 0;
+  padding: 6px;
   position: absolute;
-  transform: rotate(-1.4deg) scale(1.06);
 }
 
 .admin-auth-photo {
-  background-color: #244b7c;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
 }
 
-.admin-auth-photo:nth-child(1),
-.admin-auth-photo:nth-child(4) {
-  background-position: 50% 50%;
+.admin-auth-photo::after {
+  background: linear-gradient(180deg, rgba(7, 31, 71, 0.02), rgba(7, 31, 71, 0.18));
+  content: "";
+  inset: 0;
+  position: absolute;
+  z-index: 1;
 }
 
-.admin-auth-photo:nth-child(2),
-.admin-auth-photo:nth-child(5) {
-  background-position: 50% 30%;
-}
-
-.admin-auth-photo:nth-child(3),
-.admin-auth-photo:nth-child(6) {
-  background-position: 50% 70%;
+.admin-auth-photo img {
+  filter: saturate(0.88) contrast(1.04);
 }
 
 .admin-auth-shade {
   background:
-    linear-gradient(90deg, rgba(4, 20, 49, 0.86), rgba(7, 31, 71, 0.76) 48%, rgba(5, 21, 52, 0.86)),
-    rgba(7, 31, 71, 0.36);
+    linear-gradient(100deg, rgba(3, 20, 50, 0.72), rgba(7, 35, 82, 0.58) 48%, rgba(3, 21, 53, 0.64)),
+    linear-gradient(180deg, rgba(3, 20, 50, 0.08), rgba(3, 20, 50, 0.28));
   inset: 0;
   position: absolute;
 }
@@ -4111,6 +4108,7 @@ html[dir="rtl"] .sb-ai-chat-header {
   padding: 30px;
   position: relative;
   width: min(100%, 440px);
+  z-index: 1;
 }
 
 .admin-auth-brand {
@@ -4284,10 +4282,10 @@ html[dir="rtl"] .sb-ai-chat-header {
   }
 
   .admin-auth-mosaic {
-    gap: 5px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    inset: -18px;
-    transform: none;
+    gap: 4px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    padding: 4px;
   }
 
   .admin-auth-shade {
