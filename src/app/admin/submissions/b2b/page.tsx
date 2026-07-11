@@ -66,9 +66,9 @@ export default async function B2bSubmissionsPage() {
   const requests = await getRequests();
 
   return (
-    <main className="min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8">
+    <main className="admin-secondary-page min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
-        <Link href="/admin/submissions" className="text-sm font-semibold text-[var(--primary)]">
+        <Link href="/admin/submissions" className="admin-secondary-back text-sm font-semibold text-[var(--primary)]">
           ← All submissions
         </Link>
         <h1 className="mt-4 text-3xl font-bold">Corporate Requests</h1>

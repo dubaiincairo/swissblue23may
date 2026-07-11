@@ -15,6 +15,7 @@ const labels: Record<
     panelHeading: string;
     instructionsHeading: string;
     instructionsPlaceholder: string;
+    close: string;
     apply: string;
   }
 > = {
@@ -28,6 +29,7 @@ const labels: Record<
     instructionsHeading: "تعليمات مخصصة (اختياري)",
     instructionsPlaceholder:
       "مثال: اجعل النص أقصر، ركّز على إطلالة البحر، وأضِف دعوة واضحة للحجز.",
+    close: "إغلاق إعدادات إعادة الصياغة",
     apply: "أعد الصياغة بهذه التعليمات",
   },
   en: {
@@ -40,6 +42,7 @@ const labels: Record<
     instructionsHeading: "Custom instructions (optional)",
     instructionsPlaceholder:
       "e.g. Make it shorter, emphasize the sea view, and add a clear booking call-to-action.",
+    close: "Close rephrase settings",
     apply: "Rephrase with these instructions",
   },
 };
@@ -170,8 +173,22 @@ export function RephraseButton({
       </button>
       {menuOpen ? (
         <div className="admin-rephrase-panel" role="dialog" aria-label={copy.panelHeading}>
-          <div className="admin-rephrase-panel-field">
+          <div className="admin-rephrase-panel-head">
             <span className="admin-rephrase-panel-label">{copy.instructionsHeading}</span>
+            <button
+              type="button"
+              className="admin-rephrase-panel-close"
+              onClick={() => setMenuOpen(false)}
+              aria-label={copy.close}
+              title={copy.close}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 6 12 12" />
+                <path d="m18 6-12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="admin-rephrase-panel-field">
             <textarea
               className="admin-rephrase-instructions"
               value={instructions}

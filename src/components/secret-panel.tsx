@@ -287,6 +287,7 @@ export default function SecretPanel({
     <main
       className={`admin-shell${isLanguageSwitching ? ` is-language-${languageMotion}` : ""}`}
       dir={language === "ar" ? "rtl" : "ltr"}
+      lang={language === "ar" ? "ar" : "en"}
       aria-busy={isLanguageSwitching}
     >
       {mobileNavigationOpen ? (
