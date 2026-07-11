@@ -22,7 +22,7 @@ export default async function SubmissionsIndexPage() {
   return (
     <main className="min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
-        <Link href="/secretpanel" className="text-sm font-semibold text-[var(--primary)]">
+        <Link href="/admin" className="text-sm font-semibold text-[var(--primary)]">
           ← Back to content panel
         </Link>
         <h1 className="mt-4 text-3xl font-bold">Form submissions</h1>
@@ -37,7 +37,7 @@ export default async function SubmissionsIndexPage() {
         ) : (
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Link
-              href="/secretpanel/submissions/careers"
+              href="/admin/submissions/careers"
               className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm transition hover:border-[var(--primary)]"
             >
               <span className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">
@@ -48,7 +48,7 @@ export default async function SubmissionsIndexPage() {
               <p className="mt-1 text-sm text-[var(--text-secondary)]">total received</p>
             </Link>
             <Link
-              href="/secretpanel/submissions/b2b"
+              href="/admin/submissions/b2b"
               className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm transition hover:border-[var(--primary)]"
             >
               <span className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">
@@ -59,7 +59,7 @@ export default async function SubmissionsIndexPage() {
               <p className="mt-1 text-sm text-[var(--text-secondary)]">total received</p>
             </Link>
             <Link
-              href="/secretpanel/submissions/chat-leads"
+              href="/admin/submissions/chat-leads"
               className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm transition hover:border-[var(--primary)]"
             >
               <span className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">

@@ -26,8 +26,8 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
-      { source: "/secretpanel", headers: frameProtection },
-      { source: "/secretpanel/:path*", headers: frameProtection },
+      { source: "/admin", headers: frameProtection },
+      { source: "/admin/:path*", headers: frameProtection },
       { source: "/studio", headers: frameProtection },
       { source: "/studio/:path*", headers: frameProtection },
     ];

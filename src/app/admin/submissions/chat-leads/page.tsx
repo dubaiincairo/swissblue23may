@@ -48,7 +48,7 @@ export default async function ChatLeadsSubmissionsPage() {
   return (
     <main className="min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
-        <Link href="/secretpanel/submissions" className="text-sm font-semibold text-[var(--primary)]">
+        <Link href="/admin/submissions" className="text-sm font-semibold text-[var(--primary)]">
           ← All submissions
         </Link>
         <h1 className="mt-4 text-3xl font-bold">Chat leads</h1>
