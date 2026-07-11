@@ -1,5 +1,12 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import {
+  createDefaultAdminAuthBackdrop,
+  normalizeAdminAuthBackdrop,
+} from "@/lib/admin-auth-backdrop";
 
 type AdminAuthShellProps = {
   title: string;
@@ -7,43 +14,39 @@ type AdminAuthShellProps = {
   children: ReactNode;
 };
 
-const destinationPhotos = [
-  {
-    city: "Jeddah",
-    image: "https://images.unsplash.com/photo-1707449908429-e0189297d671?auto=format&fit=crop&w=900&q=82",
-  },
-  {
-    city: "Riyadh",
-    image: "https://images.unsplash.com/photo-1663900108404-a05e8bf82cda?auto=format&fit=crop&w=900&q=82",
-  },
-  {
-    city: "AlUla",
-    image: "https://images.unsplash.com/photo-1590959914819-b767b9fe4cfb?auto=format&fit=crop&w=900&q=82",
-  },
-  {
-    city: "Abha",
-    image: "https://images.unsplash.com/photo-1660841699513-bd3d3322c17f?auto=format&fit=crop&w=900&q=82",
-  },
-  {
-    city: "Dammam",
-    image: "https://images.unsplash.com/photo-1578895101408-1a36b834405b?auto=format&fit=crop&w=900&q=82",
-  },
-  {
-    city: "Madinah",
-    image: "https://images.unsplash.com/photo-1572358899655-f63ece97bfa5?auto=format&fit=crop&w=900&q=82",
-  },
-];
-
 export default function AdminAuthShell({ title, description, children }: AdminAuthShellProps) {
+  const [backdrop, setBackdrop] = useState(createDefaultAdminAuthBackdrop);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch("/api/admin-auth-backdrop", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { backdrop?: unknown } | null) => {
+        if (active && data?.backdrop) {
+          setBackdrop(normalizeAdminAuthBackdrop(data.backdrop));
+        }
+      })
+      .catch(() => undefined);
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <main className="admin-auth-shell" dir="ltr">
-      <div className="admin-auth-mosaic" aria-hidden="true">
-        {destinationPhotos.map((photo) => (
-          <span
-            className="admin-auth-photo"
-            key={photo.city}
-            style={{ backgroundImage: `url(${photo.image})` }}
-          />
+      <div className={`admin-auth-mosaic${backdrop.layout === "slices" ? " is-slices" : ""}`} aria-hidden="true">
+        {backdrop.photos.map((photo, index) => (
+          <span className="admin-auth-photo" key={`${photo.image}-${index}`}>
+            <Image
+              alt=""
+              fill
+              sizes={backdrop.layout === "slices" ? "(max-width: 700px) 50vw, 17vw" : "(max-width: 700px) 50vw, 34vw"}
+              src={photo.image}
+              style={{ objectFit: "cover", objectPosition: photo.focus }}
+            />
+          </span>
         ))}
       </div>
       <div className="admin-auth-shade" aria-hidden="true" />

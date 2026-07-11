@@ -4061,41 +4061,45 @@ html[dir="rtl"] .sb-ai-chat-header {
 }
 
 .admin-auth-mosaic {
+  background: #092656;
   display: grid;
-  gap: 7px;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  inset: -26px;
+  gap: 6px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  inset: 0;
+  padding: 6px;
   position: absolute;
-  transform: rotate(-1.4deg) scale(1.06);
+}
+
+@media (min-width: 701px) {
+  .admin-auth-mosaic.is-slices {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+  }
 }
 
 .admin-auth-photo {
-  background-color: #244b7c;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
 }
 
-.admin-auth-photo:nth-child(1),
-.admin-auth-photo:nth-child(4) {
-  background-position: 50% 50%;
+.admin-auth-photo::after {
+  background: linear-gradient(180deg, rgba(7, 31, 71, 0.02), rgba(7, 31, 71, 0.18));
+  content: "";
+  inset: 0;
+  position: absolute;
+  z-index: 1;
 }
 
-.admin-auth-photo:nth-child(2),
-.admin-auth-photo:nth-child(5) {
-  background-position: 50% 30%;
-}
-
-.admin-auth-photo:nth-child(3),
-.admin-auth-photo:nth-child(6) {
-  background-position: 50% 70%;
+.admin-auth-photo img {
+  filter: saturate(0.88) contrast(1.04);
 }
 
 .admin-auth-shade {
   background:
-    linear-gradient(90deg, rgba(4, 20, 49, 0.86), rgba(7, 31, 71, 0.76) 48%, rgba(5, 21, 52, 0.86)),
-    rgba(7, 31, 71, 0.36);
+    linear-gradient(100deg, rgba(3, 20, 50, 0.72), rgba(7, 35, 82, 0.58) 48%, rgba(3, 21, 53, 0.64)),
+    linear-gradient(180deg, rgba(3, 20, 50, 0.08), rgba(3, 20, 50, 0.28));
   inset: 0;
   position: absolute;
 }
@@ -4111,6 +4115,7 @@ html[dir="rtl"] .sb-ai-chat-header {
   padding: 30px;
   position: relative;
   width: min(100%, 440px);
+  z-index: 1;
 }
 
 .admin-auth-brand {
@@ -4284,10 +4289,10 @@ html[dir="rtl"] .sb-ai-chat-header {
   }
 
   .admin-auth-mosaic {
-    gap: 5px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    inset: -18px;
-    transform: none;
+    gap: 4px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    padding: 4px;
   }
 
   .admin-auth-shade {
@@ -5262,6 +5267,103 @@ html[dir="rtl"] .sb-ai-chat-header {
   display: grid;
   gap: 7px;
   min-width: 0;
+}
+
+.admin-layout-field {
+  border: 0;
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.admin-layout-field legend {
+  color: #344054;
+  font-size: 13px;
+  font-weight: 850;
+  padding: 0;
+}
+
+.admin-layout-options {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-layout-option {
+  align-items: center;
+  background: white;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  color: var(--admin-ink);
+  cursor: pointer;
+  display: grid;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  gap: 10px;
+  grid-template-columns: 64px minmax(0, 1fr);
+  min-height: 66px;
+  padding: 8px;
+  text-align: start;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease;
+}
+
+.admin-layout-option:hover {
+  border-color: rgba(43, 111, 232, 0.58);
+}
+
+.admin-layout-option:focus-visible {
+  box-shadow: 0 0 0 3px rgba(43, 111, 232, 0.16);
+  outline: none;
+}
+
+.admin-layout-option.is-selected {
+  background: #f4f8ff;
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+  color: #174aab;
+}
+
+.admin-layout-preview {
+  background: #143a7d;
+  border-radius: 4px;
+  display: grid;
+  gap: 2px;
+  height: 42px;
+  overflow: hidden;
+  padding: 2px;
+  width: 64px;
+}
+
+.admin-layout-preview i {
+  background: linear-gradient(135deg, #5f95ed, #d9e7ff);
+  display: block;
+}
+
+.admin-layout-preview i:nth-child(2n) {
+  background: linear-gradient(135deg, #85b4fc, #eaf2ff);
+}
+
+.admin-layout-preview.is-tiles {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.admin-layout-preview.is-slices {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.admin-layout-field small {
+  color: var(--admin-muted, #6b7280);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .admin-seo-pages {

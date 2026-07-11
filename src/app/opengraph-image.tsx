@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { getEditableContent } from "@/lib/editable-content";
 
 export const runtime = "nodejs";
@@ -25,8 +27,13 @@ function heroPhoto(slides: HeroSlide[], fallback: string) {
   );
 }
 
+async function brandMark() {
+  const icon = await readFile(join(process.cwd(), "src", "app", "icon.png"));
+  return `data:image/png;base64,${icon.toString("base64")}`;
+}
+
 export default async function OpenGraphImage() {
-  const { en } = await getEditableContent();
+  const [{ en }, logo] = await Promise.all([getEditableContent(), brandMark()]);
   const hero = en.homepage.hero;
   const image = heroPhoto(en.media.mainHeroSlides, en.media.mainHero);
 
@@ -84,16 +91,20 @@ export default async function OpenGraphImage() {
                   alignItems: "center",
                   background: "#ffffff",
                   borderRadius: 12,
-                  color: "#17498f",
                   display: "flex",
-                  fontSize: 29,
-                  fontWeight: 800,
-                  height: 58,
+                  height: 72,
                   justifyContent: "center",
-                  width: 58,
+                  overflow: "hidden",
+                  width: 72,
                 }}
               >
-                SB
+                <img
+                  alt="Swiss Blue monogram"
+                  height="72"
+                  src={logo}
+                  style={{ height: "100%", objectFit: "contain", width: "100%" }}
+                  width="72"
+                />
               </div>
               <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: 0 }}>SWISS BLUE</span>
             </div>
