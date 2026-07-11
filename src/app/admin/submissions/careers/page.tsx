@@ -53,7 +53,7 @@ function Field({ label, value }: { label: string; value?: string }) {
   return (
     <div>
       <dt className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">{label}</dt>
-      <dd className="mt-1 text-sm">{value}</dd>
+      <dd className="mt-1 break-words text-sm">{value}</dd>
     </div>
   );
 }
@@ -112,7 +112,7 @@ export default async function CareersSubmissionsPage() {
                     <p className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">
                       Message
                     </p>
-                    <p className="mt-1 whitespace-pre-line text-sm">{app.message}</p>
+                    <p className="mt-1 whitespace-pre-line break-words text-sm">{app.message}</p>
                   </div>
                 ) : null}
 

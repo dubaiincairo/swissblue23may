@@ -265,8 +265,8 @@ export default function UserManager() {
         ) : null}
 
         {/* Users table */}
-        <div className="mt-6 overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-sm">
-          <table className="w-full border-collapse text-left text-sm">
+        <div className="mt-6 overflow-x-auto rounded-2xl border border-[var(--border)] bg-white shadow-sm">
+          <table className="min-w-[720px] w-full border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-[var(--border)] bg-[var(--background-subtle)] text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">
                 <th className="px-4 py-3">User</th>

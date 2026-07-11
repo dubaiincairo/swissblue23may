@@ -1,39 +1,15 @@
-"use client";
-
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import {
-  createDefaultAdminAuthBackdrop,
-  normalizeAdminAuthBackdrop,
-} from "@/lib/admin-auth-backdrop";
+import type { AdminAuthBackdrop } from "@/lib/admin-auth-backdrop";
 
 type AdminAuthShellProps = {
+  backdrop: AdminAuthBackdrop;
   title: string;
   description: string;
   children: ReactNode;
 };
 
-export default function AdminAuthShell({ title, description, children }: AdminAuthShellProps) {
-  const [backdrop, setBackdrop] = useState(createDefaultAdminAuthBackdrop);
-
-  useEffect(() => {
-    let active = true;
-
-    fetch("/api/admin-auth-backdrop", { cache: "no-store" })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: { backdrop?: unknown } | null) => {
-        if (active && data?.backdrop) {
-          setBackdrop(normalizeAdminAuthBackdrop(data.backdrop));
-        }
-      })
-      .catch(() => undefined);
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
+export default function AdminAuthShell({ backdrop, title, description, children }: AdminAuthShellProps) {
   return (
     <main className="admin-auth-shell" dir="ltr">
       <div className={`admin-auth-mosaic${backdrop.layout === "slices" ? " is-slices" : ""}`} aria-hidden="true">
