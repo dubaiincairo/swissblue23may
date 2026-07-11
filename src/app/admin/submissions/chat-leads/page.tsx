@@ -76,18 +76,18 @@ export default async function ChatLeadsSubmissionsPage() {
                 <dl className="mt-5 grid gap-4 sm:grid-cols-2">
                   <div>
                     <dt className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">Contact</dt>
-                    <dd className="mt-1 text-sm">{lead.contact || "—"}</dd>
+                    <dd className="mt-1 break-words text-sm">{lead.contact || "—"}</dd>
                   </div>
                   <div>
                     <dt className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">Route</dt>
-                    <dd className="mt-1 text-sm">{lead.kind === "career" ? "careers@swissblue.sa" : "reservations@swissblue.sa"}</dd>
+                    <dd className="mt-1 break-words text-sm">{lead.kind === "career" ? "careers@swissblue.sa" : "reservations@swissblue.sa"}</dd>
                   </div>
                 </dl>
 
                 {lead.request ? (
                   <div className="mt-4">
                     <p className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">Request</p>
-                    <p className="mt-1 whitespace-pre-line text-sm">{lead.request}</p>
+                    <p className="mt-1 whitespace-pre-line break-words text-sm">{lead.request}</p>
                   </div>
                 ) : null}
 
