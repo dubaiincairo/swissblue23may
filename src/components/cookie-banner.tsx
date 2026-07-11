@@ -10,6 +10,15 @@ type CookieCopy = EditableSiteContent["ar"]["ui"]["cookie"];
 const CONSENT_PENDING = "__pending";
 const CONSENT_UNSET = "__unset";
 
+function isAdminPath(pathname: string | null) {
+  return Boolean(
+    pathname === "/admin" ||
+      pathname === "/studio" ||
+      pathname?.startsWith("/admin/") ||
+      pathname?.startsWith("/studio/"),
+  );
+}
+
 function subscribeToConsent(onStoreChange: () => void) {
   window.addEventListener(CONSENT_EVENT, onStoreChange);
   window.addEventListener("storage", onStoreChange);
@@ -35,6 +44,7 @@ function getServerConsentSnapshot() {
 
 export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: CookieCopy } }) {
   const pathname = usePathname();
+  const isAdmin = isAdminPath(pathname);
   const locale = pathname?.startsWith("/en") ? "en" : "ar";
   const t = copy[locale];
   const policyHref = locale === "en" ? "/en/policy" : "/policy";
@@ -44,7 +54,7 @@ export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: Coo
     getServerConsentSnapshot,
   );
   const [dismissedInMemory, setDismissedInMemory] = useState(false);
-  const visible = !dismissedInMemory && consent === CONSENT_UNSET;
+  const visible = !isAdmin && !dismissedInMemory && consent === CONSENT_UNSET;
 
   function dismiss(value: "accepted" | "declined") {
     try {
