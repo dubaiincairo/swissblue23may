@@ -412,7 +412,7 @@ export default function SecretPanel({
                       <a
                         role="menuitem"
                         className="admin-menu-item"
-                        href="/secretpanel/submissions"
+                        href="/admin/submissions"
                         onClick={(event) => {
                           if (!confirmLeave()) event.preventDefault();
                           else setMenuOpen(false);
@@ -425,7 +425,7 @@ export default function SecretPanel({
                       <a
                         role="menuitem"
                         className="admin-menu-item"
-                        href="/secretpanel/users"
+                        href="/admin/users"
                         onClick={(event) => {
                           if (!confirmLeave()) event.preventDefault();
                           else setMenuOpen(false);
@@ -455,7 +455,7 @@ export default function SecretPanel({
                           return;
                         }
                         await fetch("/api/auth/logout", { method: "POST" });
-                        window.location.href = "/secretpanel/login";
+                        window.location.href = "/admin/login";
                       }}
                     >
                       {language === "ar" ? "تسجيل الخروج" : "Sign out"}

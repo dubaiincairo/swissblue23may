@@ -29,6 +29,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const DEFAULT_SOCIAL_IMAGE = "/opengraph-image";
+const DEFAULT_FAVICON = "/icon.png";
+
 // Cached per request so generateMetadata, generateViewport, and the layout body
 // all share a single content fetch.
 const loadContent = cache(getEditableContent);
@@ -64,7 +67,15 @@ async function currentSeo() {
   const siteTitle = s.siteTitle || o.siteTitle || "Swiss Blue Hotels";
   const title = sp.title || defaultPageTitle(pageKey, locale, siteTitle);
   const description = sp.description || s.metaDescription || o.metaDescription || "";
-  const ogImage = sp.ogImage || op.ogImage || s.ogImage || o.ogImage || "";
+  const ogImage = sp.ogImage || op.ogImage || s.ogImage || o.ogImage || DEFAULT_SOCIAL_IMAGE;
+  const favicon = s.favicon || o.favicon || DEFAULT_FAVICON;
+  const configuredSiteUrl = s.siteUrl || o.siteUrl || "";
+  const requestHost = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host") || "";
+  const requestProtocol = requestHeaders.get("x-forwarded-proto") || "https";
+  const requestSiteUrl = requestHost ? `${requestProtocol}://${requestHost}` : "";
+  const siteUrl = configuredSiteUrl.includes("swissblue23may.vercel.app")
+    ? requestSiteUrl || configuredSiteUrl
+    : configuredSiteUrl || requestSiteUrl;
 
   return {
     siteTitle: title,
@@ -73,11 +84,11 @@ async function currentSeo() {
     ogTitle: title,
     ogDescription: description || s.ogDescription || o.ogDescription || "",
     ogImage,
-    favicon: s.favicon || o.favicon || "",
+    favicon,
     twitterCard: s.twitterCard || o.twitterCard || "summary_large_image",
     twitterHandle: s.twitterHandle || o.twitterHandle || "",
     themeColor: s.themeColor || o.themeColor || "#2b6fe8",
-    siteUrl: s.siteUrl || o.siteUrl || "",
+    siteUrl,
     pathname,
   };
 }
@@ -120,7 +131,7 @@ export async function generateMetadata(): Promise<Metadata> {
       ...(seo.twitterHandle ? { site: seo.twitterHandle, creator: seo.twitterHandle } : {}),
       ...(seo.ogImage ? { images: [seo.ogImage] } : {}),
     },
-    ...(seo.favicon ? { icons: { icon: seo.favicon, shortcut: seo.favicon, apple: seo.favicon } } : {}),
+    icons: { icon: seo.favicon, shortcut: seo.favicon, apple: seo.favicon },
   };
 }
 

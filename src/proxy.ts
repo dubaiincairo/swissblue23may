@@ -8,17 +8,17 @@ import {
   type AuthorityId,
 } from "@/lib/authorities";
 
-const LOGIN_PATH = "/secretpanel/login";
+const LOGIN_PATH = "/admin/login";
 
 // Public admin pages reachable without a session: login + the password-recovery flow.
-const PUBLIC_ADMIN_PATHS = new Set([LOGIN_PATH, "/secretpanel/forgot", "/secretpanel/reset"]);
+const PUBLIC_ADMIN_PATHS = new Set([LOGIN_PATH, "/admin/forgot", "/admin/reset"]);
 
 /** Admin areas that require a valid session (login + recovery pages are exempt). */
 function needsAuth(pathname: string): boolean {
   if (PUBLIC_ADMIN_PATHS.has(pathname)) return false;
   return (
-    pathname === "/secretpanel" ||
-    pathname.startsWith("/secretpanel/") ||
+    pathname === "/admin" ||
+    pathname.startsWith("/admin/") ||
     pathname === "/studio" ||
     pathname.startsWith("/studio/") ||
     pathname.startsWith("/api/site-content") ||
@@ -27,18 +27,18 @@ function needsAuth(pathname: string): boolean {
 }
 
 /**
- * Authority a path requires. Order matters: the specific /secretpanel/* areas
+ * Authority a path requires. Order matters: the specific /admin/* areas
  * are matched before the generic English-content fallback. "content-any" means
  * any content authority (the content API writes the whole {ar,en} tree).
  */
 function requiredAuthority(pathname: string): AuthorityId | "content-any" | null {
-  if (pathname === "/secretpanel/users" || pathname.startsWith("/secretpanel/users/")) return "users";
+  if (pathname === "/admin/users" || pathname.startsWith("/admin/users/")) return "users";
   if (pathname.startsWith("/api/admin/users")) return "users";
-  if (pathname === "/secretpanel/submissions" || pathname.startsWith("/secretpanel/submissions/")) return "submissions";
+  if (pathname === "/admin/submissions" || pathname.startsWith("/admin/submissions/")) return "submissions";
   if (pathname === "/studio" || pathname.startsWith("/studio/")) return "studio";
   if (pathname.startsWith("/api/site-content")) return "content-any";
-  if (pathname === "/secretpanel/ar" || pathname.startsWith("/secretpanel/ar/")) return "content.ar";
-  if (pathname === "/secretpanel" || pathname.startsWith("/secretpanel/")) return "content.en";
+  if (pathname === "/admin/ar" || pathname.startsWith("/admin/ar/")) return "content.ar";
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return "content.en";
   return null;
 }
 
@@ -51,6 +51,17 @@ function authorized(session: SessionInfo, required: AuthorityId | "content-any")
 export async function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
   const { pathname } = url;
+
+  // /admin is the canonical CMS address. Preserve old deep links while moving
+  // users onto the new route before doing any auth decisions.
+  if (pathname === "/secretpanel" || pathname.startsWith("/secretpanel/")) {
+    url.pathname = pathname.replace(/^\/secretpanel(?=\/|$)/, "/admin");
+    const legacyFrom = url.searchParams.get("from");
+    if (legacyFrom === "/secretpanel" || legacyFrom?.startsWith("/secretpanel/")) {
+      url.searchParams.set("from", legacyFrom.replace(/^\/secretpanel(?=\/|$)/, "/admin"));
+    }
+    return NextResponse.redirect(url, 308);
+  }
 
   // --- Admin authentication + authorization gate ---
   if (needsAuth(pathname)) {
@@ -96,7 +107,7 @@ export async function proxy(request: NextRequest) {
   const isArabicHomeRewrite = pathname === "/" && url.searchParams.get("__sb_locale") === "ar";
   const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
   const isAdmin =
-    pathname.startsWith("/secretpanel") ||
+    pathname.startsWith("/admin") ||
     pathname.startsWith("/studio") ||
     pathname.startsWith("/api");
   const publicPathname =
@@ -141,7 +152,9 @@ export const config = {
     // All page routes (Arabic root tree + /en) so the layout can tag <html lang/dir>.
     // Excludes Next internals, static files, and /api (API auth handled by the entries below).
     "/((?!api/|_next/|.*\\..*).*)",
-    // Admin + content API authentication (unchanged).
+    // Canonical admin + legacy redirect handling, plus content API authentication.
+    "/admin",
+    "/admin/:path*",
     "/secretpanel",
     "/secretpanel/:path*",
     "/studio",

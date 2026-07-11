@@ -59,9 +59,9 @@ export function sessionHas(session: SessionInfo, required: RequiredAuthority): b
  */
 export async function requireAuthority(required: RequiredAuthority): Promise<SessionInfo> {
   const session = await getFreshAdminSession();
-  if (!session) redirect("/secretpanel/login");
+  if (!session) redirect("/admin/login");
   if (!sessionHas(session, required)) {
-    redirect(firstAllowedPath(session.perms) ?? "/secretpanel/login?denied=1");
+    redirect(firstAllowedPath(session.perms) ?? "/admin/login?denied=1");
   }
   return session;
 }

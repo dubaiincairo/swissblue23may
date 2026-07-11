@@ -98,10 +98,10 @@ export function sanitizeAuthorities(input: unknown): AuthorityId[] {
 
 /** Admin areas in priority order — the first one a user can reach is their landing page. */
 export const AREA_PATHS: { authority: AuthorityId; path: string }[] = [
-  { authority: "content.en", path: "/secretpanel" },
-  { authority: "content.ar", path: "/secretpanel/ar" },
-  { authority: "submissions", path: "/secretpanel/submissions" },
-  { authority: "users", path: "/secretpanel/users" },
+  { authority: "content.en", path: "/admin" },
+  { authority: "content.ar", path: "/admin/ar" },
+  { authority: "submissions", path: "/admin/submissions" },
+  { authority: "users", path: "/admin/users" },
   { authority: "studio", path: "/studio" },
 ];
 

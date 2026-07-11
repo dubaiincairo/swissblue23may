@@ -17,7 +17,7 @@ export const siteContentType = defineType({
       fields: [
         defineField({
           name: "managedBySecretPanel",
-          title: "Managed by /secretpanel",
+          title: "Managed by /admin",
           type: "string",
           hidden: true,
         }),

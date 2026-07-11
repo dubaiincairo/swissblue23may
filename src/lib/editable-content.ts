@@ -1402,12 +1402,12 @@ export const defaultSiteContent = {
       keywords: "سويس بلو, فنادق جدة, شقق فندقية, حجز مباشر, أجنحة",
       ogTitle: "",
       ogDescription: "",
-      ogImage: "",
-      favicon: "",
+      ogImage: "/opengraph-image",
+      favicon: "/icon.png",
       twitterCard: "summary_large_image",
       twitterHandle: "",
       themeColor: "#2b6fe8",
-      siteUrl: "https://swissblue23may.vercel.app",
+      siteUrl: "https://swissblue.sa",
       pages: {
         home: { title: "", description: "", ogImage: "" },
         about: { title: "", description: "", ogImage: "" },
@@ -2418,12 +2418,12 @@ export const defaultSiteContent = {
       keywords: "Swiss Blue, Jeddah hotels, serviced apartments, direct booking, suites",
       ogTitle: "",
       ogDescription: "",
-      ogImage: "",
-      favicon: "",
+      ogImage: "/opengraph-image",
+      favicon: "/icon.png",
       twitterCard: "summary_large_image",
       twitterHandle: "",
       themeColor: "#2b6fe8",
-      siteUrl: "https://swissblue23may.vercel.app",
+      siteUrl: "https://swissblue.sa",
       pages: {
         home: { title: "", description: "", ogImage: "" },
         about: { title: "", description: "", ogImage: "" },
@@ -4333,6 +4333,9 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
       seo: {
         ...defaultSiteContent.ar.seo,
         ...(content?.ar?.seo ?? {}),
+        ogImage: content?.ar?.seo?.ogImage || defaultSiteContent.ar.seo.ogImage,
+        favicon: content?.ar?.seo?.favicon || defaultSiteContent.ar.seo.favicon,
+        siteUrl: content?.ar?.seo?.siteUrl || defaultSiteContent.ar.seo.siteUrl,
         pages: {
           ...defaultSiteContent.ar.seo.pages,
           ...(content?.ar?.seo?.pages ?? {}),
@@ -4394,6 +4397,9 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
       seo: {
         ...defaultSiteContent.en.seo,
         ...(content?.en?.seo ?? {}),
+        ogImage: content?.en?.seo?.ogImage || defaultSiteContent.en.seo.ogImage,
+        favicon: content?.en?.seo?.favicon || defaultSiteContent.en.seo.favicon,
+        siteUrl: content?.en?.seo?.siteUrl || defaultSiteContent.en.seo.siteUrl,
         pages: {
           ...defaultSiteContent.en.seo.pages,
           ...(content?.en?.seo?.pages ?? {}),

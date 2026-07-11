@@ -222,7 +222,7 @@ export default function UserManager() {
   return (
     <main className="min-h-screen bg-[var(--background)] px-4 py-10 text-[var(--text-primary)] sm:px-6 lg:px-8" dir="ltr">
       <div className="mx-auto max-w-5xl">
-        <Link href="/secretpanel" className="text-sm font-semibold text-[var(--primary)]">
+        <Link href="/admin" className="text-sm font-semibold text-[var(--primary)]">
           ← Back to content panel
         </Link>
 
