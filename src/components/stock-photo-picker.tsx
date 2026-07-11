@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Language = "ar" | "en";
 
@@ -57,9 +58,33 @@ export function StockPhotoPicker({
   const [error, setError] = useState("");
   const [importingId, setImportingId] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchAbortRef = useRef<AbortController | null>(null);
+  const portalRoot = typeof document === "undefined" ? null : document.body;
+
+  useEffect(() => {
+    const body = document.body;
+    const previousOverflow = body.style.overflow;
+    const previousPaddingRight = body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      const currentPadding = Number.parseFloat(window.getComputedStyle(body).paddingRight) || 0;
+      body.style.paddingRight = `${currentPadding + scrollbarWidth}px`;
+    }
+
+    return () => {
+      body.style.overflow = previousOverflow;
+      body.style.paddingRight = previousPaddingRight;
+    };
+  }, []);
 
   useEffect(() => {
     searchInputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    return () => searchAbortRef.current?.abort();
   }, []);
 
   useEffect(() => {
@@ -75,13 +100,19 @@ export function StockPhotoPicker({
   const runSearch = useCallback(
     async (nextSource: Source, nextQuery: string, nextPage: number) => {
       const trimmed = nextQuery.trim();
+      searchAbortRef.current?.abort();
+
       if (!trimmed) {
+        searchAbortRef.current = null;
         setResults([]);
         setHasMore(false);
         setError("");
+        setLoading(false);
         return;
       }
 
+      const controller = new AbortController();
+      searchAbortRef.current = controller;
       setLoading(true);
       setError("");
 
@@ -91,7 +122,7 @@ export function StockPhotoPicker({
         url.searchParams.set("q", trimmed);
         url.searchParams.set("page", String(nextPage));
 
-        const response = await fetch(url);
+        const response = await fetch(url, { signal: controller.signal });
         const data = (await response.json()) as SearchResponse & { error?: string };
 
         if (!response.ok) {
@@ -101,13 +132,19 @@ export function StockPhotoPicker({
         setResults((prev) => (nextPage === 1 ? data.results : [...prev, ...data.results]));
         setHasMore(data.hasMore);
       } catch (err) {
+        if (controller.signal.aborted) {
+          return;
+        }
         setError(err instanceof Error ? err.message : "Search failed.");
         if (nextPage === 1) {
           setResults([]);
           setHasMore(false);
         }
       } finally {
-        setLoading(false);
+        if (searchAbortRef.current === controller) {
+          searchAbortRef.current = null;
+          setLoading(false);
+        }
       }
     },
     [],
@@ -156,7 +193,7 @@ export function StockPhotoPicker({
     }
   };
 
-  return (
+  const dialog = (
     <div
       className="admin-stock-picker"
       role="dialog"
@@ -281,4 +318,6 @@ export function StockPhotoPicker({
       </div>
     </div>
   );
+
+  return portalRoot ? createPortal(dialog, portalRoot) : null;
 }

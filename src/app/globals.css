@@ -6168,7 +6168,9 @@ html[dir="rtl"] .sb-ai-chat-header {
   background: rgba(8, 18, 35, 0.55);
   display: flex;
   inset: 0;
+  isolation: isolate;
   justify-content: center;
+  overscroll-behavior: contain;
   overflow-y: auto;
   padding: 40px 16px;
   position: fixed;
@@ -6179,6 +6181,7 @@ html[dir="rtl"] .sb-ai-chat-header {
   background: white;
   border-radius: 12px;
   box-shadow: 0 24px 60px rgba(8, 18, 35, 0.35);
+  contain: layout paint;
   display: flex;
   flex-direction: column;
   max-height: calc(100vh - 80px);
@@ -6243,7 +6246,9 @@ html[dir="rtl"] .sb-ai-chat-header {
 
 .admin-stock-body {
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 16px;
+  scrollbar-gutter: stable;
 }
 
 .admin-stock-error {
@@ -6297,7 +6302,10 @@ html[dir="rtl"] .sb-ai-chat-header {
 }
 
 .admin-stock-tile:disabled {
-  cursor: progress;
+  cursor: wait;
+}
+
+.admin-stock-tile[aria-busy="true"] {
   opacity: 0.7;
 }
 
