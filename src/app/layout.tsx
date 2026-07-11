@@ -144,7 +144,7 @@ export default async function RootLayout({
         <NavScrollState />
         <ScrollObserver />
         {children}
-        <AiChatWidget />
+        <AiChatWidget settings={{ ar: ar.chatAssistant, en: en.chatAssistant }} />
         <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />
       </body>
     </html>

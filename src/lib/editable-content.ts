@@ -1287,6 +1287,50 @@ const uiTextEn = {
   },
 };
 
+const chatAssistant = {
+  enabled: true,
+  name: "سارة العتيبي",
+  assistantRole: "مساعدتك الافتراضية في سويس بلو",
+  onlineLabel: "متاحة الآن",
+  avatar: "/images/sarah-al-otaibi-concierge.jpg",
+  welcome: "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
+  placeholder: "اكتب سؤالك...",
+  send: "إرسال",
+  typing: "يكتب الآن...",
+  leadActions: {
+    booking: "طلب حجز",
+    corporate: "طلب شركات",
+    career: "استفسار وظيفي",
+  },
+  leadComplete: {
+    booking: "تم إرسال طلب الحجز إلى فريق الحجوزات. سيتواصل معك قريباً.",
+    corporate: "تم إرسال طلب الشركات إلى فريق الحجوزات. سيتواصل معك قريباً.",
+    career: "تم إرسال طلبك إلى فريق التوظيف. سيتواصل معك قريباً.",
+  },
+};
+
+const chatAssistantEn = {
+  enabled: true,
+  name: "Sarah Al-Otaibi",
+  assistantRole: "Swiss Blue virtual concierge",
+  onlineLabel: "Online now",
+  avatar: "/images/sarah-al-otaibi-concierge.jpg",
+  welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
+  placeholder: "Type your question...",
+  send: "Send",
+  typing: "Thinking...",
+  leadActions: {
+    booking: "Booking help",
+    corporate: "Corporate help",
+    career: "Career help",
+  },
+  leadComplete: {
+    booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
+    corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
+    career: "Your career enquiry has been sent to the careers team. They will contact you shortly.",
+  },
+};
+
 const closingCtas = {
   eyebrow: "احجز مباشرة",
   defaultText: "قارن بين الغرف والأجنحة والشقق الفندقية ضمن تجربة حجز واضحة تليق بضيوف الضيافة الحديثة.",
@@ -1401,6 +1445,7 @@ export const defaultSiteContent = {
       linkedin: "",
     },
     ui: uiText,
+    chatAssistant,
     closingCtas,
     media: {
       arabicLogo: defaultLogoImage,
@@ -2416,6 +2461,7 @@ export const defaultSiteContent = {
       linkedin: "",
     },
     ui: uiTextEn,
+    chatAssistant: chatAssistantEn,
     closingCtas: closingCtasEn,
     media: {
       logo: defaultLogoImage,
@@ -4296,6 +4342,18 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
         ...defaultSiteContent.ar.social,
         ...(content?.ar?.social ?? {}),
       },
+      chatAssistant: {
+        ...defaultSiteContent.ar.chatAssistant,
+        ...(content?.ar?.chatAssistant ?? {}),
+        leadActions: {
+          ...defaultSiteContent.ar.chatAssistant.leadActions,
+          ...(content?.ar?.chatAssistant?.leadActions ?? {}),
+        },
+        leadComplete: {
+          ...defaultSiteContent.ar.chatAssistant.leadComplete,
+          ...(content?.ar?.chatAssistant?.leadComplete ?? {}),
+        },
+      },
       media: {
         ...defaultSiteContent.ar.media,
         ...(content?.ar?.media ?? {}),
@@ -4344,6 +4402,18 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
       social: {
         ...defaultSiteContent.en.social,
         ...(content?.en?.social ?? {}),
+      },
+      chatAssistant: {
+        ...defaultSiteContent.en.chatAssistant,
+        ...(content?.en?.chatAssistant ?? {}),
+        leadActions: {
+          ...defaultSiteContent.en.chatAssistant.leadActions,
+          ...(content?.en?.chatAssistant?.leadActions ?? {}),
+        },
+        leadComplete: {
+          ...defaultSiteContent.en.chatAssistant.leadComplete,
+          ...(content?.en?.chatAssistant?.leadComplete ?? {}),
+        },
       },
       media: {
         ...defaultSiteContent.en.media,

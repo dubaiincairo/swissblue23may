@@ -18,6 +18,7 @@ export function isImageField(name: string, path: Array<string | number>, value: 
     "jazan",
     "ogImage",
     "favicon",
+    "avatar",
   ]);
   const isGalleryImage = path.some((segment) => segment === "gallery") && name === "image";
   const isHeroSlideSource = path.some((segment) => segment === "mainHeroSlides") && name === "source";
@@ -37,6 +38,10 @@ export function imageGuidance(name: string, path: Array<string | number>) {
 
   if (name === "favicon") {
     return "Recommended: square PNG or SVG, 512 x 512 px — the small icon in the browser tab. Accepted: PNG, SVG.";
+  }
+
+  if (name === "avatar") {
+    return "Recommended: square portrait, 800 x 800 px. The image is displayed as the chat assistant avatar. Accepted: JPG, PNG, WebP, AVIF.";
   }
 
   if (name === "logo" || name === "arabicLogo") {
@@ -71,6 +76,10 @@ export function localizedImageGuidance(name: string, path: Array<string | number
 
   if (name === "favicon") {
     return "المقاس المقترح: مربعة PNG أو SVG بحجم 512 x 512 بكسل — الأيقونة الصغيرة في تبويب المتصفح. الصيغ المقبولة: PNG, SVG.";
+  }
+
+  if (name === "avatar") {
+    return "المقاس المقترح: صورة شخصية مربعة بحجم 800 x 800 بكسل. تظهر الصورة كملف تعريفي لمساعد المحادثة. الصيغ المقبولة: JPG, PNG, WebP, AVIF.";
   }
 
   if (name === "logo" || name === "arabicLogo") {
@@ -198,4 +207,3 @@ export async function removeLogoBackground(file: File) {
   const cleanName = file.name.replace(/\.[^.]+$/, "");
   return new File([blob], `${cleanName}-transparent.png`, { type: "image/png" });
 }
-
