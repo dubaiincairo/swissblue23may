@@ -13,7 +13,95 @@ type ChatMessage = {
   text: string;
 };
 
+type ChatLocale = "ar" | "en";
+
+type AssistantCopy = {
+  enabled: boolean;
+  name: string;
+  assistantRole: string;
+  onlineLabel: string;
+  avatar: string;
+  welcome: string;
+  placeholder: string;
+  send: string;
+  typing: string;
+  leadComplete: Record<ChatLeadKind, string>;
+  leadActions: Record<ChatLeadKind, string>;
+};
+
+type AssistantSettings = Partial<Omit<AssistantCopy, "leadActions" | "leadComplete">> & {
+  leadActions?: Partial<Record<ChatLeadKind, string>>;
+  leadComplete?: Partial<Record<ChatLeadKind, string>>;
+};
+
 const SARAH_AVATAR_SRC = "/images/sarah-al-otaibi-concierge.jpg";
+
+const DEFAULT_ASSISTANT_COPY: Record<ChatLocale, AssistantCopy> = {
+  ar: {
+    enabled: true,
+    name: "سارة العتيبي",
+    assistantRole: "مساعدتك الافتراضية في سويس بلو",
+    onlineLabel: "متاحة الآن",
+    avatar: SARAH_AVATAR_SRC,
+    welcome: "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
+    placeholder: "اكتب سؤالك...",
+    send: "إرسال",
+    typing: "يكتب الآن...",
+    leadComplete: {
+      booking: "تم إرسال طلب الحجز إلى فريق الحجوزات. سيتواصل معك قريباً.",
+      corporate: "تم إرسال طلب الشركات إلى فريق الحجوزات. سيتواصل معك قريباً.",
+      career: "تم إرسال طلبك إلى فريق التوظيف. سيتواصل معك قريباً.",
+    },
+    leadActions: {
+      booking: "طلب حجز",
+      corporate: "طلب شركات",
+      career: "استفسار وظيفي",
+    },
+  },
+  en: {
+    enabled: true,
+    name: "Sarah Al-Otaibi",
+    assistantRole: "Swiss Blue virtual concierge",
+    onlineLabel: "Online now",
+    avatar: SARAH_AVATAR_SRC,
+    welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
+    placeholder: "Type your question...",
+    send: "Send",
+    typing: "Thinking...",
+    leadComplete: {
+      booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
+      corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
+      career: "Your career enquiry has been sent to the careers team. They will contact you shortly.",
+    },
+    leadActions: {
+      booking: "Booking help",
+      corporate: "Corporate help",
+      career: "Career help",
+    },
+  },
+};
+
+function nonEmpty(value: string | undefined, fallback: string) {
+  return typeof value === "string" && value.trim() ? value : fallback;
+}
+
+function getAssistantCopy(locale: ChatLocale, settings?: AssistantSettings): AssistantCopy {
+  const fallback = DEFAULT_ASSISTANT_COPY[locale];
+
+  return {
+    enabled: typeof settings?.enabled === "boolean" ? settings.enabled : fallback.enabled,
+    name: nonEmpty(settings?.name, fallback.name),
+    assistantRole: nonEmpty(settings?.assistantRole, fallback.assistantRole),
+    onlineLabel: nonEmpty(settings?.onlineLabel, fallback.onlineLabel),
+    avatar: nonEmpty(settings?.avatar, fallback.avatar),
+    welcome: nonEmpty(settings?.welcome, fallback.welcome),
+    placeholder: nonEmpty(settings?.placeholder, fallback.placeholder),
+    send: nonEmpty(settings?.send, fallback.send),
+    typing: nonEmpty(settings?.typing, fallback.typing),
+    leadActions: { ...fallback.leadActions, ...settings?.leadActions },
+    leadComplete: { ...fallback.leadComplete, ...settings?.leadComplete },
+  };
+}
 
 function isAdminPath(pathname: string | null) {
   return Boolean(
@@ -50,9 +138,13 @@ function SendIcon() {
   );
 }
 
-export default function AiChatWidget() {
+export default function AiChatWidget({
+  settings = {},
+}: {
+  settings?: Partial<Record<ChatLocale, AssistantSettings>>;
+}) {
   const pathname = usePathname();
-  const locale = pathname === "/en" || pathname?.startsWith("/en/") ? "en" : "ar";
+  const locale: ChatLocale = pathname === "/en" || pathname?.startsWith("/en/") ? "en" : "ar";
   const isArabic = locale === "ar";
   const [consentResolved, setConsentResolved] = useState(false);
   const [open, setOpen] = useState(false);
@@ -65,52 +157,12 @@ export default function AiChatWidget() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
   const nextId = useRef(1);
-
-  const copy = isArabic
-    ? {
-        title: "سارة العتيبي",
-        role: "مساعدتك الافتراضية في سويس بلو",
-        status: "متاحة الآن",
-        open: "بدء محادثة مع سارة العتيبي",
-        close: "إغلاق محادثة سارة",
-        avatarAlt: "صورة رمزية لسارة، المساعدة الافتراضية",
-        welcome: "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
-        placeholder: "اكتب سؤالك...",
-        send: "إرسال",
-        typing: "يكتب الآن...",
-        leadComplete: {
-          booking: "تم إرسال طلب الحجز إلى فريق الحجوزات. سيتواصل معك قريباً.",
-          corporate: "تم إرسال طلب الشركات إلى فريق الحجوزات. سيتواصل معك قريباً.",
-          career: "تم إرسال طلبك إلى فريق التوظيف. سيتواصل معك قريباً.",
-        },
-        leadActions: {
-          booking: "طلب حجز",
-          corporate: "طلب شركات",
-          career: "استفسار وظيفي",
-        },
-      }
-    : {
-        title: "Sarah Al-Otaibi",
-        role: "Swiss Blue virtual concierge",
-        status: "Online now",
-        open: "Start a chat with Sarah Al-Otaibi",
-        close: "Close Sarah's chat",
-        avatarAlt: "Illustrated portrait of Sarah, the virtual concierge",
-        welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
-        placeholder: "Type your question...",
-        send: "Send",
-        typing: "Thinking...",
-        leadComplete: {
-          booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
-          corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
-          career: "Your career enquiry has been sent to the careers team. They will contact you shortly.",
-        },
-        leadActions: {
-          booking: "Booking help",
-          corporate: "Corporate help",
-          career: "Career help",
-        },
-      };
+  const copy = getAssistantCopy(locale, settings[locale]);
+  const avatarAlt = isArabic
+    ? `صورة رمزية لـ${copy.name}، المساعدة الافتراضية`
+    : `Illustrated portrait of ${copy.name}, the virtual concierge`;
+  const openLabel = isArabic ? `بدء محادثة مع ${copy.name}` : `Start a chat with ${copy.name}`;
+  const closeLabel = isArabic ? `إغلاق محادثة ${copy.name}` : `Close ${copy.name}'s chat`;
 
   useEffect(() => {
     function checkConsent() {
@@ -154,7 +206,8 @@ export default function AiChatWidget() {
   if (
     process.env.NEXT_PUBLIC_AI_CHAT_ENABLED !== "true" ||
     isAdminPath(pathname) ||
-    !consentResolved
+    !consentResolved ||
+    !copy.enabled
   ) {
     return null;
   }
@@ -214,17 +267,17 @@ export default function AiChatWidget() {
       lang={isArabic ? "ar" : "en"}
     >
       {open ? (
-        <section className="sb-ai-chat-panel" role="dialog" aria-label={copy.title}>
+        <section className="sb-ai-chat-panel" role="dialog" aria-label={copy.name}>
           <header className="sb-ai-chat-header">
             <div className="sb-ai-chat-profile">
-              <Image className="sb-ai-chat-avatar" src={SARAH_AVATAR_SRC} alt={copy.avatarAlt} width={48} height={48} />
+              <Image className="sb-ai-chat-avatar" src={copy.avatar} alt={avatarAlt} width={48} height={48} />
               <div className="sb-ai-chat-profile-copy">
-                <strong>{copy.title}</strong>
-                <span>{copy.role}</span>
-                <span className="sb-ai-chat-status"><i aria-hidden="true" />{copy.status}</span>
+                <strong>{copy.name}</strong>
+                <span>{copy.assistantRole}</span>
+                <span className="sb-ai-chat-status"><i aria-hidden="true" />{copy.onlineLabel}</span>
               </div>
             </div>
-            <button type="button" className="sb-ai-chat-icon-button" onClick={close} aria-label={copy.close}>
+            <button type="button" className="sb-ai-chat-icon-button" onClick={close} aria-label={closeLabel}>
               <CloseIcon />
             </button>
           </header>
@@ -239,7 +292,7 @@ export default function AiChatWidget() {
             ) : (
               <>
                 <div className="sb-ai-chat-welcome">
-                  <Image className="sb-ai-chat-welcome-avatar" src={SARAH_AVATAR_SRC} alt="" aria-hidden="true" width={32} height={32} />
+                  <Image className="sb-ai-chat-welcome-avatar" src={copy.avatar} alt="" aria-hidden="true" width={32} height={32} />
                   <p>{copy.welcome}</p>
                 </div>
                 {messages.length === 0 ? (
@@ -282,9 +335,9 @@ export default function AiChatWidget() {
           </form>
         </section>
       ) : null}
-      <button ref={triggerRef} type="button" className="sb-ai-chat-trigger" onClick={() => setOpen(true)} aria-label={copy.open}>
+      <button ref={triggerRef} type="button" className="sb-ai-chat-trigger" onClick={() => setOpen(true)} aria-label={openLabel}>
         <span className="sb-ai-chat-trigger-avatar">
-          <Image src={SARAH_AVATAR_SRC} alt="" aria-hidden="true" width={64} height={64} />
+          <Image src={copy.avatar} alt="" aria-hidden="true" width={64} height={64} />
         </span>
         <span className="sb-ai-chat-trigger-badge"><ChatIcon /></span>
         <span className="sb-ai-chat-trigger-presence" aria-hidden="true" />
