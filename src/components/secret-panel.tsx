@@ -27,6 +27,25 @@ function SectionVisibilityIcon({ hidden }: { hidden: boolean }) {
   );
 }
 
+function AdminNavigationIcon() {
+  return (
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path d="m6 6 12 12" />
+      <path d="m18 6-12 12" />
+    </svg>
+  );
+}
+
 export default function SecretPanel({
   language: initialLanguage = "en",
   perms = [],
@@ -42,6 +61,7 @@ export default function SecretPanel({
   const [status, setStatus] = useState("loading");
   const [statusTone, setStatusTone] = useState<StatusTone>("ready");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false);
   const [languageMotion, setLanguageMotion] = useState<"idle" | "out" | "in">("idle");
   const [pendingLanguage, setPendingLanguage] = useState<Language | null>(null);
   const languageSwitchTimers = useRef<number[]>([]);
@@ -66,6 +86,27 @@ export default function SecretPanel({
       languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
     };
   }, []);
+
+  useEffect(() => {
+    if (!mobileNavigationOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileNavigationOpen(false);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [mobileNavigationOpen]);
 
   // Warn before a hard browser navigation / tab close while edits are unsaved.
   useEffect(() => {
@@ -209,6 +250,7 @@ export default function SecretPanel({
     languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
     languageSwitchTimers.current = [];
     setMenuOpen(false);
+    setMobileNavigationOpen(false);
     setPendingLanguage(nextLanguage);
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -238,14 +280,35 @@ export default function SecretPanel({
   const canManageUsers = hasAuthority(perms, "users");
   const canSwitchPanel = hasAuthority(perms, language === "ar" ? "content.en" : "content.ar");
   const isLanguageSwitching = languageMotion !== "idle";
+  const mobileNavigationLabel = language === "ar" ? "فتح أقسام لوحة الإدارة" : "Open CMS sections";
+  const mobileNavigationCloseLabel = language === "ar" ? "إغلاق أقسام لوحة الإدارة" : "Close CMS sections";
 
   return (
     <main
       className={`admin-shell${isLanguageSwitching ? ` is-language-${languageMotion}` : ""}`}
       dir={language === "ar" ? "rtl" : "ltr"}
+      lang={language === "ar" ? "ar" : "en"}
       aria-busy={isLanguageSwitching}
     >
-      <aside className="admin-sidebar">
+      {mobileNavigationOpen ? (
+        <button
+          type="button"
+          className="admin-mobile-nav-backdrop"
+          aria-label={mobileNavigationCloseLabel}
+          onClick={() => setMobileNavigationOpen(false)}
+        />
+      ) : null}
+
+      <aside className={`admin-sidebar${mobileNavigationOpen ? " is-mobile-open" : ""}`}>
+        <button
+          type="button"
+          className="admin-mobile-nav-close"
+          aria-label={mobileNavigationCloseLabel}
+          title={mobileNavigationCloseLabel}
+          onClick={() => setMobileNavigationOpen(false)}
+        >
+          <CloseIcon />
+        </button>
         <div className="admin-brand">
           <span className="admin-brand-mark">SB</span>
           <div>
@@ -299,7 +362,11 @@ export default function SecretPanel({
           />
         </label>
 
-        <nav className="admin-section-list" aria-label={language === "ar" ? "أقسام لوحة الإدارة" : "CMS sections"}>
+        <nav
+          id="admin-section-navigation"
+          className="admin-section-list"
+          aria-label={language === "ar" ? "أقسام لوحة الإدارة" : "CMS sections"}
+        >
           {Object.entries(groupedSections).map(([group, sections]) => {
             const localizedGroup = sectionCopy(sections[0], language).group;
             const isSearching = query.trim().length > 0;
@@ -313,7 +380,7 @@ export default function SecretPanel({
                   onClick={() => toggleGroup(group)}
                   aria-expanded={isOpen}
                 >
-                  <span className="admin-nav-group-caret" aria-hidden="true" />
+                  <span className="admin-nav-group-indicator" aria-hidden="true" />
                   <span>{localizedGroup}</span>
                 </button>
                 {isOpen
@@ -345,7 +412,10 @@ export default function SecretPanel({
                           <button
                             className="admin-section-trigger"
                             type="button"
-                            onClick={() => setSelectedId(section.id)}
+                            onClick={() => {
+                              setSelectedId(section.id);
+                              setMobileNavigationOpen(false);
+                            }}
                           >
                             <span>{copy.label}</span>
                             <small>{copy.description}</small>
@@ -373,6 +443,23 @@ export default function SecretPanel({
       </aside>
 
       <section className="admin-workspace">
+        <div className="admin-mobile-section-bar">
+          <button
+            type="button"
+            className="admin-mobile-nav-trigger"
+            aria-label={mobileNavigationLabel}
+            aria-expanded={mobileNavigationOpen}
+            aria-controls="admin-section-navigation"
+            title={mobileNavigationLabel}
+            onClick={() => setMobileNavigationOpen(true)}
+          >
+            <AdminNavigationIcon />
+          </button>
+          <div>
+            <p>{selectedSectionCopy.group}</p>
+            <strong>{selectedSectionCopy.label}</strong>
+          </div>
+        </div>
         <header className="admin-topbar">
           <div>
             <p className="admin-breadcrumb">

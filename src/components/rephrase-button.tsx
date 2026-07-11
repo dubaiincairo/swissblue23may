@@ -1,50 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Language = "ar" | "en";
-
-type ToneOption = {
-  id: string;
-  apiValue: string;
-  label: Record<Language, string>;
-};
-
-const TONE_OPTIONS: ToneOption[] = [
-  {
-    id: "luxury-hospitality",
-    apiValue: "luxury hospitality",
-    label: { en: "Luxury Hospitality", ar: "ضيافة فاخرة" },
-  },
-  {
-    id: "professional",
-    apiValue: "professional",
-    label: { en: "Professional", ar: "احترافي" },
-  },
-  {
-    id: "marketing",
-    apiValue: "marketing copy",
-    label: { en: "Marketing", ar: "تسويقي" },
-  },
-  {
-    id: "friendly",
-    apiValue: "friendly and warm",
-    label: { en: "Friendly", ar: "ودود" },
-  },
-  {
-    id: "simple",
-    apiValue: "simple and clear",
-    label: { en: "Simple", ar: "بسيط" },
-  },
-  {
-    id: "formal-corporate",
-    apiValue: "formal corporate",
-    label: { en: "Formal Corporate", ar: "رسمي مؤسسي" },
-  },
-];
-
-const DEFAULT_TONE_ID = "luxury-hospitality";
-const STORAGE_KEY = "secretpanel:rephrase-tone";
 
 const labels: Record<
   Language,
@@ -53,12 +11,11 @@ const labels: Record<
     loading: string;
     success: string;
     tooltip: string;
-    toneAria: string;
-    toneHeading: string;
     optionsAria: string;
     panelHeading: string;
     instructionsHeading: string;
     instructionsPlaceholder: string;
+    close: string;
     apply: string;
   }
 > = {
@@ -67,13 +24,12 @@ const labels: Record<
     loading: "جارٍ الصياغة…",
     success: "تمت الصياغة",
     tooltip: "إعادة صياغة هذا الحقل عبر Gemini مع الحفاظ على المعنى واللغة.",
-    toneAria: "اختيار النبرة",
-    toneHeading: "النبرة",
     optionsAria: "خيارات إعادة الصياغة",
     panelHeading: "إعدادات إعادة الصياغة",
     instructionsHeading: "تعليمات مخصصة (اختياري)",
     instructionsPlaceholder:
       "مثال: اجعل النص أقصر، ركّز على إطلالة البحر، وأضِف دعوة واضحة للحجز.",
+    close: "إغلاق إعدادات إعادة الصياغة",
     apply: "أعد الصياغة بهذه التعليمات",
   },
   en: {
@@ -81,53 +37,15 @@ const labels: Record<
     loading: "Rephrasing…",
     success: "Rephrased",
     tooltip: "Rephrase this field with Gemini while keeping its meaning and language.",
-    toneAria: "Choose tone",
-    toneHeading: "Tone",
     optionsAria: "Rephrase options",
     panelHeading: "Rephrase settings",
     instructionsHeading: "Custom instructions (optional)",
     instructionsPlaceholder:
       "e.g. Make it shorter, emphasize the sea view, and add a clear booking call-to-action.",
+    close: "Close rephrase settings",
     apply: "Rephrase with these instructions",
   },
 };
-
-const TONE_CHANGE_EVENT = "secretpanel:rephrase-tone-change";
-
-function readStoredToneId(): string {
-  if (typeof window === "undefined") return DEFAULT_TONE_ID;
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored && TONE_OPTIONS.some((option) => option.id === stored)) {
-      return stored;
-    }
-  } catch {
-    // ignore storage errors (private mode, etc.)
-  }
-  return DEFAULT_TONE_ID;
-}
-
-function subscribeToToneChanges(callback: () => void) {
-  function handleStorage(event: StorageEvent) {
-    if (event.key === STORAGE_KEY) callback();
-  }
-  window.addEventListener("storage", handleStorage);
-  window.addEventListener(TONE_CHANGE_EVENT, callback);
-  return () => {
-    window.removeEventListener("storage", handleStorage);
-    window.removeEventListener(TONE_CHANGE_EVENT, callback);
-  };
-}
-
-function persistToneId(next: string) {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(STORAGE_KEY, next);
-  } catch {
-    // ignore storage errors
-  }
-  window.dispatchEvent(new Event(TONE_CHANGE_EVENT));
-}
 
 export function RephraseButton({
   value,
@@ -147,12 +65,6 @@ export function RephraseButton({
   const [menuOpen, setMenuOpen] = useState(false);
   const [instructions, setInstructions] = useState("");
   const wrapperRef = useRef<HTMLSpanElement | null>(null);
-
-  const toneId = useSyncExternalStore(
-    subscribeToToneChanges,
-    readStoredToneId,
-    () => DEFAULT_TONE_ID,
-  );
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -179,7 +91,6 @@ export function RephraseButton({
   }, [menuOpen]);
 
   const copy = labels[language];
-  const activeTone = TONE_OPTIONS.find((option) => option.id === toneId) ?? TONE_OPTIONS[0];
 
   async function rephrase() {
     if (!value.trim() || status === "loading") return;
@@ -194,7 +105,6 @@ export function RephraseButton({
         body: JSON.stringify({
           text: value,
           language,
-          tone: activeTone.apiValue,
           isHtml,
           instructions: instructions.trim(),
         }),
@@ -232,7 +142,7 @@ export function RephraseButton({
         className={`admin-rephrase-button is-${status}`}
         onClick={rephrase}
         disabled={disabled}
-        title={`${copy.tooltip} (${activeTone.label[language]})`}
+        title={copy.tooltip}
         aria-label={copy.tooltip}
       >
         <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -263,8 +173,22 @@ export function RephraseButton({
       </button>
       {menuOpen ? (
         <div className="admin-rephrase-panel" role="dialog" aria-label={copy.panelHeading}>
-          <div className="admin-rephrase-panel-field">
+          <div className="admin-rephrase-panel-head">
             <span className="admin-rephrase-panel-label">{copy.instructionsHeading}</span>
+            <button
+              type="button"
+              className="admin-rephrase-panel-close"
+              onClick={() => setMenuOpen(false)}
+              aria-label={copy.close}
+              title={copy.close}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 6 12 12" />
+                <path d="m18 6-12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="admin-rephrase-panel-field">
             <textarea
               className="admin-rephrase-instructions"
               value={instructions}
@@ -275,23 +199,6 @@ export function RephraseButton({
               maxLength={600}
               autoFocus
             />
-          </div>
-
-          <div className="admin-rephrase-tones" role="group" aria-label={copy.toneHeading}>
-            <span className="admin-rephrase-panel-label">{copy.toneHeading}</span>
-            <div className="admin-rephrase-tone-chips">
-              {TONE_OPTIONS.map((option) => (
-                <button
-                  key={option.id}
-                  type="button"
-                  className={option.id === toneId ? "active" : ""}
-                  aria-pressed={option.id === toneId}
-                  onClick={() => persistToneId(option.id)}
-                >
-                  {option.label[language]}
-                </button>
-              ))}
-            </div>
           </div>
 
           <button
