@@ -34,6 +34,11 @@ import {
 } from "@/lib/content-en";
 import { faqCategories, homepageFaqs, propertyFaqs } from "@/lib/faq-content";
 import { faqCategoriesEn, homepageFaqsEn, propertyFaqsEn } from "@/lib/faq-content-en";
+import {
+  createDefaultAdminAuthBackdrop,
+  normalizeAdminAuthBackdrop,
+  type AdminAuthBackdrop,
+} from "@/lib/admin-auth-backdrop";
 import { apiVersion, dataset, projectId } from "@/sanity/env";
 
 const documentId = "site-content-singleton";
@@ -1454,6 +1459,7 @@ export const defaultSiteContent = {
       jeddah: jeddahImage,
       jazan: jazanImage,
       gallery: galleryImages,
+      adminAuthBackdrop: createDefaultAdminAuthBackdrop(),
     },
     faq: {
       homepage: homepageFaqs,
@@ -2470,6 +2476,7 @@ export const defaultSiteContent = {
       jeddah: jeddahImage,
       jazan: jazanImage,
       gallery: galleryImagesEn,
+      adminAuthBackdrop: createDefaultAdminAuthBackdrop(),
     },
     faq: {
       homepage: homepageFaqsEn,
@@ -3810,6 +3817,69 @@ function syncMediaGallery(
   };
 }
 
+// The admin sign-in artwork is shared infrastructure rather than language
+// content. Keep both locale records aligned so an edit in either panel updates
+// the one sign-in experience visitors and staff actually see.
+function syncAdminAuthBackdrop(
+  arBackdrop: AdminAuthBackdrop,
+  enBackdrop: AdminAuthBackdrop,
+) {
+  const ar = normalizeAdminAuthBackdrop(arBackdrop);
+  const en = normalizeAdminAuthBackdrop(enBackdrop);
+  const defaults = createDefaultAdminAuthBackdrop();
+  const [layoutAr, layoutEn] = sharedImageValue(
+    ar.layout,
+    en.layout,
+    defaults.layout,
+    defaults.layout,
+  );
+
+  return {
+    ar: {
+      layout: layoutAr === "slices" ? "slices" : "tiles",
+      photos: ar.photos.map((photo, index) => {
+        const [image, focus] = [
+          sharedImageValue(
+            photo.image,
+            en.photos[index].image,
+            defaults.photos[index].image,
+            defaults.photos[index].image,
+          )[0],
+          sharedImageValue(
+            photo.focus,
+            en.photos[index].focus,
+            defaults.photos[index].focus,
+            defaults.photos[index].focus,
+          )[0],
+        ];
+
+        return { image, focus };
+      }),
+    },
+    en: {
+      layout: layoutEn === "slices" ? "slices" : "tiles",
+      photos: en.photos.map((photo, index) => {
+        const [image, focus] = [
+          sharedImageValue(
+            ar.photos[index].image,
+            photo.image,
+            defaults.photos[index].image,
+            defaults.photos[index].image,
+          )[1],
+          sharedImageValue(
+            ar.photos[index].focus,
+            photo.focus,
+            defaults.photos[index].focus,
+            defaults.photos[index].focus,
+          )[1],
+        ];
+
+        return { image, focus };
+      }),
+    },
+  } as const;
+}
+
 function syncHeroSlides(
   arSlides: EditableSiteContent["ar"]["media"]["mainHeroSlides"],
   enSlides: EditableSiteContent["en"]["media"]["mainHeroSlides"],
@@ -4020,6 +4090,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     defaultSiteContent.en.media.jazan,
   );
   const syncedGallery = syncMediaGallery(content.ar.media.gallery, content.en.media.gallery);
+  const syncedAdminAuthBackdrop = syncAdminAuthBackdrop(
+    content.ar.media.adminAuthBackdrop,
+    content.en.media.adminAuthBackdrop,
+  );
   const syncedHeroSlides = syncHeroSlides(
     content.ar.media.mainHeroSlides,
     content.en.media.mainHeroSlides,
@@ -4139,6 +4213,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         jeddah: jeddahAr,
         jazan: jazanAr,
         gallery: syncedGallery.ar,
+        adminAuthBackdrop: syncedAdminAuthBackdrop.ar,
       },
       homepage: {
         ...content.ar.homepage,
@@ -4226,6 +4301,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         jeddah: jeddahEn,
         jazan: jazanEn,
         gallery: syncedGallery.en,
+        adminAuthBackdrop: syncedAdminAuthBackdrop.en,
       },
       homepage: {
         ...content.en.homepage,
