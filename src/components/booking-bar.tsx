@@ -3,8 +3,8 @@
 import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/date-picker";
+import { BOOKING_URL } from "@/lib/content";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Property = { slug: string; title: string };
@@ -280,7 +280,6 @@ export default function BookingBar({
   labels: BookingLabels;
 }) {
   const t = labels;
-  const router = useRouter();
 
   const [slug, setSlug] = useState(properties[0]?.slug ?? "");
   const [selectedCheckin, setSelectedCheckin] = useState("");
@@ -315,13 +314,7 @@ export default function BookingBar({
   }, []);
 
   function search() {
-    if (!slug) return;
-    const prefix = locale === "ar" ? "" : "/en";
-    const params = new URLSearchParams();
-    if (checkin) params.set("checkin", checkin);
-    if (checkout) params.set("checkout", checkout);
-    params.set("adults", String(adults));
-    router.push(`${prefix}/hotels/${slug}?${params.toString()}`);
+    window.location.assign(BOOKING_URL);
   }
 
   return (
