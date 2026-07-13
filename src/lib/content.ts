@@ -1,5 +1,5 @@
 export const BOOKING_URL =
-  "https://letsbook.me/booking/yanoljacloudsolution?checkin=2026-05-19&checkout=2026-05-20&adults=2&children=0";
+  "https://letsbook.me/booking/swissbluehera?checkin=2026-07-13&checkout=2026-07-14&adults=2&children=0";
 
 export const heroImage =
   "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-saad-alaiyadhi-131639221-10141408-scaled.jpg";
