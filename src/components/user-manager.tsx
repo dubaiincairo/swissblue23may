@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import {
   AUTHORITIES,
   ROLES,
@@ -434,17 +435,25 @@ export default function UserManager() {
 
               <label className="grid gap-1.5">
                 <span className="text-sm font-semibold">Role</span>
-                <select
-                  className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none focus:border-[var(--primary)]"
-                  value={form.role}
-                  onChange={(e) => changeRole(e.target.value as AdminRole)}
-                >
-                  {ROLES.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.label} — {r.description}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    className="w-full appearance-none rounded-lg border border-[var(--border)] bg-white px-3 py-2 pr-12 text-sm outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-light)]"
+                    value={form.role}
+                    onChange={(e) => changeRole(e.target.value as AdminRole)}
+                  >
+                    {ROLES.map((r) => (
+                      <option key={r.id} value={r.id}>
+                        {r.label} — {r.description}
+                      </option>
+                    ))}
+                  </select>
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-y-1 right-1 flex w-8 items-center justify-center rounded-md bg-[var(--background-subtle)] text-[var(--primary)]"
+                  >
+                    <ChevronDown size={18} strokeWidth={2.5} />
+                  </span>
+                </div>
               </label>
 
               <div className="grid gap-2">

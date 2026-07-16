@@ -95,6 +95,13 @@ export const adminSections: AdminSection[] = [
     path: ["chatAssistant"],
   },
   {
+    id: "chatKnowledge",
+    group: "Site-wide",
+    label: "Chat knowledge base",
+    description: "Approved PDF documents and website links the assistant can search before answering.",
+    path: ["chatKnowledge"],
+  },
+  {
     id: "closingCtas",
     group: "Site-wide",
     label: "Closing CTAs (page bottoms)",
@@ -133,7 +140,7 @@ export const adminSections: AdminSection[] = [
     id: "destinations",
     group: "Homepage",
     label: "Destinations",
-    description: "Jeddah, Riyadh, and Jazan cards and city guidance.",
+    description: "Jeddah and Riyadh cards, plus Jazan coming-soon guidance.",
     path: ["homepage", "destinations"],
   },
   {
@@ -398,6 +405,11 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     label: "مساعد المحادثة",
     description: "إظهار المساعد، ملفه التعريفي وصورته، رسالة الترحيب، الإجراءات السريعة، ورسائل تأكيد الطلبات.",
   },
+  chatKnowledge: {
+    group: "إعدادات الموقع",
+    label: "قاعدة معرفة المحادثة",
+    description: "ملفات PDF والروابط المعتمدة التي يبحث فيها المساعد قبل إعداد الإجابة.",
+  },
   closingCtas: {
     group: "إعدادات الموقع",
     label: "نداءات الإجراء الختامية",
@@ -426,7 +438,7 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   destinations: {
     group: "الصفحة الرئيسية",
     label: "الوجهات",
-    description: "بطاقات جدة والرياض وجازان ومحتوى المدن.",
+    description: "بطاقات جدة والرياض ومحتوى افتتاح جازان قريباً.",
   },
   offers: {
     group: "الصفحة الرئيسية",
@@ -993,20 +1005,29 @@ export function orderedEntries(object: JsonObject) {
 }
 
 export function shouldShowField(path: Array<string | number>, key: string) {
+  const contentPath =
+    path[0] === "ar" || path[0] === "en"
+      ? path.slice(1).map(String)
+      : path.map(String);
+  const hasDedicatedChildSection = adminSections.some((section) =>
+    section.path.length === contentPath.length + 1 &&
+    contentPath.every((segment, index) => section.path[index] === segment) &&
+    section.path.at(-1) === key,
+  );
+
+  // A nested object with its own sidebar destination must not also appear in
+  // its parent editor. Keeping this registry-driven prevents duplicate CMS
+  // destinations as new dedicated sections are added.
+  if (hasDedicatedChildSection) {
+    return false;
+  }
+
   const isRootMediaField =
     path.length === 2 &&
     (path[0] === "ar" || path[0] === "en") &&
     path[1] === "media";
 
   if (isRootMediaField && key === "mainHero") {
-    return false;
-  }
-
-  // The per-page SEO map has its own "Per-page SEO" section, so don't also show
-  // it inline inside the global "Search & social preview" section.
-  const isSeoRoot =
-    path.length === 2 && (path[0] === "ar" || path[0] === "en") && path[1] === "seo";
-  if (isSeoRoot && key === "pages") {
     return false;
   }
 
@@ -1035,5 +1056,6 @@ export const NON_HIDEABLE_SECTIONS = new Set([
   "b2bForm",
   "uiText",
   "chatAssistant",
+  "chatKnowledge",
   "closingCtas",
 ]);

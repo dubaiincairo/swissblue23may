@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { generateEditorialText } from "@/lib/openai-text";
 
 export const dynamic = "force-dynamic";
 
@@ -10,22 +11,14 @@ type TranslateBody = {
 };
 
 const SUPPORTED = new Set(["ar", "en"]);
+const MAX_TEXT_LENGTH = 6_000;
 
 function badRequest(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
 }
 
-function deeplLang(code: string, role: "source" | "target") {
-  if (code === "en") {
-    return role === "target" ? "EN-US" : "EN";
-  }
-  if (code === "ar") return "AR";
-  return code.toUpperCase();
-}
-
 export async function POST(request: Request) {
-  const key = process.env.DEEPL_API_KEY;
-  if (!key) {
+  if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json({ error: "Translation isn't configured." }, { status: 503 });
   }
 
@@ -42,48 +35,32 @@ export async function POST(request: Request) {
   const isHtml = body.isHtml === true;
 
   if (!text.trim()) return badRequest("Text is empty.");
-  if (!SUPPORTED.has(source)) return badRequest("Unsupported source language.");
-  if (!SUPPORTED.has(target)) return badRequest("Unsupported target language.");
+  if (text.length > MAX_TEXT_LENGTH) return badRequest(`Text is too long. Maximum is ${MAX_TEXT_LENGTH} characters.`);
+  if (!SUPPORTED.has(source) || !SUPPORTED.has(target)) return badRequest("Unsupported language.");
   if (source === target) return badRequest("Source and target must differ.");
 
-  // DeepL Free uses api-free; paid uses api. Key ending ":fx" → free tier.
-  const endpoint = key.endsWith(":fx")
-    ? "https://api-free.deepl.com/v2/translate"
-    : "https://api.deepl.com/v2/translate";
+  const sourceLabel = source === "ar" ? "Arabic" : "English";
+  const targetLabel = target === "ar" ? "Arabic" : "English";
+  const formatRule = isHtml
+    ? "Preserve the exact HTML tag structure. Translate only visible text and return HTML only."
+    : "Return plain text only, without Markdown, labels, or quotation marks.";
 
-  const params = new URLSearchParams();
-  params.append("text", text);
-  params.append("source_lang", deeplLang(source, "source"));
-  params.append("target_lang", deeplLang(target, "target"));
-  if (isHtml) {
-    params.append("tag_handling", "html");
+  try {
+    const translated = await generateEditorialText({
+      instructions: [
+        "You are the senior Arabic-English translator for Swiss Blue Hotels in Saudi Arabia.",
+        `Translate faithfully from ${sourceLabel} to natural, professional ${targetLabel}.`,
+        "Use premium hospitality language without adding, omitting, or changing facts.",
+        "Preserve brand names, numbers, prices, URLs, email addresses, phone numbers, placeholders, and formatting tokens.",
+        formatRule,
+      ].join("\n"),
+      input: text,
+      maxOutputTokens: 2_200,
+    });
+
+    return NextResponse.json({ translated });
+  } catch (cause) {
+    const status = typeof cause === "object" && cause && "status" in cause && cause.status === 429 ? 429 : 502;
+    return NextResponse.json({ error: status === 429 ? "Translation limit reached. Try again shortly." : "Translation failed." }, { status });
   }
-
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Authorization: `DeepL-Auth-Key ${key}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: params,
-  });
-
-  if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    // Log upstream diagnostics server-side; don't echo them to the client.
-    console.error(`DeepL translate failed (${response.status}): ${detail.slice(0, 500)}`);
-    return NextResponse.json(
-      { error: `Translation failed (${response.status}).` },
-      { status: response.status === 456 ? 402 : 502 },
-    );
-  }
-
-  const data = (await response.json()) as { translations?: Array<{ text: string }> };
-  const translated = data.translations?.[0]?.text;
-
-  if (typeof translated !== "string") {
-    return NextResponse.json({ error: "Translation returned no text." }, { status: 502 });
-  }
-
-  return NextResponse.json({ translated });
 }
