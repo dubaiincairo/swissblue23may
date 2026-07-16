@@ -21,6 +21,9 @@ const frameProtection = [
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["isomorphic-dompurify", "jsdom"],
+  // The desktop preview may open the dev server through either hostname.
+  // Allow both so Next.js can load its development runtime and HMR client.
+  allowedDevOrigins: ["localhost", "127.0.0.1"],
   // Don't advertise the framework/version in responses.
   poweredByHeader: false,
   async headers() {
