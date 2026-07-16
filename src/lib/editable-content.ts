@@ -695,33 +695,50 @@ export function usableLogo(url: string | undefined | null): string {
 const galleryImages = [
   {
     image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1500&q=82",
-    title: "استقبال بروح الضيافة",
+    title: "صورة ضيافة 1",
   },
   {
     image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=82",
-    title: "راحة فندقية داخل المدينة",
+    title: "صورة ضيافة 2",
   },
   {
     image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=82",
-    title: "غرف وأجنحة هادئة",
+    title: "صورة ضيافة 3",
   },
   {
     image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=82",
-    title: "إقامات بطابع الشقق",
+    title: "صورة ضيافة 4",
   },
   {
     image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=82",
-    title: "مساحات طعام واستراحة",
+    title: "صورة ضيافة 5",
   },
 ];
 
 const galleryImagesEn = [
-  { ...galleryImages[0], title: "Resort-style arrival" },
-  { ...galleryImages[1], title: "City hotel comfort" },
-  { ...galleryImages[2], title: "Quiet rooms and suites" },
-  { ...galleryImages[3], title: "Apartment-style stays" },
-  { ...galleryImages[4], title: "Dining and lounge spaces" },
+  { ...galleryImages[0], title: "Hospitality photo 1" },
+  { ...galleryImages[1], title: "Hospitality photo 2" },
+  { ...galleryImages[2], title: "Hospitality photo 3" },
+  { ...galleryImages[3], title: "Hospitality photo 4" },
+  { ...galleryImages[4], title: "Hospitality photo 5" },
 ];
+
+const legacyGalleryTitles = {
+  ar: [
+    "استقبال بروح الضيافة",
+    "راحة فندقية داخل المدينة",
+    "غرف وأجنحة هادئة",
+    "إقامات بطابع الشقق",
+    "مساحات طعام واستراحة",
+  ],
+  en: [
+    "Resort-style arrival",
+    "City hotel comfort",
+    "Quiet rooms and suites",
+    "Apartment-style stays",
+    "Dining and lounge spaces",
+  ],
+} as const;
 
 const heroSlides = [
   {
@@ -1245,13 +1262,13 @@ const footerMetaEn = {
 const uiText = {
   bookNow: "احجز الآن",
   bookingBar: {
-    property: "الوجهة",
+    property: "المنشأة",
     checkin: "تاريخ الوصول",
     checkout: "تاريخ المغادرة",
     guests: "الضيوف",
     adult: "بالغ",
     adults: "بالغين",
-    search: "تحقق من التوفر",
+    search: "احجز الآن",
     less: "إنقاص عدد البالغين",
     more: "زيادة عدد البالغين",
   },
@@ -1270,13 +1287,13 @@ const uiText = {
 const uiTextEn = {
   bookNow: "Book now",
   bookingBar: {
-    property: "Destination",
+    property: "Property",
     checkin: "Check-in",
     checkout: "Check-out",
     guests: "Guests",
     adult: "adult",
     adults: "adults",
-    search: "Check availability",
+    search: "Book now",
     less: "Fewer adults",
     more: "More adults",
   },
@@ -3658,6 +3675,108 @@ function replaceLegacyValues(current: unknown, legacy: unknown, replacement: unk
   return current;
 }
 
+const availabilityCopyReplacements = new Map<string, string>([
+  ["قيمة أفضل للضيوف الذين يحتاجون إلى قاعدة إقامة موثوقة لفترة طويلة في جدة أو جازان أو الرياض.", "قيمة أفضل للضيوف الذين يحتاجون إلى قاعدة إقامة موثوقة لفترة طويلة في جدة أو الرياض، مع انضمام جازان قريباً."],
+  ["Better value for guests who need a reliable long-stay base in Jeddah, Jazan, or Riyadh.", "Better value for guests who need a reliable long-stay base in Jeddah or Riyadh, with Jazan joining soon."],
+  ["محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة وجازان والرياض، مصممة للأعمال والعائلات والإقامات الشهرية.", "محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض، مع وجهة جديدة في جازان قريباً."],
+  ["A hospitality portfolio of hotels, apart-hotels, and serviced apartments in Jeddah, Jazan, and Riyadh, designed for business, families, and monthly stays.", "A hospitality portfolio of hotels, apart-hotels, and serviced apartments in Jeddah and Riyadh, with a new Jazan destination coming soon."],
+  ["جدة، الرياض، جازان", "جدة والرياض | جازان قريباً"],
+  ["Jeddah, Riyadh, Jazan", "Jeddah and Riyadh | Jazan coming soon"],
+  ["ست وجهات، ولكل إقامة سبب واضح للاختيار.", "خمس منشآت متاحة، وجازان تنضم قريباً."],
+  ["Six destinations, each with a clear reason to book.", "Five open properties, with Jazan coming soon."],
+  ["اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض وجازان، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة واحدة متّسقة، تُدار كل منشأة فيها وفق المعايير ذاتها في النظافة والسلامة والضيافة.", "اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة متّسقة، فيما تستعد جازان للانضمام إلى المحفظة قريباً."],
+  ["Today the portfolio brings together hotels, serviced apartments, and serviced residences across Jeddah, Riyadh, and Jazan, serving the business guest, the family, and the long-stay resident within one consistent experience, where every property is run to the same standards of cleanliness, safety, and hospitality.", "Today the portfolio brings together hotels and serviced apartments across Jeddah and Riyadh for business, family, and long-stay guests, while Jazan prepares to join the portfolio soon."],
+  ["حضور في مواقع حيوية في جدة والرياض وجازان", "مواقع حيوية في جدة والرياض، مع جازان قريباً"],
+  ["Locations in Jeddah, Jazan, and Riyadh", "Locations in Jeddah and Riyadh, with Jazan coming soon"],
+  ["خمس منشآت في ثلاث مدن.", "أربع منشآت متاحة في مدينتين، وجازان قريباً."],
+  ["Five properties across three cities.", "Four open properties across two cities, with Jazan coming soon."],
+  ["اختر الموقع الأنسب لرحلتك بين جدة والرياض وجازان.", "اختر الموقع الأنسب لرحلتك بين جدة والرياض، وتابع افتتاح جازان قريباً."],
+  ["Choose the location best suited to your trip across Jeddah, Riyadh, and Jazan.", "Choose the location best suited to your trip in Jeddah or Riyadh, and watch for Jazan opening soon."],
+  ["فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.", "فنادق وأجنحة وشقق فندقية في جدة والرياض، مع جازان قريباً، وتجربة حجز واضحة للأفراد والشركات والإقامات الطويلة."],
+  ["Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.", "Hotels, suites, and serviced apartments in Jeddah and Riyadh, with Jazan coming soon and a clear booking journey for individual, corporate, and long-stay guests."],
+  ["جازان", "جازان - قريباً"],
+  ["Jazan", "Jazan - coming soon"],
+  ["حلول إقامة طويلة في جدة وجازان والرياض، مناسبة للموظفين والانتقالات وضيوف الشركات.", "حلول إقامة طويلة في جدة والرياض، مناسبة للموظفين والانتقالات وضيوف الشركات، مع جازان قريباً."],
+  ["Long-stay solutions in Jeddah, Jazan, and Riyadh, suitable for corporate relocations and monthly assignments.", "Long-stay solutions in Jeddah and Riyadh for corporate relocations and monthly assignments, with Jazan coming soon."],
+  ["محفظة ضيافة واضحة في جدة وجازان والرياض.", "محفظة ضيافة واضحة في جدة والرياض، وجازان قريباً."],
+  ["A clear hospitality portfolio in Jeddah, Jazan, and Riyadh.", "A clear hospitality portfolio in Jeddah and Riyadh, with Jazan coming soon."],
+  ["جدة، الرياض، وجازان ضمن تجربة واحدة.", "جدة والرياض ضمن تجربة واحدة، وجازان قريباً."],
+  ["Jeddah, Riyadh, and Jazan under one brand.", "Jeddah and Riyadh under one brand, with Jazan coming soon."],
+  ["ننمي فرقنا من الداخل. كن جزءاً من ثقافة خدمة متميزة في جدة والرياض وجازان.", "ننمي فرقنا من الداخل في جدة والرياض، ونستعد للتوسع إلى جازان قريباً."],
+  ["We grow our teams from within. Be part of a service-driven culture across Jeddah, Riyadh, and Jazan.", "We grow our teams from within across Jeddah and Riyadh, and we are preparing to expand into Jazan soon."],
+  ["احجز أو عدّل إقامتك عبر فريق واحد يعرف جميع منشآت سويس بلو في جدة وجازان والرياض. مكالمة أو رسالة واتساب واحدة تكفي للوصول إلى الخيار الأنسب.", "احجز أو عدّل إقامتك عبر فريق واحد يعرف جميع منشآت سويس بلو المتاحة في جدة والرياض. مكالمة أو رسالة واتساب واحدة تكفي، وجازان تنضم قريباً."],
+  ["Book or modify your stay through one team that knows every Swiss Blue property in Jeddah, Jazan, and Riyadh. One call or WhatsApp message gets you to the right option faster.", "Book or modify your stay through one team that knows every open Swiss Blue property in Jeddah and Riyadh. One call or WhatsApp gets you to the right option, with Jazan joining soon."],
+  ["تنسيق متعدد المدن بين جدة وجازان والرياض ضمن رحلة واحدة", "تنسيق بين منشآت جدة والرياض ضمن رحلة واحدة"],
+  ["Multi-city coordination across Jeddah, Jazan, and Riyadh", "Multi-property coordination across Jeddah and Riyadh"],
+  ["فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في جميع فنادق وشقق سويس بلو في جدة وجازان والرياض — مكالمة أو رسالة واتساب واحدة تكفي.", "فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في منشآت سويس بلو المتاحة في جدة والرياض، مع جازان قريباً."],
+  ["One team, one number. Plan, book, and modify your stay across every Swiss Blue hotel and apartment in Jeddah, Jazan, and Riyadh — one call or WhatsApp away.", "One team, one number. Plan, book, and modify your stay across open Swiss Blue properties in Jeddah and Riyadh, with Jazan coming soon."],
+  ["خطط رحلات متعددة المنشآت بين جدة وجازان والرياض", "خطط رحلات متعددة المنشآت بين جدة والرياض"],
+  ["Multi-property itineraries across Jeddah, Jazan, and Riyadh", "Multi-property itineraries across Jeddah and Riyadh"],
+  ["إقامة شهرية – جازان", "إقامة شهرية"],
+  ["Monthly stay – Jazan", "Monthly stay"],
+  ["إقامة منفردة – جازان", "إقامة منفردة"],
+  ["Solo traveler – Jazan", "Solo traveler"],
+  ["قيمة ممتازة مقابل المنطقة. الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.", "الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، مع مساحة مريحة وخدمة سريعة عند الحاجة."],
+  ["Great value for the area. The apart-hotel felt like home for a longer stay, and the location is convenient for getting around Jazan.", "The apart-hotel felt like home during a longer stay, with comfortable space and prompt support when needed."],
+]);
+
+function replaceAvailabilityCopy(value: unknown): unknown {
+  if (typeof value === "string") return availabilityCopyReplacements.get(value) ?? value;
+  if (Array.isArray(value)) return value.map(replaceAvailabilityCopy);
+  if (!isRecord(value)) return value;
+
+  return Object.fromEntries(
+    Object.entries(value).map(([key, item]) => [key, replaceAvailabilityCopy(item)]),
+  );
+}
+
+function normalizeAvailabilityContent(content: EditableSiteContent): EditableSiteContent {
+  const normalized = replaceAvailabilityCopy(content) as EditableSiteContent;
+  const normalizeStats = <T extends { value: string; label: string }>(
+    stats: T[],
+    locale: "ar" | "en",
+  ): T[] => stats.map((stat, index) => {
+    if (index === 0 && stat.value === "6") return { ...stat, value: "5" } as T;
+    if (index === 1 && stat.value === "3") return { ...stat, value: "2" } as T;
+    if (index === 2 && (stat.value === "+280" || stat.value === "280+")) {
+      return { ...stat, value: locale === "ar" ? "+227" : "227+" } as T;
+    }
+    return stat;
+  });
+  const normalizeReservationStats = <T extends { value: string; label: string }>(
+    stats: T[],
+    locale: "ar" | "en",
+  ): T[] => stats.map((stat, index) => index === 2 && stat.value === "3"
+    ? { ...stat, value: "2", label: locale === "ar" ? "مدينتان متاحتان، وجازان قريباً" : "Two open cities, with Jazan coming soon" } as T
+    : stat);
+
+  return {
+    ...normalized,
+    ar: {
+      ...normalized.ar,
+      subpages: {
+        ...normalized.ar.subpages,
+        about: { ...normalized.ar.subpages.about, stats: normalizeStats(normalized.ar.subpages.about.stats, "ar") },
+        reservationOfficePage: {
+          ...normalized.ar.subpages.reservationOfficePage,
+          stats: normalizeReservationStats(normalized.ar.subpages.reservationOfficePage.stats, "ar"),
+        },
+      },
+    },
+    en: {
+      ...normalized.en,
+      subpages: {
+        ...normalized.en.subpages,
+        about: { ...normalized.en.subpages.about, stats: normalizeStats(normalized.en.subpages.about.stats, "en") },
+        reservationOfficePage: {
+          ...normalized.en.subpages.reservationOfficePage,
+          stats: normalizeReservationStats(normalized.en.subpages.reservationOfficePage.stats, "en"),
+        },
+      },
+    },
+  };
+}
+
 function normalizeReservationOfficeContent(content: EditableSiteContent): EditableSiteContent {
   const arReservationOfficePage = replaceLegacyValues(
     content.ar.subpages.reservationOfficePage,
@@ -3697,24 +3816,45 @@ function normalizeReservationOfficeContent(content: EditableSiteContent): Editab
 }
 
 function normalizeClientFacingContent(content: EditableSiteContent): EditableSiteContent {
-  const contentWithReservationOffice = normalizeReservationOfficeContent(content);
+  const contentWithReservationOffice = normalizeAvailabilityContent(normalizeReservationOfficeContent(content));
   const requestForm = contentWithReservationOffice.en.subpages.corporateDealsPage.requestForm;
-
-  if (requestForm.eyebrow !== LEGACY_B2B_REQUEST_FORM_EYEBROW_EN) {
-    return contentWithReservationOffice;
-  }
+  const arGallery = contentWithReservationOffice.ar.media.gallery.map((item, index) => ({
+    ...item,
+    title: item.title === legacyGalleryTitles.ar[index]
+      ? galleryImages[index]?.title ?? item.title
+      : item.title,
+  }));
+  const enGallery = contentWithReservationOffice.en.media.gallery.map((item, index) => ({
+    ...item,
+    title: item.title === legacyGalleryTitles.en[index]
+      ? galleryImagesEn[index]?.title ?? item.title
+      : item.title,
+  }));
 
   return {
     ...contentWithReservationOffice,
+    ar: {
+      ...contentWithReservationOffice.ar,
+      media: {
+        ...contentWithReservationOffice.ar.media,
+        gallery: arGallery,
+      },
+    },
     en: {
       ...contentWithReservationOffice.en,
+      media: {
+        ...contentWithReservationOffice.en.media,
+        gallery: enGallery,
+      },
       subpages: {
         ...contentWithReservationOffice.en.subpages,
         corporateDealsPage: {
           ...contentWithReservationOffice.en.subpages.corporateDealsPage,
           requestForm: {
             ...requestForm,
-            eyebrow: B2B_REQUEST_FORM_EYEBROW_EN,
+            eyebrow: requestForm.eyebrow === LEGACY_B2B_REQUEST_FORM_EYEBROW_EN
+              ? B2B_REQUEST_FORM_EYEBROW_EN
+              : requestForm.eyebrow,
           },
         },
       },

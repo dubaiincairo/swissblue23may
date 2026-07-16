@@ -3,6 +3,7 @@ import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
+import { comingSoonLabel, isComingSoonProperty } from "@/lib/property-availability";
 
 export const dynamic = "force-dynamic";
 
@@ -59,9 +60,12 @@ export default async function ServicedApartmentsPageEn() {
           <p>{rich(content.propertiesIntro.text)}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {content.properties.map((property, index) => (
+          {content.properties.map((property, index) => {
+            const comingSoon = isComingSoonProperty(property.slug);
+
+            return (
             <article
-              className="content-card reveal-slide-up"
+              className={`content-card reveal-slide-up${comingSoon ? " is-coming-soon" : ""}`}
               key={property.slug}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
@@ -70,14 +74,19 @@ export default async function ServicedApartmentsPageEn() {
                 <span>{rich(property.units)}</span>
               </div>
               <h3 className="mt-3 text-xl font-bold">{rich(property.name)}</h3>
-              <Link
-                className="mt-5 inline-flex text-sm font-bold text-[var(--primary)]"
-                href={`/en/hotels/${property.slug}`}
-              >
-                View details
-              </Link>
+              {comingSoon ? (
+                <span className="property-coming-soon-note">{comingSoonLabel("en")}; reservations are not open yet</span>
+              ) : (
+                <Link
+                  className="mt-5 inline-flex text-sm font-bold text-[var(--primary)]"
+                  href={`/en/hotels/${property.slug}`}
+                >
+                  View details
+                </Link>
+              )}
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
 

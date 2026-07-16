@@ -6,6 +6,7 @@ import type { AdminSection, JsonObject, JsonValue, Language, StatusTone } from "
 import { adminSections, languages, NON_HIDEABLE_SECTIONS, sectionCopy } from "./admin/sections";
 import { getAtPath, reorderAtPath, sectionMeta, setAtPath, statusLabel } from "./admin/content-path";
 import { FieldEditor } from "./admin/field-editors";
+import { ChatKnowledgeManager } from "./admin/chat-knowledge-manager";
 import { hasAuthority } from "@/lib/authorities";
 
 const LANGUAGE_FADE_OUT_MS = 120;
@@ -153,13 +154,7 @@ export default function SecretPanel({
 
   function toggleGroup(group: string) {
     setOpenGroups((current) => {
-      const next = new Set(current);
-      if (next.has(group)) {
-        next.delete(group);
-      } else {
-        next.add(group);
-      }
-      return next;
+      return current.has(group) ? new Set() : new Set([group]);
     });
   }
 
@@ -279,6 +274,7 @@ export default function SecretPanel({
   const canSeeSubmissions = hasAuthority(perms, "submissions");
   const canManageUsers = hasAuthority(perms, "users");
   const canSwitchPanel = hasAuthority(perms, language === "ar" ? "content.en" : "content.ar");
+  const isChatKnowledge = selectedSection.id === "chatKnowledge";
   const isLanguageSwitching = languageMotion !== "idle";
   const mobileNavigationLabel = language === "ar" ? "فتح أقسام لوحة الإدارة" : "Open CMS sections";
   const mobileNavigationCloseLabel = language === "ar" ? "إغلاق أقسام لوحة الإدارة" : "Close CMS sections";
@@ -471,7 +467,7 @@ export default function SecretPanel({
 
           <div className="admin-actions">
             <span className={`admin-status ${statusTone}`}>{statusLabel(status, language)}</span>
-            <button className="admin-save" type="button" onClick={save} disabled={!canEditThisLanguage}>
+            <button className="admin-save" type="button" onClick={save} disabled={!canEditThisLanguage || isChatKnowledge}>
               {language === "ar" ? "حفظ التغييرات" : "Save changes"}
             </button>
             <div className="admin-menu">
@@ -524,6 +520,17 @@ export default function SecretPanel({
                     <a
                       role="menuitem"
                       className="admin-menu-item"
+                      href={language === "ar" ? "/admin/reservation-layouts?locale=ar" : "/admin/reservation-layouts"}
+                      onClick={(event) => {
+                        if (!confirmLeave()) event.preventDefault();
+                        else setMenuOpen(false);
+                      }}
+                    >
+                      {language === "ar" ? "مختبر تخطيطات الحجز" : "Reservation layout lab"}
+                    </a>
+                    <a
+                      role="menuitem"
+                      className="admin-menu-item"
                       href={languages[language].previewHref}
                       target="_blank"
                       rel="noreferrer"
@@ -563,7 +570,7 @@ export default function SecretPanel({
                 </p>
                 <h3>{selectedSectionCopy.label}</h3>
               </div>
-              <span>{sectionMeta(sectionValue, language)}</span>
+              <span>{isChatKnowledge ? (language === "ar" ? "مصادر مشتركة" : "Shared sources") : sectionMeta(sectionValue, language)}</span>
             </div>
 
             {selectedHidden ? (
@@ -574,7 +581,9 @@ export default function SecretPanel({
               </div>
             ) : null}
 
-            {sectionValue ? (
+            {isChatKnowledge ? (
+              <ChatKnowledgeManager language={language} />
+            ) : sectionValue ? (
               <FieldEditor
                 name={selectedSection.id}
                 value={sectionValue}

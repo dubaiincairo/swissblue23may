@@ -4,6 +4,7 @@ import { FeatureChipGrid } from "@/components/feature-chip";
 import { PhotoStrip } from "@/components/photo-strip";
 import { rich } from "@/components/rich-text";
 import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
+import { comingSoonLabel, isComingSoonCity } from "@/lib/property-availability";
 
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,7 @@ export default async function DestinationsPageEn() {
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10">
           {destinations.map((destination, index) => {
+            const comingSoon = isComingSoonCity(destination.title);
             const photos = destination.photos ?? [destination.image];
             const stats = destination.stats ?? [];
             const stripImages = photos.map((src, idx) => ({
@@ -35,14 +37,16 @@ export default async function DestinationsPageEn() {
 
             return (
               <article
-                className="destination-card reveal-slide-up"
+                className={`destination-card reveal-slide-up${comingSoon ? " is-coming-soon" : ""}`}
                 key={destination.title}
                 style={{ "--delay": `${index * 120}ms` } as React.CSSProperties}
               >
                 <div className="destination-card-head">
                   <figure className="destination-card-cover">
-                    {destination.badge ? (
-                      <span className="destination-card-badge">{rich(destination.badge)}</span>
+                    {comingSoon || destination.badge ? (
+                      <span className="destination-card-badge">
+                        {comingSoon ? comingSoonLabel("en") : rich(destination.badge)}
+                      </span>
                     ) : null}
                     <Image
                       className="object-cover"
@@ -55,6 +59,7 @@ export default async function DestinationsPageEn() {
                   <div className="destination-card-copy">
                     <span className="eyebrow">Swiss Blue destination</span>
                     <h2>{rich(destination.title)}</h2>
+                    {comingSoon ? <span className="property-coming-soon-note">The property is being prepared; its opening date will be announced</span> : null}
                     <p>{rich(destination.text)}</p>
                     {stats.length ? (
                       <div className="destination-card-stats">

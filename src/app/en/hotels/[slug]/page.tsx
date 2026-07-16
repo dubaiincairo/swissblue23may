@@ -9,11 +9,14 @@ import SocialShare from "@/components/social-share";
 import { hotelsEn } from "@/lib/content-en";
 import { propertyGallerySupplement } from "@/lib/content";
 import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
+import { isComingSoonProperty } from "@/lib/property-availability";
 
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  return hotelsEn.map((hotel) => ({ slug: hotel.slug }));
+  return hotelsEn
+    .filter((hotel) => !isComingSoonProperty(hotel.slug))
+    .map((hotel) => ({ slug: hotel.slug }));
 }
 
 export default async function HotelDetailPageEn({
@@ -22,6 +25,10 @@ export default async function HotelDetailPageEn({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  if (isComingSoonProperty(slug)) {
+    notFound();
+  }
+
   const { en, hiddenSections } = await getEditableContent();
   const hotel = en.homepage.properties.items.find((item) => item.slug === slug);
   const classification = en.subpages.roomsSuites.classifications.find(

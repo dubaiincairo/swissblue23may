@@ -3,6 +3,7 @@ import Link from "next/link";
 import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
+import { comingSoonLabel, isComingSoonProperty } from "@/lib/property-availability";
 
 export const dynamic = "force-dynamic";
 
@@ -30,9 +31,12 @@ export default async function HotelsPage() {
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {hotels.map((hotel, index) => (
+          {hotels.map((hotel, index) => {
+            const comingSoon = isComingSoonProperty(hotel.slug);
+
+            return (
             <article
-              className="property-card reveal-slide-up"
+              className={`property-card reveal-slide-up${comingSoon ? " is-coming-soon" : ""}`}
               key={hotel.slug}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
@@ -44,6 +48,7 @@ export default async function HotelsPage() {
                   fill
                   sizes="(min-width: 1024px) 33vw, 100vw"
                 />
+                {comingSoon ? <span className="property-status-badge">{comingSoonLabel("ar")}</span> : null}
               </figure>
               <div className="p-5">
                 <div className="flex items-center justify-between gap-4 text-xs font-bold text-[var(--primary)]">
@@ -54,15 +59,20 @@ export default async function HotelsPage() {
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                   {rich(hotel.summary)}
                 </p>
-                <Link
-                  className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
-                  href={`/hotels/${hotel.slug}`}
-                >
-                  عرض التفاصيل
-                </Link>
+                {comingSoon ? (
+                  <span className="property-coming-soon-note">الحجوزات ستتوفر عند الافتتاح</span>
+                ) : (
+                  <Link
+                    className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
+                    href={`/hotels/${hotel.slug}`}
+                  >
+                    عرض التفاصيل
+                  </Link>
+                )}
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
 

@@ -8,11 +8,14 @@ import { CtaBand, PageHero, PageShell } from "@/components/site";
 import SocialShare from "@/components/social-share";
 import { hotels, propertyGallerySupplement } from "@/lib/content";
 import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
+import { isComingSoonProperty } from "@/lib/property-availability";
 
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  return hotels.map((hotel) => ({ slug: hotel.slug }));
+  return hotels
+    .filter((hotel) => !isComingSoonProperty(hotel.slug))
+    .map((hotel) => ({ slug: hotel.slug }));
 }
 
 export default async function HotelDetailPage({
@@ -21,6 +24,10 @@ export default async function HotelDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  if (isComingSoonProperty(slug)) {
+    notFound();
+  }
+
   const { ar, hiddenSections } = await getEditableContent();
   const hotel = ar.homepage.properties.items.find((item) => item.slug === slug);
   const classification = ar.subpages.roomsSuites.classifications.find(
