@@ -6,6 +6,7 @@ import type { AdminSection, JsonObject, JsonValue, Language, StatusTone } from "
 import { adminSections, languages, NON_HIDEABLE_SECTIONS, sectionCopy } from "./admin/sections";
 import { getAtPath, reorderAtPath, sectionMeta, setAtPath, statusLabel } from "./admin/content-path";
 import { FieldEditor } from "./admin/field-editors";
+import { ChatKnowledgeManager } from "./admin/chat-knowledge-manager";
 import { hasAuthority } from "@/lib/authorities";
 
 const LANGUAGE_FADE_OUT_MS = 120;
@@ -49,14 +50,25 @@ function CloseIcon() {
 export default function SecretPanel({
   language: initialLanguage = "en",
   perms = [],
+  initialSection = "hero",
+  initialProperty,
 }: {
   language?: Language;
   perms?: string[];
+  initialSection?: string;
+  initialProperty?: string;
 }) {
+  const validInitialSection = adminSections.some((section) => section.id === initialSection)
+    ? initialSection
+    : "hero";
+  const validInitialProperty = initialProperty && /^[a-z0-9-]+$/.test(initialProperty)
+    ? initialProperty
+    : undefined;
   const [language, setLanguage] = useState<Language>(initialLanguage);
   const [content, setContent] = useState<JsonObject | null>(null);
   const [hiddenSections, setHiddenSections] = useState<string[]>([]);
-  const [selectedId, setSelectedId] = useState("hero");
+  const [selectedId, setSelectedId] = useState(validInitialSection);
+  const [directProperty, setDirectProperty] = useState(validInitialProperty);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("loading");
   const [statusTone, setStatusTone] = useState<StatusTone>("ready");
@@ -86,6 +98,21 @@ export default function SecretPanel({
       languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
     };
   }, []);
+
+  useEffect(() => {
+    if (!content || selectedId !== "properties" || !directProperty) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      document.getElementById(`admin-property-${directProperty}`)?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "start",
+      });
+    }, 120);
+
+    return () => window.clearTimeout(timer);
+  }, [content, directProperty, selectedId]);
 
   useEffect(() => {
     if (!mobileNavigationOpen) {
@@ -153,14 +180,22 @@ export default function SecretPanel({
 
   function toggleGroup(group: string) {
     setOpenGroups((current) => {
-      const next = new Set(current);
-      if (next.has(group)) {
-        next.delete(group);
-      } else {
-        next.add(group);
-      }
-      return next;
+      return current.has(group) ? new Set() : new Set([group]);
     });
+  }
+
+  function selectSection(id: string) {
+    setSelectedId(id);
+    if (id !== "properties") {
+      setDirectProperty(undefined);
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("section", id);
+    if (id !== "properties") {
+      url.searchParams.delete("property");
+    }
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   }
 
   function updateValue(path: Array<string | number>, value: JsonValue) {
@@ -279,6 +314,7 @@ export default function SecretPanel({
   const canSeeSubmissions = hasAuthority(perms, "submissions");
   const canManageUsers = hasAuthority(perms, "users");
   const canSwitchPanel = hasAuthority(perms, language === "ar" ? "content.en" : "content.ar");
+  const isChatKnowledge = selectedSection.id === "chatKnowledge";
   const isLanguageSwitching = languageMotion !== "idle";
   const mobileNavigationLabel = language === "ar" ? "فتح أقسام لوحة الإدارة" : "Open CMS sections";
   const mobileNavigationCloseLabel = language === "ar" ? "إغلاق أقسام لوحة الإدارة" : "Close CMS sections";
@@ -413,7 +449,7 @@ export default function SecretPanel({
                             className="admin-section-trigger"
                             type="button"
                             onClick={() => {
-                              setSelectedId(section.id);
+                              selectSection(section.id);
                               setMobileNavigationOpen(false);
                             }}
                           >
@@ -471,7 +507,7 @@ export default function SecretPanel({
 
           <div className="admin-actions">
             <span className={`admin-status ${statusTone}`}>{statusLabel(status, language)}</span>
-            <button className="admin-save" type="button" onClick={save} disabled={!canEditThisLanguage}>
+            <button className="admin-save" type="button" onClick={save} disabled={!canEditThisLanguage || isChatKnowledge}>
               {language === "ar" ? "حفظ التغييرات" : "Save changes"}
             </button>
             <div className="admin-menu">
@@ -524,6 +560,17 @@ export default function SecretPanel({
                     <a
                       role="menuitem"
                       className="admin-menu-item"
+                      href={language === "ar" ? "/admin/reservation-layouts?locale=ar" : "/admin/reservation-layouts"}
+                      onClick={(event) => {
+                        if (!confirmLeave()) event.preventDefault();
+                        else setMenuOpen(false);
+                      }}
+                    >
+                      {language === "ar" ? "مختبر تخطيطات الحجز" : "Reservation layout lab"}
+                    </a>
+                    <a
+                      role="menuitem"
+                      className="admin-menu-item"
                       href={languages[language].previewHref}
                       target="_blank"
                       rel="noreferrer"
@@ -563,7 +610,7 @@ export default function SecretPanel({
                 </p>
                 <h3>{selectedSectionCopy.label}</h3>
               </div>
-              <span>{sectionMeta(sectionValue, language)}</span>
+              <span>{isChatKnowledge ? (language === "ar" ? "مصادر مشتركة" : "Shared sources") : sectionMeta(sectionValue, language)}</span>
             </div>
 
             {selectedHidden ? (
@@ -574,7 +621,9 @@ export default function SecretPanel({
               </div>
             ) : null}
 
-            {sectionValue ? (
+            {isChatKnowledge ? (
+              <ChatKnowledgeManager language={language} />
+            ) : sectionValue ? (
               <FieldEditor
                 name={selectedSection.id}
                 value={sectionValue}
@@ -582,6 +631,7 @@ export default function SecretPanel({
                 language={language}
                 onChange={updateValue}
                 onReorder={reorderValue}
+                focusItem={selectedSection.id === "properties" ? directProperty : undefined}
               />
             ) : (
               <div className="content-card">{language === "ar" ? "جار تحميل المحرر..." : "Loading editor..."}</div>

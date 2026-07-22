@@ -1,83 +1,25 @@
 import { NextResponse } from "next/server";
+import { generateEditorialText } from "@/lib/openai-text";
 
 export const dynamic = "force-dynamic";
 
 type RephraseBody = {
   text?: unknown;
   language?: unknown;
-  tone?: unknown;
   isHtml?: unknown;
   instructions?: unknown;
 };
 
-const MAX_INSTRUCTIONS_LENGTH = 600;
-
 const SUPPORTED = new Set(["ar", "en"]);
-const MAX_TEXT_LENGTH = 3000;
-const MIN_TEXT_LENGTH = 2;
-const DEFAULT_TONE = "luxury hospitality";
-const MODEL = "gemini-2.5-flash-lite";
+const MAX_TEXT_LENGTH = 3_000;
+const MAX_INSTRUCTIONS_LENGTH = 600;
 
 function badRequest(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
 }
 
-function buildPrompt({
-  text,
-  language,
-  tone,
-  isHtml,
-  instructions,
-}: {
-  text: string;
-  language: "ar" | "en";
-  tone: string;
-  isHtml: boolean;
-  instructions: string;
-}) {
-  const languageLabel = language === "ar" ? "Arabic" : "English";
-  const styleNote =
-    language === "ar"
-      ? "Use professional, natural Modern Standard Arabic suited for a premium hospitality brand."
-      : "Use clear, professional business English suited for a premium hospitality brand.";
-  const htmlNote = isHtml
-    ? "The input is HTML produced by a rich-text editor and may contain tags such as <p>, <strong>, <em>, <u>, <s>, and <br>. Preserve the exact HTML structure: keep the same tags wrapping the same logical pieces of content. Do not add, remove, or rename tags. Only rephrase the visible text inside them."
-    : "The input is plain text. Return plain text only. Do not add any HTML or Markdown.";
-
-  const instructionsNote = instructions
-    ? `Editor's custom instructions (follow them as closely as possible, but never break the rules above about keeping meaning, language, facts, and preserved tokens): ${instructions}`
-    : "";
-
-  return [
-    "You are a professional bilingual copywriter for a luxury hospitality website (Swiss Blue Hotels).",
-    `Rephrase the text below into the same language (${languageLabel}), keeping its original meaning.`,
-    `Tone: ${tone}.`,
-    "Length: roughly the same as the original.",
-    styleNote,
-    htmlNote,
-    "Preserve all brand names, prices, numbers, URLs, emails, phone numbers, hashtags, and emojis exactly as they appear.",
-    "Do not invent facts, claims, or details that are not in the original text.",
-    instructionsNote,
-    "Return ONLY the rephrased result. No preamble, no quotation marks around the output, no commentary, no labels like \"Rephrased:\".",
-    "",
-    "Text to rephrase:",
-    text,
-  ]
-    .filter(Boolean)
-    .join("\n");
-}
-
-type GeminiResponse = {
-  candidates?: Array<{
-    content?: {
-      parts?: Array<{ text?: string }>;
-    };
-  }>;
-};
-
 export async function POST(request: Request) {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) {
+  if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json({ error: "Rephrase isn't configured." }, { status: 503 });
   }
 
@@ -90,63 +32,41 @@ export async function POST(request: Request) {
 
   const text = typeof body.text === "string" ? body.text : "";
   const language = typeof body.language === "string" ? body.language.toLowerCase() : "";
-  const tone =
-    typeof body.tone === "string" && body.tone.trim()
-      ? body.tone.trim().slice(0, 80)
-      : DEFAULT_TONE;
   const isHtml = body.isHtml === true;
-  const instructions =
-    typeof body.instructions === "string"
-      ? body.instructions.trim().slice(0, MAX_INSTRUCTIONS_LENGTH)
-      : "";
+  const editorInstructions = typeof body.instructions === "string"
+    ? body.instructions.trim().slice(0, MAX_INSTRUCTIONS_LENGTH)
+    : "";
 
-  if (!text.trim() || text.trim().length < MIN_TEXT_LENGTH) {
-    return badRequest("Text is too short to rephrase.");
-  }
+  if (text.trim().length < 2) return badRequest("Text is too short to rephrase.");
   if (text.length > MAX_TEXT_LENGTH) {
     return badRequest(`Text is too long. Maximum is ${MAX_TEXT_LENGTH} characters.`);
   }
-  if (!SUPPORTED.has(language)) {
-    return badRequest("Unsupported language.");
+  if (!SUPPORTED.has(language)) return badRequest("Unsupported language.");
+
+  const languageLabel = language === "ar" ? "Arabic" : "English";
+  const formatRule = isHtml
+    ? "Preserve the exact HTML tag structure. Change only visible text and return HTML only."
+    : "Return plain text only, without Markdown, labels, or quotation marks.";
+  const customRule = editorInstructions
+    ? `Follow this editor instruction when it does not conflict with the rules: ${editorInstructions}`
+    : "";
+
+  try {
+    const rephrased = await generateEditorialText({
+      instructions: [
+        "You are the senior bilingual editor for Swiss Blue Hotels in Saudi Arabia.",
+        `Rewrite in the same language (${languageLabel}) using a clear, confident, welcoming premium-hospitality voice.`,
+        "Keep the meaning, facts, length, brand names, numbers, prices, URLs, email addresses, phone numbers, and preserved tokens unchanged.",
+        "Do not invent claims or operational details.",
+        formatRule,
+        customRule,
+      ].filter(Boolean).join("\n"),
+      input: text,
+    });
+
+    return NextResponse.json({ rephrased });
+  } catch (cause) {
+    const status = typeof cause === "object" && cause && "status" in cause && cause.status === 429 ? 429 : 502;
+    return NextResponse.json({ error: status === 429 ? "Rephrase limit reached. Try again shortly." : "Rephrase failed." }, { status });
   }
-
-  const prompt = buildPrompt({
-    text,
-    language: language as "ar" | "en",
-    tone,
-    isHtml,
-    instructions,
-  });
-
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`;
-
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.7,
-      },
-    }),
-  });
-
-  if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    // Log upstream diagnostics server-side; don't echo them to the client.
-    console.error(`Gemini rephrase failed (${response.status}): ${detail.slice(0, 500)}`);
-    return NextResponse.json(
-      { error: `Rephrase failed (${response.status}).` },
-      { status: response.status === 429 ? 429 : 502 },
-    );
-  }
-
-  const data = (await response.json()) as GeminiResponse;
-  const rephrased = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-  if (typeof rephrased !== "string" || !rephrased.trim()) {
-    return NextResponse.json({ error: "Rephrase returned no text." }, { status: 502 });
-  }
-
-  return NextResponse.json({ rephrased: rephrased.trim() });
 }

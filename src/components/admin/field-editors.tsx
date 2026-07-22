@@ -2,6 +2,7 @@
 
 import type { DragEvent } from "react";
 import { useState } from "react";
+import { ChevronDown, Columns3, GripVertical, Images, LayoutGrid, Plus, Trash2, Upload } from "lucide-react";
 import { RichEditor } from "@/components/rich-editor";
 import { RephraseButton } from "@/components/rephrase-button";
 import { StockPhotoPicker } from "@/components/stock-photo-picker";
@@ -102,11 +103,7 @@ export function ImageFieldEditor({
           <p>{localizedImageGuidance(name, path, language)}</p>
           <div className="admin-image-actions">
             <label className="admin-image-source-icon admin-image-source-upload">
-              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 4v12" />
-                <path d="m7 9 5-5 5 5" />
-                <path d="M5 20h14" />
-              </svg>
+              <Upload aria-hidden="true" size={16} strokeWidth={2} />
               <span>
                 {language === "ar"
                   ? acceptsVideo(name, path) ? "رفع ملف" : "رفع صورة"
@@ -129,9 +126,7 @@ export function ImageFieldEditor({
               aria-label={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
               title={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
             >
-              <svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
-                <path d="M10 9V0h12v9H10zM22 14h10v18H0V14h10v9h12v-9z" />
-              </svg>
+              <Images aria-hidden="true" size={16} strokeWidth={2} />
               <span>Unsplash</span>
             </button>
             <button
@@ -141,9 +136,7 @@ export function ImageFieldEditor({
               aria-label={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
               title={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
             >
-              <svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
-                <path d="M5 0h13a9 9 0 0 1 9 9v3a9 9 0 0 1-9 9h-5v11H5V0zm8 13h5a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4h-5v8z" />
-              </svg>
+              <Images aria-hidden="true" size={16} strokeWidth={2} />
               <span>Pexels</span>
             </button>
           </div>
@@ -306,8 +299,8 @@ function AdminAuthBackdropLayoutField({
             type="button"
             onClick={() => onChange(path, option.value)}
           >
-            <span className={`admin-layout-preview is-${option.value}`} aria-hidden="true">
-              {Array.from({ length: 6 }, (_, index) => <i key={index} />)}
+            <span className="admin-layout-preview" aria-hidden="true">
+              {option.value === "tiles" ? <LayoutGrid size={30} strokeWidth={1.8} /> : <Columns3 size={30} strokeWidth={1.8} />}
             </span>
             <span>{language === "ar" ? option.ar : option.en}</span>
           </button>
@@ -540,6 +533,132 @@ function SeoPagesEditor({
   );
 }
 
+type OrderedField = ReturnType<typeof orderedEntries>[number];
+
+function isNestedValue(value: JsonValue) {
+  return Array.isArray(value) || isPlainObject(value);
+}
+
+function fieldGroupLabel(entries: OrderedField[], language: Language) {
+  const keys = entries.map(({ key }) => key);
+  const includes = (...values: string[]) => values.some((value) => keys.includes(value));
+  const hasKeyPart = (...parts: string[]) =>
+    keys.some((key) => parts.some((part) => key.toLowerCase().includes(part.toLowerCase())));
+
+  if (includes("continue", "back", "submit", "success", "error", "closeModal", "summaryHeading") || hasKeyPart("button", "cta")) {
+    return language === "ar" ? "الأزرار ورسائل النموذج" : "Actions and form messages";
+  }
+
+  if (hasKeyPart("step")) {
+    return language === "ar" ? "خطوات النموذج والإرشادات" : "Form steps and guidance";
+  }
+
+  if (hasKeyPart("placeholder", "option")) {
+    return language === "ar" ? "تعليمات وخيارات الحقول" : "Field prompts and options";
+  }
+
+  if (includes("eyebrow", "title", "text", "description", "note")) {
+    return language === "ar" ? "المقدمة والمحتوى الرئيسي" : "Introduction and main content";
+  }
+
+  return language === "ar" ? "محتوى عام" : "General content";
+}
+
+function groupLongRootFields(entries: OrderedField[]) {
+  const segments: Array<
+    | { kind: "field"; entry: OrderedField }
+    | { kind: "group"; entries: OrderedField[] }
+  > = [];
+  let primitiveRun: OrderedField[] = [];
+
+  function flushPrimitiveRun() {
+    if (primitiveRun.length === 1) {
+      segments.push({ kind: "field", entry: primitiveRun[0] });
+    } else if (primitiveRun.length > 1) {
+      segments.push({ kind: "group", entries: primitiveRun });
+    }
+    primitiveRun = [];
+  }
+
+  entries.forEach((entry) => {
+    if (isNestedValue(entry.value)) {
+      flushPrimitiveRun();
+      segments.push({ kind: "field", entry });
+    } else {
+      primitiveRun.push(entry);
+    }
+  });
+  flushPrimitiveRun();
+
+  return segments;
+}
+
+function PrimitiveListValueEditor({
+  name,
+  value,
+  index,
+  path,
+  language,
+  onChange,
+}: {
+  name: string;
+  value: JsonValue;
+  index: number;
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+}) {
+  const itemLabel = language === "ar" ? `العنصر ${index + 1}` : `Item ${index + 1}`;
+
+  if (typeof value === "boolean") {
+    return (
+      <label className="admin-list-value admin-check">
+        <input checked={value} type="checkbox" onChange={(event) => onChange(path, event.target.checked)} />
+        <span>{itemLabel}</span>
+      </label>
+    );
+  }
+
+  if (typeof value === "number") {
+    return (
+      <label className="admin-list-value">
+        <span>{itemLabel}</span>
+        <input type="number" value={value} onChange={(event) => onChange(path, Number(event.target.value))} />
+      </label>
+    );
+  }
+
+  const stringValue = typeof value === "string" ? value : "";
+  const useTextarea = isLongField(name, stringValue) || stringValue.length > 96;
+
+  return (
+    <div className="admin-list-value">
+      <div className="admin-list-value-head">
+        <span>{itemLabel}</span>
+        <span className="admin-field-actions">
+          <RephraseButton value={stringValue} language={language} path={path} onChange={onChange} />
+          <TranslateButton value={stringValue} sourceLanguage={language} path={path} onChange={onChange} />
+        </span>
+      </div>
+      {useTextarea ? (
+        <textarea
+          aria-label={itemLabel}
+          rows={2}
+          value={stringValue}
+          onChange={(event) => onChange(path, event.target.value)}
+        />
+      ) : (
+        <input
+          aria-label={itemLabel}
+          type="text"
+          value={stringValue}
+          onChange={(event) => onChange(path, event.target.value)}
+        />
+      )}
+    </div>
+  );
+}
+
 export function FieldEditor({
   name,
   value,
@@ -548,6 +667,8 @@ export function FieldEditor({
   language,
   onChange,
   onReorder,
+  focusItem,
+  isFocusedItem = false,
 }: {
   name: string;
   value: JsonValue;
@@ -556,6 +677,8 @@ export function FieldEditor({
   language: Language;
   onChange: (path: Array<string | number>, value: JsonValue) => void;
   onReorder: (path: Array<string | number>, from: number, to: number) => void;
+  focusItem?: string;
+  isFocusedItem?: boolean;
 }) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
@@ -611,6 +734,8 @@ export function FieldEditor({
   if (Array.isArray(value)) {
     const primitiveList = value.every((item) => !isPlainObject(item) && !Array.isArray(item));
     const isFixedAdminAuthPhotos = name === "photos" && isAdminAuthBackdropPath(path);
+    const isPropertyList = name === "items" && path.includes("properties");
+    const openForDirectLink = Boolean((isPropertyList && focusItem) || (name === "gallery" && isFocusedItem));
 
     function clearDragState() {
       setDragIndex(null);
@@ -640,26 +765,36 @@ export function FieldEditor({
     }
 
     return (
-      <section className="admin-array">
-        <div className="admin-array-head">
-          <div>
-            <h4>{labelFor(name, language)}</h4>
-              <p>
+      <details className="admin-array admin-editor-fold" open={openForDirectLink || undefined}>
+        <summary className="admin-fold-summary">
+          <span className="admin-fold-summary-main">
+            <span>
+              <strong>{labelFor(name, language)}</strong>
+              <small>
                 {language === "ar"
-                  ? `${value.length} عنصر. استخدم مقبض السحب لتغيير الترتيب.`
-                  : `${value.length} items. Use the drag handle to reorder.`}
-              </p>
-          </div>
-          {isFixedAdminAuthPhotos ? null : (
-            <button type="button" onClick={() => onChange(path, [...value, cloneTemplate(value[0] ?? "")])}>
-              {language === "ar" ? "إضافة عنصر" : "Add item"}
-            </button>
-          )}
-        </div>
+                  ? `${value.length} عنصر${value.length === 0 ? "" : " · يدعم السحب والترتيب"}`
+                  : `${value.length} items${value.length === 0 ? "" : " · drag to reorder"}`}
+              </small>
+            </span>
+          </span>
+          <ChevronDown className="admin-fold-chevron" aria-hidden="true" size={19} strokeWidth={2.2} />
+        </summary>
 
-        <div className={primitiveList ? "admin-list-editor" : "admin-array-list"}>
+        <div className="admin-fold-body">
+          {isFixedAdminAuthPhotos ? null : (
+            <div className="admin-array-toolbar">
+              <button type="button" onClick={() => onChange(path, [...value, cloneTemplate(value[0] ?? "")])}>
+                <Plus aria-hidden="true" size={16} strokeWidth={2.3} />
+                {language === "ar" ? "إضافة عنصر" : "Add item"}
+              </button>
+            </div>
+          )}
+
+          <div className={primitiveList ? "admin-list-editor" : "admin-array-list"}>
           {value.map((item, index) => {
             const fallback = `${labelFor(name, language)} ${index + 1}`;
+            const itemSlug = isPlainObject(item) && typeof item.slug === "string" ? item.slug : undefined;
+            const isDirectItem = Boolean(focusItem && itemSlug === focusItem);
 
             if (primitiveList) {
               return (
@@ -681,22 +816,26 @@ export function FieldEditor({
                     title={language === "ar" ? "اسحب لتغيير الترتيب" : "Drag to reorder"}
                     onDragStart={(event) => handleDragStart(event, index)}
                     onDragEnd={clearDragState}
-                  />
-                  <FieldEditor
+                  >
+                    <GripVertical aria-hidden="true" size={20} strokeWidth={2.2} />
+                  </span>
+                  <PrimitiveListValueEditor
                     name={name}
                     value={item}
+                    index={index}
                     path={[...path, index]}
                     language={language}
                     onChange={onChange}
-                    onReorder={onReorder}
                   />
                   {isFixedAdminAuthPhotos ? null : (
                     <button
-                      className="admin-remove"
+                      className="admin-remove admin-icon-button"
                       type="button"
                       onClick={() => onChange(path, value.filter((_, itemIndex) => itemIndex !== index))}
+                      aria-label={language === "ar" ? `حذف العنصر ${index + 1}` : `Delete item ${index + 1}`}
+                      title={language === "ar" ? "حذف العنصر" : "Delete item"}
                     >
-                      {language === "ar" ? "حذف" : "Delete"}
+                      <Trash2 aria-hidden="true" size={18} strokeWidth={2.1} />
                     </button>
                   )}
                 </div>
@@ -711,6 +850,8 @@ export function FieldEditor({
                   dragOverIndex === index && dragIndex !== null && dragIndex !== index ? "is-drop-target" : "",
                 ].filter(Boolean).join(" ")}
                 key={`${path.join(".")}-${index}`}
+                id={isDirectItem ? `admin-property-${itemSlug}` : undefined}
+                open={isDirectItem || undefined}
                 onDragLeave={() => setDragOverIndex((current) => (current === index ? null : current))}
                 onDragOver={(event) => handleDragOver(event, index)}
                 onDrop={() => handleDrop(index)}
@@ -724,23 +865,28 @@ export function FieldEditor({
                     onClick={(event) => event.preventDefault()}
                     onDragStart={(event) => handleDragStart(event, index)}
                     onDragEnd={clearDragState}
-                  />
+                  >
+                    <GripVertical aria-hidden="true" size={20} strokeWidth={2.2} />
+                  </span>
                   <span>
                     <strong>{itemTitle(item, fallback)}</strong>
                     <small>{fallback}</small>
                   </span>
                   {isFixedAdminAuthPhotos ? null : (
                     <button
-                      className="admin-remove"
+                      className="admin-remove admin-icon-button"
                       type="button"
                       onClick={(event) => {
                         event.preventDefault();
                         onChange(path, value.filter((_, itemIndex) => itemIndex !== index));
                       }}
+                      aria-label={language === "ar" ? `حذف العنصر ${index + 1}` : `Delete item ${index + 1}`}
+                      title={language === "ar" ? "حذف العنصر" : "Delete item"}
                     >
-                      {language === "ar" ? "حذف" : "Delete"}
+                      <Trash2 aria-hidden="true" size={18} strokeWidth={2.1} />
                     </button>
                   )}
+                  <ChevronDown className="admin-fold-chevron" aria-hidden="true" size={18} strokeWidth={2.2} />
                 </summary>
                 <div className="admin-nested">
                   <FieldEditor
@@ -751,13 +897,16 @@ export function FieldEditor({
                     language={language}
                     onChange={onChange}
                     onReorder={onReorder}
+                    focusItem={focusItem}
+                    isFocusedItem={isFocusedItem || isDirectItem}
                   />
                 </div>
               </details>
             );
           })}
+          </div>
         </div>
-      </section>
+      </details>
     );
   }
 
@@ -775,22 +924,102 @@ export function FieldEditor({
       );
     }
 
+    const entries = orderedEntries(value).filter(({ key }) => shouldShowField(path, key));
+    const isArrayItemObject = typeof path.at(-1) === "number";
+
+    if (level > 0 && !isArrayItemObject) {
+      return (
+        <details className="admin-object admin-editor-fold">
+          <summary className="admin-fold-summary">
+            <span className="admin-fold-summary-main">
+              <span>
+                <strong>{labelFor(name, language)}</strong>
+                <small>{language === "ar" ? `${entries.length} حقول` : `${entries.length} fields`}</small>
+              </span>
+            </span>
+            <ChevronDown className="admin-fold-chevron" aria-hidden="true" size={19} strokeWidth={2.2} />
+          </summary>
+          <div className="admin-fold-body">
+            <div className="admin-field-grid">
+              {entries.map(({ key, value: item }) => (
+                <FieldEditor
+                  key={`${path.join(".")}-${key}`}
+                  name={key}
+                  value={item}
+                  path={[...path, key]}
+                  level={level + 1}
+                  language={language}
+                  onChange={onChange}
+                  onReorder={onReorder}
+                  focusItem={focusItem}
+                  isFocusedItem={isFocusedItem}
+                />
+              ))}
+            </div>
+          </div>
+        </details>
+      );
+    }
+
+    const useProgressiveDisclosure = level === 0 && entries.length >= 8;
+    const segments = useProgressiveDisclosure
+      ? groupLongRootFields(entries)
+      : entries.map((entry) => ({ kind: "field" as const, entry }));
+
     return (
-      <section className={level === 0 ? "admin-object admin-object-root" : "admin-object"}>
-        {level > 0 ? <h3>{labelFor(name, language)}</h3> : null}
+      <section className={level === 0 ? "admin-object admin-object-root" : "admin-object admin-object-inline"}>
         <div className="admin-field-grid">
-          {orderedEntries(value).filter(({ key }) => shouldShowField(path, key)).map(({ key, value: item }) => (
-            <FieldEditor
-              key={`${path.join(".")}-${key}`}
-              name={key}
-              value={item}
-              path={[...path, key]}
-              level={level + 1}
-              language={language}
-              onChange={onChange}
-              onReorder={onReorder}
-            />
-          ))}
+          {segments.map((segment, index) => {
+            if (segment.kind === "group") {
+              return (
+                <details className="admin-editor-fold admin-field-group" key={`${path.join(".")}-group-${index}`}>
+                  <summary className="admin-fold-summary">
+                    <span className="admin-fold-summary-main">
+                      <span>
+                        <strong>{fieldGroupLabel(segment.entries, language)}</strong>
+                        <small>{language === "ar" ? `${segment.entries.length} حقول` : `${segment.entries.length} fields`}</small>
+                      </span>
+                    </span>
+                    <ChevronDown className="admin-fold-chevron" aria-hidden="true" size={19} strokeWidth={2.2} />
+                  </summary>
+                  <div className="admin-fold-body">
+                    <div className="admin-field-grid">
+                      {segment.entries.map(({ key, value: item }) => (
+                        <FieldEditor
+                          key={`${path.join(".")}-${key}`}
+                          name={key}
+                          value={item}
+                          path={[...path, key]}
+                          level={level + 1}
+                          language={language}
+                          onChange={onChange}
+                          onReorder={onReorder}
+                          focusItem={focusItem}
+                          isFocusedItem={isFocusedItem}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </details>
+              );
+            }
+
+            const { key, value: item } = segment.entry;
+            return (
+              <FieldEditor
+                key={`${path.join(".")}-${key}`}
+                name={key}
+                value={item}
+                path={[...path, key]}
+                level={level + 1}
+                language={language}
+                onChange={onChange}
+                onReorder={onReorder}
+                focusItem={focusItem}
+                isFocusedItem={isFocusedItem}
+              />
+            );
+          })}
         </div>
       </section>
     );

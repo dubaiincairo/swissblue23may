@@ -9,13 +9,13 @@ const labels: Record<Language, { idle: string; loading: string; success: string;
     idle: "ترجمة إلى الإنجليزية",
     loading: "جارٍ الترجمة…",
     success: "تمت الترجمة",
-    tooltip: () => "ترجمة هذا الحقل عبر DeepL وكتابة النتيجة في النسخة الإنجليزية.",
+    tooltip: () => "ترجمة هذا الحقل عبر OpenAI وكتابة النتيجة في النسخة الإنجليزية.",
   },
   en: {
     idle: "Translate to Arabic",
     loading: "Translating…",
     success: "Translated",
-    tooltip: () => "Translate this field via DeepL and write it into the Arabic version.",
+    tooltip: () => "Translate this field via OpenAI and write it into the Arabic version.",
   },
 };
 

@@ -1,13 +1,13 @@
 "use client";
 
 import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent } from "react";
-import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { DatePicker } from "@/components/date-picker";
+import { BadgeCheck, ShieldCheck } from "lucide-react";
 import { BOOKING_URL } from "@/lib/content";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
-type Property = { slug: string; title: string };
+type Property = { slug: string; title: string; city: string };
 
 type Locale = "ar" | "en";
 
@@ -19,31 +19,6 @@ const DROPDOWN_MIN_WIDTH = 320;
 const DROPDOWN_MAX_WIDTH = 520;
 const DROPDOWN_MAX_HEIGHT = 330;
 const VIEWPORT_MARGIN = 12;
-
-function isoDate(d: Date) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
-    d.getDate(),
-  ).padStart(2, "0")}`;
-}
-
-function addDays(iso: string, days: number) {
-  const d = new Date(`${iso}T00:00:00`);
-  d.setDate(d.getDate() + days);
-  return isoDate(d);
-}
-
-function subscribeToClientDate(onStoreChange: () => void) {
-  const timeout = window.setTimeout(onStoreChange, 0);
-  return () => window.clearTimeout(timeout);
-}
-
-function getClientToday() {
-  return isoDate(new Date());
-}
-
-function getServerToday() {
-  return "";
-}
 
 function BookingDestinationDropdown({
   properties,
@@ -218,7 +193,10 @@ function BookingDestinationDropdown({
         onClick={toggleDropdown}
         onKeyDown={onButtonKeyDown}
       >
-        <span>{selectedProperty?.title ?? ""}</span>
+        <span className="booking-destination-value">
+          <strong>{selectedProperty?.title ?? ""}</strong>
+          <small>{selectedProperty?.city ?? ""}</small>
+        </span>
         <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
           <path d="m6 9 6 6 6-6" />
         </svg>
@@ -253,7 +231,10 @@ function BookingDestinationDropdown({
                     onMouseEnter={() => setActiveIndex(index)}
                     onClick={() => selectProperty(property)}
                   >
-                    <span>{property.title}</span>
+                    <span className="booking-destination-option-copy">
+                      <strong>{property.title}</strong>
+                      <small>{property.city}</small>
+                    </span>
                     {selected ? (
                       <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                         <path d="m5 12 4 4L19 6" />
@@ -280,21 +261,26 @@ export default function BookingBar({
   labels: BookingLabels;
 }) {
   const t = labels;
-
   const [slug, setSlug] = useState(properties[0]?.slug ?? "");
-  const [selectedCheckin, setSelectedCheckin] = useState("");
-  const [selectedCheckout, setSelectedCheckout] = useState("");
-  const today = useSyncExternalStore(subscribeToClientDate, getClientToday, getServerToday);
-  const [adults, setAdults] = useState(2);
   const rootRef = useRef<HTMLDivElement>(null);
-  const defaultCheckin = today ? addDays(today, 1) : "";
-  const defaultCheckout = today ? addDays(today, 2) : "";
-  const checkin = selectedCheckin || defaultCheckin;
-  const requestedCheckout = selectedCheckout || defaultCheckout;
-  const checkout =
-    checkin && requestedCheckout && requestedCheckout <= checkin
-      ? addDays(checkin, 1)
-      : requestedCheckout;
+  const defaultPropertyLabel = locale === "ar" ? "المنشأة" : "Property";
+  const defaultBookNowLabel = locale === "ar" ? "احجز الآن" : "Book now";
+  const propertyLabel =
+    !t.property.trim() || t.property === "Destination" || t.property === "الوجهة"
+      ? defaultPropertyLabel
+      : t.property;
+  const bookNowLabel =
+    !t.search.trim() || t.search === "Check availability" || t.search === "تحقق من التوفر"
+      ? defaultBookNowLabel
+      : t.search;
+  const helperText =
+    locale === "ar" ? "اختر المنشأة المناسبة لإقامتك" : "Choose the property for your stay";
+  const eyebrow =
+    locale === "ar"
+      ? "مستوى خدمات يليق بزوار المملكة"
+      : "A level of service worthy of visitors to the Kingdom";
+  const secureLabel = locale === "ar" ? "حجز آمن" : "Secure booking";
+  const bestRateLabel = locale === "ar" ? "أفضل سعر متاح" : "Best available rate";
 
   // Publish the rendered bar height so the hero carousel dots can sit a fixed
   // gap above the (variable-height) stacked bar on mobile, instead of relying
@@ -323,73 +309,21 @@ export default function BookingBar({
       className="booking-bar reveal-scale-up"
       style={{ "--delay": "450ms" } as React.CSSProperties}
     >
-      <label className="booking-field">
-        <span>{t.property}</span>
+      <div className="booking-intro">
+        <span className="booking-eyebrow">{eyebrow}</span>
+        <strong>{bookNowLabel}</strong>
+        <span className="booking-helper">{helperText}</span>
+      </div>
+
+      <div className="booking-field">
+        <span>{propertyLabel}</span>
         <BookingDestinationDropdown
           properties={properties}
           locale={locale}
-          label={t.property}
+          label={propertyLabel}
           value={slug}
           onChange={setSlug}
         />
-      </label>
-
-      <label className="booking-field">
-        <span>{t.checkin}</span>
-        <DatePicker
-          value={checkin}
-          min={today || undefined}
-          locale={locale}
-          ariaLabel={t.checkin}
-          variant="booking"
-          allowClear={false}
-          onChange={setSelectedCheckin}
-        />
-      </label>
-
-      <label className="booking-field">
-        <span>{t.checkout}</span>
-        <DatePicker
-          value={checkout}
-          min={checkin ? addDays(checkin, 1) : today || undefined}
-          locale={locale}
-          ariaLabel={t.checkout}
-          variant="booking"
-          allowClear={false}
-          onChange={setSelectedCheckout}
-        />
-      </label>
-
-      <div className="booking-field">
-        <span>{t.guests}</span>
-        <div className="booking-stepper" role="group" aria-label={t.guests}>
-          <button
-            type="button"
-            className="booking-step"
-            onClick={() => setAdults((n) => Math.max(1, n - 1))}
-            disabled={adults <= 1}
-            aria-label={t.less}
-          >
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
-              <path d="M5 12h14" />
-            </svg>
-          </button>
-          <span className="booking-step-value" aria-live="polite">
-            {adults}
-            <span className="booking-step-unit"> {adults === 1 ? t.adult : t.adults}</span>
-          </span>
-          <button
-            type="button"
-            className="booking-step"
-            onClick={() => setAdults((n) => Math.min(12, n + 1))}
-            disabled={adults >= 12}
-            aria-label={t.more}
-          >
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
-              <path d="M12 5v14M5 12h14" />
-            </svg>
-          </button>
-        </div>
       </div>
 
       <button
@@ -397,8 +331,35 @@ export default function BookingBar({
         className="btn btn-primary booking-search min-h-[54px] justify-center"
         onClick={search}
       >
-        {t.search}
+        <span>{bookNowLabel}</span>
+        <svg
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
       </button>
+
+      <div
+        className="booking-assurance"
+        aria-label={locale === "ar" ? "مزايا الحجز" : "Booking benefits"}
+      >
+        <span>
+          <ShieldCheck aria-hidden="true" />
+          {secureLabel}
+        </span>
+        <span>
+          <BadgeCheck aria-hidden="true" />
+          {bestRateLabel}
+        </span>
+      </div>
     </div>
   );
 }

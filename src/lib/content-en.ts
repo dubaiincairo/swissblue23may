@@ -154,9 +154,9 @@ export const hotelsEn = [
     units: "55 serviced apartments",
     image: jazanImage,
     summary:
-      "Practical serviced apartments in Jazan for short and extended stays, suitable for families, business guests, and regional visits.",
+      "A serviced-apartment destination coming to Jazan, with opening and reservation details to be announced soon.",
     positioning:
-      "Swiss Blue Apart-Hotel Jazan offers a flexible stay for guests who need more space than a traditional room while keeping hotel-style support. It serves business travelers, families, and guests who prefer a calmer long-stay base.",
+      "Swiss Blue is preparing a serviced-apartment destination in Jazan. Unit details, services, and the reservation opening date will be published once the launch plan is confirmed.",
     unitTypes: [
       { title: "Deluxe King Studio", count: "1 studio", description: "A compact studio for simple, practical stays." },
       { title: "One-Bedroom Apartments", count: "37 apartments", description: "Superior, deluxe, and premium layouts with living space." },

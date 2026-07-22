@@ -3,6 +3,7 @@ import Link from "next/link";
 import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
+import { comingSoonLabel, isComingSoonProperty } from "@/lib/property-availability";
 
 export const dynamic = "force-dynamic";
 
@@ -28,14 +29,18 @@ export default async function HotelsPageEn() {
           <p>{rich(content.intro.text)}</p>
         </div>
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {hotelsEn.map((hotel, index) => (
+          {hotelsEn.map((hotel, index) => {
+            const comingSoon = isComingSoonProperty(hotel.slug);
+
+            return (
             <article
-              className="property-card reveal-slide-up"
+              className={`property-card reveal-slide-up${comingSoon ? " is-coming-soon" : ""}`}
               key={hotel.slug}
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
               <figure className="relative h-72 overflow-hidden">
                 <Image className="object-cover transition duration-500 hover:scale-105" src={hotel.image} alt={hotel.title} fill sizes="(min-width: 1024px) 33vw, 100vw" />
+                {comingSoon ? <span className="property-status-badge">{comingSoonLabel("en")}</span> : null}
               </figure>
               <div className="p-5">
                 <div className="flex items-center justify-between gap-4 text-xs font-bold text-[var(--primary)]">
@@ -44,10 +49,15 @@ export default async function HotelsPageEn() {
                 </div>
                 <h3 className="mt-4 text-2xl font-bold">{rich(hotel.title)}</h3>
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">{rich(hotel.summary)}</p>
-                <Link className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]" href={`/en/hotels/${hotel.slug}`}>View details</Link>
+                {comingSoon ? (
+                  <span className="property-coming-soon-note">Reservations will open with the property</span>
+                ) : (
+                  <Link className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]" href={`/en/hotels/${hotel.slug}`}>View details</Link>
+                )}
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
       <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.hotels.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.hotels.cta} />

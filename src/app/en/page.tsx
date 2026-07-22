@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatedCounter } from "@/components/animated-counter";
 import { FaqAccordion } from "@/components/faq-accordion";
 import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { PageShellEn } from "@/components/site-en";
@@ -11,7 +10,9 @@ import { PartnersSection } from "@/components/partners-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { rich } from "@/components/rich-text";
 import { ServiceTiles } from "@/components/service-tiles";
+import { InsightCards } from "@/components/insight-cards";
 import { BOOKING_URL, getEditableContent, isSectionHidden } from "@/lib/editable-content";
+import { comingSoonLabel, isComingSoonCity, isComingSoonProperty } from "@/lib/property-availability";
 
 export const dynamic = "force-dynamic";
 
@@ -23,63 +24,55 @@ export default async function EnglishHomePage() {
   return (
     <PageShellEn>
       {show("hero") && (
-      <section className="hotel-hero relative overflow-hidden">
+      <section className="hotel-hero home-hero relative overflow-hidden">
         <HeroMediaCarousel
           slides={en.media.mainHeroSlides}
           fallbackImage={en.media.mainHero}
           fallbackAlt="Red Sea coastline near Swiss Blue Hotels"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,28,70,0.86),rgba(18,70,168,0.58)_48%,rgba(8,28,70,0.12))]" />
+        <div className="home-hero-overlay home-hero-overlay-ltr" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
-        <div className="relative mx-auto flex min-h-[640px] max-w-7xl flex-col justify-between gap-10 px-4 pb-8 pt-20 sm:px-6 lg:min-h-[100svh] lg:px-8">
-          <div className="max-w-3xl pt-3 text-white">
-            <span className="hero-kicker reveal-slide-down">{rich(home.hero.eyebrow)}</span>
-            <h1 className="t-hero mt-5 reveal-slide-up">
-              {rich(home.hero.title)}
-            </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-white/84 sm:text-xl reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
-              {rich(home.hero.text)}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3 reveal-slide-up" style={{ "--delay": "300ms" } as React.CSSProperties}>
-              <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
-                {rich(home.hero.primaryCta)}
-              </a>
-              <Link className="btn btn-glass" href={home.hero.secondaryHref}>
-                {rich(home.hero.secondaryCta)}
-              </Link>
+        <div className="home-hero-shell">
+          <div className="home-hero-layout">
+            <div className="home-hero-copy text-white">
+              <span className="hero-kicker reveal-slide-down">{rich(home.hero.eyebrow)}</span>
+              <h1 className="t-hero reveal-slide-up">
+                {rich(home.hero.title)}
+              </h1>
+              <p className="home-hero-summary reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
+                {rich(home.hero.text)}
+              </p>
+              <div className="home-hero-actions reveal-slide-up" style={{ "--delay": "300ms" } as React.CSSProperties}>
+                <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
+                  {rich(home.hero.primaryCta)}
+                </a>
+                <Link className="btn btn-glass" href={home.hero.secondaryHref}>
+                  {rich(home.hero.secondaryCta)}
+                </Link>
+              </div>
+            </div>
+
+            <div className="home-hero-booking">
+              <BookingBar
+                properties={home.properties.items
+                  .filter((hotel) => !isComingSoonProperty(hotel.slug))
+                  .map((hotel) => ({
+                    slug: hotel.slug,
+                    title: hotel.title,
+                    city: hotel.city,
+                  }))}
+                locale="en"
+                labels={en.ui.bookingBar}
+              />
             </div>
           </div>
-          <BookingBar
-            properties={home.properties.items.map((hotel) => ({
-              slug: hotel.slug,
-              title: hotel.title,
-            }))}
-            locale="en"
-            labels={en.ui.bookingBar}
-          />
         </div>
       </section>
       )}
 
       {show("highlights") && (
       <section className="section-lg mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="insight-grid">
-          {home.highlights.map((item, index) => (
-            <article
-              className="insight-card reveal-slide-up"
-              key={item.label}
-              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
-            >
-              <div>
-                <strong>
-                  <AnimatedCounter value={item.value} />
-                </strong>
-                <span>{rich(item.label)}</span>
-              </div>
-              <p>{rich(item.text)}</p>
-            </article>
-          ))}
-        </div>
+        <InsightCards items={home.highlights} />
       </section>
       )}
 
@@ -91,9 +84,12 @@ export default async function EnglishHomePage() {
           <p>{rich(home.properties.text)}</p>
         </div>
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {home.properties.items.map((hotel, index) => (
+          {home.properties.items.map((hotel, index) => {
+            const comingSoon = isComingSoonProperty(hotel.slug);
+
+            return (
             <article
-              className="property-card reveal-slide-up"
+              className={`property-card reveal-slide-up${comingSoon ? " is-coming-soon" : ""}`}
               key={hotel.slug}
               style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
             >
@@ -105,6 +101,7 @@ export default async function EnglishHomePage() {
                   fill
                   sizes="(min-width: 1024px) 33vw, 100vw"
                 />
+                {comingSoon ? <span className="property-status-badge">{comingSoonLabel("en")}</span> : null}
               </figure>
               <div className="p-5">
                 <div className="flex items-center justify-between gap-4 text-xs font-bold text-[var(--primary)]">
@@ -118,15 +115,20 @@ export default async function EnglishHomePage() {
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                   {rich(hotel.summary)}
                 </p>
-                <Link
-                  className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
-                  href={`/en/hotels/${hotel.slug}`}
-                >
-                  View details
-                </Link>
+                {comingSoon ? (
+                  <span className="property-coming-soon-note">Reservations will open with the property</span>
+                ) : (
+                  <Link
+                    className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
+                    href={`/en/hotels/${hotel.slug}`}
+                  >
+                    View details
+                  </Link>
+                )}
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
       )}
@@ -181,9 +183,12 @@ export default async function EnglishHomePage() {
           <p>{rich(home.destinations.text)}</p>
         </div>
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          {home.destinations.items.map((destination, index) => (
+          {home.destinations.items.map((destination, index) => {
+            const comingSoon = isComingSoonCity(destination.title);
+
+            return (
             <article
-              className="property-card reveal-slide-up"
+              className={`property-card reveal-slide-up${comingSoon ? " is-coming-soon" : ""}`}
               key={destination.title}
               style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
             >
@@ -195,21 +200,27 @@ export default async function EnglishHomePage() {
                   fill
                   sizes="(min-width: 1024px) 33vw, 100vw"
                 />
+                {comingSoon ? <span className="property-status-badge">{comingSoonLabel("en")}</span> : null}
               </figure>
               <div className="p-5">
                 <h3 className="text-2xl font-extrabold">{rich(destination.title)}</h3>
                 <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                   {rich(destination.text)}
                 </p>
-                <Link
-                  className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
-                  href="/en/destinations"
-                >
-                  Explore destination
-                </Link>
+                {comingSoon ? (
+                  <span className="property-coming-soon-note">Opening details will be announced soon</span>
+                ) : (
+                  <Link
+                    className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
+                    href="/en/destinations"
+                  >
+                    Explore destination
+                  </Link>
+                )}
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
       )}
