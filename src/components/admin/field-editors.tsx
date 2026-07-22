@@ -667,6 +667,8 @@ export function FieldEditor({
   language,
   onChange,
   onReorder,
+  focusItem,
+  isFocusedItem = false,
 }: {
   name: string;
   value: JsonValue;
@@ -675,6 +677,8 @@ export function FieldEditor({
   language: Language;
   onChange: (path: Array<string | number>, value: JsonValue) => void;
   onReorder: (path: Array<string | number>, from: number, to: number) => void;
+  focusItem?: string;
+  isFocusedItem?: boolean;
 }) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
@@ -730,6 +734,8 @@ export function FieldEditor({
   if (Array.isArray(value)) {
     const primitiveList = value.every((item) => !isPlainObject(item) && !Array.isArray(item));
     const isFixedAdminAuthPhotos = name === "photos" && isAdminAuthBackdropPath(path);
+    const isPropertyList = name === "items" && path.includes("properties");
+    const openForDirectLink = Boolean((isPropertyList && focusItem) || (name === "gallery" && isFocusedItem));
 
     function clearDragState() {
       setDragIndex(null);
@@ -759,7 +765,7 @@ export function FieldEditor({
     }
 
     return (
-      <details className="admin-array admin-editor-fold">
+      <details className="admin-array admin-editor-fold" open={openForDirectLink || undefined}>
         <summary className="admin-fold-summary">
           <span className="admin-fold-summary-main">
             <span>
@@ -787,6 +793,8 @@ export function FieldEditor({
           <div className={primitiveList ? "admin-list-editor" : "admin-array-list"}>
           {value.map((item, index) => {
             const fallback = `${labelFor(name, language)} ${index + 1}`;
+            const itemSlug = isPlainObject(item) && typeof item.slug === "string" ? item.slug : undefined;
+            const isDirectItem = Boolean(focusItem && itemSlug === focusItem);
 
             if (primitiveList) {
               return (
@@ -842,6 +850,8 @@ export function FieldEditor({
                   dragOverIndex === index && dragIndex !== null && dragIndex !== index ? "is-drop-target" : "",
                 ].filter(Boolean).join(" ")}
                 key={`${path.join(".")}-${index}`}
+                id={isDirectItem ? `admin-property-${itemSlug}` : undefined}
+                open={isDirectItem || undefined}
                 onDragLeave={() => setDragOverIndex((current) => (current === index ? null : current))}
                 onDragOver={(event) => handleDragOver(event, index)}
                 onDrop={() => handleDrop(index)}
@@ -887,6 +897,8 @@ export function FieldEditor({
                     language={language}
                     onChange={onChange}
                     onReorder={onReorder}
+                    focusItem={focusItem}
+                    isFocusedItem={isFocusedItem || isDirectItem}
                   />
                 </div>
               </details>
@@ -939,6 +951,8 @@ export function FieldEditor({
                   language={language}
                   onChange={onChange}
                   onReorder={onReorder}
+                  focusItem={focusItem}
+                  isFocusedItem={isFocusedItem}
                 />
               ))}
             </div>
@@ -980,6 +994,8 @@ export function FieldEditor({
                           language={language}
                           onChange={onChange}
                           onReorder={onReorder}
+                          focusItem={focusItem}
+                          isFocusedItem={isFocusedItem}
                         />
                       ))}
                     </div>
@@ -999,6 +1015,8 @@ export function FieldEditor({
                 language={language}
                 onChange={onChange}
                 onReorder={onReorder}
+                focusItem={focusItem}
+                isFocusedItem={isFocusedItem}
               />
             );
           })}
