@@ -50,14 +50,25 @@ function CloseIcon() {
 export default function SecretPanel({
   language: initialLanguage = "en",
   perms = [],
+  initialSection = "hero",
+  initialProperty,
 }: {
   language?: Language;
   perms?: string[];
+  initialSection?: string;
+  initialProperty?: string;
 }) {
+  const validInitialSection = adminSections.some((section) => section.id === initialSection)
+    ? initialSection
+    : "hero";
+  const validInitialProperty = initialProperty && /^[a-z0-9-]+$/.test(initialProperty)
+    ? initialProperty
+    : undefined;
   const [language, setLanguage] = useState<Language>(initialLanguage);
   const [content, setContent] = useState<JsonObject | null>(null);
   const [hiddenSections, setHiddenSections] = useState<string[]>([]);
-  const [selectedId, setSelectedId] = useState("hero");
+  const [selectedId, setSelectedId] = useState(validInitialSection);
+  const [directProperty, setDirectProperty] = useState(validInitialProperty);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("loading");
   const [statusTone, setStatusTone] = useState<StatusTone>("ready");
@@ -87,6 +98,21 @@ export default function SecretPanel({
       languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
     };
   }, []);
+
+  useEffect(() => {
+    if (!content || selectedId !== "properties" || !directProperty) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      document.getElementById(`admin-property-${directProperty}`)?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "start",
+      });
+    }, 120);
+
+    return () => window.clearTimeout(timer);
+  }, [content, directProperty, selectedId]);
 
   useEffect(() => {
     if (!mobileNavigationOpen) {
@@ -156,6 +182,20 @@ export default function SecretPanel({
     setOpenGroups((current) => {
       return current.has(group) ? new Set() : new Set([group]);
     });
+  }
+
+  function selectSection(id: string) {
+    setSelectedId(id);
+    if (id !== "properties") {
+      setDirectProperty(undefined);
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("section", id);
+    if (id !== "properties") {
+      url.searchParams.delete("property");
+    }
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   }
 
   function updateValue(path: Array<string | number>, value: JsonValue) {
@@ -409,7 +449,7 @@ export default function SecretPanel({
                             className="admin-section-trigger"
                             type="button"
                             onClick={() => {
-                              setSelectedId(section.id);
+                              selectSection(section.id);
                               setMobileNavigationOpen(false);
                             }}
                           >
@@ -591,6 +631,7 @@ export default function SecretPanel({
                 language={language}
                 onChange={updateValue}
                 onReorder={reorderValue}
+                focusItem={selectedSection.id === "properties" ? directProperty : undefined}
               />
             ) : (
               <div className="content-card">{language === "ar" ? "جار تحميل المحرر..." : "Loading editor..."}</div>
