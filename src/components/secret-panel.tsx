@@ -2,9 +2,28 @@
 
 // Swiss Blue content studio (admin panel) shell: load/save, sidebar, topbar, layout.
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { AdminSection, JsonObject, JsonValue, Language, StatusTone } from "./admin/types";
-import { adminSections, languages, NON_HIDEABLE_SECTIONS, sectionCopy } from "./admin/sections";
-import { getAtPath, reorderAtPath, sectionMeta, setAtPath, statusLabel } from "./admin/content-path";
+import type {
+  AdminSection,
+  JsonObject,
+  JsonValue,
+  Language,
+  StatusTone,
+} from "./admin/types";
+import {
+  ADMIN_GROUP_ORDER,
+  adminGroupLabel,
+  adminSections,
+  languages,
+  NON_HIDEABLE_SECTIONS,
+  sectionCopy,
+} from "./admin/sections";
+import {
+  getAtPath,
+  reorderAtPath,
+  sectionMeta,
+  setAtPath,
+  statusLabel,
+} from "./admin/content-path";
 import { FieldEditor } from "./admin/field-editors";
 import { ChatKnowledgeManager } from "./admin/chat-knowledge-manager";
 import { hasAuthority } from "@/lib/authorities";
@@ -47,6 +66,15 @@ function CloseIcon() {
   );
 }
 
+type AdminSidebarLink = {
+  id: string;
+  group: string;
+  label: Record<Language, string>;
+  description: Record<Language, string>;
+  href: string;
+  visible: boolean;
+};
+
 export default function SecretPanel({
   language: initialLanguage = "en",
   perms = [],
@@ -58,12 +86,15 @@ export default function SecretPanel({
   initialSection?: string;
   initialProperty?: string;
 }) {
-  const validInitialSection = adminSections.some((section) => section.id === initialSection)
+  const validInitialSection = adminSections.some(
+    (section) => section.id === initialSection,
+  )
     ? initialSection
     : "hero";
-  const validInitialProperty = initialProperty && /^[a-z0-9-]+$/.test(initialProperty)
-    ? initialProperty
-    : undefined;
+  const validInitialProperty =
+    initialProperty && /^[a-z0-9-]+$/.test(initialProperty)
+      ? initialProperty
+      : undefined;
   const [language, setLanguage] = useState<Language>(initialLanguage);
   const [content, setContent] = useState<JsonObject | null>(null);
   const [hiddenSections, setHiddenSections] = useState<string[]>([]);
@@ -74,7 +105,9 @@ export default function SecretPanel({
   const [statusTone, setStatusTone] = useState<StatusTone>("ready");
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false);
-  const [languageMotion, setLanguageMotion] = useState<"idle" | "out" | "in">("idle");
+  const [languageMotion, setLanguageMotion] = useState<"idle" | "out" | "in">(
+    "idle",
+  );
   const [pendingLanguage, setPendingLanguage] = useState<Language | null>(null);
   const languageSwitchTimers = useRef<number[]>([]);
 
@@ -83,7 +116,9 @@ export default function SecretPanel({
       .then((response) => response.json())
       .then((data) => {
         setContent(data.content);
-        setHiddenSections(Array.isArray(data.hiddenSections) ? data.hiddenSections : []);
+        setHiddenSections(
+          Array.isArray(data.hiddenSections) ? data.hiddenSections : [],
+        );
         setStatus("ready");
         setStatusTone("ready");
       })
@@ -95,20 +130,31 @@ export default function SecretPanel({
 
   useEffect(() => {
     return () => {
-      languageSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
+      languageSwitchTimers.current.forEach((timer) =>
+        window.clearTimeout(timer),
+      );
     };
   }, []);
 
   useEffect(() => {
-    if (!content || !["properties", "propertyGalleries"].includes(selectedId) || !directProperty) {
+    if (
+      !content ||
+      !["properties", "propertyGalleries"].includes(selectedId) ||
+      !directProperty
+    ) {
       return;
     }
 
     const timer = window.setTimeout(() => {
-      document.getElementById(`admin-property-${directProperty}`)?.scrollIntoView({
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-        block: "start",
-      });
+      document
+        .getElementById(`admin-property-${directProperty}`)
+        ?.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
+            ? "auto"
+            : "smooth",
+          block: "start",
+        });
     }, 120);
 
     return () => window.clearTimeout(timer);
@@ -148,7 +194,9 @@ export default function SecretPanel({
     return () => window.removeEventListener("beforeunload", warn);
   }, [statusTone]);
 
-  const selectedSection = adminSections.find((section) => section.id === selectedId) ?? adminSections[0];
+  const selectedSection =
+    adminSections.find((section) => section.id === selectedId) ??
+    adminSections[0];
   const selectedSectionCopy = sectionCopy(selectedSection, language);
   const activePath = [language, ...selectedSection.path];
   const sectionValue = content ? getAtPath(content, activePath) : null;
@@ -170,13 +218,18 @@ export default function SecretPanel({
   }, [language, query]);
 
   const groupedSections = useMemo(() => {
-    return filteredSections.reduce<Record<string, AdminSection[]>>((groups, section) => {
-      groups[section.group] = [...(groups[section.group] ?? []), section];
-      return groups;
-    }, {});
+    return filteredSections.reduce<Record<string, AdminSection[]>>(
+      (groups, section) => {
+        groups[section.group] = [...(groups[section.group] ?? []), section];
+        return groups;
+      },
+      {},
+    );
   }, [filteredSections]);
 
-  const [openGroups, setOpenGroups] = useState<Set<string>>(() => new Set([selectedSection.group]));
+  const [openGroups, setOpenGroups] = useState<Set<string>>(
+    () => new Set([selectedSection.group]),
+  );
 
   function toggleGroup(group: string) {
     setOpenGroups((current) => {
@@ -195,7 +248,11 @@ export default function SecretPanel({
     if (!["properties", "propertyGalleries"].includes(id)) {
       url.searchParams.delete("property");
     }
-    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    window.history.replaceState(
+      null,
+      "",
+      `${url.pathname}${url.search}${url.hash}`,
+    );
   }
 
   function updateValue(path: Array<string | number>, value: JsonValue) {
@@ -210,7 +267,11 @@ export default function SecretPanel({
     setStatusTone("dirty");
   }
 
-  function reorderValue(path: Array<string | number>, from: number, to: number) {
+  function reorderValue(
+    path: Array<string | number>,
+    from: number,
+    to: number,
+  ) {
     setContent((current) => {
       if (!current) {
         return current;
@@ -227,7 +288,9 @@ export default function SecretPanel({
       return;
     }
     setHiddenSections((current) =>
-      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
     );
     setStatus("dirty");
     setStatusTone("dirty");
@@ -310,14 +373,61 @@ export default function SecretPanel({
   }
 
   // --- Authority-aware navigation (perms come from the signed session) ---
-  const canEditThisLanguage = hasAuthority(perms, language === "ar" ? "content.ar" : "content.en");
+  const canEditThisLanguage = hasAuthority(
+    perms,
+    language === "ar" ? "content.ar" : "content.en",
+  );
   const canSeeSubmissions = hasAuthority(perms, "submissions");
   const canManageUsers = hasAuthority(perms, "users");
-  const canSwitchPanel = hasAuthority(perms, language === "ar" ? "content.en" : "content.ar");
+  const canSwitchPanel = hasAuthority(
+    perms,
+    language === "ar" ? "content.en" : "content.ar",
+  );
   const isChatKnowledge = selectedSection.id === "chatKnowledge";
   const isLanguageSwitching = languageMotion !== "idle";
-  const mobileNavigationLabel = language === "ar" ? "فتح أقسام لوحة الإدارة" : "Open CMS sections";
-  const mobileNavigationCloseLabel = language === "ar" ? "إغلاق أقسام لوحة الإدارة" : "Close CMS sections";
+  const mobileNavigationLabel =
+    language === "ar" ? "فتح أقسام لوحة الإدارة" : "Open CMS sections";
+  const mobileNavigationCloseLabel =
+    language === "ar" ? "إغلاق أقسام لوحة الإدارة" : "Close CMS sections";
+  const sidebarQuery = query.trim().toLowerCase();
+  const adminSidebarLinks: AdminSidebarLink[] = [
+    {
+      id: "submissions",
+      group: "Forms & Submissions",
+      label: { en: "Submissions", ar: "الطلبات الواردة" },
+      description: {
+        en: "Careers, corporate requests, and chat leads.",
+        ar: "طلبات الوظائف والشركات ومحادثات العملاء.",
+      },
+      href: "/admin/submissions",
+      visible: canSeeSubmissions,
+    },
+    {
+      id: "users",
+      group: "Admin Settings",
+      label: { en: "Users", ar: "المستخدمون" },
+      description: {
+        en: "Admin accounts and access permissions.",
+        ar: "حسابات الإدارة وصلاحيات الوصول.",
+      },
+      href: "/admin/users",
+      visible: canManageUsers,
+    },
+  ];
+  const filteredAdminSidebarLinks = adminSidebarLinks.filter((link) => {
+    if (!link.visible) return false;
+    if (!sidebarQuery) return true;
+    const groupLabel = adminGroupLabel(link.group, language);
+    return `${groupLabel} ${link.label[language]} ${link.description[language]} ${link.href}`
+      .toLowerCase()
+      .includes(sidebarQuery);
+  });
+  const visibleNavGroups = ADMIN_GROUP_ORDER.filter((group) => {
+    return (
+      Boolean(groupedSections[group]?.length) ||
+      filteredAdminSidebarLinks.some((link) => link.group === group)
+    );
+  });
 
   return (
     <main
@@ -335,7 +445,9 @@ export default function SecretPanel({
         />
       ) : null}
 
-      <aside className={`admin-sidebar${mobileNavigationOpen ? " is-mobile-open" : ""}`}>
+      <aside
+        className={`admin-sidebar${mobileNavigationOpen ? " is-mobile-open" : ""}`}
+      >
         <button
           type="button"
           className="admin-mobile-nav-close"
@@ -359,7 +471,11 @@ export default function SecretPanel({
             <div
               className="admin-language"
               role="group"
-              aria-label={language === "ar" ? "لغة تحرير المحتوى" : "Content editing language"}
+              aria-label={
+                language === "ar"
+                  ? "لغة تحرير المحتوى"
+                  : "Content editing language"
+              }
             >
               {(["en", "ar"] as Language[]).map((code) => (
                 <button
@@ -389,11 +505,17 @@ export default function SecretPanel({
         </div>
 
         <label className="admin-search">
-          <span>{language === "ar" ? "البحث في الأقسام" : "Search sections"}</span>
+          <span>
+            {language === "ar" ? "البحث في الأقسام" : "Search sections"}
+          </span>
           <input
             type="search"
             value={query}
-            placeholder={language === "ar" ? "ابحث عن الرئيسية، الفوتر، العروض..." : "Find homepage, footer, offers..."}
+            placeholder={
+              language === "ar"
+                ? "ابحث عن الرئيسية، الفوتر، العروض..."
+                : "Find homepage, footer, offers..."
+            }
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>
@@ -403,24 +525,35 @@ export default function SecretPanel({
           className="admin-section-list"
           aria-label={language === "ar" ? "أقسام لوحة الإدارة" : "CMS sections"}
         >
-          {Object.entries(groupedSections).map(([group, sections]) => {
-            const localizedGroup = sectionCopy(sections[0], language).group;
+          {visibleNavGroups.map((group) => {
+            const sections = groupedSections[group] ?? [];
+            const links = filteredAdminSidebarLinks.filter(
+              (link) => link.group === group,
+            );
+            const localizedGroup = adminGroupLabel(group, language);
             const isSearching = query.trim().length > 0;
             const isOpen = isSearching || openGroups.has(group);
 
             return (
-              <div className={`admin-nav-group${isOpen ? " is-open" : ""}`} key={group}>
+              <div
+                className={`admin-nav-group${isOpen ? " is-open" : ""}`}
+                key={group}
+              >
                 <button
                   type="button"
                   className="admin-nav-group-toggle"
                   onClick={() => toggleGroup(group)}
                   aria-expanded={isOpen}
                 >
-                  <span className="admin-nav-group-indicator" aria-hidden="true" />
+                  <span
+                    className="admin-nav-group-indicator"
+                    aria-hidden="true"
+                  />
                   <span>{localizedGroup}</span>
                 </button>
-                {isOpen
-                  ? sections.map((section) => {
+                {isOpen ? (
+                  <>
+                    {sections.map((section) => {
                       const copy = sectionCopy(section, language);
                       const isSelected = selectedSection.id === section.id;
                       const isHidden = hiddenSections.includes(section.id);
@@ -470,8 +603,28 @@ export default function SecretPanel({
                           ) : null}
                         </div>
                       );
-                    })
-                  : null}
+                    })}
+                    {links.map((link) => (
+                      <a
+                        className="admin-section-nav-row admin-section-nav-link"
+                        href={link.href}
+                        key={link.id}
+                        onClick={(event) => {
+                          if (!confirmLeave()) {
+                            event.preventDefault();
+                            return;
+                          }
+                          setMobileNavigationOpen(false);
+                        }}
+                      >
+                        <span className="admin-section-trigger">
+                          <span>{link.label[language]}</span>
+                          <small>{link.description[language]}</small>
+                        </span>
+                      </a>
+                    ))}
+                  </>
+                ) : null}
               </div>
             );
           })}
@@ -506,57 +659,44 @@ export default function SecretPanel({
           </div>
 
           <div className="admin-actions">
-            <span className={`admin-status ${statusTone}`}>{statusLabel(status, language)}</span>
-            <button className="admin-save" type="button" onClick={save} disabled={!canEditThisLanguage || isChatKnowledge}>
+            <span className={`admin-status ${statusTone}`}>
+              {statusLabel(status, language)}
+            </span>
+            <button
+              className="admin-save"
+              type="button"
+              onClick={save}
+              disabled={!canEditThisLanguage || isChatKnowledge}
+            >
               {language === "ar" ? "حفظ التغييرات" : "Save changes"}
             </button>
             <div className="admin-menu">
               <button
                 type="button"
                 className={`admin-menu-trigger${menuOpen ? " is-open" : ""}`}
-                aria-label={language === "ar" ? "إجراءات إضافية" : "More actions"}
+                aria-label={
+                  language === "ar" ? "إجراءات إضافية" : "More actions"
+                }
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
                 title={language === "ar" ? "إجراءات إضافية" : "More actions"}
                 onClick={() => setMenuOpen((open) => !open)}
               >
-                <span className="admin-menu-dots" aria-hidden="true">⋯</span>
+                <span className="admin-menu-dots" aria-hidden="true">
+                  ⋯
+                </span>
               </button>
               {menuOpen ? (
                 <>
                   <button
                     type="button"
                     className="admin-menu-backdrop"
-                    aria-label={language === "ar" ? "إغلاق القائمة" : "Close menu"}
+                    aria-label={
+                      language === "ar" ? "إغلاق القائمة" : "Close menu"
+                    }
                     onClick={() => setMenuOpen(false)}
                   />
                   <div className="admin-menu-pop" role="menu">
-                    {canSeeSubmissions ? (
-                      <a
-                        role="menuitem"
-                        className="admin-menu-item"
-                        href="/admin/submissions"
-                        onClick={(event) => {
-                          if (!confirmLeave()) event.preventDefault();
-                          else setMenuOpen(false);
-                        }}
-                      >
-                        {language === "ar" ? "الطلبات الواردة" : "Submissions"}
-                      </a>
-                    ) : null}
-                    {canManageUsers ? (
-                      <a
-                        role="menuitem"
-                        className="admin-menu-item"
-                        href="/admin/users"
-                        onClick={(event) => {
-                          if (!confirmLeave()) event.preventDefault();
-                          else setMenuOpen(false);
-                        }}
-                      >
-                        {language === "ar" ? "المستخدمون" : "Users"}
-                      </a>
-                    ) : null}
                     <a
                       role="menuitem"
                       className="admin-menu-item"
@@ -591,15 +731,26 @@ export default function SecretPanel({
         </header>
 
         <div className="admin-editor-grid">
-          <section className="admin-panel admin-content-panel" dir={language === "ar" ? "rtl" : "ltr"}>
+          <section
+            className="admin-panel admin-content-panel"
+            dir={language === "ar" ? "rtl" : "ltr"}
+          >
             <div className="admin-panel-head">
               <div>
                 <p className="admin-kicker">
-                  {language === "ar" ? "محتوى عربي" : `${languages[language].short} content`}
+                  {language === "ar"
+                    ? "محتوى عربي"
+                    : `${languages[language].short} content`}
                 </p>
                 <h3>{selectedSectionCopy.label}</h3>
               </div>
-              <span>{isChatKnowledge ? (language === "ar" ? "مصادر مشتركة" : "Shared sources") : sectionMeta(sectionValue, language)}</span>
+              <span>
+                {isChatKnowledge
+                  ? language === "ar"
+                    ? "مصادر مشتركة"
+                    : "Shared sources"
+                  : sectionMeta(sectionValue, language)}
+              </span>
             </div>
 
             {selectedHidden ? (
@@ -620,24 +771,54 @@ export default function SecretPanel({
                 language={language}
                 onChange={updateValue}
                 onReorder={reorderValue}
-                focusItem={["properties", "propertyGalleries"].includes(selectedSection.id) ? directProperty : undefined}
+                focusItem={
+                  ["properties", "propertyGalleries"].includes(
+                    selectedSection.id,
+                  )
+                    ? directProperty
+                    : undefined
+                }
               />
             ) : (
-              <div className="content-card">{language === "ar" ? "جار تحميل المحرر..." : "Loading editor..."}</div>
+              <div className="content-card">
+                {language === "ar"
+                  ? "جار تحميل المحرر..."
+                  : "Loading editor..."}
+              </div>
             )}
           </section>
 
           <aside className="admin-help">
-            <p className="admin-kicker">{language === "ar" ? "دليل التحرير" : "Editing guide"}</p>
+            <p className="admin-kicker">
+              {language === "ar" ? "دليل التحرير" : "Editing guide"}
+            </p>
             <h3>{language === "ar" ? "طريقة العمل" : "Workflow"}</h3>
             <ul>
-              <li>{language === "ar" ? "استخدم اللوحة المناسبة للنسخة التي تريد تعديلها." : "Use the panel that matches the website version you want to edit."}</li>
-              <li>{language === "ar" ? "اختر القسم من القائمة الجانبية." : "Choose a section from the sidebar."}</li>
-              <li>{language === "ar" ? "استخدم مقبض السحب فقط لتغيير ترتيب البطاقات." : "Use the drag handle only to reorder repeated cards."}</li>
-              <li>{language === "ar" ? "احفظ بعد الانتهاء من مجموعة التعديلات." : "Save once you finish a group of edits."}</li>
+              <li>
+                {language === "ar"
+                  ? "استخدم اللوحة المناسبة للنسخة التي تريد تعديلها."
+                  : "Use the panel that matches the website version you want to edit."}
+              </li>
+              <li>
+                {language === "ar"
+                  ? "اختر القسم من القائمة الجانبية."
+                  : "Choose a section from the sidebar."}
+              </li>
+              <li>
+                {language === "ar"
+                  ? "استخدم مقبض السحب فقط لتغيير ترتيب البطاقات."
+                  : "Use the drag handle only to reorder repeated cards."}
+              </li>
+              <li>
+                {language === "ar"
+                  ? "احفظ بعد الانتهاء من مجموعة التعديلات."
+                  : "Save once you finish a group of edits."}
+              </li>
             </ul>
             <div>
-              <strong>{language === "ar" ? "تحديث مباشر" : "Live update"}</strong>
+              <strong>
+                {language === "ar" ? "تحديث مباشر" : "Live update"}
+              </strong>
               <p>
                 {language === "ar"
                   ? "يتم حفظ المحتوى في نظام الإدارة، وتتحدث الصفحات العامة بدون إعادة نشر."

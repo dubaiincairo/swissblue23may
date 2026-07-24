@@ -1,15 +1,49 @@
 // Admin section registry + bilingual labels for the Swiss Blue content panel.
-import type { AdminSection, AdminSectionTranslation, JsonObject, Language } from "./types";
+import type {
+  AdminSection,
+  AdminSectionTranslation,
+  JsonObject,
+  Language,
+} from "./types";
 
-export const languages: Record<Language, { label: string; short: string; previewHref: string }> = {
+export const languages: Record<
+  Language,
+  { label: string; short: string; previewHref: string }
+> = {
   en: { label: "English", short: "EN", previewHref: "/en" },
   ar: { label: "العربية", short: "AR", previewHref: "/ar" },
 };
 
+export const ADMIN_GROUP_ORDER = [
+  "Dashboard",
+  "Website",
+  "Media",
+  "Forms & Submissions",
+  "SEO & Publishing",
+  "AI Assistant",
+  "Admin Settings",
+] as const;
+
+export function adminGroupLabel(group: string, language: Language) {
+  if (language !== "ar") return group;
+
+  return (
+    {
+      Dashboard: "لوحة التحكم",
+      Website: "الموقع",
+      Media: "الوسائط",
+      "Forms & Submissions": "النماذج والطلبات",
+      "SEO & Publishing": "تحسين النشر",
+      "AI Assistant": "المساعد الذكي",
+      "Admin Settings": "إعدادات الإدارة",
+    }[group] ?? group
+  );
+}
+
 export const adminSections: AdminSection[] = [
   {
     id: "seo",
-    group: "SEO & Social",
+    group: "SEO & Publishing",
     label: "Search & social preview",
     description:
       "Site title, meta description, keywords, favicon, theme color, and the Open Graph / Twitter image shown when the site is shared.",
@@ -17,7 +51,7 @@ export const adminSections: AdminSection[] = [
   },
   {
     id: "seoPages",
-    group: "SEO & Social",
+    group: "SEO & Publishing",
     label: "Per-page SEO",
     description:
       "Title, meta description, and optional social image for each individual page. Overrides the site defaults; empty fields fall back automatically.",
@@ -25,63 +59,66 @@ export const adminSections: AdminSection[] = [
   },
   {
     id: "navGroups",
-    group: "Site-wide",
+    group: "Website",
     label: "Navigation",
     description: "Main menu groups, dropdown labels, and page links.",
     path: ["navGroups"],
   },
   {
     id: "media",
-    group: "Site-wide",
+    group: "Media",
     label: "Website photos",
     description: "Logo, the three hero slides, city photos, and shared images.",
     path: ["media"],
   },
   {
     id: "adminAuthBackdrop",
-    group: "Site-wide",
+    group: "Media",
     label: "Admin sign-in backdrop",
-    description: "Six sign-in background photos, crop focus, ordering, and the backdrop arrangement.",
+    description:
+      "Six sign-in background photos, crop focus, ordering, and the backdrop arrangement.",
     path: ["media", "adminAuthBackdrop"],
   },
   {
     id: "hospitalityGallery",
-    group: "Site-wide",
+    group: "Media",
     label: "Hospitality gallery",
     description: "Homepage hospitality gallery photos and captions.",
     path: ["media", "gallery"],
   },
   {
     id: "propertyGalleries",
-    group: "Site-wide",
+    group: "Media",
     label: "Hotel galleries",
-    description: "Upload the real gallery photos for each hotel/property detail page.",
+    description:
+      "Upload the real gallery photos for each hotel/property detail page.",
     path: ["homepage", "properties"],
   },
   {
     id: "footerSections",
-    group: "Site-wide",
+    group: "Website",
     label: "Footer links",
     description: "Footer columns and supporting site links.",
     path: ["footerSections"],
   },
   {
     id: "footerContact",
-    group: "Site-wide",
+    group: "Website",
     label: "Footer support",
     description: "Support bullets shown beside the footer booking action.",
     path: ["footerContact"],
   },
   {
     id: "footerMeta",
-    group: "Site-wide",
+    group: "Website",
     label: "Footer text",
-    description: "Footer description, city badges, support heading, contact button, and copyright lines.",
+    description:
+      "Footer description, city badges, support heading, contact button, and copyright lines.",
     path: ["footerMeta"],
   },
   {
     id: "social",
-    group: "Site-wide",
+    group: "SEO & Publishing",
     label: "Social media links",
     description:
       "Profile URLs for the clickable social icons in the footer. Leave a field blank to hide that icon. Set a link in either language and it shows everywhere.",
@@ -89,259 +126,273 @@ export const adminSections: AdminSection[] = [
   },
   {
     id: "uiText",
-    group: "Site-wide",
+    group: "Website",
     label: "Site-wide UI text",
-    description: "Book button, booking bar labels, mobile menu, payment label, and cookie banner copy.",
+    description:
+      "Book button, booking bar labels, mobile menu, payment label, and cookie banner copy.",
     path: ["ui"],
   },
   {
     id: "chatAssistant",
-    group: "Site-wide",
+    group: "AI Assistant",
     label: "Chat assistant",
-    description: "Assistant visibility, profile, portrait, greeting, quick actions, and lead confirmation messages.",
+    description:
+      "Assistant visibility, profile, portrait, greeting, quick actions, and lead confirmation messages.",
     path: ["chatAssistant"],
   },
   {
     id: "chatKnowledge",
-    group: "Site-wide",
+    group: "AI Assistant",
     label: "Chat knowledge base",
-    description: "Approved PDF documents and website links the assistant can search before answering.",
+    description:
+      "Approved PDF documents and website links the assistant can search before answering.",
     path: ["chatKnowledge"],
   },
   {
     id: "closingCtas",
-    group: "Site-wide",
+    group: "Website",
     label: "Closing CTAs (page bottoms)",
-    description: "The booking call-to-action band at the bottom of every page: shared eyebrow + body text, and each page's title and button.",
+    description:
+      "The booking call-to-action band at the bottom of every page: shared eyebrow + body text, and each page's title and button.",
     path: ["closingCtas"],
   },
   {
     id: "hero",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Hero & booking",
     description: "Main banner headline, supporting copy, and primary actions.",
     path: ["homepage", "hero"],
   },
   {
     id: "highlights",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Key numbers",
     description: "The four statistics displayed under the hero section.",
     path: ["homepage", "highlights"],
   },
   {
     id: "properties",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Property cards",
     description: "The six hospitality property cards shown on the homepage.",
     path: ["homepage", "properties"],
   },
   {
     id: "loyalty",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Loyalty program",
     description: "Program headline, intro text, and guest benefits.",
     path: ["homepage", "loyalty"],
   },
   {
     id: "destinations",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Destinations",
     description: "Jeddah and Riyadh cards, plus Jazan coming-soon guidance.",
     path: ["homepage", "destinations"],
   },
   {
     id: "offers",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Offers",
     description: "Business, family, and monthly-stay offer blocks.",
     path: ["homepage", "offers"],
   },
   {
     id: "services",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Services",
     description: "Service section text and amenity list.",
     path: ["homepage", "services"],
   },
   {
     id: "categories",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Stay categories",
     description: "Hotel, apart-hotel, and serviced-apartment comparison.",
     path: ["homepage", "categories"],
   },
   {
     id: "testimonials",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Guest testimonials",
-    description: "Reviews shown on the homepage. Pull real testimonials from Google Maps, Booking.com, Agoda, Expedia, and other platforms.",
+    description:
+      "Reviews shown on the homepage. Pull real testimonials from Google Maps, Booking.com, Agoda, Expedia, and other platforms.",
     path: ["homepage", "testimonials"],
   },
   {
     id: "cta",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Closing CTA",
     description: "Final booking call-to-action at the bottom of the page.",
     path: ["homepage", "cta"],
   },
   {
     id: "homepageFaq",
-    group: "Homepage",
+    group: "Dashboard",
     label: "Homepage FAQ",
     description: "Questions shown near the bottom of the homepage.",
     path: ["faq", "homepage"],
   },
   {
     id: "hotelsSubpage",
-    group: "Stay",
+    group: "Website",
     label: "Hotels page",
     description: "Hotels page hero and introduction text.",
     path: ["subpages", "hotelsPage"],
   },
   {
     id: "roomsSuitesPage",
-    group: "Stay",
+    group: "Website",
     label: "Rooms & Suites page",
-    description: "Rooms page hero, classification principles, table intro, and classifications table.",
+    description:
+      "Rooms page hero, classification principles, table intro, and classifications table.",
     path: ["subpages", "roomsSuites"],
   },
   {
     id: "servicedApartmentsPage",
-    group: "Stay",
+    group: "Website",
     label: "Serviced Apartments page",
     description: "Serviced Apartments page hero banner.",
     path: ["subpages", "servicedApartments"],
   },
   {
     id: "amenitiesServicesPage",
-    group: "Stay",
+    group: "Website",
     label: "Amenities & Services page",
     description: "Amenities & Services page hero banner.",
     path: ["subpages", "amenitiesServices"],
   },
   {
     id: "propertyFaq",
-    group: "Stay",
+    group: "Website",
     label: "Property FAQ",
     description: "Questions shown on every hotel detail page.",
     path: ["faq", "property"],
   },
   {
     id: "destinationsSubpage",
-    group: "Experience",
+    group: "Website",
     label: "Destinations page",
     description: "Destinations page hero banner.",
     path: ["subpages", "destinationsPage"],
   },
   {
     id: "diningPage",
-    group: "Experience",
+    group: "Website",
     label: "Dining page",
-    description: "Dining page hero banner, introduction text, and food services list.",
+    description:
+      "Dining page hero banner, introduction text, and food services list.",
     path: ["subpages", "dining"],
   },
   {
     id: "offersSubpage",
-    group: "Offers",
+    group: "Website",
     label: "Offers page",
     description: "Offers page hero, main offers, and booking benefits lists.",
     path: ["subpages", "offersPage"],
   },
   {
     id: "loyaltySubpage",
-    group: "Offers",
+    group: "Website",
     label: "Loyalty page",
     description: "Loyalty page hero banner.",
     path: ["subpages", "loyaltyPage"],
   },
   {
     id: "corporateDealsSubpage",
-    group: "Business",
+    group: "Website",
     label: "Corporate Deals page",
     description: "Corporate Deals page hero banner.",
     path: ["subpages", "corporateDealsPage"],
   },
   {
     id: "b2bForm",
-    group: "Business",
+    group: "Forms & Submissions",
     label: "B2B — request form",
-    description: "Corporate (B2B) request form: intro, step headings, every field label, and dropdown options.",
+    description:
+      "Corporate (B2B) request form: intro, step headings, every field label, and dropdown options.",
     path: ["subpages", "corporateDealsPage", "requestForm"],
   },
   {
     id: "meetingsEventsPage",
-    group: "Business",
+    group: "Website",
     label: "Meetings & Events page",
-    description: "Meetings page hero, intro, documents, and corporate deal features.",
+    description:
+      "Meetings page hero, intro, documents, and corporate deal features.",
     path: ["subpages", "meetingsEvents"],
   },
   {
     id: "groupBookingsPage",
-    group: "Business",
+    group: "Website",
     label: "Group Bookings page",
-    description: "Group Bookings page hero, introduction text, and requirements list.",
+    description:
+      "Group Bookings page hero, introduction text, and requirements list.",
     path: ["subpages", "groupBookings"],
   },
   {
     id: "careersSubpage",
-    group: "Community",
+    group: "Website",
     label: "Careers page",
     description: "Hero, why-join cards, departments, and apply panel.",
     path: ["subpages", "careersPage"],
   },
   {
     id: "careersForm",
-    group: "Community",
+    group: "Forms & Submissions",
     label: "Careers — jobs & application form",
-    description: "Workplace culture cards, the job openings list, and the application form labels and messages.",
+    description:
+      "Workplace culture cards, the job openings list, and the application form labels and messages.",
     path: ["subpages", "careersPage", "recruitment"],
   },
   {
     id: "csrSubpage",
-    group: "Community",
+    group: "Website",
     label: "Social Responsibility page",
     description: "Hero, pillars, initiatives, and reporting.",
     path: ["subpages", "csrPage"],
   },
   {
     id: "reservationOfficeSubpage",
-    group: "Contact Us",
+    group: "Website",
     label: "Central Reservation page",
-    description: "Hero, channels (phone / WhatsApp / email), services, and benefits.",
+    description:
+      "Hero, channels (phone / WhatsApp / email), services, and benefits.",
     path: ["subpages", "reservationOfficePage"],
   },
   {
     id: "feedbackSubpage",
-    group: "Contact Us",
+    group: "Website",
     label: "Complaints & Suggestions page",
-    description: "Hero, channels, process steps, categories, and escalation path.",
+    description:
+      "Hero, channels, process steps, categories, and escalation path.",
     path: ["subpages", "feedbackPage"],
   },
   {
     id: "contactPage",
-    group: "Contact Us",
+    group: "Website",
     label: "Contact page",
     description: "Contact page hero, channels lists, and direct booking intro.",
     path: ["subpages", "contact"],
   },
   {
     id: "aboutPage",
-    group: "Company",
+    group: "Website",
     label: "About page",
-    description: "About page hero banner, philosophy paragraph, and brand pillars.",
+    description:
+      "About page hero banner, philosophy paragraph, and brand pillars.",
     path: ["subpages", "about"],
   },
   {
     id: "faqSubpage",
-    group: "Company",
+    group: "Website",
     label: "FAQ page",
     description: "FAQ page hero banner.",
     path: ["subpages", "faqPage"],
   },
   {
     id: "faqCategories",
-    group: "Company",
+    group: "Website",
     label: "Full FAQ page",
     description: "FAQ categories and questions shown on the full FAQ page.",
     path: ["faq", "categories"],
@@ -380,7 +431,8 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   adminAuthBackdrop: {
     group: "إعدادات الموقع",
     label: "خلفية تسجيل دخول الإدارة",
-    description: "ست صور لخلفية تسجيل الدخول، ونقطة الاقتصاص، والترتيب، ونمط العرض.",
+    description:
+      "ست صور لخلفية تسجيل الدخول، ونقطة الاقتصاص، والترتيب، ونمط العرض.",
   },
   hospitalityGallery: {
     group: "إعدادات الموقع",
@@ -400,27 +452,32 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   footerMeta: {
     group: "إعدادات الموقع",
     label: "نصوص الفوتر",
-    description: "وصف الفوتر، شارات المدن، عنوان الدعم، زر التواصل، وسطور حقوق النشر.",
+    description:
+      "وصف الفوتر، شارات المدن، عنوان الدعم، زر التواصل، وسطور حقوق النشر.",
   },
   uiText: {
     group: "إعدادات الموقع",
     label: "نصوص واجهة الموقع",
-    description: "زر الحجز، تسميات شريط الحجز، قائمة الجوال، نص الدفع، ونص لافتة الكوكيز.",
+    description:
+      "زر الحجز، تسميات شريط الحجز، قائمة الجوال، نص الدفع، ونص لافتة الكوكيز.",
   },
   chatAssistant: {
     group: "إعدادات الموقع",
     label: "مساعد المحادثة",
-    description: "إظهار المساعد، ملفه التعريفي وصورته، رسالة الترحيب، الإجراءات السريعة، ورسائل تأكيد الطلبات.",
+    description:
+      "إظهار المساعد، ملفه التعريفي وصورته، رسالة الترحيب، الإجراءات السريعة، ورسائل تأكيد الطلبات.",
   },
   chatKnowledge: {
     group: "إعدادات الموقع",
     label: "قاعدة معرفة المحادثة",
-    description: "ملفات PDF والروابط المعتمدة التي يبحث فيها المساعد قبل إعداد الإجابة.",
+    description:
+      "ملفات PDF والروابط المعتمدة التي يبحث فيها المساعد قبل إعداد الإجابة.",
   },
   closingCtas: {
     group: "إعدادات الموقع",
     label: "نداءات الإجراء الختامية",
-    description: "شريط الحجز أسفل كل صفحة: العنوان الفرعي والنص المشترك، وعنوان وزر كل صفحة.",
+    description:
+      "شريط الحجز أسفل كل صفحة: العنوان الفرعي والنص المشترك، وعنوان وزر كل صفحة.",
   },
   hero: {
     group: "الصفحة الرئيسية",
@@ -470,7 +527,8 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   testimonials: {
     group: "الصفحة الرئيسية",
     label: "آراء الضيوف",
-    description: "آراء حقيقية من ضيوفنا عبر جوجل، Booking.com، Agoda، Expedia وغيرها.",
+    description:
+      "آراء حقيقية من ضيوفنا عبر جوجل، Booking.com، Agoda، Expedia وغيرها.",
   },
   cta: {
     group: "الصفحة الرئيسية",
@@ -490,7 +548,8 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   roomsSuitesPage: {
     group: "الإقامة",
     label: "صفحة الغرف والأجنحة",
-    description: "بانر صفحة الغرف، مبادئ التصنيف، مقدمة الجدول، وجدول التصنيفات المعتمد.",
+    description:
+      "بانر صفحة الغرف، مبادئ التصنيف، مقدمة الجدول، وجدول التصنيفات المعتمد.",
   },
   servicedApartmentsPage: {
     group: "الإقامة",
@@ -535,12 +594,14 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   b2bForm: {
     group: "الأعمال",
     label: "نموذج طلب الشركات",
-    description: "نموذج طلب الشركات: التمهيد، عناوين الخطوات، تسميات الحقول، وخيارات القوائم المنسدلة.",
+    description:
+      "نموذج طلب الشركات: التمهيد، عناوين الخطوات، تسميات الحقول، وخيارات القوائم المنسدلة.",
   },
   meetingsEventsPage: {
     group: "الأعمال",
     label: "صفحة الاجتماعات والمناسبات",
-    description: "بانر صفحة الاجتماعات، النص التعريفي، المستندات، ومزايا صفقات الشركات.",
+    description:
+      "بانر صفحة الاجتماعات، النص التعريفي، المستندات، ومزايا صفقات الشركات.",
   },
   groupBookingsPage: {
     group: "الأعمال",
@@ -555,7 +616,8 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   careersForm: {
     group: "المجتمع",
     label: "الوظائف ونموذج التقديم",
-    description: "بطاقات ثقافة العمل، قائمة الوظائف المتاحة، وتسميات ورسائل نموذج التقديم.",
+    description:
+      "بطاقات ثقافة العمل، قائمة الوظائف المتاحة، وتسميات ورسائل نموذج التقديم.",
   },
   csrSubpage: {
     group: "المجتمع",
@@ -565,12 +627,14 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   reservationOfficeSubpage: {
     group: "تواصل معنا",
     label: "صفحة مكتب الحجوزات المركزي",
-    description: "البانر، قنوات التواصل (هاتف / واتساب / بريد)، الخدمات، والميزات.",
+    description:
+      "البانر، قنوات التواصل (هاتف / واتساب / بريد)، الخدمات، والميزات.",
   },
   feedbackSubpage: {
     group: "تواصل معنا",
     label: "صفحة الشكاوى والاقتراحات",
-    description: "البانر، قنوات الاستلام، خطوات المعالجة، الفئات، ومسار التصعيد.",
+    description:
+      "البانر، قنوات الاستلام، خطوات المعالجة، الفئات، ومسار التصعيد.",
   },
   contactPage: {
     group: "تواصل معنا",
@@ -590,7 +654,8 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   faqCategories: {
     group: "عن الشركة",
     label: "صفحة الأسئلة الشائعة الكاملة",
-    description: "تصنيفات الأسئلة والأسئلة المعروضة في صفحة الأسئلة الشائعة الكاملة.",
+    description:
+      "تصنيفات الأسئلة والأسئلة المعروضة في صفحة الأسئلة الشائعة الكاملة.",
   },
 };
 
@@ -990,17 +1055,31 @@ export const fieldOrder = [
 ];
 
 export function sectionCopy(section: AdminSection, language: Language) {
-  return language === "ar"
-    ? arabicSectionLabels[section.id] ?? section
-    : section;
+  const translation =
+    language === "ar" ? arabicSectionLabels[section.id] : undefined;
+
+  return {
+    ...section,
+    ...translation,
+    group: adminGroupLabel(section.group, language),
+  };
 }
 
 export function labelFor(key: string, language: Language = "en") {
   if (language === "ar") {
-    return arabicFieldLabels[key] ?? fieldLabels[key] ?? key.replace(/([A-Z])/g, " $1");
+    return (
+      arabicFieldLabels[key] ??
+      fieldLabels[key] ??
+      key.replace(/([A-Z])/g, " $1")
+    );
   }
 
-  return fieldLabels[key] ?? key.replace(/([A-Z])/g, " $1").replace(/^./, (letter) => letter.toUpperCase());
+  return (
+    fieldLabels[key] ??
+    key
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (letter) => letter.toUpperCase())
+  );
 }
 
 export function orderedEntries(object: JsonObject) {
@@ -1021,10 +1100,11 @@ export function shouldShowField(path: Array<string | number>, key: string) {
     path[0] === "ar" || path[0] === "en"
       ? path.slice(1).map(String)
       : path.map(String);
-  const hasDedicatedChildSection = adminSections.some((section) =>
-    section.path.length === contentPath.length + 1 &&
-    contentPath.every((segment, index) => section.path[index] === segment) &&
-    section.path.at(-1) === key,
+  const hasDedicatedChildSection = adminSections.some(
+    (section) =>
+      section.path.length === contentPath.length + 1 &&
+      contentPath.every((segment, index) => section.path[index] === segment) &&
+      section.path.at(-1) === key,
   );
 
   // A nested object with its own sidebar destination must not also appear in
@@ -1051,7 +1131,6 @@ export function shouldShowField(path: Array<string | number>, key: string) {
 
   return true;
 }
-
 
 // Structural sections that must always render — hiding them would break the site layout.
 export const NON_HIDEABLE_SECTIONS = new Set([
