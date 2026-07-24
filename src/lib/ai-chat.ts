@@ -8,6 +8,7 @@ export type WebsiteKnowledge = {
 };
 
 type PropertySummary = {
+  slug?: string;
   title?: string;
   city?: string;
   units?: string;
@@ -88,6 +89,16 @@ function normalizeSearch(value: string) {
 
 function mentionsRoomsQuestion(question: string) {
   const normalized = normalizeSearch(question);
+  const hasArabicUnit = ["غرف", "غرفه", "شقق", "شقه", "وحدات", "وحده"].some((term) => normalized.includes(term));
+  if (hasArabicUnit && (normalized.includes("كم") || normalized.includes("عدد") || normalized.includes("متاح"))) {
+    return true;
+  }
+
+  const hasEnglishUnit = ["room", "rooms", "apartment", "apartments", "unit", "units"].some((term) => normalized.includes(term));
+  if (hasEnglishUnit && (normalized.includes("how many") || normalized.includes("available") || normalized.includes("type"))) {
+    return true;
+  }
+
   return [
     "how many room",
     "how many apartment",
@@ -109,7 +120,8 @@ function mentionsRoomsQuestion(question: string) {
 
 function propertyAliases(property: PropertySummary) {
   const title = property.title ?? "";
-  return [title, ...(title.match(/\p{L}+/gu) ?? [])]
+  const slug = property.slug ?? "";
+  return [title, slug, ...slug.split("-"), ...(title.match(/\p{L}+/gu) ?? [])]
     .filter((value) => value.length >= 3)
     .map(normalizeSearch);
 }
@@ -138,8 +150,8 @@ export function fastWebsiteAnswer(content: EditableSiteContent, locale: ChatLoca
     return `يسعدني مساعدتك. ${property.title} في ${property.city ?? "سويس بلو"} تضم ${property.units ?? "عدة وحدات"}${details} للتوفر الفعلي في تاريخ إقامتك، يرجى استخدام زر الحجز أو التواصل مع فريق الحجوزات.`;
   }
 
-  const details = unitList.length ? ` The categories are: ${unitList.join("; ")}.` : ".";
-  return `I'd be happy to help. ${property.title} in ${property.city ?? "Swiss Blue"} has ${property.units ?? "several units"}${details} For live availability on your travel dates, please use the Book now button or contact reservations.`;
+  const details = unitList.length ? ` The categories are: ${unitList.join("; ")}.` : "";
+  return `I'd be happy to help. ${property.title} in ${property.city ?? "Swiss Blue"} has ${property.units ?? "several units"}.${details} For live availability on your travel dates, please use the Book now button or contact reservations.`;
 }
 
 /**
