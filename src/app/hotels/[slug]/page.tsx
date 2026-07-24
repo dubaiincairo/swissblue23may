@@ -6,7 +6,7 @@ import PropertyMap from "@/components/property-map";
 import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import SocialShare from "@/components/social-share";
-import { hotels, propertyGallerySupplement } from "@/lib/content";
+import { hotels } from "@/lib/content";
 import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
 import { isComingSoonProperty } from "@/lib/property-availability";
 
@@ -146,9 +146,7 @@ export default async function HotelDetailPage({
         </div>
         <div className="mt-8">
           <PhotoGalleryLightbox
-            images={Array.from(
-              new Set([...hotel.gallery, ...propertyGallerySupplement]),
-            )
+            images={hotel.gallery
               .slice(0, 6)
               .map((image, index) => ({
                 image,
