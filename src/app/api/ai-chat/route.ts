@@ -144,7 +144,7 @@ export async function POST(request: Request) {
         input: message,
         max_output_tokens: MAX_OUTPUT_TOKENS,
         store: false,
-        ...(tools ? { tools, tool_choice: "required" } : {}),
+        ...(tools ? { tools } : {}),
       }),
       cache: "no-store",
       signal: controller.signal,
