@@ -38,7 +38,7 @@ function responseText(payload: OpenAIResponse) {
 
   return (payload.output ?? [])
     .flatMap((item) => item.content ?? [])
-    .filter((part) => part.type === "output_text" && typeof part.text === "string")
+    .filter((part) => (part.type === "output_text" || part.type === "text" || !part.type) && typeof part.text === "string")
     .map((part) => part.text?.trim())
     .filter((part): part is string => Boolean(part))
     .join("\n")
@@ -53,6 +53,45 @@ function sameOrigin(request: Request) {
   } catch {
     return false;
   }
+}
+
+async function requestOpenAiAnswer({
+  message,
+  locale,
+  context,
+  tools,
+  signal,
+}: {
+  message: string;
+  locale: ChatLocale;
+  context: string;
+  tools?: Array<{ type: "file_search"; vector_store_ids: string[]; max_num_results: number }>;
+  signal: AbortSignal;
+}) {
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: process.env.OPENAI_CHAT_MODEL || "gpt-5-mini",
+      instructions: aiInstructions(locale, context),
+      input: message,
+      max_output_tokens: MAX_OUTPUT_TOKENS,
+      store: false,
+      ...(tools ? { tools } : {}),
+    }),
+    cache: "no-store",
+    signal,
+  });
+
+  if (!response.ok) {
+    return { ok: false as const, status: response.status };
+  }
+
+  const payload = (await response.json()) as OpenAIResponse;
+  return { ok: true as const, answer: responseText(payload) };
 }
 
 async function allowRequest(request: Request) {
@@ -126,40 +165,46 @@ export async function POST(request: Request) {
   }
 
   const tools = vectorStoreId
-    ? [{ type: "file_search", vector_store_ids: [vectorStoreId], max_num_results: 3 }]
+    ? [{ type: "file_search" as const, vector_store_ids: [vectorStoreId], max_num_results: 3 }]
     : undefined;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25_000);
   try {
-    const openAiResponse = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: process.env.OPENAI_CHAT_MODEL || "gpt-5-mini",
-        instructions: aiInstructions(locale, websiteKnowledge.context),
-        input: message,
-        max_output_tokens: MAX_OUTPUT_TOKENS,
-        store: false,
-        ...(tools ? { tools } : {}),
-      }),
-      cache: "no-store",
+    const firstAttempt = await requestOpenAiAnswer({
+      message,
+      locale,
+      context: websiteKnowledge.context,
+      tools,
       signal: controller.signal,
     });
 
-    if (!openAiResponse.ok) {
-      const status = openAiResponse.status === 429 ? 429 : 502;
+    if (!firstAttempt.ok) {
+      const status = firstAttempt.status === 429 ? 429 : 502;
       return NextResponse.json(
         { error: localized(locale, "The assistant is busy right now. Please try again shortly.", "المساعد مشغول حالياً. يرجى المحاولة بعد قليل.") },
         { status },
       );
     }
 
-    const payload = (await openAiResponse.json()) as OpenAIResponse;
-    const answer = responseText(payload);
+    let answer = firstAttempt.answer;
+    if (!answer && tools) {
+      const fallbackAttempt = await requestOpenAiAnswer({
+        message,
+        locale,
+        context: websiteKnowledge.context,
+        signal: controller.signal,
+      });
+      if (!fallbackAttempt.ok) {
+        const status = fallbackAttempt.status === 429 ? 429 : 502;
+        return NextResponse.json(
+          { error: localized(locale, "The assistant is busy right now. Please try again shortly.", "المساعد مشغول حالياً. يرجى المحاولة بعد قليل.") },
+          { status },
+        );
+      }
+      answer = fallbackAttempt.answer;
+    }
+
     if (!answer) {
       return NextResponse.json(
         { error: localized(locale, "I could not prepare an answer. Please try again.", "تعذر إعداد إجابة. يرجى المحاولة مرة أخرى.") },
