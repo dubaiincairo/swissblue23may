@@ -100,7 +100,7 @@ export default function SecretPanel({
   }, []);
 
   useEffect(() => {
-    if (!content || selectedId !== "properties" || !directProperty) {
+    if (!content || !["properties", "propertyGalleries"].includes(selectedId) || !directProperty) {
       return;
     }
 
@@ -186,13 +186,13 @@ export default function SecretPanel({
 
   function selectSection(id: string) {
     setSelectedId(id);
-    if (id !== "properties") {
+    if (!["properties", "propertyGalleries"].includes(id)) {
       setDirectProperty(undefined);
     }
 
     const url = new URL(window.location.href);
     url.searchParams.set("section", id);
-    if (id !== "properties") {
+    if (!["properties", "propertyGalleries"].includes(id)) {
       url.searchParams.delete("property");
     }
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
@@ -631,7 +631,7 @@ export default function SecretPanel({
                 language={language}
                 onChange={updateValue}
                 onReorder={reorderValue}
-                focusItem={selectedSection.id === "properties" ? directProperty : undefined}
+                focusItem={["properties", "propertyGalleries"].includes(selectedSection.id) ? directProperty : undefined}
               />
             ) : (
               <div className="content-card">{language === "ar" ? "جار تحميل المحرر..." : "Loading editor..."}</div>

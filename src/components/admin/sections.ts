@@ -52,6 +52,13 @@ export const adminSections: AdminSection[] = [
     path: ["media", "gallery"],
   },
   {
+    id: "propertyGalleries",
+    group: "Site-wide",
+    label: "Hotel galleries",
+    description: "Upload the real gallery photos for each hotel/property detail page.",
+    path: ["homepage", "properties"],
+  },
+  {
     id: "footerSections",
     group: "Site-wide",
     label: "Footer links",
@@ -429,6 +436,11 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     group: "الصفحة الرئيسية",
     label: "بطاقات الفنادق",
     description: "بطاقات منشآت الضيافة المعروضة في الصفحة الرئيسية.",
+  },
+  propertyGalleries: {
+    group: "على مستوى الموقع",
+    label: "معارض الفنادق",
+    description: "رفع صور المعرض الحقيقية لكل فندق أو منشأة.",
   },
   loyalty: {
     group: "الصفحة الرئيسية",

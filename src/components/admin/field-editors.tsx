@@ -28,6 +28,7 @@ export function ImageFieldEditor({
 }) {
   const [uploadStatus, setUploadStatus] = useState("");
   const [pickerSource, setPickerSource] = useState<"unsplash" | "pexels" | null>(null);
+  const uploadOnly = isHotelGalleryImage(path);
 
   function handleStockSelect(asset: { url: string; width?: number; height?: number }) {
     onChange(path, asset.url);
@@ -119,26 +120,30 @@ export function ImageFieldEditor({
                 onChange={(event) => uploadImage(event.target.files?.[0])}
               />
             </label>
-            <button
-              type="button"
-              className="admin-image-source-icon admin-image-source-unsplash"
-              onClick={() => setPickerSource("unsplash")}
-              aria-label={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
-              title={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
-            >
-              <Images aria-hidden="true" size={16} strokeWidth={2} />
-              <span>Unsplash</span>
-            </button>
-            <button
-              type="button"
-              className="admin-image-source-icon admin-image-source-pexels"
-              onClick={() => setPickerSource("pexels")}
-              aria-label={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
-              title={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
-            >
-              <Images aria-hidden="true" size={16} strokeWidth={2} />
-              <span>Pexels</span>
-            </button>
+            {uploadOnly ? null : (
+              <>
+                <button
+                  type="button"
+                  className="admin-image-source-icon admin-image-source-unsplash"
+                  onClick={() => setPickerSource("unsplash")}
+                  aria-label={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
+                  title={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
+                >
+                  <Images aria-hidden="true" size={16} strokeWidth={2} />
+                  <span>Unsplash</span>
+                </button>
+                <button
+                  type="button"
+                  className="admin-image-source-icon admin-image-source-pexels"
+                  onClick={() => setPickerSource("pexels")}
+                  aria-label={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
+                  title={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
+                >
+                  <Images aria-hidden="true" size={16} strokeWidth={2} />
+                  <span>Pexels</span>
+                </button>
+              </>
+            )}
           </div>
           {uploadStatus ? <small>{uploadStatus}</small> : null}
         </div>
@@ -249,6 +254,28 @@ export function StringFieldEditor({
       />
     </div>
   );
+}
+
+function isHotelGalleryImage(path: Array<string | number>) {
+  return path.map(String).includes("properties") && path.map(String).includes("gallery");
+}
+
+function visiblePropertyGalleryKeys(path: Array<string | number>, key: string) {
+  const pathText = path.map(String).join(".");
+
+  if (pathText.endsWith("homepage.properties")) {
+    return key === "items";
+  }
+
+  if (/homepage\.properties\.items\.\d+$/.test(pathText)) {
+    return ["title", "name", "city", "slug", "gallery"].includes(key);
+  }
+
+  if (/homepage\.properties\.items\.\d+\.gallery\.\d+$/.test(pathText)) {
+    return ["title", "image"].includes(key);
+  }
+
+  return true;
 }
 
 const FOCUS_OPTIONS: Array<{ value: string; en: string; ar: string }> = [
@@ -669,6 +696,7 @@ export function FieldEditor({
   onReorder,
   focusItem,
   isFocusedItem = false,
+  galleryOnly = false,
 }: {
   name: string;
   value: JsonValue;
@@ -679,6 +707,7 @@ export function FieldEditor({
   onReorder: (path: Array<string | number>, from: number, to: number) => void;
   focusItem?: string;
   isFocusedItem?: boolean;
+  galleryOnly?: boolean;
 }) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
@@ -735,6 +764,7 @@ export function FieldEditor({
     const primitiveList = value.every((item) => !isPlainObject(item) && !Array.isArray(item));
     const isFixedAdminAuthPhotos = name === "photos" && isAdminAuthBackdropPath(path);
     const isPropertyList = name === "items" && path.includes("properties");
+    const isGalleryOnlyPropertyList = galleryOnly && isPropertyList;
     const openForDirectLink = Boolean((isPropertyList && focusItem) || (name === "gallery" && isFocusedItem));
 
     function clearDragState() {
@@ -781,7 +811,7 @@ export function FieldEditor({
         </summary>
 
         <div className="admin-fold-body">
-          {isFixedAdminAuthPhotos ? null : (
+          {isFixedAdminAuthPhotos || isGalleryOnlyPropertyList ? null : (
             <div className="admin-array-toolbar">
               <button type="button" onClick={() => onChange(path, [...value, cloneTemplate(value[0] ?? "")])}>
                 <Plus aria-hidden="true" size={16} strokeWidth={2.3} />
@@ -827,7 +857,7 @@ export function FieldEditor({
                     language={language}
                     onChange={onChange}
                   />
-                  {isFixedAdminAuthPhotos ? null : (
+                  {isFixedAdminAuthPhotos || isGalleryOnlyPropertyList ? null : (
                     <button
                       className="admin-remove admin-icon-button"
                       type="button"
@@ -872,7 +902,7 @@ export function FieldEditor({
                     <strong>{itemTitle(item, fallback)}</strong>
                     <small>{fallback}</small>
                   </span>
-                  {isFixedAdminAuthPhotos ? null : (
+                  {isFixedAdminAuthPhotos || isGalleryOnlyPropertyList ? null : (
                     <button
                       className="admin-remove admin-icon-button"
                       type="button"
@@ -899,6 +929,7 @@ export function FieldEditor({
                     onReorder={onReorder}
                     focusItem={focusItem}
                     isFocusedItem={isFocusedItem || isDirectItem}
+                    galleryOnly={galleryOnly || name === "propertyGalleries"}
                   />
                 </div>
               </details>
@@ -924,7 +955,12 @@ export function FieldEditor({
       );
     }
 
-    const entries = orderedEntries(value).filter(({ key }) => shouldShowField(path, key));
+    const propertyGalleryOnly = galleryOnly || name === "propertyGalleries";
+    const entries = orderedEntries(value)
+      .filter(({ key }) => shouldShowField(path, key))
+      .filter(({ key }) => propertyGalleryOnly
+        ? visiblePropertyGalleryKeys(path, key)
+        : true);
     const isArrayItemObject = typeof path.at(-1) === "number";
 
     if (level > 0 && !isArrayItemObject) {
@@ -953,6 +989,7 @@ export function FieldEditor({
                   onReorder={onReorder}
                   focusItem={focusItem}
                   isFocusedItem={isFocusedItem}
+                  galleryOnly={propertyGalleryOnly}
                 />
               ))}
             </div>
@@ -996,6 +1033,7 @@ export function FieldEditor({
                           onReorder={onReorder}
                           focusItem={focusItem}
                           isFocusedItem={isFocusedItem}
+                          galleryOnly={propertyGalleryOnly}
                         />
                       ))}
                     </div>
@@ -1017,6 +1055,7 @@ export function FieldEditor({
                 onReorder={onReorder}
                 focusItem={focusItem}
                 isFocusedItem={isFocusedItem}
+                galleryOnly={propertyGalleryOnly}
               />
             );
           })}
