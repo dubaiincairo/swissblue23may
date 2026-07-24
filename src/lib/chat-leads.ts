@@ -1,18 +1,21 @@
 export type ChatLeadKind = "booking" | "corporate" | "career";
 
-const CORPORATE_TERMS = [
-  "corporate", "company", "business", "b2b", "contract", "partnership", "delegation", "group booking", "monthly stay",
-  "شرك", "مؤسس", "اعمال", "أعمال", "عقد", "تعاقد", "مجموع", "وفد", "جهة",
+const BOOKING_REQUEST_TERMS = [
+  "book for me", "make a booking", "make reservation", "reserve for me", "reserve a room", "booking request",
+  "call me", "contact me", "send request", "i want to book", "i need to book", "help me book",
+  "احجز لي", "ابغى احجز", "ابي احجز", "أريد الحجز", "اريد الحجز", "طلب حجز", "تواصلوا معي", "اتصلوا بي",
+  "ارسل طلب", "أرسل طلب", "ساعدني احجز", "ساعدوني احجز",
 ];
 
-const CAREER_TERMS = [
-  "career", "job", "jobs", "vacancy", "vacancies", "employment", "apply", "application", "cv", "resume", "recruitment",
-  "وظيف", "توظيف", "وظائف", "سيره", "سيرة", "تقديم",
+const CORPORATE_REQUEST_TERMS = [
+  "corporate request", "company request", "b2b request", "corporate proposal", "company proposal", "corporate deal",
+  "corporate contract", "business contract", "request a proposal", "send corporate request",
+  "طلب شركات", "طلب شركه", "طلب شركة", "عرض شركات", "عرض شركه", "عرض شركة", "عقد شركات", "تعاقد شركات",
 ];
 
-const BOOKING_TERMS = [
-  "book", "booking", "reserve", "reservation", "room", "rooms", "stay", "availability", "available", "check-in", "apartment", "suite",
-  "حجز", "احجز", "حجوز", "غرف", "غرفة", "اقامة", "إقامة", "توفر", "متاح", "شقه", "شقة", "جناح",
+const CAREER_REQUEST_TERMS = [
+  "apply for job", "apply for a job", "send cv", "submit cv", "submit resume", "job application", "career application",
+  "اقدم على وظيفة", "تقديم وظيفه", "تقديم وظيفة", "ارسال السيرة", "إرسال السيرة", "ارسل سيرتي", "أرسل سيرتي",
 ];
 
 function normalize(value: string) {
@@ -35,8 +38,8 @@ export function isChatLeadKind(value: unknown): value is ChatLeadKind {
 
 /** Recognizes help that should become a routed lead instead of an AI answer. */
 export function detectChatLeadKind(message: string): ChatLeadKind | null {
-  if (containsAny(message, CORPORATE_TERMS)) return "corporate";
-  if (containsAny(message, CAREER_TERMS)) return "career";
-  if (containsAny(message, BOOKING_TERMS)) return "booking";
+  if (containsAny(message, CORPORATE_REQUEST_TERMS)) return "corporate";
+  if (containsAny(message, CAREER_REQUEST_TERMS)) return "career";
+  if (containsAny(message, BOOKING_REQUEST_TERMS)) return "booking";
   return null;
 }

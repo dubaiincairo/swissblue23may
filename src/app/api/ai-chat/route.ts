@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { aiInstructions, type ChatLocale, unsupportedAnswer, websiteContext } from "@/lib/ai-chat";
+import { aiInstructions, fastWebsiteAnswer, type ChatLocale, unsupportedAnswer, websiteContext } from "@/lib/ai-chat";
 import { getEditableContent } from "@/lib/editable-content";
 import { durableRateLimit, getClientIp, hasDurableRateLimitStore } from "@/lib/rate-limit";
 
@@ -149,6 +149,12 @@ export async function POST(request: Request) {
     );
   }
 
+  const content = await getEditableContent();
+  const fastAnswer = fastWebsiteAnswer(content, locale, message);
+  if (fastAnswer) {
+    return NextResponse.json({ answer: fastAnswer });
+  }
+
   const allowance = await allowRequest(request);
   if (!allowance.allowed) {
     const error = allowance.status === 429
@@ -157,7 +163,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error }, { status: allowance.status });
   }
 
-  const content = await getEditableContent();
   const websiteKnowledge = websiteContext(content, locale, message);
   const vectorStoreId = process.env.OPENAI_VECTOR_STORE_ID?.trim();
   if (!websiteKnowledge.hasRelevantSource && !vectorStoreId) {

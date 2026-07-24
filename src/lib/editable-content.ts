@@ -1342,7 +1342,7 @@ const chatAssistantEn = {
   welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
   placeholder: "Type your question...",
   send: "Send",
-  typing: "Thinking...",
+  typing: "Writing...",
   leadActions: {
     booking: "Booking help",
     corporate: "Corporate help",

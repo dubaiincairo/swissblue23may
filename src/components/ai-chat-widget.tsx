@@ -67,7 +67,7 @@ const DEFAULT_ASSISTANT_COPY: Record<ChatLocale, AssistantCopy> = {
     welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
     placeholder: "Type your question...",
     send: "Send",
-    typing: "Thinking...",
+    typing: "Writing...",
     leadComplete: {
       booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
       corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
@@ -85,6 +85,11 @@ function nonEmpty(value: string | undefined, fallback: string) {
   return typeof value === "string" && value.trim() ? value : fallback;
 }
 
+function typingCopy(value: string | undefined, fallback: string) {
+  const copy = nonEmpty(value, fallback);
+  return copy.trim().toLocaleLowerCase() === "thinking..." ? fallback : copy;
+}
+
 function getAssistantCopy(locale: ChatLocale, settings?: AssistantSettings): AssistantCopy {
   const fallback = DEFAULT_ASSISTANT_COPY[locale];
 
@@ -97,7 +102,7 @@ function getAssistantCopy(locale: ChatLocale, settings?: AssistantSettings): Ass
     welcome: nonEmpty(settings?.welcome, fallback.welcome),
     placeholder: nonEmpty(settings?.placeholder, fallback.placeholder),
     send: nonEmpty(settings?.send, fallback.send),
-    typing: nonEmpty(settings?.typing, fallback.typing),
+    typing: typingCopy(settings?.typing, fallback.typing),
     leadActions: { ...fallback.leadActions, ...settings?.leadActions },
     leadComplete: { ...fallback.leadComplete, ...settings?.leadComplete },
   };

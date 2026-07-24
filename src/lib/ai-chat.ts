@@ -7,6 +7,13 @@ export type WebsiteKnowledge = {
   hasRelevantSource: boolean;
 };
 
+type PropertySummary = {
+  title?: string;
+  city?: string;
+  units?: string;
+  unitTypes?: Array<{ title?: string; count?: string }>;
+};
+
 type TextLeaf = {
   path: string;
   text: string;
@@ -70,6 +77,71 @@ function scoreLeaf(leaf: TextLeaf, terms: string[]) {
   return matches * 10;
 }
 
+function normalizeSearch(value: string) {
+  return cleanText(value)
+    .toLocaleLowerCase()
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .replace(/[إأآ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه");
+}
+
+function mentionsRoomsQuestion(question: string) {
+  const normalized = normalizeSearch(question);
+  return [
+    "how many room",
+    "how many apartment",
+    "how many unit",
+    "rooms available",
+    "apartments available",
+    "unit types",
+    "room types",
+    "كم غرف",
+    "كم غرفة",
+    "كم شقه",
+    "كم شقة",
+    "عدد الغرف",
+    "عدد الشقق",
+    "انواع الغرف",
+    "أنواع الغرف",
+  ].some((term) => normalized.includes(normalizeSearch(term)));
+}
+
+function propertyAliases(property: PropertySummary) {
+  const title = property.title ?? "";
+  return [title, ...(title.match(/\p{L}+/gu) ?? [])]
+    .filter((value) => value.length >= 3)
+    .map(normalizeSearch);
+}
+
+function findMentionedProperty(properties: PropertySummary[], question: string) {
+  const normalizedQuestion = normalizeSearch(question);
+  return properties.find((property) => propertyAliases(property).some((alias) => normalizedQuestion.includes(alias)));
+}
+
+export function fastWebsiteAnswer(content: EditableSiteContent, locale: ChatLocale, question: string) {
+  if (!mentionsRoomsQuestion(question)) return null;
+
+  const property = findMentionedProperty(content[locale].homepage.properties.items, question);
+  if (!property) return null;
+
+  const unitTypes = property.unitTypes ?? [];
+  const unitList = unitTypes
+    .map((unit) => {
+      if (!unit.title || !unit.count) return null;
+      return locale === "ar" ? `${unit.title}: ${unit.count}` : `${unit.title}: ${unit.count}`;
+    })
+    .filter((item): item is string => Boolean(item));
+
+  if (locale === "ar") {
+    const details = unitList.length ? ` وتشمل الفئات: ${unitList.join("، ")}.` : ".";
+    return `يسعدني مساعدتك. ${property.title} في ${property.city ?? "سويس بلو"} تضم ${property.units ?? "عدة وحدات"}${details} للتوفر الفعلي في تاريخ إقامتك، يرجى استخدام زر الحجز أو التواصل مع فريق الحجوزات.`;
+  }
+
+  const details = unitList.length ? ` The categories are: ${unitList.join("; ")}.` : ".";
+  return `I'd be happy to help. ${property.title} in ${property.city ?? "Swiss Blue"} has ${property.units ?? "several units"}${details} For live availability on your travel dates, please use the Book now button or contact reservations.`;
+}
+
 /**
  * Uses the editable CMS tree as the assistant's live website knowledge. The
  * relevant text is selected per question to keep each answer inexpensive.
@@ -104,11 +176,20 @@ export function websiteContext(
 
 export function aiInstructions(locale: ChatLocale, context: string) {
   const language = locale === "ar" ? "Arabic" : "English";
-  return `You are the Swiss Blue Hotels website assistant. Reply in ${language}.
+  return `You are Sarah Al-Otaibi, the Swiss Blue Hotels virtual concierge. Reply in ${language}.
 
 Use only the retrieved website knowledge below and approved documents returned by file search. Search approved documents before giving a factual answer whenever file search is available. Never use general knowledge or make assumptions.
 
-Do not invent property features, live availability, rates, policies, contact details, offers, or careers information. If the exact answer is not supported by the retrieved sources, say that you do not have verified information and ask the visitor to contact reservations. Do not claim that a reservation is confirmed. Keep replies helpful, concise, and under 140 words. Use ${language} only; do not mix languages.
+Customer service style:
+- Sound warm, calm, and helpful, like a real reservations agent.
+- Answer the visitor's question first, then offer the next useful step.
+- Use natural phrases such as "I'd be happy to help" and "For live availability..." when appropriate.
+- Do not say "listed on the Swiss Blue site", "retrieved sources", "documents", or similar internal/source wording.
+- Do not open with definitions such as "'Tulip' refers to..."; instead use the full property name naturally.
+- If the visitor asks about live availability, exact prices, today's inventory, or booking confirmation, explain that live availability must be checked through reservations or the booking link.
+- If the visitor seems ready to book, invite them to share dates and preferred property, or use the Book now button.
+
+Do not invent property features, live availability, rates, policies, contact details, offers, or careers information. If the exact answer is not supported by the retrieved sources, politely say that you do not have verified details and direct the visitor to reservations. Do not claim that a reservation is confirmed. Keep replies helpful, concise, and under 120 words. Use ${language} only; do not mix languages.
 
 Current Swiss Blue website knowledge:
 ${context}`;
@@ -116,6 +197,6 @@ ${context}`;
 
 export function unsupportedAnswer(locale: ChatLocale) {
   return locale === "ar"
-    ? "لا أملك معلومات موثقة للإجابة عن ذلك. يرجى التواصل مع فريق الحجوزات لمساعدتك."
-    : "I do not have verified information for that. Please contact reservations for assistance.";
+    ? "يسعدني مساعدتك. لا أملك حالياً معلومة موثقة عن هذا الطلب، لذلك الأفضل التواصل مع فريق الحجوزات للتأكد من التفاصيل والتوافر."
+    : "I’d be happy to help. I do not have verified details for that request right now, so please contact reservations to confirm the latest information and availability.";
 }
