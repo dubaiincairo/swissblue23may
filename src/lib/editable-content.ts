@@ -16,6 +16,7 @@ import {
   contactChannels,
   roomClassifications,
   corporateDeals,
+  propertyGallerySupplement,
 } from "@/lib/content";
 import {
   accommodationCategoriesEn,
@@ -44,6 +45,7 @@ import { apiVersion, dataset, projectId } from "@/sanity/env";
 const documentId = "site-content-singleton";
 const B2B_REQUEST_FORM_EYEBROW_EN = "B2B Request Form";
 const LEGACY_B2B_REQUEST_FORM_EYEBROW_EN = "B2B request form";
+const PROPERTY_GALLERY_IMAGE_COUNT = 6;
 
 const homeOffers = [
   {
@@ -4106,8 +4108,8 @@ function syncPropertyImages(
       return property;
     }
 
-    const arGallery = property.gallery ?? arDefault.gallery;
-    const enGallery = enProperty.gallery ?? enDefault.gallery;
+    const arGallery = completePropertyGallery(property.gallery ?? arDefault.gallery, arDefault.gallery);
+    const enGallery = completePropertyGallery(enProperty.gallery ?? enDefault.gallery, enDefault.gallery);
     const [image] = sharedImageValue(property.image, enProperty.image, arDefault.image, enDefault.image);
     const gallery = arGallery.map((galleryImage, index) => {
       const [nextImage] = sharedImageValue(
@@ -4133,8 +4135,8 @@ function syncPropertyImages(
       return property;
     }
 
-    const arGallery = arProperty.gallery ?? arDefault.gallery;
-    const enGallery = property.gallery ?? enDefault.gallery;
+    const arGallery = completePropertyGallery(arProperty.gallery ?? arDefault.gallery, arDefault.gallery);
+    const enGallery = completePropertyGallery(property.gallery ?? enDefault.gallery, enDefault.gallery);
     const [, image] = sharedImageValue(arProperty.image, property.image, arDefault.image, enDefault.image);
     const gallery = enGallery.map((galleryImage, index) => {
       const [, nextImage] = sharedImageValue(
@@ -4151,6 +4153,15 @@ function syncPropertyImages(
   });
 
   return { ar, en };
+}
+
+function completePropertyGallery(
+  gallery: string[],
+  defaults: string[],
+) {
+  return Array.from(
+    new Set([...gallery, ...defaults, ...propertyGallerySupplement]),
+  ).slice(0, PROPERTY_GALLERY_IMAGE_COUNT);
 }
 
 function syncDestinationImages(
