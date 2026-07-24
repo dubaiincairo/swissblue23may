@@ -32,6 +32,15 @@ const OMITTED_KEYS = new Set([
 
 const MAX_CONTEXT_CHARS = 9_500;
 
+const PROPERTY_ALIASES_BY_SLUG: Record<string, string[]> = {
+  "swiss-blue-jeddah": ["swiss blue jeddah", "jeddah", "سويس بلو جده", "سويس بلو جدة", "جده", "جدة"],
+  "swiss-blue-jazan": ["swiss blue jazan", "jazan", "jizan", "سويس بلو جازان", "جازان"],
+  "al-zahraa-serviced-apartments": ["al zahraa", "zahraa", "الزهراء", "زهراء"],
+  "al-samer-serviced-apartments": ["al samer", "samer", "السامر", "سامر"],
+  "vinas-riyadh-serviced-apartments": ["vinas", "vinas riyadh", "فيناس", "فيناس الرياض"],
+  "tulip-alrawdah-serviced-apartments": ["tulip", "alrawdah", "al rawdah", "توليب", "الروضه", "الروضة"],
+};
+
 function cleanText(value: string) {
   return value.replace(/\s+/g, " ").trim();
 }
@@ -121,7 +130,7 @@ function mentionsRoomsQuestion(question: string) {
 function propertyAliases(property: PropertySummary) {
   const title = property.title ?? "";
   const slug = property.slug ?? "";
-  return [title, slug, ...slug.split("-"), ...(title.match(/\p{L}+/gu) ?? [])]
+  return [title, slug, ...(PROPERTY_ALIASES_BY_SLUG[slug] ?? []), ...slug.split("-"), ...(title.match(/\p{L}+/gu) ?? [])]
     .filter((value) => value.length >= 3)
     .map(normalizeSearch);
 }
