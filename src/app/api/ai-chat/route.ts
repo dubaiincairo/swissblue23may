@@ -79,7 +79,6 @@ async function requestOpenAiAnswer({
       instructions: aiInstructions(locale, context),
       input: message,
       max_output_tokens: MAX_OUTPUT_TOKENS,
-      reasoning: { effort: "minimal" },
       store: false,
       ...(tools ? { tools } : {}),
     }),
