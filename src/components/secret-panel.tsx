@@ -560,17 +560,6 @@ export default function SecretPanel({
                     <a
                       role="menuitem"
                       className="admin-menu-item"
-                      href={language === "ar" ? "/admin/reservation-layouts?locale=ar" : "/admin/reservation-layouts"}
-                      onClick={(event) => {
-                        if (!confirmLeave()) event.preventDefault();
-                        else setMenuOpen(false);
-                      }}
-                    >
-                      {language === "ar" ? "مختبر تخطيطات الحجز" : "Reservation layout lab"}
-                    </a>
-                    <a
-                      role="menuitem"
-                      className="admin-menu-item"
                       href={languages[language].previewHref}
                       target="_blank"
                       rel="noreferrer"
