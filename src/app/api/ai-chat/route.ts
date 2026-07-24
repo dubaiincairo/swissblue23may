@@ -6,7 +6,7 @@ import { durableRateLimit, getClientIp, hasDurableRateLimitStore } from "@/lib/r
 export const dynamic = "force-dynamic";
 
 const MAX_MESSAGE_CHARS = 800;
-const MAX_OUTPUT_TOKENS = 320;
+const MAX_OUTPUT_TOKENS = 900;
 const DAY_SECONDS = 24 * 60 * 60;
 const MONTH_SECONDS = 30 * DAY_SECONDS;
 
@@ -79,6 +79,7 @@ async function requestOpenAiAnswer({
       instructions: aiInstructions(locale, context),
       input: message,
       max_output_tokens: MAX_OUTPUT_TOKENS,
+      reasoning: { effort: "minimal" },
       store: false,
       ...(tools ? { tools } : {}),
     }),
@@ -206,10 +207,7 @@ export async function POST(request: Request) {
     }
 
     if (!answer) {
-      return NextResponse.json(
-        { error: localized(locale, "I could not prepare an answer. Please try again.", "تعذر إعداد إجابة. يرجى المحاولة مرة أخرى.") },
-        { status: 502 },
-      );
+      return NextResponse.json({ answer: unsupportedAnswer(locale) });
     }
 
     return NextResponse.json({ answer });
