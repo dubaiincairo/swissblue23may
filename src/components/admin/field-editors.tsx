@@ -646,7 +646,7 @@ function PropertyGalleriesEditor({
     (property) => isPlainObject(property) && typeof property.slug === "string",
   );
   const firstSlug =
-    isPlainObject(firstProperty) && typeof firstProperty.slug === "string"
+    isPlainObject(firstProperty ?? null) && typeof firstProperty.slug === "string"
       ? firstProperty.slug
       : "";
   const [selectedSlug, setSelectedSlug] = useState(focusItem ?? firstSlug);
@@ -658,8 +658,9 @@ function PropertyGalleriesEditor({
         property.slug === (selectedSlug || focusItem || firstSlug),
     ),
   );
-  const activeProperty = isPlainObject(properties[activeIndex])
-    ? properties[activeIndex]
+  const activePropertyValue = properties[activeIndex] ?? null;
+  const activeProperty = isPlainObject(activePropertyValue)
+    ? activePropertyValue
     : null;
   const activePropertyPath = [...path, "items", activeIndex];
   const activeGallery = Array.isArray(activeProperty?.gallery)
