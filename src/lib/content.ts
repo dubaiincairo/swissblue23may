@@ -180,7 +180,12 @@ export const hotels = [
     ],
     locationHighlight:
       "موقع عملي في جدة يربط الضيوف بمناطق الأعمال والتسوق والمطاعم ووجهات البحر الأحمر.",
-    landmarks: ["كورنيش جدة", "جدة التاريخية البلد", "رد سي مول", "مطار الملك عبدالعزيز"],
+    landmarks: [
+      "كورنيش جدة",
+      "جدة التاريخية البلد",
+      "رد سي مول",
+      "مطار الملك عبدالعزيز",
+    ],
     gallery: [heroImage, jeddahImage, jazanImage],
     mapQuery: "Swiss Blue Hotel Heraa Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/swiss-blue-hera/",
@@ -225,7 +230,12 @@ export const hotels = [
     amenities: [...propertyAmenities, "مواقف سيارات", "غسيل ملابس عند الطلب"],
     locationHighlight:
       "موقع يخدم حركة الأعمال والزيارات الإقليمية في جازان، مع وصول مريح للخدمات اليومية.",
-    landmarks: ["واجهة جازان البحرية", "مطار جازان", "مراكز الأعمال", "الأسواق والمطاعم"],
+    landmarks: [
+      "واجهة جازان البحرية",
+      "مطار جازان",
+      "مراكز الأعمال",
+      "الأسواق والمطاعم",
+    ],
     gallery: [jazanImage, heroImage, jeddahImage],
     mapQuery: "Swiss Blue Jazan Saudi Arabia",
     source: "https://swissbluehotels.com/04_swissblue-jazan/",
@@ -270,7 +280,12 @@ export const hotels = [
     amenities: [...propertyAmenities, "خدمة تنظيف دورية", "مواقف قريبة"],
     locationHighlight:
       "موقع على طريق الأمير سلطان بالقرب من وجهات التسوق والمطاعم والخدمات الحيوية في جدة.",
-    landmarks: ["طريق الأمير سلطان", "رد سي مول", "الواجهة البحرية", "المطاعم والمقاهي"],
+    landmarks: [
+      "طريق الأمير سلطان",
+      "رد سي مول",
+      "الواجهة البحرية",
+      "المطاعم والمقاهي",
+    ],
     gallery: [jeddahImage, heroImage, jazanImage],
     mapQuery: "Swiss Blue Al Zahra Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/02_swissblue-al-zahra/",
@@ -296,8 +311,7 @@ export const hotels = [
       {
         title: "شقق غرفة نوم",
         count: "13 شقة",
-        description:
-          "خيار مريح بإحساس سكني وخدمات فندقية أساسية.",
+        description: "خيار مريح بإحساس سكني وخدمات فندقية أساسية.",
       },
       {
         title: "شقق غرفتين",
@@ -315,7 +329,12 @@ export const hotels = [
     amenities: [...propertyAmenities, "خدمة تنظيف", "دعم للحجوزات الطويلة"],
     locationHighlight:
       "موقع مناسب للتنقل داخل جدة والوصول إلى الأحياء السكنية والخدمات اليومية.",
-    landmarks: ["طرق جدة الرئيسية", "مناطق الخدمات اليومية", "المطاعم", "مراكز التسوق"],
+    landmarks: [
+      "طرق جدة الرئيسية",
+      "مناطق الخدمات اليومية",
+      "المطاعم",
+      "مراكز التسوق",
+    ],
     gallery: [heroImage, jeddahImage, jazanImage],
     mapQuery: "Swiss Blue Al Samer Jeddah Saudi Arabia",
     source: "https://swissbluehotels.com/03_swissblue-al-samer/",
@@ -351,10 +370,19 @@ export const hotels = [
           "فئة واسعة للعائلات الأكبر والإقامات الطويلة وحجوزات الشركات.",
       },
     ],
-    amenities: [...propertyAmenities, "دعم للإقامة الشهرية", "خدمات مناسبة للشركات"],
+    amenities: [
+      ...propertyAmenities,
+      "دعم للإقامة الشهرية",
+      "خدمات مناسبة للشركات",
+    ],
     locationHighlight:
       "موقع يخدم التنقل داخل الرياض والوصول إلى مناطق الأعمال ونمط الحياة والخدمات اليومية.",
-    landmarks: ["مناطق الأعمال", "طرق الرياض الرئيسية", "مراكز التسوق", "المطاعم والمقاهي"],
+    landmarks: [
+      "مناطق الأعمال",
+      "طرق الرياض الرئيسية",
+      "مراكز التسوق",
+      "المطاعم والمقاهي",
+    ],
     gallery: [jeddahImage, heroImage, jazanImage],
     mapQuery: "Vinas Serviced Apartments Riyadh Saudi Arabia",
     source: "https://swissbluehotels.com/",
@@ -374,8 +402,7 @@ export const hotels = [
       {
         title: "استوديوهات",
         count: "13 استوديو",
-        description:
-          "إقامة عملية ومريحة لضيوف الأعمال والزيارات القصيرة.",
+        description: "إقامة عملية ومريحة لضيوف الأعمال والزيارات القصيرة.",
       },
       {
         title: "شقق غرفة نوم",
@@ -386,20 +413,23 @@ export const hotels = [
       {
         title: "شقق غرفتين",
         count: "7 شقق",
-        description:
-          "مساحات مناسبة للعائلات والمجموعات الصغيرة.",
+        description: "مساحات مناسبة للعائلات والمجموعات الصغيرة.",
       },
       {
         title: "شقق بإطلالة المدينة",
         count: "2 شقة",
-        description:
-          "فئة مختارة للضيوف الذين يفضلون إطلالة وقيمة أعلى.",
+        description: "فئة مختارة للضيوف الذين يفضلون إطلالة وقيمة أعلى.",
       },
     ],
     amenities: [...propertyAmenities, "خدمة تنظيف", "خيارات إقامة شهرية"],
     locationHighlight:
       "موقع عملي داخل الرياض بالقرب من الأحياء النشطة والخدمات اليومية ومناطق الحركة الرئيسية.",
-    landmarks: ["أحياء الرياض", "مناطق الأعمال", "المطاعم والمقاهي", "الخدمات اليومية"],
+    landmarks: [
+      "أحياء الرياض",
+      "مناطق الأعمال",
+      "المطاعم والمقاهي",
+      "الخدمات اليومية",
+    ],
     gallery: [jazanImage, jeddahImage, heroImage],
     mapQuery: "Tulip Al Rawdah Riyadh Saudi Arabia",
     source: "https://swissbluehotels.com/",
@@ -603,7 +633,8 @@ export const roomClassifications = [
         bathrooms: "1",
         livingRooms: "1",
         totalUnits: "18",
-        rooms: "202, 203, 204, 205, 302, 303, 304, 305, 402, 403, 404, 405, 502, 503, 504, 505, 602, 604",
+        rooms:
+          "202, 203, 204, 205, 302, 303, 304, 305, 402, 403, 404, 405, 502, 503, 504, 505, 602, 604",
       },
       {
         type: "شقة سوبيريور بإطلالة المدينة",
@@ -861,7 +892,8 @@ export const roomClassifications = [
         bathrooms: "1",
         livingRooms: "1",
         totalUnits: "16",
-        rooms: "203, 204, 204C, 205, 206, 208, 209, 209C, 301, 302, 303, 304, 304C, 306, 307, 307C",
+        rooms:
+          "203, 204, 204C, 205, 206, 208, 209, 209C, 301, 302, 303, 304, 304C, 306, 307, 307C",
       },
       {
         type: "شقة سوبيريور بإطلالة المدينة",
@@ -993,7 +1025,12 @@ export const destinations = [
   {
     title: "جدة",
     text: "مدينة البحر الأحمر، تجمع بين الأعمال والتسوق والمطاعم والواجهة البحرية وجدة التاريخية. مناسبة لعطلات نهاية الأسبوع، الزيارات العائلية، ورحلات الأعمال.",
-    howToEnjoy: ["زيارة كورنيش جدة والواجهة البحرية", "اكتشاف البلد التاريخية", "تجربة المطاعم والمقاهي", "التسوق في المراكز الحديثة"],
+    howToEnjoy: [
+      "زيارة كورنيش جدة والواجهة البحرية",
+      "اكتشاف البلد التاريخية",
+      "تجربة المطاعم والمقاهي",
+      "التسوق في المراكز الحديثة",
+    ],
     image: heroImage,
     photos: jeddahPhotos,
     badge: "وجهة البحر الأحمر",
@@ -1006,7 +1043,12 @@ export const destinations = [
   {
     title: "الرياض",
     text: "العاصمة الأسرع نموا في المنطقة، وجهة للأعمال والفعاليات ونمط الحياة الحديث، ومناسبة للإقامات الطويلة وحجوزات الشركات.",
-    howToEnjoy: ["زيارة بوليفارد الرياض والوجهات الترفيهية", "تنظيم اجتماعات الأعمال", "اكتشاف المطاعم الراقية", "الإقامة الشهرية للمهام المؤسسية"],
+    howToEnjoy: [
+      "زيارة بوليفارد الرياض والوجهات الترفيهية",
+      "تنظيم اجتماعات الأعمال",
+      "اكتشاف المطاعم الراقية",
+      "الإقامة الشهرية للمهام المؤسسية",
+    ],
     image: jeddahImage,
     photos: riyadhPhotos,
     badge: "العاصمة وعاصمة الأعمال",
@@ -1019,7 +1061,12 @@ export const destinations = [
   {
     title: "جازان",
     text: "مدينة جنوبية نابضة بالحياة، مناسبة للزيارات الإقليمية ورحلات الأعمال والإقامات الهادئة، مع قرب من البحر والطبيعة والخدمات اليومية.",
-    howToEnjoy: ["زيارة الواجهة البحرية", "استكشاف الأسواق المحلية", "تنظيم زيارات الأعمال الإقليمية", "اختيار شقة فندقية لإقامة أطول"],
+    howToEnjoy: [
+      "زيارة الواجهة البحرية",
+      "استكشاف الأسواق المحلية",
+      "تنظيم زيارات الأعمال الإقليمية",
+      "اختيار شقة فندقية لإقامة أطول",
+    ],
     image: jazanImage,
     photos: jazanPhotos,
     badge: "بوابة الجنوب",
@@ -1033,23 +1080,28 @@ export const destinations = [
 
 export const diningGalleryPhotos = [
   {
-    image: "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1400&q=80",
+    image:
+      "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1400&q=80",
     title: "بوفيه إفطار",
   },
   {
-    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=80",
+    image:
+      "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=80",
     title: "أجواء المطعم",
   },
   {
-    image: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1400&q=80",
+    image:
+      "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1400&q=80",
     title: "مقهى لوبي",
   },
   {
-    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=80",
+    image:
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=80",
     title: "تجارب عشاء",
   },
   {
-    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=80",
+    image:
+      "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=80",
     title: "خدمة الغرف",
   },
 ];
