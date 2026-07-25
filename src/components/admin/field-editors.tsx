@@ -1,7 +1,7 @@
 "use client";
 
 import type { DragEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ChevronDown,
   Columns3,
@@ -11,6 +11,7 @@ import {
   Plus,
   Trash2,
   Upload,
+  X,
 } from "lucide-react";
 import { RichEditor } from "@/components/rich-editor";
 import { RephraseButton } from "@/components/rephrase-button";
@@ -453,6 +454,39 @@ function galleryItemImage(item: JsonValue) {
   return "";
 }
 
+function galleryItemTitle(
+  item: JsonValue,
+  index: number,
+  language: Language,
+) {
+  if (isPlainObject(item) && typeof item.title === "string" && item.title) {
+    return item.title;
+  }
+
+  return uploadedGalleryTitle(index, language);
+}
+
+function moveArrayItem<T>(items: T[], from: number, to: number) {
+  if (
+    from === to ||
+    from < 0 ||
+    to < 0 ||
+    from >= items.length ||
+    to >= items.length
+  ) {
+    return items;
+  }
+
+  const next = [...items];
+  const [moved] = next.splice(from, 1);
+  if (typeof moved === "undefined") {
+    return items;
+  }
+  next.splice(to, 0, moved);
+
+  return next;
+}
+
 function HotelGalleryBulkUpload({
   value,
   path,
@@ -631,6 +665,7 @@ function PropertyGalleriesEditor({
   const activeGallery = Array.isArray(activeProperty?.gallery)
     ? activeProperty.gallery
     : [];
+  const [arrangeOpen, setArrangeOpen] = useState(false);
 
   if (!activeProperty) {
     return (
@@ -729,22 +764,43 @@ function PropertyGalleriesEditor({
                   : "These photos appear only inside the hotel detail page after the visitor opens it."}
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() =>
-                onChange([...activePropertyPath, "gallery"], [
-                  ...activeGallery,
-                  {
-                    title: uploadedGalleryTitle(activeGallery.length, language),
-                    image: "",
-                  },
-                ])
-              }
-            >
-              <Plus aria-hidden="true" size={16} strokeWidth={2.3} />
-              {language === "ar" ? "إضافة صورة" : "Add photo"}
-            </button>
+            <div className="admin-property-gallery-panel-actions">
+              <button
+                type="button"
+                onClick={() => setArrangeOpen(true)}
+                disabled={activeGallery.length < 2}
+              >
+                <Images aria-hidden="true" size={16} strokeWidth={2.3} />
+                {language === "ar" ? "ترتيب الصور" : "Arrange photos"}
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  onChange([...activePropertyPath, "gallery"], [
+                    ...activeGallery,
+                    {
+                      title: uploadedGalleryTitle(activeGallery.length, language),
+                      image: "",
+                    },
+                  ])
+                }
+              >
+                <Plus aria-hidden="true" size={16} strokeWidth={2.3} />
+                {language === "ar" ? "إضافة صورة" : "Add photo"}
+              </button>
+            </div>
           </div>
+          {arrangeOpen ? (
+            <HotelGalleryArrangeModal
+              value={activeGallery}
+              propertyTitle={itemTitle(activeProperty, "Hotel")}
+              language={language}
+              onClose={() => setArrangeOpen(false)}
+              onChange={(nextValue) =>
+                onChange([...activePropertyPath, "gallery"], nextValue)
+              }
+            />
+          ) : null}
           <HotelGalleryBulkUpload
             value={activeGallery}
             path={[...activePropertyPath, "gallery"]}
@@ -761,6 +817,160 @@ function PropertyGalleriesEditor({
         </div>
       </div>
     </section>
+  );
+}
+
+function HotelGalleryArrangeModal({
+  value,
+  propertyTitle,
+  language,
+  onClose,
+  onChange,
+}: {
+  value: JsonValue[];
+  propertyTitle: string;
+  language: Language;
+  onClose: () => void;
+  onChange: (value: JsonValue[]) => void;
+}) {
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const titleId = `admin-gallery-arrange-${propertyTitle.replace(/\W+/g, "-").toLowerCase() || "hotel"}`;
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  function clearDragState() {
+    setDragIndex(null);
+    setDragOverIndex(null);
+  }
+
+  function handleDrop(index: number) {
+    if (dragIndex !== null && dragIndex !== index) {
+      onChange(moveArrayItem(value, dragIndex, index));
+    }
+    clearDragState();
+  }
+
+  return (
+    <div
+      className="admin-gallery-arrange-backdrop"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <section
+        aria-labelledby={titleId}
+        aria-modal="true"
+        className="admin-gallery-arrange-modal"
+        dir={language === "ar" ? "rtl" : "ltr"}
+        role="dialog"
+      >
+        <header className="admin-gallery-arrange-header">
+          <div>
+            <p className="admin-kicker">
+              {language === "ar" ? "ترتيب معرض الفندق" : "Hotel gallery order"}
+            </p>
+            <h3 id={titleId}>{propertyTitle}</h3>
+            <span>
+              {language === "ar"
+                ? "اسحب الصور داخل الشبكة لترتيبها بسهولة."
+                : "Drag photos in the grid to arrange them easily."}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={language === "ar" ? "إغلاق" : "Close"}
+          >
+            <X aria-hidden="true" size={20} strokeWidth={2.2} />
+          </button>
+        </header>
+
+        <div className="admin-gallery-arrange-grid">
+          {value.map((item, index) => {
+            const image = galleryItemImage(item);
+            const title = galleryItemTitle(item, index, language);
+
+            return (
+              <article
+                className={[
+                  "admin-gallery-arrange-tile",
+                  dragIndex === index ? "is-dragging" : "",
+                  dragOverIndex === index &&
+                  dragIndex !== null &&
+                  dragIndex !== index
+                    ? "is-drop-target"
+                    : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                draggable
+                key={`${image || title}-${index}`}
+                onDragStart={(event) => {
+                  event.dataTransfer.effectAllowed = "move";
+                  event.dataTransfer.setData("text/plain", String(index));
+                  setDragIndex(index);
+                  setDragOverIndex(null);
+                }}
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  event.dataTransfer.dropEffect = "move";
+                  if (dragIndex !== null && dragIndex !== index) {
+                    setDragOverIndex(index);
+                  }
+                }}
+                onDragLeave={() =>
+                  setDragOverIndex((current) =>
+                    current === index ? null : current,
+                  )
+                }
+                onDrop={() => handleDrop(index)}
+                onDragEnd={clearDragState}
+              >
+                <span className="admin-gallery-arrange-number">
+                  {index + 1}
+                </span>
+                <div className="admin-gallery-arrange-image">
+                  {image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={image} alt="" />
+                  ) : (
+                    <Images aria-hidden="true" size={30} strokeWidth={1.9} />
+                  )}
+                </div>
+                <div className="admin-gallery-arrange-title">
+                  <GripVertical aria-hidden="true" size={16} strokeWidth={2.2} />
+                  <span>{title}</span>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <footer className="admin-gallery-arrange-footer">
+          <span>
+            {language === "ar"
+              ? "احفظ التغييرات بعد إغلاق النافذة لنشر الترتيب."
+              : "Save changes after closing the window to publish this order."}
+          </span>
+          <button type="button" onClick={onClose}>
+            {language === "ar" ? "تم" : "Done"}
+          </button>
+        </footer>
+      </section>
+    </div>
   );
 }
 
