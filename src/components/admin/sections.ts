@@ -91,8 +91,8 @@ export const adminSections: AdminSection[] = [
     group: "Media",
     label: "Hotel galleries",
     description:
-      "Upload the real gallery photos for each hotel/property detail page.",
-    path: ["homepage", "properties"],
+      "Dedicated detail-page galleries. These photos do not change Homepage Hotel Overview cards.",
+    path: ["media", "propertyGalleries"],
   },
   {
     id: "footerSections",
@@ -495,9 +495,9 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     description: "مدخلات نظرة عامة على الفنادق المعروضة في الصفحة الرئيسية.",
   },
   propertyGalleries: {
-    group: "على مستوى الموقع",
+    group: "الوسائط",
     label: "معارض الفنادق",
-    description: "رفع صور المعرض الحقيقية لكل فندق أو منشأة.",
+    description: "معارض مستقلة لصفحات الفنادق فقط، ولا تغيّر بطاقات نظرة عامة على الفنادق في الصفحة الرئيسية.",
   },
   loyalty: {
     group: "الصفحة الرئيسية",

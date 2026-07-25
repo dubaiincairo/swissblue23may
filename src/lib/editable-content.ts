@@ -16,7 +16,6 @@ import {
   contactChannels,
   roomClassifications,
   corporateDeals,
-  propertyGallerySupplement,
 } from "@/lib/content";
 import {
   accommodationCategoriesEn,
@@ -49,13 +48,33 @@ import { apiVersion, dataset, projectId } from "@/sanity/env";
 const documentId = "site-content-singleton";
 const B2B_REQUEST_FORM_EYEBROW_EN = "B2B Request Form";
 const LEGACY_B2B_REQUEST_FORM_EYEBROW_EN = "B2B request form";
-const PROPERTY_GALLERY_IMAGE_COUNT = 6;
-
 type PropertyGalleryItem = {
   title: string;
   image: string;
 };
 type PropertyGalleryValue = string | PropertyGalleryItem;
+
+function createPropertyGalleryCollection(
+  properties: Array<{
+    slug: string;
+    title: string;
+    city: string;
+    gallery?: PropertyGalleryValue[];
+  }>,
+) {
+  return {
+    items: properties.map((property) => ({
+      slug: property.slug,
+      title: property.title,
+      city: property.city,
+      gallery: Array.isArray(property.gallery)
+        ? property.gallery.map((item) =>
+            typeof item === "string" ? item : { ...item },
+          )
+        : [],
+    })),
+  };
+}
 
 const homeOffers = [
   {
@@ -1744,6 +1763,7 @@ export const defaultSiteContent = {
       jeddah: jeddahImage,
       jazan: jazanImage,
       gallery: galleryImages,
+      propertyGalleries: createPropertyGalleryCollection(hotels),
       adminAuthBackdrop: createDefaultAdminAuthBackdrop(),
     },
     faq: {
@@ -2800,6 +2820,7 @@ export const defaultSiteContent = {
       jeddah: jeddahImage,
       jazan: jazanImage,
       gallery: galleryImagesEn,
+      propertyGalleries: createPropertyGalleryCollection(hotelsEn),
       adminAuthBackdrop: createDefaultAdminAuthBackdrop(),
     },
     faq: {
@@ -4625,7 +4646,14 @@ function heroFallbackFromSlides(
   return imageSlide?.source ?? fallback;
 }
 
-function syncPropertyImages(
+function withoutPropertyGallery<
+  T extends { gallery?: PropertyGalleryValue[] },
+>(property: T) {
+  const { gallery: _gallery, ...overview } = property;
+  return overview;
+}
+
+function syncPropertyOverviewImages(
   arProperties: EditableSiteContent["ar"]["homepage"]["properties"]["items"],
   enProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
 ) {
@@ -4660,31 +4688,11 @@ function syncPropertyImages(
       arDefault.image,
       enDefault.image,
     );
-    const arGallery = completePropertyGallery(
-      property.gallery ?? arDefault.gallery,
-      arDefault.gallery,
-      "ar",
-      [image],
-    );
-    const enGallery = completePropertyGallery(
-      enProperty.gallery ?? enDefault.gallery,
-      enDefault.gallery,
-      "en",
-      [image],
-    );
-    const gallery = arGallery.map((galleryItem, index) => {
-      const enGalleryItem = enGallery[index] ?? galleryItem;
-      const [nextImage] = sharedImageValue(
-        galleryImageValue(galleryItem),
-        galleryImageValue(enGalleryItem),
-        galleryImageValue(arDefault.gallery[index] ?? galleryItem),
-        galleryImageValue(enDefault.gallery[index] ?? enGalleryItem),
-      );
-
-      return { ...galleryItem, image: nextImage };
-    });
-
-    return { ...arDefault, ...property, image, gallery };
+    return {
+      ...withoutPropertyGallery(arDefault),
+      ...withoutPropertyGallery(property),
+      image,
+    };
   });
 
   const arBySlug = new Map(
@@ -4705,31 +4713,11 @@ function syncPropertyImages(
       arDefault.image,
       enDefault.image,
     );
-    const arGallery = completePropertyGallery(
-      arProperty.gallery ?? arDefault.gallery,
-      arDefault.gallery,
-      "ar",
-      [image],
-    );
-    const enGallery = completePropertyGallery(
-      property.gallery ?? enDefault.gallery,
-      enDefault.gallery,
-      "en",
-      [image],
-    );
-    const gallery = enGallery.map((galleryItem, index) => {
-      const arGalleryItem = arGallery[index] ?? galleryItem;
-      const [, nextImage] = sharedImageValue(
-        galleryImageValue(arGalleryItem),
-        galleryImageValue(galleryItem),
-        galleryImageValue(arDefault.gallery[index] ?? arGalleryItem),
-        galleryImageValue(enDefault.gallery[index] ?? galleryItem),
-      );
-
-      return { ...galleryItem, image: nextImage };
-    });
-
-    return { ...enDefault, ...property, image, gallery };
+    return {
+      ...withoutPropertyGallery(enDefault),
+      ...withoutPropertyGallery(property),
+      image,
+    };
   });
 
   return {
@@ -4738,9 +4726,159 @@ function syncPropertyImages(
   };
 }
 
+function sameGalleryImages(
+  left: PropertyGalleryValue[] = [],
+  right: PropertyGalleryValue[] = [],
+) {
+  return (
+    left.length === right.length &&
+    left.every(
+      (item, index) =>
+        galleryImageValue(item) === galleryImageValue(right[index]),
+    )
+  );
+}
+
+function propertyGallerySource(
+  mediaGallery: PropertyGalleryValue[] | undefined,
+  legacyGallery: PropertyGalleryValue[] | undefined,
+  defaults: PropertyGalleryValue[],
+) {
+  const media = mediaGallery ?? [];
+  const legacy = legacyGallery ?? [];
+
+  // Existing sites stored hotel galleries inside homepage cards. During the
+  // migration, prefer that source if Media still holds the untouched default
+  // gallery, so no previously uploaded photos disappear on the first save.
+  if (legacy.length && (!media.length || sameGalleryImages(media, defaults))) {
+    return legacy;
+  }
+
+  return media.length ? media : legacy.length ? legacy : defaults;
+}
+
+function syncPropertyGalleries(
+  arCollection: EditableSiteContent["ar"]["media"]["propertyGalleries"],
+  enCollection: EditableSiteContent["en"]["media"]["propertyGalleries"],
+  arLegacyProperties: EditableSiteContent["ar"]["homepage"]["properties"]["items"],
+  enLegacyProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
+  arProperties: EditableSiteContent["ar"]["homepage"]["properties"]["items"],
+  enProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
+) {
+  const arMediaBySlug = new Map(
+    arCollection.items.map((item) => [item.slug, item]),
+  );
+  const enMediaBySlug = new Map(
+    enCollection.items.map((item) => [item.slug, item]),
+  );
+  const arLegacyBySlug = new Map(
+    arLegacyProperties.map((item) => [item.slug, item]),
+  );
+  const enLegacyBySlug = new Map(
+    enLegacyProperties.map((item) => [item.slug, item]),
+  );
+  const arDefaultBySlug = new Map(
+    defaultSiteContent.ar.media.propertyGalleries.items.map((item) => [
+      item.slug,
+      item,
+    ]),
+  );
+  const enDefaultBySlug = new Map(
+    defaultSiteContent.en.media.propertyGalleries.items.map((item) => [
+      item.slug,
+      item,
+    ]),
+  );
+  const enPropertiesBySlug = new Map(
+    enProperties.map((item) => [item.slug, item]),
+  );
+  const arPropertiesBySlug = new Map(
+    arProperties.map((item) => [item.slug, item]),
+  );
+
+  const syncLocale = (language: "ar" | "en") => {
+    const properties = language === "ar" ? arProperties : enProperties;
+    return properties.map((property) => {
+      const slug = property.slug;
+      const ownMedia =
+        language === "ar" ? arMediaBySlug.get(slug) : enMediaBySlug.get(slug);
+      const otherMedia =
+        language === "ar" ? enMediaBySlug.get(slug) : arMediaBySlug.get(slug);
+      const ownLegacy =
+        language === "ar"
+          ? arLegacyBySlug.get(slug)
+          : enLegacyBySlug.get(slug);
+      const otherLegacy =
+        language === "ar"
+          ? enLegacyBySlug.get(slug)
+          : arLegacyBySlug.get(slug);
+      const ownDefault =
+        language === "ar"
+          ? arDefaultBySlug.get(slug)
+          : enDefaultBySlug.get(slug);
+      const otherDefault =
+        language === "ar"
+          ? enDefaultBySlug.get(slug)
+          : arDefaultBySlug.get(slug);
+      const otherProperty =
+        language === "ar"
+          ? enPropertiesBySlug.get(slug)
+          : arPropertiesBySlug.get(slug);
+      const ownGallery = completePropertyGallery(
+        propertyGallerySource(
+          ownMedia?.gallery,
+          ownLegacy?.gallery,
+          ownDefault?.gallery ?? [],
+        ),
+        language,
+        [property.image],
+      );
+      const otherGallery = completePropertyGallery(
+        propertyGallerySource(
+          otherMedia?.gallery,
+          otherLegacy?.gallery,
+          otherDefault?.gallery ?? [],
+        ),
+        language === "ar" ? "en" : "ar",
+        [otherProperty?.image ?? ""],
+      );
+
+      return {
+        slug,
+        title: ownMedia?.title || property.title,
+        city: ownMedia?.city || property.city,
+        gallery: ownGallery.map((galleryItem, index) => {
+          const otherItem = otherGallery[index];
+          const [arImage, enImage] = sharedImageValue(
+            language === "ar" ? galleryItem.image : otherItem?.image ?? "",
+            language === "ar" ? otherItem?.image ?? "" : galleryItem.image,
+            language === "ar"
+              ? galleryImageValue(ownDefault?.gallery[index])
+              : galleryImageValue(otherDefault?.gallery[index]),
+            language === "ar"
+              ? galleryImageValue(otherDefault?.gallery[index])
+              : galleryImageValue(ownDefault?.gallery[index]),
+          );
+          return {
+            ...galleryItem,
+            image: language === "ar" ? arImage : enImage,
+          };
+        }),
+      };
+    });
+  };
+
+  return {
+    ar: { items: syncLocale("ar") },
+    en: { items: syncLocale("en") },
+  } as {
+    ar: EditableSiteContent["ar"]["media"]["propertyGalleries"];
+    en: EditableSiteContent["en"]["media"]["propertyGalleries"];
+  };
+}
+
 function completePropertyGallery(
   gallery: PropertyGalleryValue[],
-  defaults: PropertyGalleryValue[],
   language: "ar" | "en",
   excludedImages: string[] = [],
 ) {
@@ -4748,30 +4886,21 @@ function completePropertyGallery(
   const excluded = new Set(excludedImages.filter(Boolean));
   const items: PropertyGalleryItem[] = [];
 
-  [...gallery, ...defaults, ...propertyGallerySupplement].forEach(
-    (item, index) => {
-      const normalized = normalizePropertyGalleryItem(item, index, language);
-      if (
-        language === "en" &&
-        typeof item === "string" &&
-        propertyGallerySupplement.includes(item)
-      ) {
-        normalized.title = `Property photo ${index + 1}`;
-      }
-      if (
-        !normalized.image ||
-        seen.has(normalized.image) ||
-        excluded.has(normalized.image)
-      ) {
-        return;
-      }
+  gallery.forEach((item, index) => {
+    const normalized = normalizePropertyGalleryItem(item, index, language);
+    if (
+      !normalized.image ||
+      seen.has(normalized.image) ||
+      excluded.has(normalized.image)
+    ) {
+      return;
+    }
 
-      seen.add(normalized.image);
-      items.push(normalized);
-    },
-  );
+    seen.add(normalized.image);
+    items.push(normalized);
+  });
 
-  return items.slice(0, PROPERTY_GALLERY_IMAGE_COUNT);
+  return items;
 }
 
 function normalizePropertyGalleryItem(
@@ -4911,9 +5040,17 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     content.ar.media.mainHeroSlides,
     content.en.media.mainHeroSlides,
   );
-  const syncedProperties = syncPropertyImages(
+  const syncedProperties = syncPropertyOverviewImages(
     content.ar.homepage.properties.items,
     content.en.homepage.properties.items,
+  );
+  const syncedPropertyGalleries = syncPropertyGalleries(
+    content.ar.media.propertyGalleries,
+    content.en.media.propertyGalleries,
+    content.ar.homepage.properties.items,
+    content.en.homepage.properties.items,
+    syncedProperties.ar,
+    syncedProperties.en,
   );
   const syncedDestinations = syncDestinationImages(
     content.ar.homepage.destinations.items,
@@ -5026,6 +5163,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         jeddah: jeddahAr,
         jazan: jazanAr,
         gallery: syncedGallery.ar,
+        propertyGalleries: syncedPropertyGalleries.ar,
         adminAuthBackdrop: syncedAdminAuthBackdrop.ar,
       },
       homepage: {
@@ -5150,6 +5288,7 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         jeddah: jeddahEn,
         jazan: jazanEn,
         gallery: syncedGallery.en,
+        propertyGalleries: syncedPropertyGalleries.en,
         adminAuthBackdrop: syncedAdminAuthBackdrop.en,
       },
       homepage: {

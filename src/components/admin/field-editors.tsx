@@ -353,7 +353,7 @@ export function StringFieldEditor({
 
 function isHotelGalleryImage(path: Array<string | number>) {
   return (
-    path.map(String).includes("properties") &&
+    path.map(String).includes("propertyGalleries") &&
     path.map(String).includes("gallery")
   );
 }
@@ -378,7 +378,7 @@ function isHotelPageGalleryField(name: string, path: Array<string | number>) {
 
   return (
     name === "gallery" &&
-    /homepage\.properties\.items\.\d+\.gallery$/.test(pathText)
+    /media\.propertyGalleries\.items\.\d+\.gallery$/.test(pathText)
   );
 }
 
@@ -421,15 +421,15 @@ function fieldLabelFor(
 function visiblePropertyGalleryKeys(path: Array<string | number>, key: string) {
   const pathText = path.map(String).join(".");
 
-  if (pathText.endsWith("homepage.properties")) {
+  if (pathText.endsWith("media.propertyGalleries")) {
     return key === "items";
   }
 
-  if (/homepage\.properties\.items\.\d+$/.test(pathText)) {
-    return ["title", "name", "city", "slug", "image", "gallery"].includes(key);
+  if (/media\.propertyGalleries\.items\.\d+$/.test(pathText)) {
+    return ["title", "city", "slug", "gallery"].includes(key);
   }
 
-  if (/homepage\.properties\.items\.\d+\.gallery\.\d+$/.test(pathText)) {
+  if (/media\.propertyGalleries\.items\.\d+\.gallery\.\d+$/.test(pathText)) {
     return ["title", "image"].includes(key);
   }
 
@@ -691,7 +691,10 @@ function PropertyGalleriesEditor({
             language === "ar" ? `فندق ${index + 1}` : `Hotel ${index + 1}`,
           );
           const city = typeof property.city === "string" ? property.city : "";
-          const image = typeof property.image === "string" ? property.image : "";
+          const firstGalleryItem = Array.isArray(property.gallery)
+            ? property.gallery[0]
+            : null;
+          const image = galleryItemImage(firstGalleryItem);
           const galleryCount = Array.isArray(property.gallery)
             ? property.gallery.length
             : 0;
@@ -742,16 +745,6 @@ function PropertyGalleriesEditor({
               ? `${activeGallery.length} صور داخلية`
               : `${activeGallery.length} detail photos`}
           </span>
-        </div>
-
-        <div className="admin-property-gallery-panel">
-          <ImageFieldEditor
-            name="image"
-            value={typeof activeProperty.image === "string" ? activeProperty.image : ""}
-            path={[...activePropertyPath, "image"]}
-            language={language}
-            onChange={onChange}
-          />
         </div>
 
         <div className="admin-property-gallery-panel">

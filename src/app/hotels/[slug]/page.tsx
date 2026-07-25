@@ -42,15 +42,17 @@ export default async function HotelDetailPage({
     notFound();
   }
 
+  const propertyGallery = ar.media.propertyGalleries.items.find(
+    (item) => item.slug === slug,
+  );
   const galleryImages = (
-    hotel.gallery as Array<string | { image: string; title?: string }>
+    propertyGallery?.gallery ?? []
   )
     .filter((item) => {
       const image = typeof item === "string" ? item : item.image;
 
       return image && image !== hotel.image;
     })
-    .slice(0, 6)
     .map((item, index) => ({
       image: typeof item === "string" ? item : item.image,
       title:
