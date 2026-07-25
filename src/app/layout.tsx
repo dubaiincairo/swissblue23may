@@ -58,8 +58,6 @@ async function currentSeo() {
   const requestHeaders = await headers();
   const locale = requestHeaders.get("x-locale") === "ar" ? "ar" : "en";
   const pathname = requestHeaders.get("x-pathname") || "";
-  const isAdmin = pathname.startsWith("/admin") || pathname.startsWith("/studio");
-  const pathname = requestHeaders.get("x-pathname") || "";
   const pageKey = pageKeyFromPath(pathname);
 
   const s = locale === "ar" ? ar.seo : en.seo;
@@ -146,6 +144,9 @@ export default async function RootLayout({
   const { ar, en } = await loadContent();
   const requestHeaders = await headers();
   const locale = requestHeaders.get("x-locale") === "ar" ? "ar" : "en";
+  const pathname = requestHeaders.get("x-pathname") || "";
+  const isAdmin =
+    pathname.startsWith("/admin") || pathname.startsWith("/studio");
   const dir = locale === "ar" ? "rtl" : "ltr";
   return (
     <html
