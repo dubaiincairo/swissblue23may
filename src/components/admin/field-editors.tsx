@@ -2,7 +2,16 @@
 
 import type { DragEvent } from "react";
 import { useState } from "react";
-import { ChevronDown, Columns3, GripVertical, Images, LayoutGrid, Plus, Trash2, Upload } from "lucide-react";
+import {
+  ChevronDown,
+  Columns3,
+  GripVertical,
+  Images,
+  LayoutGrid,
+  Plus,
+  Trash2,
+  Upload,
+} from "lucide-react";
 import { RichEditor } from "@/components/rich-editor";
 import { RephraseButton } from "@/components/rephrase-button";
 import { StockPhotoPicker } from "@/components/stock-photo-picker";
@@ -11,7 +20,14 @@ import { PAGE_KEYS, PAGE_NAMES } from "@/lib/page-seo";
 import type { JsonObject, JsonValue, Language } from "./types";
 import { labelFor, orderedEntries, shouldShowField } from "./sections";
 import { cloneTemplate, isPlainObject, itemTitle } from "./content-path";
-import { acceptsVideo, isImageField, isLogoField, isLongField, localizedImageGuidance, removeLogoBackground } from "./image-utils";
+import {
+  acceptsVideo,
+  isImageField,
+  isLogoField,
+  isLongField,
+  localizedImageGuidance,
+  removeLogoBackground,
+} from "./image-utils";
 
 export function ImageFieldEditor({
   name,
@@ -27,10 +43,16 @@ export function ImageFieldEditor({
   onChange: (path: Array<string | number>, value: JsonValue) => void;
 }) {
   const [uploadStatus, setUploadStatus] = useState("");
-  const [pickerSource, setPickerSource] = useState<"unsplash" | "pexels" | null>(null);
+  const [pickerSource, setPickerSource] = useState<
+    "unsplash" | "pexels" | null
+  >(null);
   const uploadOnly = isHotelGalleryImage(path);
 
-  function handleStockSelect(asset: { url: string; width?: number; height?: number }) {
+  function handleStockSelect(asset: {
+    url: string;
+    width?: number;
+    height?: number;
+  }) {
     onChange(path, asset.url);
     if (path.at(-1) === "source") {
       onChange([...path.slice(0, -1), "kind"], "image");
@@ -52,12 +74,15 @@ export function ImageFieldEditor({
       return;
     }
 
-    setUploadStatus(isLogoField(name) ? "Removing logo background..." : "Uploading image...");
+    setUploadStatus(
+      isLogoField(name) ? "Removing logo background..." : "Uploading image...",
+    );
 
     try {
-      const uploadFile = isLogoField(name) && file.type.startsWith("image/")
-        ? await removeLogoBackground(file)
-        : file;
+      const uploadFile =
+        isLogoField(name) && file.type.startsWith("image/")
+          ? await removeLogoBackground(file)
+          : file;
       const formData = new FormData();
       formData.append("file", uploadFile);
 
@@ -81,15 +106,23 @@ export function ImageFieldEditor({
           ? language === "ar"
             ? `تم الرفع بحجم ${data.width} x ${data.height} بكسل${isLogoField(name) ? " مع خلفية شفافة" : ""}. احفظ التغييرات للنشر.`
             : `Uploaded ${data.width} x ${data.height}px${isLogoField(name) ? " with transparent background" : ""}. Save changes to publish.`
-          : language === "ar" ? "تم الرفع. احفظ التغييرات للنشر." : "Uploaded. Save changes to publish.",
+          : language === "ar"
+            ? "تم الرفع. احفظ التغييرات للنشر."
+            : "Uploaded. Save changes to publish.",
       );
     } catch (error) {
-      setUploadStatus(error instanceof Error ? error.message : "Upload failed. Please try again.");
+      setUploadStatus(
+        error instanceof Error
+          ? error.message
+          : "Upload failed. Please try again.",
+      );
     }
   }
 
   return (
-    <div className={`admin-field admin-image-field${name === "ogImage" ? " admin-image-field-og" : ""}`}>
+    <div
+      className={`admin-field admin-image-field${name === "ogImage" ? " admin-image-field-og" : ""}`}
+    >
       <span>{labelFor(name, language)}</span>
       <div className="admin-image-control">
         <div className="admin-image-preview">
@@ -97,7 +130,9 @@ export function ImageFieldEditor({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={value} alt="" />
           ) : (
-            <span>{language === "ar" ? "لم يتم اختيار ملف" : "No photo selected"}</span>
+            <span>
+              {language === "ar" ? "لم يتم اختيار ملف" : "No photo selected"}
+            </span>
           )}
         </div>
         <div className="admin-image-tools">
@@ -107,8 +142,12 @@ export function ImageFieldEditor({
               <Upload aria-hidden="true" size={16} strokeWidth={2} />
               <span>
                 {language === "ar"
-                  ? acceptsVideo(name, path) ? "رفع ملف" : "رفع صورة"
-                  : acceptsVideo(name, path) ? "Upload media" : "Upload photo"}
+                  ? acceptsVideo(name, path)
+                    ? "رفع ملف"
+                    : "رفع صورة"
+                  : acceptsVideo(name, path)
+                    ? "Upload media"
+                    : "Upload photo"}
               </span>
               <input
                 accept={
@@ -126,8 +165,12 @@ export function ImageFieldEditor({
                   type="button"
                   className="admin-image-source-icon admin-image-source-unsplash"
                   onClick={() => setPickerSource("unsplash")}
-                  aria-label={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
-                  title={language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"}
+                  aria-label={
+                    language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"
+                  }
+                  title={
+                    language === "ar" ? "ابحث في Unsplash" : "Search Unsplash"
+                  }
                 >
                   <Images aria-hidden="true" size={16} strokeWidth={2} />
                   <span>Unsplash</span>
@@ -136,7 +179,9 @@ export function ImageFieldEditor({
                   type="button"
                   className="admin-image-source-icon admin-image-source-pexels"
                   onClick={() => setPickerSource("pexels")}
-                  aria-label={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
+                  aria-label={
+                    language === "ar" ? "ابحث في Pexels" : "Search Pexels"
+                  }
                   title={language === "ar" ? "ابحث في Pexels" : "Search Pexels"}
                 >
                   <Images aria-hidden="true" size={16} strokeWidth={2} />
@@ -151,7 +196,9 @@ export function ImageFieldEditor({
       <input
         type="url"
         value={value}
-        placeholder={language === "ar" ? "أو الصق رابط الملف" : "Or paste an image URL"}
+        placeholder={
+          language === "ar" ? "أو الصق رابط الملف" : "Or paste an image URL"
+        }
         onChange={(event) => onChange(path, event.target.value)}
       />
       {pickerSource ? (
@@ -166,7 +213,6 @@ export function ImageFieldEditor({
     </div>
   );
 }
-
 
 export function StringFieldEditor({
   name,
@@ -185,11 +231,14 @@ export function StringFieldEditor({
 }) {
   const isUrl = ["href", "image", "secondaryHref", "source"].includes(name);
   const isOpaque = ["slug", "type", "kind", "mapQuery"].includes(name);
+  const fieldLabel = isHotelGalleryTitle(name, path)
+    ? hotelGalleryTitleLabel(language)
+    : labelFor(name, language);
 
   if (isUrl) {
     return (
       <label className="admin-field">
-        <span>{labelFor(name, language)}</span>
+        <span>{fieldLabel}</span>
         <input
           type="url"
           value={value}
@@ -202,7 +251,7 @@ export function StringFieldEditor({
   if (isNumber) {
     return (
       <label className="admin-field">
-        <span>{labelFor(name, language)}</span>
+        <span>{fieldLabel}</span>
         <input
           type="number"
           value={value}
@@ -216,11 +265,23 @@ export function StringFieldEditor({
     return (
       <div className="admin-field">
         <span className="admin-field-label-row">
-          <span>{labelFor(name, language)}</span>
+          <span>{fieldLabel}</span>
           {!isOpaque ? (
             <span className="admin-field-actions">
-              <RephraseButton value={value} language={language} path={path} isHtml onChange={onChange} />
-              <TranslateButton value={value} sourceLanguage={language} path={path} isHtml onChange={onChange} />
+              <RephraseButton
+                value={value}
+                language={language}
+                path={path}
+                isHtml
+                onChange={onChange}
+              />
+              <TranslateButton
+                value={value}
+                sourceLanguage={language}
+                path={path}
+                isHtml
+                onChange={onChange}
+              />
             </span>
           ) : null}
         </span>
@@ -228,7 +289,7 @@ export function StringFieldEditor({
           value={value}
           onChange={(html) => onChange(path, html)}
           dir={language === "ar" ? "rtl" : "ltr"}
-          ariaLabel={labelFor(name, language)}
+          ariaLabel={fieldLabel}
           language={language}
         />
       </div>
@@ -238,17 +299,27 @@ export function StringFieldEditor({
   return (
     <div className="admin-field">
       <span className="admin-field-label-row">
-        <span>{labelFor(name, language)}</span>
+        <span>{fieldLabel}</span>
         {!isOpaque ? (
           <span className="admin-field-actions">
-            <RephraseButton value={value} language={language} path={path} onChange={onChange} />
-            <TranslateButton value={value} sourceLanguage={language} path={path} onChange={onChange} />
+            <RephraseButton
+              value={value}
+              language={language}
+              path={path}
+              onChange={onChange}
+            />
+            <TranslateButton
+              value={value}
+              sourceLanguage={language}
+              path={path}
+              onChange={onChange}
+            />
           </span>
         ) : null}
       </span>
       <input
         type="text"
-        aria-label={labelFor(name, language)}
+        aria-label={fieldLabel}
         value={value}
         onChange={(event) => onChange(path, event.target.value)}
       />
@@ -257,7 +328,18 @@ export function StringFieldEditor({
 }
 
 function isHotelGalleryImage(path: Array<string | number>) {
-  return path.map(String).includes("properties") && path.map(String).includes("gallery");
+  return (
+    path.map(String).includes("properties") &&
+    path.map(String).includes("gallery")
+  );
+}
+
+function isHotelGalleryTitle(name: string, path: Array<string | number>) {
+  return name === "title" && isHotelGalleryImage(path);
+}
+
+function hotelGalleryTitleLabel(language: Language) {
+  return language === "ar" ? "عنوان الصورة" : "Photo headline";
 }
 
 function visiblePropertyGalleryKeys(path: Array<string | number>, key: string) {
@@ -327,7 +409,11 @@ function AdminAuthBackdropLayoutField({
             onClick={() => onChange(path, option.value)}
           >
             <span className="admin-layout-preview" aria-hidden="true">
-              {option.value === "tiles" ? <LayoutGrid size={30} strokeWidth={1.8} /> : <Columns3 size={30} strokeWidth={1.8} />}
+              {option.value === "tiles" ? (
+                <LayoutGrid size={30} strokeWidth={1.8} />
+              ) : (
+                <Columns3 size={30} strokeWidth={1.8} />
+              )}
             </span>
             <span>{language === "ar" ? option.ar : option.en}</span>
           </button>
@@ -389,11 +475,13 @@ export function FocalFieldEditor({
 const SEO_PAGE_FIELDS = ["title", "description", "ogImage"] as const;
 
 function humanizePageKey(key: string) {
-  return key
-    .split("-")
-    .filter(Boolean)
-    .map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
-    .join(" ") || key;
+  return (
+    key
+      .split("-")
+      .filter(Boolean)
+      .map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
+      .join(" ") || key
+  );
 }
 
 function pageRouteForKey(key: string, language: Language) {
@@ -421,13 +509,22 @@ function SeoPagesEditor({
   onReorder: (path: Array<string | number>, from: number, to: number) => void;
 }) {
   const [query, setQuery] = useState("");
-  const [selectedPageKey, setSelectedPageKey] = useState(PAGE_KEYS[0] ?? "home");
-  const allPageKeys = Array.from(new Set([...PAGE_KEYS, ...Object.keys(value)]));
+  const [selectedPageKey, setSelectedPageKey] = useState(
+    PAGE_KEYS[0] ?? "home",
+  );
+  const allPageKeys = Array.from(
+    new Set([...PAGE_KEYS, ...Object.keys(value)]),
+  );
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const pageItems = allPageKeys.map((key) => {
-    const names = PAGE_NAMES[key] ?? { en: humanizePageKey(key), ar: humanizePageKey(key) };
+    const names = PAGE_NAMES[key] ?? {
+      en: humanizePageKey(key),
+      ar: humanizePageKey(key),
+    };
     const pageValue = isPlainObject(value[key]) ? value[key] : {};
-    const completedFields = SEO_PAGE_FIELDS.filter((field) => seoFieldValue(pageValue, field).trim()).length;
+    const completedFields = SEO_PAGE_FIELDS.filter((field) =>
+      seoFieldValue(pageValue, field).trim(),
+    ).length;
     const route = pageRouteForKey(key, language);
     const label = names[language] || names.en || humanizePageKey(key);
     const alternateLabel = language === "ar" ? names.en : names.ar;
@@ -448,15 +545,26 @@ function SeoPagesEditor({
 
     return [page.label, page.alternateLabel, page.key, page.route]
       .filter(Boolean)
-      .some((candidate) => candidate.toLocaleLowerCase().includes(normalizedQuery));
+      .some((candidate) =>
+        candidate.toLocaleLowerCase().includes(normalizedQuery),
+      );
   });
-  const selectedPageVisible = filteredPageItems.some((page) => page.key === selectedPageKey);
-  const activePageKey = selectedPageVisible ? selectedPageKey : filteredPageItems[0]?.key;
+  const selectedPageVisible = filteredPageItems.some(
+    (page) => page.key === selectedPageKey,
+  );
+  const activePageKey = selectedPageVisible
+    ? selectedPageKey
+    : filteredPageItems[0]?.key;
   const activePage = pageItems.find((page) => page.key === activePageKey);
   const activeValue =
-    activePageKey && isPlainObject(value[activePageKey]) ? value[activePageKey] : {};
+    activePageKey && isPlainObject(value[activePageKey])
+      ? value[activePageKey]
+      : {};
 
-  function handleSelectedPageChange(fieldPath: Array<string | number>, nextValue: JsonValue) {
+  function handleSelectedPageChange(
+    fieldPath: Array<string | number>,
+    nextValue: JsonValue,
+  ) {
     if (!activePageKey) {
       return;
     }
@@ -476,31 +584,51 @@ function SeoPagesEditor({
   }
 
   return (
-    <section className="admin-seo-pages" aria-label={language === "ar" ? "تحسين الصفحات" : "Per-page SEO"}>
+    <section
+      className="admin-seo-pages"
+      aria-label={language === "ar" ? "تحسين الصفحات" : "Per-page SEO"}
+    >
       <div className="admin-seo-pages-toolbar">
         <label className="admin-seo-search">
           <span>{language === "ar" ? "البحث عن صفحة" : "Find a page"}</span>
           <input
             type="search"
             value={query}
-            placeholder={language === "ar" ? "اكتب اسم الصفحة أو الرابط" : "Type a page name or route"}
+            placeholder={
+              language === "ar"
+                ? "اكتب اسم الصفحة أو الرابط"
+                : "Type a page name or route"
+            }
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>
         <div className="admin-seo-result-count" aria-live="polite">
           <strong>{filteredPageItems.length}</strong>
-          <span>{language === "ar" ? "صفحة" : filteredPageItems.length === 1 ? "page" : "pages"}</span>
+          <span>
+            {language === "ar"
+              ? "صفحة"
+              : filteredPageItems.length === 1
+                ? "page"
+                : "pages"}
+          </span>
         </div>
       </div>
 
       <div className="admin-seo-pages-grid">
-        <nav className="admin-seo-page-list" aria-label={language === "ar" ? "الصفحات" : "Pages"}>
+        <nav
+          className="admin-seo-page-list"
+          aria-label={language === "ar" ? "الصفحات" : "Pages"}
+        >
           {filteredPageItems.length ? (
             filteredPageItems.map((page) => (
               <button
                 key={page.key}
                 type="button"
-                className={page.key === activePageKey ? "admin-seo-page-button is-active" : "admin-seo-page-button"}
+                className={
+                  page.key === activePageKey
+                    ? "admin-seo-page-button is-active"
+                    : "admin-seo-page-button"
+                }
                 aria-current={page.key === activePageKey ? "page" : undefined}
                 onClick={() => setSelectedPageKey(page.key)}
               >
@@ -515,7 +643,9 @@ function SeoPagesEditor({
             ))
           ) : (
             <p className="admin-seo-empty">
-              {language === "ar" ? "لا توجد صفحة بهذا البحث." : "No pages match this search."}
+              {language === "ar"
+                ? "لا توجد صفحة بهذا البحث."
+                : "No pages match this search."}
             </p>
           )}
         </nav>
@@ -551,7 +681,9 @@ function SeoPagesEditor({
             </>
           ) : (
             <p className="admin-seo-empty">
-              {language === "ar" ? "اختر صفحة لتعديل بياناتها." : "Select a page to edit its SEO."}
+              {language === "ar"
+                ? "اختر صفحة لتعديل بياناتها."
+                : "Select a page to edit its SEO."}
             </p>
           )}
         </section>
@@ -568,24 +700,46 @@ function isNestedValue(value: JsonValue) {
 
 function fieldGroupLabel(entries: OrderedField[], language: Language) {
   const keys = entries.map(({ key }) => key);
-  const includes = (...values: string[]) => values.some((value) => keys.includes(value));
+  const includes = (...values: string[]) =>
+    values.some((value) => keys.includes(value));
   const hasKeyPart = (...parts: string[]) =>
-    keys.some((key) => parts.some((part) => key.toLowerCase().includes(part.toLowerCase())));
+    keys.some((key) =>
+      parts.some((part) => key.toLowerCase().includes(part.toLowerCase())),
+    );
 
-  if (includes("continue", "back", "submit", "success", "error", "closeModal", "summaryHeading") || hasKeyPart("button", "cta")) {
-    return language === "ar" ? "الأزرار ورسائل النموذج" : "Actions and form messages";
+  if (
+    includes(
+      "continue",
+      "back",
+      "submit",
+      "success",
+      "error",
+      "closeModal",
+      "summaryHeading",
+    ) ||
+    hasKeyPart("button", "cta")
+  ) {
+    return language === "ar"
+      ? "الأزرار ورسائل النموذج"
+      : "Actions and form messages";
   }
 
   if (hasKeyPart("step")) {
-    return language === "ar" ? "خطوات النموذج والإرشادات" : "Form steps and guidance";
+    return language === "ar"
+      ? "خطوات النموذج والإرشادات"
+      : "Form steps and guidance";
   }
 
   if (hasKeyPart("placeholder", "option")) {
-    return language === "ar" ? "تعليمات وخيارات الحقول" : "Field prompts and options";
+    return language === "ar"
+      ? "تعليمات وخيارات الحقول"
+      : "Field prompts and options";
   }
 
   if (includes("eyebrow", "title", "text", "description", "note")) {
-    return language === "ar" ? "المقدمة والمحتوى الرئيسي" : "Introduction and main content";
+    return language === "ar"
+      ? "المقدمة والمحتوى الرئيسي"
+      : "Introduction and main content";
   }
 
   return language === "ar" ? "محتوى عام" : "General content";
@@ -635,12 +789,17 @@ function PrimitiveListValueEditor({
   language: Language;
   onChange: (path: Array<string | number>, value: JsonValue) => void;
 }) {
-  const itemLabel = language === "ar" ? `العنصر ${index + 1}` : `Item ${index + 1}`;
+  const itemLabel =
+    language === "ar" ? `العنصر ${index + 1}` : `Item ${index + 1}`;
 
   if (typeof value === "boolean") {
     return (
       <label className="admin-list-value admin-check">
-        <input checked={value} type="checkbox" onChange={(event) => onChange(path, event.target.checked)} />
+        <input
+          checked={value}
+          type="checkbox"
+          onChange={(event) => onChange(path, event.target.checked)}
+        />
         <span>{itemLabel}</span>
       </label>
     );
@@ -650,7 +809,11 @@ function PrimitiveListValueEditor({
     return (
       <label className="admin-list-value">
         <span>{itemLabel}</span>
-        <input type="number" value={value} onChange={(event) => onChange(path, Number(event.target.value))} />
+        <input
+          type="number"
+          value={value}
+          onChange={(event) => onChange(path, Number(event.target.value))}
+        />
       </label>
     );
   }
@@ -677,8 +840,18 @@ function PrimitiveListValueEditor({
       <div className="admin-list-value-head">
         <span>{itemLabel}</span>
         <span className="admin-field-actions">
-          <RephraseButton value={stringValue} language={language} path={path} onChange={onChange} />
-          <TranslateButton value={stringValue} sourceLanguage={language} path={path} onChange={onChange} />
+          <RephraseButton
+            value={stringValue}
+            language={language}
+            path={path}
+            onChange={onChange}
+          />
+          <TranslateButton
+            value={stringValue}
+            sourceLanguage={language}
+            path={path}
+            onChange={onChange}
+          />
         </span>
       </div>
       {useTextarea ? (
@@ -729,7 +902,11 @@ export function FieldEditor({
   if (typeof value === "string" || typeof value === "number") {
     const stringValue = String(value);
 
-    if (typeof value === "string" && name === "layout" && isAdminAuthBackdropPath(path)) {
+    if (
+      typeof value === "string" &&
+      name === "layout" &&
+      isAdminAuthBackdropPath(path)
+    ) {
       return (
         <AdminAuthBackdropLayoutField
           name={name}
@@ -742,11 +919,27 @@ export function FieldEditor({
     }
 
     if (typeof value === "string" && name === "focus") {
-      return <FocalFieldEditor name={name} value={value} path={path} language={language} onChange={onChange} />;
+      return (
+        <FocalFieldEditor
+          name={name}
+          value={value}
+          path={path}
+          language={language}
+          onChange={onChange}
+        />
+      );
     }
 
     if (typeof value === "string" && isImageField(name, path, value)) {
-      return <ImageFieldEditor name={name} value={value} path={path} language={language} onChange={onChange} />;
+      return (
+        <ImageFieldEditor
+          name={name}
+          value={value}
+          path={path}
+          language={language}
+          onChange={onChange}
+        />
+      );
     }
 
     return (
@@ -775,11 +968,16 @@ export function FieldEditor({
   }
 
   if (Array.isArray(value)) {
-    const primitiveList = value.every((item) => !isPlainObject(item) && !Array.isArray(item));
-    const isFixedAdminAuthPhotos = name === "photos" && isAdminAuthBackdropPath(path);
+    const primitiveList = value.every(
+      (item) => !isPlainObject(item) && !Array.isArray(item),
+    );
+    const isFixedAdminAuthPhotos =
+      name === "photos" && isAdminAuthBackdropPath(path);
     const isPropertyList = name === "items" && path.includes("properties");
     const isGalleryOnlyPropertyList = galleryOnly && isPropertyList;
-    const openForDirectLink = Boolean((isPropertyList && focusItem) || (name === "gallery" && isFocusedItem));
+    const openForDirectLink = Boolean(
+      (isPropertyList && focusItem) || (name === "gallery" && isFocusedItem),
+    );
 
     function clearDragState() {
       setDragIndex(null);
@@ -809,7 +1007,10 @@ export function FieldEditor({
     }
 
     return (
-      <details className="admin-array admin-editor-fold" open={openForDirectLink || undefined}>
+      <details
+        className="admin-array admin-editor-fold"
+        open={openForDirectLink || undefined}
+      >
         <summary className="admin-fold-summary">
           <span className="admin-fold-summary-main">
             <span>
@@ -821,134 +1022,224 @@ export function FieldEditor({
               </small>
             </span>
           </span>
-          <ChevronDown className="admin-fold-chevron" aria-hidden="true" size={19} strokeWidth={2.2} />
+          <ChevronDown
+            className="admin-fold-chevron"
+            aria-hidden="true"
+            size={19}
+            strokeWidth={2.2}
+          />
         </summary>
 
         <div className="admin-fold-body">
           {isFixedAdminAuthPhotos || isGalleryOnlyPropertyList ? null : (
             <div className="admin-array-toolbar">
-              <button type="button" onClick={() => onChange(path, [...value, cloneTemplate(value[0] ?? "")])}>
+              <button
+                type="button"
+                onClick={() =>
+                  onChange(path, [...value, cloneTemplate(value[0] ?? "")])
+                }
+              >
                 <Plus aria-hidden="true" size={16} strokeWidth={2.3} />
                 {language === "ar" ? "إضافة عنصر" : "Add item"}
               </button>
             </div>
           )}
 
-          <div className={primitiveList ? "admin-list-editor" : "admin-array-list"}>
-          {value.map((item, index) => {
-            const fallback = `${labelFor(name, language)} ${index + 1}`;
-            const itemSlug = isPlainObject(item) && typeof item.slug === "string" ? item.slug : undefined;
-            const isDirectItem = Boolean(focusItem && itemSlug === focusItem);
+          <div
+            className={primitiveList ? "admin-list-editor" : "admin-array-list"}
+          >
+            {value.map((item, index) => {
+              const fallback = `${labelFor(name, language)} ${index + 1}`;
+              const itemSlug =
+                isPlainObject(item) && typeof item.slug === "string"
+                  ? item.slug
+                  : undefined;
+              const isDirectItem = Boolean(focusItem && itemSlug === focusItem);
 
-            if (primitiveList) {
+              if (primitiveList) {
+                return (
+                  <div
+                    className={[
+                      "admin-list-row",
+                      dragIndex === index ? "is-dragging" : "",
+                      dragOverIndex === index &&
+                      dragIndex !== null &&
+                      dragIndex !== index
+                        ? "is-drop-target"
+                        : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    key={`${path.join(".")}-${index}`}
+                    onDragLeave={() =>
+                      setDragOverIndex((current) =>
+                        current === index ? null : current,
+                      )
+                    }
+                    onDragOver={(event) => handleDragOver(event, index)}
+                    onDrop={() => handleDrop(index)}
+                  >
+                    <span
+                      className="admin-drag-handle"
+                      draggable
+                      aria-label={
+                        language === "ar"
+                          ? "اسحب لتغيير ترتيب العنصر"
+                          : "Drag item to reorder"
+                      }
+                      title={
+                        language === "ar"
+                          ? "اسحب لتغيير الترتيب"
+                          : "Drag to reorder"
+                      }
+                      onDragStart={(event) => handleDragStart(event, index)}
+                      onDragEnd={clearDragState}
+                    >
+                      <GripVertical
+                        aria-hidden="true"
+                        size={20}
+                        strokeWidth={2.2}
+                      />
+                    </span>
+                    <PrimitiveListValueEditor
+                      name={name}
+                      value={item}
+                      index={index}
+                      path={[...path, index]}
+                      language={language}
+                      onChange={onChange}
+                    />
+                    {isFixedAdminAuthPhotos ||
+                    isGalleryOnlyPropertyList ? null : (
+                      <button
+                        className="admin-remove admin-icon-button"
+                        type="button"
+                        onClick={() =>
+                          onChange(
+                            path,
+                            value.filter((_, itemIndex) => itemIndex !== index),
+                          )
+                        }
+                        aria-label={
+                          language === "ar"
+                            ? `حذف العنصر ${index + 1}`
+                            : `Delete item ${index + 1}`
+                        }
+                        title={language === "ar" ? "حذف العنصر" : "Delete item"}
+                      >
+                        <Trash2
+                          aria-hidden="true"
+                          size={18}
+                          strokeWidth={2.1}
+                        />
+                      </button>
+                    )}
+                  </div>
+                );
+              }
+
               return (
-                <div
+                <details
                   className={[
-                    "admin-list-row",
+                    "admin-array-item",
                     dragIndex === index ? "is-dragging" : "",
-                    dragOverIndex === index && dragIndex !== null && dragIndex !== index ? "is-drop-target" : "",
-                  ].filter(Boolean).join(" ")}
+                    dragOverIndex === index &&
+                    dragIndex !== null &&
+                    dragIndex !== index
+                      ? "is-drop-target"
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                   key={`${path.join(".")}-${index}`}
-                  onDragLeave={() => setDragOverIndex((current) => (current === index ? null : current))}
+                  id={isDirectItem ? `admin-property-${itemSlug}` : undefined}
+                  open={isDirectItem || undefined}
+                  onDragLeave={() =>
+                    setDragOverIndex((current) =>
+                      current === index ? null : current,
+                    )
+                  }
                   onDragOver={(event) => handleDragOver(event, index)}
                   onDrop={() => handleDrop(index)}
                 >
-                  <span
-                    className="admin-drag-handle"
-                    draggable
-                    aria-label={language === "ar" ? "اسحب لتغيير ترتيب العنصر" : "Drag item to reorder"}
-                    title={language === "ar" ? "اسحب لتغيير الترتيب" : "Drag to reorder"}
-                    onDragStart={(event) => handleDragStart(event, index)}
-                    onDragEnd={clearDragState}
-                  >
-                    <GripVertical aria-hidden="true" size={20} strokeWidth={2.2} />
-                  </span>
-                  <PrimitiveListValueEditor
-                    name={name}
-                    value={item}
-                    index={index}
-                    path={[...path, index]}
-                    language={language}
-                    onChange={onChange}
-                  />
-                  {isFixedAdminAuthPhotos || isGalleryOnlyPropertyList ? null : (
-                    <button
-                      className="admin-remove admin-icon-button"
-                      type="button"
-                      onClick={() => onChange(path, value.filter((_, itemIndex) => itemIndex !== index))}
-                      aria-label={language === "ar" ? `حذف العنصر ${index + 1}` : `Delete item ${index + 1}`}
-                      title={language === "ar" ? "حذف العنصر" : "Delete item"}
+                  <summary className="admin-item-summary">
+                    <span
+                      className="admin-drag-handle"
+                      draggable
+                      aria-label={
+                        language === "ar"
+                          ? "اسحب لتغيير ترتيب العنصر"
+                          : "Drag item to reorder"
+                      }
+                      title={
+                        language === "ar"
+                          ? "اسحب لتغيير الترتيب"
+                          : "Drag to reorder"
+                      }
+                      onClick={(event) => event.preventDefault()}
+                      onDragStart={(event) => handleDragStart(event, index)}
+                      onDragEnd={clearDragState}
                     >
-                      <Trash2 aria-hidden="true" size={18} strokeWidth={2.1} />
-                    </button>
-                  )}
-                </div>
+                      <GripVertical
+                        aria-hidden="true"
+                        size={20}
+                        strokeWidth={2.2}
+                      />
+                    </span>
+                    <span>
+                      <strong>{itemTitle(item, fallback)}</strong>
+                      <small>{fallback}</small>
+                    </span>
+                    {isFixedAdminAuthPhotos ||
+                    isGalleryOnlyPropertyList ? null : (
+                      <button
+                        className="admin-remove admin-icon-button"
+                        type="button"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          onChange(
+                            path,
+                            value.filter((_, itemIndex) => itemIndex !== index),
+                          );
+                        }}
+                        aria-label={
+                          language === "ar"
+                            ? `حذف العنصر ${index + 1}`
+                            : `Delete item ${index + 1}`
+                        }
+                        title={language === "ar" ? "حذف العنصر" : "Delete item"}
+                      >
+                        <Trash2
+                          aria-hidden="true"
+                          size={18}
+                          strokeWidth={2.1}
+                        />
+                      </button>
+                    )}
+                    <ChevronDown
+                      className="admin-fold-chevron"
+                      aria-hidden="true"
+                      size={18}
+                      strokeWidth={2.2}
+                    />
+                  </summary>
+                  <div className="admin-nested">
+                    <FieldEditor
+                      name={name}
+                      value={item}
+                      path={[...path, index]}
+                      level={level + 1}
+                      language={language}
+                      onChange={onChange}
+                      onReorder={onReorder}
+                      focusItem={focusItem}
+                      isFocusedItem={isFocusedItem || isDirectItem}
+                      galleryOnly={galleryOnly || name === "propertyGalleries"}
+                    />
+                  </div>
+                </details>
               );
-            }
-
-            return (
-              <details
-                className={[
-                  "admin-array-item",
-                  dragIndex === index ? "is-dragging" : "",
-                  dragOverIndex === index && dragIndex !== null && dragIndex !== index ? "is-drop-target" : "",
-                ].filter(Boolean).join(" ")}
-                key={`${path.join(".")}-${index}`}
-                id={isDirectItem ? `admin-property-${itemSlug}` : undefined}
-                open={isDirectItem || undefined}
-                onDragLeave={() => setDragOverIndex((current) => (current === index ? null : current))}
-                onDragOver={(event) => handleDragOver(event, index)}
-                onDrop={() => handleDrop(index)}
-              >
-                <summary className="admin-item-summary">
-                  <span
-                    className="admin-drag-handle"
-                    draggable
-                    aria-label={language === "ar" ? "اسحب لتغيير ترتيب العنصر" : "Drag item to reorder"}
-                    title={language === "ar" ? "اسحب لتغيير الترتيب" : "Drag to reorder"}
-                    onClick={(event) => event.preventDefault()}
-                    onDragStart={(event) => handleDragStart(event, index)}
-                    onDragEnd={clearDragState}
-                  >
-                    <GripVertical aria-hidden="true" size={20} strokeWidth={2.2} />
-                  </span>
-                  <span>
-                    <strong>{itemTitle(item, fallback)}</strong>
-                    <small>{fallback}</small>
-                  </span>
-                  {isFixedAdminAuthPhotos || isGalleryOnlyPropertyList ? null : (
-                    <button
-                      className="admin-remove admin-icon-button"
-                      type="button"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        onChange(path, value.filter((_, itemIndex) => itemIndex !== index));
-                      }}
-                      aria-label={language === "ar" ? `حذف العنصر ${index + 1}` : `Delete item ${index + 1}`}
-                      title={language === "ar" ? "حذف العنصر" : "Delete item"}
-                    >
-                      <Trash2 aria-hidden="true" size={18} strokeWidth={2.1} />
-                    </button>
-                  )}
-                  <ChevronDown className="admin-fold-chevron" aria-hidden="true" size={18} strokeWidth={2.2} />
-                </summary>
-                <div className="admin-nested">
-                  <FieldEditor
-                    name={name}
-                    value={item}
-                    path={[...path, index]}
-                    level={level + 1}
-                    language={language}
-                    onChange={onChange}
-                    onReorder={onReorder}
-                    focusItem={focusItem}
-                    isFocusedItem={isFocusedItem || isDirectItem}
-                    galleryOnly={galleryOnly || name === "propertyGalleries"}
-                  />
-                </div>
-              </details>
-            );
-          })}
+            })}
           </div>
         </div>
       </details>
@@ -972,9 +1263,9 @@ export function FieldEditor({
     const propertyGalleryOnly = galleryOnly || name === "propertyGalleries";
     const entries = orderedEntries(value)
       .filter(({ key }) => shouldShowField(path, key))
-      .filter(({ key }) => propertyGalleryOnly
-        ? visiblePropertyGalleryKeys(path, key)
-        : true);
+      .filter(({ key }) =>
+        propertyGalleryOnly ? visiblePropertyGalleryKeys(path, key) : true,
+      );
     const isArrayItemObject = typeof path.at(-1) === "number";
 
     if (level > 0 && !isArrayItemObject) {
@@ -984,10 +1275,19 @@ export function FieldEditor({
             <span className="admin-fold-summary-main">
               <span>
                 <strong>{labelFor(name, language)}</strong>
-                <small>{language === "ar" ? `${entries.length} حقول` : `${entries.length} fields`}</small>
+                <small>
+                  {language === "ar"
+                    ? `${entries.length} حقول`
+                    : `${entries.length} fields`}
+                </small>
               </span>
             </span>
-            <ChevronDown className="admin-fold-chevron" aria-hidden="true" size={19} strokeWidth={2.2} />
+            <ChevronDown
+              className="admin-fold-chevron"
+              aria-hidden="true"
+              size={19}
+              strokeWidth={2.2}
+            />
           </summary>
           <div className="admin-fold-body">
             <div className="admin-field-grid">
@@ -1018,20 +1318,40 @@ export function FieldEditor({
       : entries.map((entry) => ({ kind: "field" as const, entry }));
 
     return (
-      <section className={level === 0 ? "admin-object admin-object-root" : "admin-object admin-object-inline"}>
+      <section
+        className={
+          level === 0
+            ? "admin-object admin-object-root"
+            : "admin-object admin-object-inline"
+        }
+      >
         <div className="admin-field-grid">
           {segments.map((segment, index) => {
             if (segment.kind === "group") {
               return (
-                <details className="admin-editor-fold admin-field-group" key={`${path.join(".")}-group-${index}`}>
+                <details
+                  className="admin-editor-fold admin-field-group"
+                  key={`${path.join(".")}-group-${index}`}
+                >
                   <summary className="admin-fold-summary">
                     <span className="admin-fold-summary-main">
                       <span>
-                        <strong>{fieldGroupLabel(segment.entries, language)}</strong>
-                        <small>{language === "ar" ? `${segment.entries.length} حقول` : `${segment.entries.length} fields`}</small>
+                        <strong>
+                          {fieldGroupLabel(segment.entries, language)}
+                        </strong>
+                        <small>
+                          {language === "ar"
+                            ? `${segment.entries.length} حقول`
+                            : `${segment.entries.length} fields`}
+                        </small>
                       </span>
                     </span>
-                    <ChevronDown className="admin-fold-chevron" aria-hidden="true" size={19} strokeWidth={2.2} />
+                    <ChevronDown
+                      className="admin-fold-chevron"
+                      aria-hidden="true"
+                      size={19}
+                      strokeWidth={2.2}
+                    />
                   </summary>
                   <div className="admin-fold-body">
                     <div className="admin-field-grid">

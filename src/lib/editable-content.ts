@@ -34,7 +34,11 @@ import {
   corporateDealsEn,
 } from "@/lib/content-en";
 import { faqCategories, homepageFaqs, propertyFaqs } from "@/lib/faq-content";
-import { faqCategoriesEn, homepageFaqsEn, propertyFaqsEn } from "@/lib/faq-content-en";
+import {
+  faqCategoriesEn,
+  homepageFaqsEn,
+  propertyFaqsEn,
+} from "@/lib/faq-content-en";
 import {
   createDefaultAdminAuthBackdrop,
   normalizeAdminAuthBackdrop,
@@ -46,6 +50,12 @@ const documentId = "site-content-singleton";
 const B2B_REQUEST_FORM_EYEBROW_EN = "B2B Request Form";
 const LEGACY_B2B_REQUEST_FORM_EYEBROW_EN = "B2B request form";
 const PROPERTY_GALLERY_IMAGE_COUNT = 6;
+
+type PropertyGalleryItem = {
+  title: string;
+  image: string;
+};
+type PropertyGalleryValue = string | PropertyGalleryItem;
 
 const homeOffers = [
   {
@@ -193,17 +203,20 @@ const partnersSection = {
   title: "اعثر على سويس بلو في أهم منصات الحجز العالمية والإقليمية.",
   text: "نتعاون مع أبرز منصات السفر الرقمية في المملكة العربية السعودية والخليج، لنضمن وضوح الأسعار وسهولة الحجز للضيف، أينما اختار قناة الحجز المفضلة لديه.",
   badge: "+10 وكلاء سفر معتمدين",
-  footnote: "للحصول على أفضل سعر مضمون، ننصح بالحجز المباشر من موقع سويس بلو الرسمي.",
+  footnote:
+    "للحصول على أفضل سعر مضمون، ننصح بالحجز المباشر من موقع سويس بلو الرسمي.",
   cta: "احجز مباشرة الآن",
   items: otas,
 };
 
 const partnersSectionEn = {
   eyebrow: "Trusted digital presence",
-  title: "Find Swiss Blue across leading global and regional booking platforms.",
+  title:
+    "Find Swiss Blue across leading global and regional booking platforms.",
   text: "We partner with the most reputable online travel agencies in Saudi Arabia and the GCC, so guests get clear rates and a smooth booking experience on the channel they prefer.",
   badge: "+10 verified travel partners",
-  footnote: "For the best available rate, we always recommend booking direct on the official Swiss Blue website.",
+  footnote:
+    "For the best available rate, we always recommend booking direct on the official Swiss Blue website.",
   cta: "Book direct now",
   items: otasEn,
 };
@@ -216,48 +229,60 @@ const testimonialsSection = {
     {
       name: "أحمد العتيبي",
       role: "إقامة عائلية في جدة",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/2ec246be46d86c5d72e227e416b8de35f45fcd83-3569x5354.jpg",
-      quote: "موقع مميز قريب من كل ما تحتاجه، والاستقبال كان لطيفًا وسريعًا. الغرفة نظيفة والإفطار يستحق التجربة. سنعود بإذن الله.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/2ec246be46d86c5d72e227e416b8de35f45fcd83-3569x5354.jpg",
+      quote:
+        "موقع مميز قريب من كل ما تحتاجه، والاستقبال كان لطيفًا وسريعًا. الغرفة نظيفة والإفطار يستحق التجربة. سنعود بإذن الله.",
       platform: "Google Maps",
       rating: 5,
     },
     {
       name: "سارة المنصور",
       role: "إقامة عمل – جدة",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/a149018b573c9c446871f42b25634bc59f458a9c-3974x5000.jpg",
-      quote: "تسجيل دخول سلس، غرف هادئة، وشبكة واي فاي قوية. مناسبة جدًا لرحلات العمل القصيرة عندما تحتاج إلى التركيز.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/a149018b573c9c446871f42b25634bc59f458a9c-3974x5000.jpg",
+      quote:
+        "تسجيل دخول سلس، غرف هادئة، وشبكة واي فاي قوية. مناسبة جدًا لرحلات العمل القصيرة عندما تحتاج إلى التركيز.",
       platform: "Booking.com",
       rating: 5,
     },
     {
       name: "محمد القحطاني",
       role: "إقامة شهرية – جازان",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/9b0649eab8612d307f07390358f2edd09327ec1b-4480x6415.jpg",
-      quote: "شقة واسعة ومجهزة بالكامل، فريق الصيانة سريع الاستجابة، والسعر الشهري ممتاز مقارنة بالخدمات المقدمة.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/9b0649eab8612d307f07390358f2edd09327ec1b-4480x6415.jpg",
+      quote:
+        "شقة واسعة ومجهزة بالكامل، فريق الصيانة سريع الاستجابة، والسعر الشهري ممتاز مقارنة بالخدمات المقدمة.",
       platform: "Agoda",
       rating: 5,
     },
     {
       name: "ليلى حسن",
       role: "إجازة عائلية – الرياض",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/45f0b6e8ea8bb2b90e471c2103d776756ddf9fbd-4000x5705.jpg",
-      quote: "شقة الغرفتين كانت مناسبة جدًا لعائلتنا. نظيفة وعصرية، والفريق كان متعاونًا للغاية مع تأخر وقت وصولنا.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/45f0b6e8ea8bb2b90e471c2103d776756ddf9fbd-4000x5705.jpg",
+      quote:
+        "شقة الغرفتين كانت مناسبة جدًا لعائلتنا. نظيفة وعصرية، والفريق كان متعاونًا للغاية مع تأخر وقت وصولنا.",
       platform: "Expedia",
       rating: 4,
     },
     {
       name: "خالد الزهراني",
       role: "ضيف متكرر – جدة",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/2a02d66bb1df7354769704ae22afebdd53cea3d8-4480x6720.jpg",
-      quote: "أحرص على الحجز في سويس بلو في كل زيارة لجدة. الخدمة ثابتة الجودة والاستقبال يعرف الضيوف الدائمين.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/2a02d66bb1df7354769704ae22afebdd53cea3d8-4480x6720.jpg",
+      quote:
+        "أحرص على الحجز في سويس بلو في كل زيارة لجدة. الخدمة ثابتة الجودة والاستقبال يعرف الضيوف الدائمين.",
       platform: "TripAdvisor",
       rating: 5,
     },
     {
       name: "عمر خليل",
       role: "إقامة منفردة – جازان",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/af728bb74bd33bce0a4188f0b10d2679ea49c225-4160x6240.jpg",
-      quote: "قيمة ممتازة مقابل المنطقة. الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/af728bb74bd33bce0a4188f0b10d2679ea49c225-4160x6240.jpg",
+      quote:
+        "قيمة ممتازة مقابل المنطقة. الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.",
       platform: "Trivago",
       rating: 4,
     },
@@ -272,48 +297,60 @@ const testimonialsSectionEn = {
     {
       name: "Ahmed Al-Otaibi",
       role: "Family stay in Jeddah",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/2ec246be46d86c5d72e227e416b8de35f45fcd83-3569x5354.jpg",
-      quote: "A great location close to everything we needed. Reception was warm and quick, the room was clean, and breakfast was worth trying. We will be back.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/2ec246be46d86c5d72e227e416b8de35f45fcd83-3569x5354.jpg",
+      quote:
+        "A great location close to everything we needed. Reception was warm and quick, the room was clean, and breakfast was worth trying. We will be back.",
       platform: "Google Maps",
       rating: 5,
     },
     {
       name: "Sara Al-Mansour",
       role: "Business stay – Jeddah",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/a149018b573c9c446871f42b25634bc59f458a9c-3974x5000.jpg",
-      quote: "Smooth check-in, quiet rooms, and a strong Wi-Fi connection. Perfect for short business trips when you need to focus.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/a149018b573c9c446871f42b25634bc59f458a9c-3974x5000.jpg",
+      quote:
+        "Smooth check-in, quiet rooms, and a strong Wi-Fi connection. Perfect for short business trips when you need to focus.",
       platform: "Booking.com",
       rating: 5,
     },
     {
       name: "Mohammed Al-Qahtani",
       role: "Monthly stay – Jazan",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/9b0649eab8612d307f07390358f2edd09327ec1b-4480x6415.jpg",
-      quote: "Spacious, fully equipped apartment, the maintenance team responds quickly, and the monthly rate is excellent for the services offered.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/9b0649eab8612d307f07390358f2edd09327ec1b-4480x6415.jpg",
+      quote:
+        "Spacious, fully equipped apartment, the maintenance team responds quickly, and the monthly rate is excellent for the services offered.",
       platform: "Agoda",
       rating: 5,
     },
     {
       name: "Layla Hassan",
       role: "Family vacation – Riyadh",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/45f0b6e8ea8bb2b90e471c2103d776756ddf9fbd-4000x5705.jpg",
-      quote: "The two-bedroom apartment fit our family perfectly. Clean, modern, and the staff was very accommodating with our late check-in.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/45f0b6e8ea8bb2b90e471c2103d776756ddf9fbd-4000x5705.jpg",
+      quote:
+        "The two-bedroom apartment fit our family perfectly. Clean, modern, and the staff was very accommodating with our late check-in.",
       platform: "Expedia",
       rating: 4,
     },
     {
       name: "Khalid Al-Zahrani",
       role: "Returning guest – Jeddah",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/2a02d66bb1df7354769704ae22afebdd53cea3d8-4480x6720.jpg",
-      quote: "I make sure to book Swiss Blue on every visit to Jeddah. The service is consistently good and reception recognises loyal guests.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/2a02d66bb1df7354769704ae22afebdd53cea3d8-4480x6720.jpg",
+      quote:
+        "I make sure to book Swiss Blue on every visit to Jeddah. The service is consistently good and reception recognises loyal guests.",
       platform: "TripAdvisor",
       rating: 5,
     },
     {
       name: "Omar Khalil",
       role: "Solo traveler – Jazan",
-      image: "https://cdn.sanity.io/images/uoj8zwj3/production/af728bb74bd33bce0a4188f0b10d2679ea49c225-4160x6240.jpg",
-      quote: "Great value for the area. The apart-hotel felt like home for a longer stay, and the location is convenient for getting around Jazan.",
+      image:
+        "https://cdn.sanity.io/images/uoj8zwj3/production/af728bb74bd33bce0a4188f0b10d2679ea49c225-4160x6240.jpg",
+      quote:
+        "Great value for the area. The apart-hotel felt like home for a longer stay, and the location is convenient for getting around Jazan.",
       platform: "Trivago",
       rating: 4,
     },
@@ -486,7 +523,8 @@ const hotelPolicyEn = {
   },
   intro: {
     eyebrow: "A professional hospitality experience",
-    title: "A consistent policy framework across all our hotels and serviced apartments.",
+    title:
+      "A consistent policy framework across all our hotels and serviced apartments.",
     text: "Swiss Blue policies are designed to cover hotels, apart-hotels, and serviced apartments alike, with practical flexibility that suits business guests, families, and long-stay residents. These policies are reviewed regularly to remain aligned with Saudi regulations and the Ministry of Tourism standards.",
   },
   principles: [
@@ -696,23 +734,28 @@ export function usableLogo(url: string | undefined | null): string {
 
 const galleryImages = [
   {
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1500&q=82",
+    image:
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1500&q=82",
     title: "صورة ضيافة 1",
   },
   {
-    image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=82",
+    image:
+      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=82",
     title: "صورة ضيافة 2",
   },
   {
-    image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=82",
+    image:
+      "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=82",
     title: "صورة ضيافة 3",
   },
   {
-    image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=82",
+    image:
+      "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=82",
     title: "صورة ضيافة 4",
   },
   {
-    image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=82",
+    image:
+      "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=82",
     title: "صورة ضيافة 5",
   },
 ];
@@ -775,12 +818,30 @@ const careersRecruitment = {
     title: "مجتمع ضيافة مهني تفخر بالانتماء إليه.",
     text: "في سويس بلو نبني فريقاً يلتزم بأعلى معايير الضيافة في السوق السعودي والخليجي. نؤمن بأن جودة التجربة تبدأ من جودة الأشخاص، لذلك نستثمر في بيئة عمل قائمة على الاحترام والأخلاق والتطوير المستمر.",
     items: [
-      { title: "الأخلاق والنزاهة", text: "نعمل بشفافية ومصداقية في كل تعامل مع الضيف والزميل والشريك، ونلتزم بأعلى معايير المهنية." },
-      { title: "الاحترافية", text: "معايير تشغيل واضحة، انضباط في الأداء، واهتمام بالتفاصيل في كل قسم من أقسام المنشأة." },
-      { title: "روح الفريق الواحد", text: "نتعاون عبر الأقسام والمنشآت، نتشارك المعرفة، وندعم بعضنا لتقديم تجربة ضيافة متكاملة." },
-      { title: "التميز في الخدمة", text: "نتجاوز توقعات الضيف من خلال خدمة سريعة، دقيقة، وصادقة تعكس كرم الضيافة السعودية." },
-      { title: "الاحترام", text: "نقدّر تنوع فريقنا وضيوفنا، ونتعامل مع الجميع بكرامة وإنصاف في بيئة عمل آمنة وشاملة." },
-      { title: "التطوير المستمر", text: "تدريب منظم، مسارات ترقية داخلية، وفرص نمو حقيقية لكل من يلتزم بمعاييرنا كل يوم." },
+      {
+        title: "الأخلاق والنزاهة",
+        text: "نعمل بشفافية ومصداقية في كل تعامل مع الضيف والزميل والشريك، ونلتزم بأعلى معايير المهنية.",
+      },
+      {
+        title: "الاحترافية",
+        text: "معايير تشغيل واضحة، انضباط في الأداء، واهتمام بالتفاصيل في كل قسم من أقسام المنشأة.",
+      },
+      {
+        title: "روح الفريق الواحد",
+        text: "نتعاون عبر الأقسام والمنشآت، نتشارك المعرفة، وندعم بعضنا لتقديم تجربة ضيافة متكاملة.",
+      },
+      {
+        title: "التميز في الخدمة",
+        text: "نتجاوز توقعات الضيف من خلال خدمة سريعة، دقيقة، وصادقة تعكس كرم الضيافة السعودية.",
+      },
+      {
+        title: "الاحترام",
+        text: "نقدّر تنوع فريقنا وضيوفنا، ونتعامل مع الجميع بكرامة وإنصاف في بيئة عمل آمنة وشاملة.",
+      },
+      {
+        title: "التطوير المستمر",
+        text: "تدريب منظم، مسارات ترقية داخلية، وفرص نمو حقيقية لكل من يلتزم بمعاييرنا كل يوم.",
+      },
     ],
   },
   openingsIntro: {
@@ -817,14 +878,16 @@ const careersRecruitment = {
     messagePlaceholder: "أخبرنا لماذا أنت مناسب لهذا الدور…",
     submit: "إرسال الطلب",
     submitting: "جارٍ الإرسال…",
-    success: "تم استلام طلبك بنجاح. سيتواصل معك فريق التوظيف خلال خمسة أيام عمل.",
+    success:
+      "تم استلام طلبك بنجاح. سيتواصل معك فريق التوظيف خلال خمسة أيام عمل.",
     error: "تعذّر إرسال الطلب. يرجى المحاولة مرة أخرى.",
     optional: "اختياري",
   },
   jobs: [
     {
       title: "مدير مكتب الاستقبال",
-      summary: "قيادة عمليات مكتب الاستقبال على مدار الساعة لضمان تجربة وصول ومغادرة سلسة تعكس معايير سويس بلو.",
+      summary:
+        "قيادة عمليات مكتب الاستقبال على مدار الساعة لضمان تجربة وصول ومغادرة سلسة تعكس معايير سويس بلو.",
       responsibilities: [
         "الإشراف على فريق الاستقبال والنوبات وضمان تغطية الخدمة 24/7.",
         "إدارة إجراءات تسجيل الدخول والمغادرة والتعامل مع طلبات الضيوف وشكاواهم.",
@@ -837,11 +900,17 @@ const careersRecruitment = {
         "معرفة بأنظمة إدارة الفنادق (Opera أو ما يماثلها).",
       ],
       experience: "5+ سنوات في مكتب الاستقبال، منها سنتان في موقع إشرافي.",
-      skills: ["قيادة الفرق", "خدمة الضيوف", "حل المشكلات", "إدارة الإيرادات الأساسية"],
+      skills: [
+        "قيادة الفرق",
+        "خدمة الضيوف",
+        "حل المشكلات",
+        "إدارة الإيرادات الأساسية",
+      ],
     },
     {
       title: "مدير التدبير الفندقي",
-      summary: "إدارة قسم التدبير الفندقي لضمان أعلى معايير النظافة والجاهزية في الغرف والمساحات العامة.",
+      summary:
+        "إدارة قسم التدبير الفندقي لضمان أعلى معايير النظافة والجاهزية في الغرف والمساحات العامة.",
       responsibilities: [
         "جدولة فرق تنظيف الغرف والمساحات العامة ومراقبة الأداء.",
         "ضبط مخزون المفروشات ومستلزمات الضيافة ومواد التنظيف.",
@@ -858,7 +927,8 @@ const careersRecruitment = {
     },
     {
       title: "مشرف الأطعمة والمشروبات",
-      summary: "الإشراف على خدمة الإفطار والمطعم وخدمة الغرف لتقديم تجربة طعام متسقة وعالية الجودة.",
+      summary:
+        "الإشراف على خدمة الإفطار والمطعم وخدمة الغرف لتقديم تجربة طعام متسقة وعالية الجودة.",
       responsibilities: [
         "إدارة فريق الخدمة خلال فترات الذروة وضمان سرعة ودقة التقديم.",
         "متابعة معايير النظافة وسلامة الغذاء (HACCP).",
@@ -871,11 +941,17 @@ const careersRecruitment = {
         "شهادة سلامة غذاء سارية تُعد ميزة.",
       ],
       experience: "3+ سنوات في خدمة الأطعمة والمشروبات بالفنادق.",
-      skills: ["خدمة العملاء", "سلامة الغذاء", "إدارة الفريق", "العمل تحت الضغط"],
+      skills: [
+        "خدمة العملاء",
+        "سلامة الغذاء",
+        "إدارة الفريق",
+        "العمل تحت الضغط",
+      ],
     },
     {
       title: "موظف علاقات الضيوف",
-      summary: "كن الوجه المرحّب لسويس بلو، تبني علاقات مع الضيوف وتضمن تجربة إقامة استثنائية.",
+      summary:
+        "كن الوجه المرحّب لسويس بلو، تبني علاقات مع الضيوف وتضمن تجربة إقامة استثنائية.",
       responsibilities: [
         "استقبال ضيوف كبار الشخصيات والضيوف المتكررين وتلبية احتياجاتهم.",
         "متابعة رضا الضيوف خلال الإقامة وحل الملاحظات فوراً.",
@@ -892,7 +968,8 @@ const careersRecruitment = {
     },
     {
       title: "موظف حجوزات",
-      summary: "إدارة الحجوزات المباشرة وعبر القنوات بدقة لتحقيق أفضل إشغال وإيرادات.",
+      summary:
+        "إدارة الحجوزات المباشرة وعبر القنوات بدقة لتحقيق أفضل إشغال وإيرادات.",
       responsibilities: [
         "معالجة طلبات الحجز عبر الهاتف والبريد والقنوات الإلكترونية.",
         "تحديث الأسعار والتوفر على منصات الحجز ومحرك الحجز المباشر.",
@@ -909,7 +986,8 @@ const careersRecruitment = {
     },
     {
       title: "فني صيانة وهندسة",
-      summary: "ضمان تشغيل آمن وموثوق لجميع مرافق المنشأة من خلال الصيانة الوقائية والإصلاح السريع.",
+      summary:
+        "ضمان تشغيل آمن وموثوق لجميع مرافق المنشأة من خلال الصيانة الوقائية والإصلاح السريع.",
       responsibilities: [
         "تنفيذ الصيانة الوقائية والدورية للأنظمة الكهربائية والميكانيكية.",
         "الاستجابة لطلبات الصيانة في الغرف والمساحات العامة بسرعة.",
@@ -926,7 +1004,8 @@ const careersRecruitment = {
     },
     {
       title: "مدير مبيعات وحسابات الشركات",
-      summary: "تنمية إيرادات الشركات والمجموعات عبر بناء علاقات وعقود طويلة الأمد مع الجهات والشركات.",
+      summary:
+        "تنمية إيرادات الشركات والمجموعات عبر بناء علاقات وعقود طويلة الأمد مع الجهات والشركات.",
       responsibilities: [
         "تطوير محفظة حسابات الشركات والجهات الحكومية ووكالات السفر.",
         "إعداد العروض والتفاوض على العقود والأسعار التفضيلية.",
@@ -950,12 +1029,30 @@ const careersRecruitmentEn = {
     title: "A professional hospitality community you'll be proud to join.",
     text: "At Swiss Blue we build a team that lives up to the highest hospitality standards in the Saudi and GCC market. We believe a great guest experience starts with great people, so we invest in a workplace built on respect, ethics, and continuous development.",
     items: [
-      { title: "Ethics & Integrity", text: "We act with transparency and honesty in every interaction with guests, colleagues, and partners, holding ourselves to the highest professional standards." },
-      { title: "Professionalism", text: "Clear operating standards, disciplined performance, and attention to detail across every department of the property." },
-      { title: "Teamwork", text: "We collaborate across departments and properties, share knowledge, and support one another to deliver a complete hospitality experience." },
-      { title: "Service Excellence", text: "We exceed guest expectations through fast, accurate, and genuine service that reflects authentic Saudi hospitality." },
-      { title: "Respect", text: "We value the diversity of our team and guests, treating everyone with dignity and fairness in a safe, inclusive environment." },
-      { title: "Continuous Development", text: "Structured training, internal promotion paths, and real growth opportunities for everyone who upholds our standards every day." },
+      {
+        title: "Ethics & Integrity",
+        text: "We act with transparency and honesty in every interaction with guests, colleagues, and partners, holding ourselves to the highest professional standards.",
+      },
+      {
+        title: "Professionalism",
+        text: "Clear operating standards, disciplined performance, and attention to detail across every department of the property.",
+      },
+      {
+        title: "Teamwork",
+        text: "We collaborate across departments and properties, share knowledge, and support one another to deliver a complete hospitality experience.",
+      },
+      {
+        title: "Service Excellence",
+        text: "We exceed guest expectations through fast, accurate, and genuine service that reflects authentic Saudi hospitality.",
+      },
+      {
+        title: "Respect",
+        text: "We value the diversity of our team and guests, treating everyone with dignity and fairness in a safe, inclusive environment.",
+      },
+      {
+        title: "Continuous Development",
+        text: "Structured training, internal promotion paths, and real growth opportunities for everyone who upholds our standards every day.",
+      },
     ],
   },
   openingsIntro: {
@@ -973,7 +1070,8 @@ const careersRecruitmentEn = {
     viewDetails: "View details & apply",
     hideDetails: "Hide details",
     formHeading: "Application form",
-    formSub: "Fill in your details, attach your CV, and our recruitment team will be in touch.",
+    formSub:
+      "Fill in your details, attach your CV, and our recruitment team will be in touch.",
   },
   applyForm: {
     fullName: "Full name",
@@ -992,14 +1090,16 @@ const careersRecruitmentEn = {
     messagePlaceholder: "Tell us why you're a great fit for this role…",
     submit: "Submit application",
     submitting: "Submitting…",
-    success: "Your application has been received. Our recruitment team will be in touch within five business days.",
+    success:
+      "Your application has been received. Our recruitment team will be in touch within five business days.",
     error: "Could not send your application. Please try again.",
     optional: "optional",
   },
   jobs: [
     {
       title: "Front Office Manager",
-      summary: "Lead round-the-clock front office operations to deliver a seamless arrival and departure experience that reflects Swiss Blue standards.",
+      summary:
+        "Lead round-the-clock front office operations to deliver a seamless arrival and departure experience that reflects Swiss Blue standards.",
       responsibilities: [
         "Supervise the reception team and shifts, ensuring 24/7 service coverage.",
         "Manage check-in/check-out procedures and handle guest requests and complaints.",
@@ -1011,12 +1111,19 @@ const careersRecruitmentEn = {
         "Fluent in Arabic and English, spoken and written.",
         "Knowledge of property management systems (Opera or similar).",
       ],
-      experience: "5+ years in front office, including 2 years in a supervisory role.",
-      skills: ["Team leadership", "Guest service", "Problem solving", "Basic revenue management"],
+      experience:
+        "5+ years in front office, including 2 years in a supervisory role.",
+      skills: [
+        "Team leadership",
+        "Guest service",
+        "Problem solving",
+        "Basic revenue management",
+      ],
     },
     {
       title: "Executive Housekeeper",
-      summary: "Run the housekeeping department to maintain the highest standards of cleanliness and readiness across rooms and public areas.",
+      summary:
+        "Run the housekeeping department to maintain the highest standards of cleanliness and readiness across rooms and public areas.",
       responsibilities: [
         "Schedule room and public-area cleaning teams and monitor performance.",
         "Control inventory of linen, guest amenities, and cleaning supplies.",
@@ -1029,11 +1136,17 @@ const careersRecruitmentEn = {
         "Ability to manage budgets and inventory.",
       ],
       experience: "4+ years in housekeeping, including supervisory experience.",
-      skills: ["Quality management", "Organisation", "Team leadership", "Cost control"],
+      skills: [
+        "Quality management",
+        "Organisation",
+        "Team leadership",
+        "Cost control",
+      ],
     },
     {
       title: "Food & Beverage Supervisor",
-      summary: "Oversee breakfast, restaurant, and in-room dining service to deliver a consistent, high-quality food experience.",
+      summary:
+        "Oversee breakfast, restaurant, and in-room dining service to deliver a consistent, high-quality food experience.",
       responsibilities: [
         "Manage the service team during peak periods, ensuring speed and accuracy.",
         "Maintain hygiene and food safety standards (HACCP).",
@@ -1046,11 +1159,17 @@ const careersRecruitmentEn = {
         "A valid food safety certificate is an advantage.",
       ],
       experience: "3+ years in hotel food & beverage service.",
-      skills: ["Customer service", "Food safety", "Team management", "Working under pressure"],
+      skills: [
+        "Customer service",
+        "Food safety",
+        "Team management",
+        "Working under pressure",
+      ],
     },
     {
       title: "Guest Relations Officer",
-      summary: "Be the welcoming face of Swiss Blue, building relationships with guests and ensuring an exceptional stay experience.",
+      summary:
+        "Be the welcoming face of Swiss Blue, building relationships with guests and ensuring an exceptional stay experience.",
       responsibilities: [
         "Welcome VIP and returning guests and anticipate their needs.",
         "Track guest satisfaction during the stay and resolve feedback promptly.",
@@ -1063,11 +1182,17 @@ const careersRecruitmentEn = {
         "Professional presentation and strong communication skills.",
       ],
       experience: "2+ years in guest relations or front office.",
-      skills: ["Communication", "Empathy", "Problem solving", "Attention to detail"],
+      skills: [
+        "Communication",
+        "Empathy",
+        "Problem solving",
+        "Attention to detail",
+      ],
     },
     {
       title: "Reservations Agent",
-      summary: "Manage direct and channel reservations accurately to maximise occupancy and revenue.",
+      summary:
+        "Manage direct and channel reservations accurately to maximise occupancy and revenue.",
       responsibilities: [
         "Process booking requests via phone, email, and online channels.",
         "Update rates and availability across booking platforms and the direct engine.",
@@ -1080,11 +1205,17 @@ const careersRecruitmentEn = {
         "High accuracy in data entry.",
       ],
       experience: "2+ years in reservations or hotel call centres.",
-      skills: ["Accuracy", "Phone sales", "Channel management", "Customer service"],
+      skills: [
+        "Accuracy",
+        "Phone sales",
+        "Channel management",
+        "Customer service",
+      ],
     },
     {
       title: "Maintenance / Engineering Technician",
-      summary: "Ensure safe, reliable operation of all property facilities through preventive maintenance and fast repairs.",
+      summary:
+        "Ensure safe, reliable operation of all property facilities through preventive maintenance and fast repairs.",
       responsibilities: [
         "Carry out preventive and routine maintenance on electrical and mechanical systems.",
         "Respond quickly to maintenance requests in rooms and public areas.",
@@ -1101,7 +1232,8 @@ const careersRecruitmentEn = {
     },
     {
       title: "Sales & Corporate Account Manager",
-      summary: "Grow corporate and group revenue by building long-term relationships and contracts with companies and entities.",
+      summary:
+        "Grow corporate and group revenue by building long-term relationships and contracts with companies and entities.",
       responsibilities: [
         "Develop a portfolio of corporate, government, and travel-agency accounts.",
         "Prepare proposals and negotiate contracts and preferential rates.",
@@ -1114,7 +1246,12 @@ const careersRecruitmentEn = {
         "Valid driving licence and ability to travel.",
       ],
       experience: "5+ years in hotel sales, including GCC market experience.",
-      skills: ["Negotiation", "Relationship building", "Account management", "Market analysis"],
+      skills: [
+        "Negotiation",
+        "Relationship building",
+        "Account management",
+        "Market analysis",
+      ],
     },
   ],
 };
@@ -1154,11 +1291,22 @@ const b2bRequestForm = {
   },
   selectPlaceholder: "اختر",
   sectorPlaceholder: "اختر القطاع",
-  sectorOptions: ["جهة حكومية", "شركة خاصة", "وكالة سفر أو منظم فعاليات", "منظمة غير ربحية", "قطاع آخر"],
+  sectorOptions: [
+    "جهة حكومية",
+    "شركة خاصة",
+    "وكالة سفر أو منظم فعاليات",
+    "منظمة غير ربحية",
+    "قطاع آخر",
+  ],
   cityOptions: ["جدة", "الرياض", "جازان", "أكثر من مدينة"],
   propertyTypePlaceholder: "اختر نوع المنشأة",
   propertyTypeOptions: ["فندق", "شقق فندقية", "شقق مخدومة", "مرونة حسب العرض"],
-  requestTypeOptions: ["سعر شركات", "حجز مجموعة", "إقامة شهرية", "اجتماعات ومناسبات"],
+  requestTypeOptions: [
+    "سعر شركات",
+    "حجز مجموعة",
+    "إقامة شهرية",
+    "اجتماعات ومناسبات",
+  ],
   documentsOptions: [
     "السجل التجاري وخطاب التفويض متوفران",
     "بعض المستندات متوفرة",
@@ -1216,11 +1364,27 @@ const b2bRequestFormEn = {
   },
   selectPlaceholder: "Select",
   sectorPlaceholder: "Select sector",
-  sectorOptions: ["Government entity", "Private company", "Travel agency or event organizer", "Non-profit organization", "Other sector"],
+  sectorOptions: [
+    "Government entity",
+    "Private company",
+    "Travel agency or event organizer",
+    "Non-profit organization",
+    "Other sector",
+  ],
   cityOptions: ["Jeddah", "Riyadh", "Jazan", "Multiple cities"],
   propertyTypePlaceholder: "Select property type",
-  propertyTypeOptions: ["Hotel", "Apart-hotel", "Serviced apartments", "Flexible by proposal"],
-  requestTypeOptions: ["Corporate rate", "Group booking", "Monthly stay", "Meetings and events"],
+  propertyTypeOptions: [
+    "Hotel",
+    "Apart-hotel",
+    "Serviced apartments",
+    "Flexible by proposal",
+  ],
+  requestTypeOptions: [
+    "Corporate rate",
+    "Group booking",
+    "Monthly stay",
+    "Meetings and events",
+  ],
   documentsOptions: [
     "Commercial registration and authorization letter are available",
     "Some documents are available",
@@ -1244,7 +1408,8 @@ const b2bRequestFormEn = {
 };
 
 const footerMeta = {
-  description: "فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.",
+  description:
+    "فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.",
   cityBadges: ["جدة", "الرياض", "جازان"],
   supportHeading: "الدعم والحجز",
   contactCta: "تواصل معنا",
@@ -1253,7 +1418,8 @@ const footerMeta = {
 };
 
 const footerMetaEn = {
-  description: "Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.",
+  description:
+    "Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.",
   cityBadges: ["Jeddah", "Riyadh", "Jazan"],
   supportHeading: "Support & Booking",
   contactCta: "Contact us",
@@ -1317,7 +1483,8 @@ const chatAssistant = {
   assistantRole: "مساعدتك الافتراضية في سويس بلو",
   onlineLabel: "متاحة الآن",
   avatar: "/images/sarah-al-otaibi-concierge.jpg",
-  welcome: "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
+  welcome:
+    "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
   placeholder: "اكتب سؤالك...",
   send: "إرسال",
   typing: "يكتب الآن...",
@@ -1339,7 +1506,8 @@ const chatAssistantEn = {
   assistantRole: "Swiss Blue virtual concierge",
   onlineLabel: "Online now",
   avatar: "/images/sarah-al-otaibi-concierge.jpg",
-  welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
+  welcome:
+    "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
   placeholder: "Type your question...",
   send: "Send",
   typing: "Writing...",
@@ -1349,35 +1517,78 @@ const chatAssistantEn = {
     career: "Career help",
   },
   leadComplete: {
-    booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
-    corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
-    career: "Your career enquiry has been sent to the careers team. They will contact you shortly.",
+    booking:
+      "Your booking request has been sent to reservations. The team will contact you shortly.",
+    corporate:
+      "Your corporate request has been sent to reservations. The team will contact you shortly.",
+    career:
+      "Your career enquiry has been sent to the careers team. They will contact you shortly.",
   },
 };
 
 const closingCtas = {
   eyebrow: "احجز مباشرة",
-  defaultText: "قارن بين الغرف والأجنحة والشقق الفندقية ضمن تجربة حجز واضحة تليق بضيوف الضيافة الحديثة.",
-  hotelDetail: { titleTemplate: "احجز إقامتك في {hotel}.", cta: "تحقق من التوفر" },
+  defaultText:
+    "قارن بين الغرف والأجنحة والشقق الفندقية ضمن تجربة حجز واضحة تليق بضيوف الضيافة الحديثة.",
+  hotelDetail: {
+    titleTemplate: "احجز إقامتك في {hotel}.",
+    cta: "تحقق من التوفر",
+  },
   pages: {
     offers: { title: "ابدأ من العرض المناسب لرحلتك.", cta: "عرض التوفر" },
-    corporateDeals: { title: "اطلب عرضا للشركات أو المجموعات.", cta: "تواصل مع المختص" },
-    groupBookings: { title: "اطلب تنسيق إقامة لمجموعتك.", cta: "تواصل مع المختص" },
-    contact: { title: "اختر المسار الأنسب، وسنساعدك في الخطوة التالية.", cta: "احجز الآن" },
+    corporateDeals: {
+      title: "اطلب عرضا للشركات أو المجموعات.",
+      cta: "تواصل مع المختص",
+    },
+    groupBookings: {
+      title: "اطلب تنسيق إقامة لمجموعتك.",
+      cta: "تواصل مع المختص",
+    },
+    contact: {
+      title: "اختر المسار الأنسب، وسنساعدك في الخطوة التالية.",
+      cta: "احجز الآن",
+    },
     hotels: { title: "اختر فندقك واحجز بثقة.", cta: "تحقق من التوفر" },
-    amenities: { title: "احجز إقامة مدعومة بكل أساسيات الراحة.", cta: "احجز الآن" },
+    amenities: {
+      title: "احجز إقامة مدعومة بكل أساسيات الراحة.",
+      cta: "احجز الآن",
+    },
     about: { title: "استكشف فنادقنا وشققنا الفندقية.", cta: "عرض الفنادق" },
     destinations: { title: "اختر المدينة الأقرب لرحلتك.", cta: "احجز الآن" },
-    loyalty: { title: "ابدأ من الحجز المباشر للحصول على مزايا أوضح.", cta: "تحقق من التوفر" },
+    loyalty: {
+      title: "ابدأ من الحجز المباشر للحصول على مزايا أوضح.",
+      cta: "تحقق من التوفر",
+    },
     faq: { title: "ما زلت تحتاج إلى مساعدة؟", cta: "تواصل معنا" },
-    careers: { title: "ابحث عن دورك القادم في سويس بلو.", cta: "أرسل سيرتك الذاتية" },
-    centralReservation: { title: "حجز مباشر، أفضل الأسعار، مرونة أعلى.", cta: "تحقق من التوفر" },
-    feedback: { title: "نسمعك. شاركنا ملاحظتك أو اقتراحك الآن.", cta: "راسلنا" },
-    meetingsEvents: { title: "خطّط لمناسبتك القادمة مع سويس بلو.", cta: "تواصل مع فريق الفعاليات" },
-    roomsSuites: { title: "اختر فئتك واحجز وحدتك المفضلة مباشرة.", cta: "احجز وحدتك" },
+    careers: {
+      title: "ابحث عن دورك القادم في سويس بلو.",
+      cta: "أرسل سيرتك الذاتية",
+    },
+    centralReservation: {
+      title: "حجز مباشر، أفضل الأسعار، مرونة أعلى.",
+      cta: "تحقق من التوفر",
+    },
+    feedback: {
+      title: "نسمعك. شاركنا ملاحظتك أو اقتراحك الآن.",
+      cta: "راسلنا",
+    },
+    meetingsEvents: {
+      title: "خطّط لمناسبتك القادمة مع سويس بلو.",
+      cta: "تواصل مع فريق الفعاليات",
+    },
+    roomsSuites: {
+      title: "اختر فئتك واحجز وحدتك المفضلة مباشرة.",
+      cta: "احجز وحدتك",
+    },
     dining: { title: "اختر إقامة تجعل يومك أسهل.", cta: "احجز إقامتك" },
-    servicedApartments: { title: "استكشف الشقق الفندقية واحجز مباشرة.", cta: "استعرض التوفر" },
-    socialResponsibility: { title: "ضيافة مسؤولة، إقامة بفارق ملموس.", cta: "استكشف منشآتنا" },
+    servicedApartments: {
+      title: "استكشف الشقق الفندقية واحجز مباشرة.",
+      cta: "استعرض التوفر",
+    },
+    socialResponsibility: {
+      title: "ضيافة مسؤولة، إقامة بفارق ملموس.",
+      cta: "استكشف منشآتنا",
+    },
     policy: {
       title: "هل لديكم سؤال حول الإقامة؟",
       text: "فريقنا متاح على مدار الساعة لمساعدتكم في الحجوزات، التعديلات، وكل ما يتعلق بسياسات الإقامة في فنادق وشقق سويس بلو.",
@@ -1388,27 +1599,82 @@ const closingCtas = {
 
 const closingCtasEn = {
   eyebrow: "Book direct",
-  defaultText: "Compare rooms, suites, and serviced apartments with a clear booking journey built for modern hospitality guests.",
-  hotelDetail: { titleTemplate: "Book your stay at {hotel}.", cta: "Check availability" },
+  defaultText:
+    "Compare rooms, suites, and serviced apartments with a clear booking journey built for modern hospitality guests.",
+  hotelDetail: {
+    titleTemplate: "Book your stay at {hotel}.",
+    cta: "Check availability",
+  },
   pages: {
-    offers: { title: "Start with the offer that fits your trip.", cta: "View availability" },
-    corporateDeals: { title: "Request a corporate or group proposal.", cta: "Contact specialist" },
-    groupBookings: { title: "Request accommodation coordination for your group.", cta: "Contact specialist" },
-    contact: { title: "Choose the right path, and we will help with the next step.", cta: "Book now" },
-    hotels: { title: "Choose your hotel and book with confidence.", cta: "Check availability" },
-    amenities: { title: "Book a stay with the essentials covered.", cta: "Book now" },
-    about: { title: "Explore our hotels and serviced apartments.", cta: "View hotels" },
-    destinations: { title: "Pick the city closest to your trip.", cta: "Book now" },
-    loyalty: { title: "Start with direct booking for clearer benefits.", cta: "Check availability" },
+    offers: {
+      title: "Start with the offer that fits your trip.",
+      cta: "View availability",
+    },
+    corporateDeals: {
+      title: "Request a corporate or group proposal.",
+      cta: "Contact specialist",
+    },
+    groupBookings: {
+      title: "Request accommodation coordination for your group.",
+      cta: "Contact specialist",
+    },
+    contact: {
+      title: "Choose the right path, and we will help with the next step.",
+      cta: "Book now",
+    },
+    hotels: {
+      title: "Choose your hotel and book with confidence.",
+      cta: "Check availability",
+    },
+    amenities: {
+      title: "Book a stay with the essentials covered.",
+      cta: "Book now",
+    },
+    about: {
+      title: "Explore our hotels and serviced apartments.",
+      cta: "View hotels",
+    },
+    destinations: {
+      title: "Pick the city closest to your trip.",
+      cta: "Book now",
+    },
+    loyalty: {
+      title: "Start with direct booking for clearer benefits.",
+      cta: "Check availability",
+    },
     faq: { title: "Still need help?", cta: "Contact us" },
-    careers: { title: "Find your next role at Swiss Blue.", cta: "Send your CV" },
-    centralReservation: { title: "Direct booking, best rates, more flexibility.", cta: "Check availability" },
-    feedback: { title: "We listen. Share a complaint or suggestion now.", cta: "Write to us" },
-    meetingsEvents: { title: "Plan your next event with Swiss Blue.", cta: "Talk to the events team" },
-    roomsSuites: { title: "Compare categories and book the right unit.", cta: "Book your unit" },
-    dining: { title: "Pick a stay that makes the day easier.", cta: "Book your stay" },
-    servicedApartments: { title: "Explore serviced apartments and book direct.", cta: "Check availability" },
-    socialResponsibility: { title: "Responsible hospitality that makes a difference.", cta: "Explore our properties" },
+    careers: {
+      title: "Find your next role at Swiss Blue.",
+      cta: "Send your CV",
+    },
+    centralReservation: {
+      title: "Direct booking, best rates, more flexibility.",
+      cta: "Check availability",
+    },
+    feedback: {
+      title: "We listen. Share a complaint or suggestion now.",
+      cta: "Write to us",
+    },
+    meetingsEvents: {
+      title: "Plan your next event with Swiss Blue.",
+      cta: "Talk to the events team",
+    },
+    roomsSuites: {
+      title: "Compare categories and book the right unit.",
+      cta: "Book your unit",
+    },
+    dining: {
+      title: "Pick a stay that makes the day easier.",
+      cta: "Book your stay",
+    },
+    servicedApartments: {
+      title: "Explore serviced apartments and book direct.",
+      cta: "Check availability",
+    },
+    socialResponsibility: {
+      title: "Responsible hospitality that makes a difference.",
+      cta: "Explore our properties",
+    },
     policy: {
       title: "Have a question about your stay?",
       text: "Our team is on hand around the clock to help with reservations, modifications, and anything related to the stay policies across Swiss Blue hotels and serviced apartments.",
@@ -1683,11 +1949,36 @@ export const defaultSiteContent = {
           text: "اختر الموقع الأنسب لرحلتك بين جدة والرياض وجازان.",
         },
         properties: [
-          { name: "شقق الزهراء الفندقية", city: "جدة", units: "46 شقة", slug: "al-zahraa-serviced-apartments" },
-          { name: "شقق السامر الفندقية", city: "جدة", units: "33 شقة", slug: "al-samer-serviced-apartments" },
-          { name: "سويس بلو للشقق الفندقية جازان", city: "جازان", units: "55 شقة", slug: "swiss-blue-jazan" },
-          { name: "شقق فيناس الرياض الفندقية", city: "الرياض", units: "35 شقة", slug: "vinas-riyadh-serviced-apartments" },
-          { name: "شقق توليب الروضة الفندقية", city: "الرياض", units: "37 شقة", slug: "tulip-alrawdah-serviced-apartments" },
+          {
+            name: "شقق الزهراء الفندقية",
+            city: "جدة",
+            units: "46 شقة",
+            slug: "al-zahraa-serviced-apartments",
+          },
+          {
+            name: "شقق السامر الفندقية",
+            city: "جدة",
+            units: "33 شقة",
+            slug: "al-samer-serviced-apartments",
+          },
+          {
+            name: "سويس بلو للشقق الفندقية جازان",
+            city: "جازان",
+            units: "55 شقة",
+            slug: "swiss-blue-jazan",
+          },
+          {
+            name: "شقق فيناس الرياض الفندقية",
+            city: "الرياض",
+            units: "35 شقة",
+            slug: "vinas-riyadh-serviced-apartments",
+          },
+          {
+            name: "شقق توليب الروضة الفندقية",
+            city: "الرياض",
+            units: "37 شقة",
+            slug: "tulip-alrawdah-serviced-apartments",
+          },
         ],
         idealForIntro: {
           eyebrow: "لمن تناسب",
@@ -2223,7 +2514,8 @@ export const defaultSiteContent = {
         ],
         servicesIntro: {
           eyebrow: "ما الذي نديره لك",
-          title: "من غرفة واحدة إلى برنامج إقامة كامل، ننسق التفاصيل من البداية.",
+          title:
+            "من غرفة واحدة إلى برنامج إقامة كامل، ننسق التفاصيل من البداية.",
           text: "الفكرة بسيطة: لا تحتاج للتواصل مع كل منشأة على حدة. فريق الحجوزات يجمع التوفر، يراجع المتطلبات، ويربطك بالفندق المناسب عند الحاجة.",
         },
         services: [
@@ -2289,27 +2581,33 @@ export const defaultSiteContent = {
         faqs: [
           {
             question: "هل أحتاج إلى دفع مقدّم لتأكيد الحجز؟",
-            answer: "تختلف سياسة المقدّم حسب نوع التعرفة والموسم. يوضّح لك مختص الحجوزات المبلغ المطلوب وطرق الدفع المتاحة قبل تأكيد أي حجز.",
+            answer:
+              "تختلف سياسة المقدّم حسب نوع التعرفة والموسم. يوضّح لك مختص الحجوزات المبلغ المطلوب وطرق الدفع المتاحة قبل تأكيد أي حجز.",
           },
           {
             question: "ما هي مهلة الإلغاء المجاني؟",
-            answer: "معظم التعرفات المرنة تتيح إلغاءً مجانياً حتى وقت محدّد قبل الوصول. أما التعرفات غير القابلة للاسترداد فتكون أقل سعراً ويُشار إليها صراحةً عند الحجز.",
+            answer:
+              "معظم التعرفات المرنة تتيح إلغاءً مجانياً حتى وقت محدّد قبل الوصول. أما التعرفات غير القابلة للاسترداد فتكون أقل سعراً ويُشار إليها صراحةً عند الحجز.",
           },
           {
             question: "كيف أعدّل أو أمدّد حجزاً قائماً؟",
-            answer: "اتصل أو راسلنا على واتساب برقم الحجز، وسنعدّل التواريخ أو الغرفة حسب التوفر — غالباً دون أي رسوم على التعرفات المرنة.",
+            answer:
+              "اتصل أو راسلنا على واتساب برقم الحجز، وسنعدّل التواريخ أو الغرفة حسب التوفر — غالباً دون أي رسوم على التعرفات المرنة.",
           },
           {
             question: "هل توجد أسعار خاصة للمجموعات؟",
-            answer: "نعم. للحجوزات من 10 غرف فأكثر لدينا مكتب مجموعات مخصّص يقدّم أسعاراً وشروطاً خاصة. راسلنا على البريد بتفاصيل مجموعتك.",
+            answer:
+              "نعم. للحجوزات من 10 غرف فأكثر لدينا مكتب مجموعات مخصّص يقدّم أسعاراً وشروطاً خاصة. راسلنا على البريد بتفاصيل مجموعتك.",
           },
           {
             question: "هل يمكن إصدار فاتورة باسم شركة مع دفع آجل؟",
-            answer: "نعم، لحسابات الشركات المعتمدة. تواصل معنا لإعداد الحساب والاتفاق على شروط الفوترة والدفع الآجل.",
+            answer:
+              "نعم، لحسابات الشركات المعتمدة. تواصل معنا لإعداد الحساب والاتفاق على شروط الفوترة والدفع الآجل.",
           },
           {
             question: "وجدت سعراً أقل على موقع آخر، ماذا أفعل؟",
-            answer: "أرسل لنا رابط العرض لنفس الغرفة والتاريخ، وسنطابقه أو نمنحك سعراً أفضل ضمن ضمان أفضل سعر للحجز المباشر.",
+            answer:
+              "أرسل لنا رابط العرض لنفس الغرفة والتاريخ، وسنطابقه أو نمنحك سعراً أفضل ضمن ضمان أفضل سعر للحجز المباشر.",
           },
         ],
       },
@@ -2322,7 +2620,8 @@ export const defaultSiteContent = {
         },
         intro: {
           eyebrow: "وعدنا في الخدمة",
-          title: "نؤكّد استلام ملاحظتك خلال 4 ساعات، ونعمل على حلّها خلال 48 ساعة.",
+          title:
+            "نؤكّد استلام ملاحظتك خلال 4 ساعات، ونعمل على حلّها خلال 48 ساعة.",
           text: "بمجرد وصول رسالتك يتولّاها مدير خدمة واحد من البداية إلى الإغلاق، ويبقيك على اطّلاع في كل خطوة.",
         },
         channels: [
@@ -2404,19 +2703,23 @@ export const defaultSiteContent = {
         faqs: [
           {
             question: "كيف أتابع حالة شكواي؟",
-            answer: "ستصلك رسالة تأكيد تحمل رقم تذكرة. احتفظ به وارجع إلينا عبر أي قناة بالرقم نفسه لمعرفة آخر المستجدات.",
+            answer:
+              "ستصلك رسالة تأكيد تحمل رقم تذكرة. احتفظ به وارجع إلينا عبر أي قناة بالرقم نفسه لمعرفة آخر المستجدات.",
           },
           {
             question: "هل يمكنني تقديم ملاحظة دون ذكر اسمي؟",
-            answer: "نعم، نتقبّل الملاحظات المجهولة، لكن ترك وسيلة تواصل يساعدنا على متابعتك وإبلاغك بالحل.",
+            answer:
+              "نعم، نتقبّل الملاحظات المجهولة، لكن ترك وسيلة تواصل يساعدنا على متابعتك وإبلاغك بالحل.",
           },
           {
             question: "هل أحصل على تعويض أو استرداد؟",
-            answer: "عندما تستدعي الحالة ذلك، نقدّم حلاً مناسباً قد يشمل تعويضاً أو استرداداً، يُحدَّد حسب طبيعة الموضوع وتاريخك معنا.",
+            answer:
+              "عندما تستدعي الحالة ذلك، نقدّم حلاً مناسباً قد يشمل تعويضاً أو استرداداً، يُحدَّد حسب طبيعة الموضوع وتاريخك معنا.",
           },
           {
             question: "كم يستغرق الردّ عادةً؟",
-            answer: "نؤكّد الاستلام خلال 4 ساعات، ونهدف إلى حلٍّ أو خطة واضحة خلال 48 ساعة. الحالات الأعقد قد تحتاج وقتاً أطول، ونبقيك على اطّلاع.",
+            answer:
+              "نؤكّد الاستلام خلال 4 ساعات، ونهدف إلى حلٍّ أو خطة واضحة خلال 48 ساعة. الحالات الأعقد قد تحتاج وقتاً أطول، ونبقيك على اطّلاع.",
           },
           {
             question: "بأي لغة يمكنني التواصل؟",
@@ -2424,7 +2727,8 @@ export const defaultSiteContent = {
           },
           {
             question: "ماذا لو لم يكن الحل مُرضياً؟",
-            answer: "يمكنك طلب التصعيد إلى الإدارة العامة، ويراجع فريق تجربة الضيف الحالة خلال 72 ساعة (انظر مسار التصعيد أدناه).",
+            answer:
+              "يمكنك طلب التصعيد إلى الإدارة العامة، ويراجع فريق تجربة الضيف الحالة خلال 72 ساعة (انظر مسار التصعيد أدناه).",
           },
         ],
         escalationIntro: {
@@ -2440,7 +2744,8 @@ export const defaultSiteContent = {
       siteTitle: "Swiss Blue Hotels | Rooms, Suites, and Serviced Apartments",
       metaDescription:
         "Swiss Blue Hotels website for hotels, suites, serviced apartments, direct booking, destinations, and guest services.",
-      keywords: "Swiss Blue, Jeddah hotels, serviced apartments, direct booking, suites",
+      keywords:
+        "Swiss Blue, Jeddah hotels, serviced apartments, direct booking, suites",
       ogTitle: "",
       ogDescription: "",
       ogImage: "/opengraph-image",
@@ -2542,7 +2847,8 @@ export const defaultSiteContent = {
       },
       categories: {
         eyebrow: "Stay categories",
-        title: "The difference between hotels, apart-hotels, and serviced apartments.",
+        title:
+          "The difference between hotels, apart-hotels, and serviced apartments.",
         text: "This comparison makes booking clearer for guests and helps companies and families choose the right category for trip purpose and stay length.",
         items: accommodationCategoriesEn,
       },
@@ -2700,11 +3006,36 @@ export const defaultSiteContent = {
           text: "Choose the location best suited to your trip across Jeddah, Riyadh, and Jazan.",
         },
         properties: [
-          { name: "Al Zahraa Serviced Apartments", city: "Jeddah", units: "46 apartments", slug: "al-zahraa-serviced-apartments" },
-          { name: "Al Samer Serviced Apartments", city: "Jeddah", units: "33 apartments", slug: "al-samer-serviced-apartments" },
-          { name: "Swiss Blue Serviced Apartments Jazan", city: "Jazan", units: "55 apartments", slug: "swiss-blue-jazan" },
-          { name: "Vinas Riyadh Serviced Apartments", city: "Riyadh", units: "35 apartments", slug: "vinas-riyadh-serviced-apartments" },
-          { name: "Tulip Al Rawdah Serviced Apartments", city: "Riyadh", units: "37 apartments", slug: "tulip-alrawdah-serviced-apartments" },
+          {
+            name: "Al Zahraa Serviced Apartments",
+            city: "Jeddah",
+            units: "46 apartments",
+            slug: "al-zahraa-serviced-apartments",
+          },
+          {
+            name: "Al Samer Serviced Apartments",
+            city: "Jeddah",
+            units: "33 apartments",
+            slug: "al-samer-serviced-apartments",
+          },
+          {
+            name: "Swiss Blue Serviced Apartments Jazan",
+            city: "Jazan",
+            units: "55 apartments",
+            slug: "swiss-blue-jazan",
+          },
+          {
+            name: "Vinas Riyadh Serviced Apartments",
+            city: "Riyadh",
+            units: "35 apartments",
+            slug: "vinas-riyadh-serviced-apartments",
+          },
+          {
+            name: "Tulip Al Rawdah Serviced Apartments",
+            city: "Riyadh",
+            units: "37 apartments",
+            slug: "tulip-alrawdah-serviced-apartments",
+          },
         ],
         idealForIntro: {
           eyebrow: "Who they suit",
@@ -3209,7 +3540,8 @@ export const defaultSiteContent = {
         },
         intro: {
           eyebrow: "One point of contact",
-          title: "Compare hotels, serviced apartments, rates, and stay options in one conversation.",
+          title:
+            "Compare hotels, serviced apartments, rates, and stay options in one conversation.",
           text: "The Central Reservation Office helps you choose the right property, compare rooms and apartments, confirm the rate, and receive a written booking trail. We support individual stays, families, long stays, groups, corporate requests, and changes before arrival or during the stay.",
         },
         channels: [
@@ -3240,7 +3572,8 @@ export const defaultSiteContent = {
         ],
         servicesIntro: {
           eyebrow: "What we manage",
-          title: "From one room to a complete stay program, we coordinate the details from the start.",
+          title:
+            "From one room to a complete stay program, we coordinate the details from the start.",
           text: "You do not need to contact each property separately. The reservations team gathers availability, reviews requirements, and connects with the right hotel team when needed.",
         },
         services: [
@@ -3255,7 +3588,8 @@ export const defaultSiteContent = {
         ],
         benefitsIntro: {
           eyebrow: "Why book direct",
-          title: "A clearer experience than booking sites, with more flexibility when plans change.",
+          title:
+            "A clearer experience than booking sites, with more flexibility when plans change.",
           text: "When you book direct, you work with people who know the properties, policies, and real availability. That means clearer rates, faster confirmation, and follow-up if your travel details change.",
         },
         benefits: [
@@ -3288,7 +3622,8 @@ export const defaultSiteContent = {
         ],
         prepareIntro: {
           eyebrow: "Before you call",
-          title: "The clearer the details, the faster and more accurate the quote.",
+          title:
+            "The clearer the details, the faster and more accurate the quote.",
           text: "These details help the reservations team choose the right rate and property from the first conversation, especially for groups and longer stays.",
         },
         prepare: [
@@ -3306,27 +3641,33 @@ export const defaultSiteContent = {
         faqs: [
           {
             question: "Do I need to pay a deposit to confirm?",
-            answer: "Deposit policy depends on the rate type and season. Your reservations specialist will explain the amount and the payment methods available before any booking is confirmed.",
+            answer:
+              "Deposit policy depends on the rate type and season. Your reservations specialist will explain the amount and the payment methods available before any booking is confirmed.",
           },
           {
             question: "What is the free-cancellation window?",
-            answer: "Most flexible rates allow free cancellation up to a set time before arrival. Non-refundable rates are priced lower and clearly flagged at the time of booking.",
+            answer:
+              "Most flexible rates allow free cancellation up to a set time before arrival. Non-refundable rates are priced lower and clearly flagged at the time of booking.",
           },
           {
             question: "How do I modify or extend a booking?",
-            answer: "Call or WhatsApp us with your booking reference and we'll change the dates or room subject to availability — usually with no fee on flexible rates.",
+            answer:
+              "Call or WhatsApp us with your booking reference and we'll change the dates or room subject to availability — usually with no fee on flexible rates.",
           },
           {
             question: "Are there special rates for groups?",
-            answer: "Yes. For 10 rooms or more, our dedicated group desk offers special rates and terms. Email us with your group details.",
+            answer:
+              "Yes. For 10 rooms or more, our dedicated group desk offers special rates and terms. Email us with your group details.",
           },
           {
             question: "Can you invoice a company and bill on credit?",
-            answer: "Yes, for approved corporate accounts. Contact us to set up the account and agree billing and credit terms.",
+            answer:
+              "Yes, for approved corporate accounts. Contact us to set up the account and agree billing and credit terms.",
           },
           {
             question: "I found a lower price elsewhere — what now?",
-            answer: "Send us the link for the same room and dates and we'll match it or do better under our direct best-rate guarantee.",
+            answer:
+              "Send us the link for the same room and dates and we'll match it or do better under our direct best-rate guarantee.",
           },
         ],
       },
@@ -3421,27 +3762,33 @@ export const defaultSiteContent = {
         faqs: [
           {
             question: "How do I track my complaint?",
-            answer: "You'll get a confirmation with a ticket reference. Keep it and reply on any channel with the same reference for the latest status.",
+            answer:
+              "You'll get a confirmation with a ticket reference. Keep it and reply on any channel with the same reference for the latest status.",
           },
           {
             question: "Can I send feedback anonymously?",
-            answer: "Yes, we accept anonymous feedback — but leaving a way to reach you lets us follow up and tell you the outcome.",
+            answer:
+              "Yes, we accept anonymous feedback — but leaving a way to reach you lets us follow up and tell you the outcome.",
           },
           {
             question: "Will I get compensation or a refund?",
-            answer: "When the case warrants it, we offer a suitable resolution that may include compensation or a refund, decided by the nature of the issue and your history with us.",
+            answer:
+              "When the case warrants it, we offer a suitable resolution that may include compensation or a refund, decided by the nature of the issue and your history with us.",
           },
           {
             question: "How long does a reply usually take?",
-            answer: "We acknowledge within 4 hours and aim for a resolution or clear plan within 48. More complex cases can take longer, and we keep you updated.",
+            answer:
+              "We acknowledge within 4 hours and aim for a resolution or clear plan within 48. More complex cases can take longer, and we keep you updated.",
           },
           {
             question: "Which language can I use?",
-            answer: "Arabic or English — the guest experience team serves you in both.",
+            answer:
+              "Arabic or English — the guest experience team serves you in both.",
           },
           {
             question: "What if I'm not satisfied with the outcome?",
-            answer: "You can request escalation to the corporate office; the guest experience team reviews it within 72 hours (see the escalation path below).",
+            answer:
+              "You can request escalation to the corporate office; the guest experience team reviews it within 72 hours (see the escalation path below).",
           },
         ],
         escalationIntro: {
@@ -3457,7 +3804,10 @@ export const defaultSiteContent = {
 export type EditableSiteContent = typeof defaultSiteContent;
 
 const DEPRECATED_MEDIA_KEYS_SHARED = ["lightLogo", "arabicLightLogo"] as const;
-const DEPRECATED_MEDIA_KEYS_AR = [...DEPRECATED_MEDIA_KEYS_SHARED, "logo"] as const;
+const DEPRECATED_MEDIA_KEYS_AR = [
+  ...DEPRECATED_MEDIA_KEYS_SHARED,
+  "logo",
+] as const;
 
 const legacyReservationOfficePage = {
   ar: {
@@ -3575,7 +3925,8 @@ const legacyReservationOfficePage = {
     ],
     servicesIntro: {
       eyebrow: "What we handle",
-      title: "Everything for a smooth booking — from one room to a multi-city itinerary.",
+      title:
+        "Everything for a smooth booking — from one room to a multi-city itinerary.",
       text: "Whether it's a single work night, a family's monthly stay, or a corporate group, the team owns your request end-to-end and loops in the property when needed.",
     },
     services: [
@@ -3634,12 +3985,20 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function replaceLegacyValues(current: unknown, legacy: unknown, replacement: unknown): unknown {
+function replaceLegacyValues(
+  current: unknown,
+  legacy: unknown,
+  replacement: unknown,
+): unknown {
   if (current === legacy) {
     return replacement;
   }
 
-  if (Array.isArray(current) && Array.isArray(legacy) && Array.isArray(replacement)) {
+  if (
+    Array.isArray(current) &&
+    Array.isArray(legacy) &&
+    Array.isArray(replacement)
+  ) {
     if (JSON.stringify(current) === JSON.stringify(legacy)) {
       return replacement;
     }
@@ -3649,7 +4008,11 @@ function replaceLegacyValues(current: unknown, legacy: unknown, replacement: unk
       if (index >= legacy.length || index >= replacement.length) {
         return item;
       }
-      const value = replaceLegacyValues(item, legacy[index], replacement[index]);
+      const value = replaceLegacyValues(
+        item,
+        legacy[index],
+        replacement[index],
+      );
       changed ||= value !== item;
       return value;
     });
@@ -3666,7 +4029,11 @@ function replaceLegacyValues(current: unknown, legacy: unknown, replacement: unk
         continue;
       }
 
-      const value = replaceLegacyValues(current[key], legacy[key], replacement[key]);
+      const value = replaceLegacyValues(
+        current[key],
+        legacy[key],
+        replacement[key],
+      );
       changed ||= value !== current[key];
       next[key] = value;
     }
@@ -3678,79 +4045,199 @@ function replaceLegacyValues(current: unknown, legacy: unknown, replacement: unk
 }
 
 const availabilityCopyReplacements = new Map<string, string>([
-  ["قيمة أفضل للضيوف الذين يحتاجون إلى قاعدة إقامة موثوقة لفترة طويلة في جدة أو جازان أو الرياض.", "قيمة أفضل للضيوف الذين يحتاجون إلى قاعدة إقامة موثوقة لفترة طويلة في جدة أو الرياض، مع انضمام جازان قريباً."],
-  ["Better value for guests who need a reliable long-stay base in Jeddah, Jazan, or Riyadh.", "Better value for guests who need a reliable long-stay base in Jeddah or Riyadh, with Jazan joining soon."],
-  ["محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة وجازان والرياض، مصممة للأعمال والعائلات والإقامات الشهرية.", "محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض، مع وجهة جديدة في جازان قريباً."],
-  ["A hospitality portfolio of hotels, apart-hotels, and serviced apartments in Jeddah, Jazan, and Riyadh, designed for business, families, and monthly stays.", "A hospitality portfolio of hotels, apart-hotels, and serviced apartments in Jeddah and Riyadh, with a new Jazan destination coming soon."],
+  [
+    "قيمة أفضل للضيوف الذين يحتاجون إلى قاعدة إقامة موثوقة لفترة طويلة في جدة أو جازان أو الرياض.",
+    "قيمة أفضل للضيوف الذين يحتاجون إلى قاعدة إقامة موثوقة لفترة طويلة في جدة أو الرياض، مع انضمام جازان قريباً.",
+  ],
+  [
+    "Better value for guests who need a reliable long-stay base in Jeddah, Jazan, or Riyadh.",
+    "Better value for guests who need a reliable long-stay base in Jeddah or Riyadh, with Jazan joining soon.",
+  ],
+  [
+    "محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة وجازان والرياض، مصممة للأعمال والعائلات والإقامات الشهرية.",
+    "محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض، مع وجهة جديدة في جازان قريباً.",
+  ],
+  [
+    "A hospitality portfolio of hotels, apart-hotels, and serviced apartments in Jeddah, Jazan, and Riyadh, designed for business, families, and monthly stays.",
+    "A hospitality portfolio of hotels, apart-hotels, and serviced apartments in Jeddah and Riyadh, with a new Jazan destination coming soon.",
+  ],
   ["جدة، الرياض، جازان", "جدة والرياض | جازان قريباً"],
   ["Jeddah, Riyadh, Jazan", "Jeddah and Riyadh | Jazan coming soon"],
-  ["ست وجهات، ولكل إقامة سبب واضح للاختيار.", "خمس منشآت متاحة، وجازان تنضم قريباً."],
-  ["Six destinations, each with a clear reason to book.", "Five open properties, with Jazan coming soon."],
-  ["اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض وجازان، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة واحدة متّسقة، تُدار كل منشأة فيها وفق المعايير ذاتها في النظافة والسلامة والضيافة.", "اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة متّسقة، فيما تستعد جازان للانضمام إلى المحفظة قريباً."],
-  ["Today the portfolio brings together hotels, serviced apartments, and serviced residences across Jeddah, Riyadh, and Jazan, serving the business guest, the family, and the long-stay resident within one consistent experience, where every property is run to the same standards of cleanliness, safety, and hospitality.", "Today the portfolio brings together hotels and serviced apartments across Jeddah and Riyadh for business, family, and long-stay guests, while Jazan prepares to join the portfolio soon."],
-  ["حضور في مواقع حيوية في جدة والرياض وجازان", "مواقع حيوية في جدة والرياض، مع جازان قريباً"],
-  ["Locations in Jeddah, Jazan, and Riyadh", "Locations in Jeddah and Riyadh, with Jazan coming soon"],
+  [
+    "ست وجهات، ولكل إقامة سبب واضح للاختيار.",
+    "خمس منشآت متاحة، وجازان تنضم قريباً.",
+  ],
+  [
+    "Six destinations, each with a clear reason to book.",
+    "Five open properties, with Jazan coming soon.",
+  ],
+  [
+    "اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض وجازان، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة واحدة متّسقة، تُدار كل منشأة فيها وفق المعايير ذاتها في النظافة والسلامة والضيافة.",
+    "اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة متّسقة، فيما تستعد جازان للانضمام إلى المحفظة قريباً.",
+  ],
+  [
+    "Today the portfolio brings together hotels, serviced apartments, and serviced residences across Jeddah, Riyadh, and Jazan, serving the business guest, the family, and the long-stay resident within one consistent experience, where every property is run to the same standards of cleanliness, safety, and hospitality.",
+    "Today the portfolio brings together hotels and serviced apartments across Jeddah and Riyadh for business, family, and long-stay guests, while Jazan prepares to join the portfolio soon.",
+  ],
+  [
+    "حضور في مواقع حيوية في جدة والرياض وجازان",
+    "مواقع حيوية في جدة والرياض، مع جازان قريباً",
+  ],
+  [
+    "Locations in Jeddah, Jazan, and Riyadh",
+    "Locations in Jeddah and Riyadh, with Jazan coming soon",
+  ],
   ["خمس منشآت في ثلاث مدن.", "أربع منشآت متاحة في مدينتين، وجازان قريباً."],
-  ["Five properties across three cities.", "Four open properties across two cities, with Jazan coming soon."],
-  ["اختر الموقع الأنسب لرحلتك بين جدة والرياض وجازان.", "اختر الموقع الأنسب لرحلتك بين جدة والرياض، وتابع افتتاح جازان قريباً."],
-  ["Choose the location best suited to your trip across Jeddah, Riyadh, and Jazan.", "Choose the location best suited to your trip in Jeddah or Riyadh, and watch for Jazan opening soon."],
-  ["فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.", "فنادق وأجنحة وشقق فندقية في جدة والرياض، مع جازان قريباً، وتجربة حجز واضحة للأفراد والشركات والإقامات الطويلة."],
-  ["Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.", "Hotels, suites, and serviced apartments in Jeddah and Riyadh, with Jazan coming soon and a clear booking journey for individual, corporate, and long-stay guests."],
+  [
+    "Five properties across three cities.",
+    "Four open properties across two cities, with Jazan coming soon.",
+  ],
+  [
+    "اختر الموقع الأنسب لرحلتك بين جدة والرياض وجازان.",
+    "اختر الموقع الأنسب لرحلتك بين جدة والرياض، وتابع افتتاح جازان قريباً.",
+  ],
+  [
+    "Choose the location best suited to your trip across Jeddah, Riyadh, and Jazan.",
+    "Choose the location best suited to your trip in Jeddah or Riyadh, and watch for Jazan opening soon.",
+  ],
+  [
+    "فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.",
+    "فنادق وأجنحة وشقق فندقية في جدة والرياض، مع جازان قريباً، وتجربة حجز واضحة للأفراد والشركات والإقامات الطويلة.",
+  ],
+  [
+    "Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.",
+    "Hotels, suites, and serviced apartments in Jeddah and Riyadh, with Jazan coming soon and a clear booking journey for individual, corporate, and long-stay guests.",
+  ],
   ["جازان", "جازان - قريباً"],
   ["Jazan", "Jazan - coming soon"],
-  ["حلول إقامة طويلة في جدة وجازان والرياض، مناسبة للموظفين والانتقالات وضيوف الشركات.", "حلول إقامة طويلة في جدة والرياض، مناسبة للموظفين والانتقالات وضيوف الشركات، مع جازان قريباً."],
-  ["Long-stay solutions in Jeddah, Jazan, and Riyadh, suitable for corporate relocations and monthly assignments.", "Long-stay solutions in Jeddah and Riyadh for corporate relocations and monthly assignments, with Jazan coming soon."],
-  ["محفظة ضيافة واضحة في جدة وجازان والرياض.", "محفظة ضيافة واضحة في جدة والرياض، وجازان قريباً."],
-  ["A clear hospitality portfolio in Jeddah, Jazan, and Riyadh.", "A clear hospitality portfolio in Jeddah and Riyadh, with Jazan coming soon."],
-  ["جدة، الرياض، وجازان ضمن تجربة واحدة.", "جدة والرياض ضمن تجربة واحدة، وجازان قريباً."],
-  ["Jeddah, Riyadh, and Jazan under one brand.", "Jeddah and Riyadh under one brand, with Jazan coming soon."],
-  ["ننمي فرقنا من الداخل. كن جزءاً من ثقافة خدمة متميزة في جدة والرياض وجازان.", "ننمي فرقنا من الداخل في جدة والرياض، ونستعد للتوسع إلى جازان قريباً."],
-  ["We grow our teams from within. Be part of a service-driven culture across Jeddah, Riyadh, and Jazan.", "We grow our teams from within across Jeddah and Riyadh, and we are preparing to expand into Jazan soon."],
-  ["احجز أو عدّل إقامتك عبر فريق واحد يعرف جميع منشآت سويس بلو في جدة وجازان والرياض. مكالمة أو رسالة واتساب واحدة تكفي للوصول إلى الخيار الأنسب.", "احجز أو عدّل إقامتك عبر فريق واحد يعرف جميع منشآت سويس بلو المتاحة في جدة والرياض. مكالمة أو رسالة واتساب واحدة تكفي، وجازان تنضم قريباً."],
-  ["Book or modify your stay through one team that knows every Swiss Blue property in Jeddah, Jazan, and Riyadh. One call or WhatsApp message gets you to the right option faster.", "Book or modify your stay through one team that knows every open Swiss Blue property in Jeddah and Riyadh. One call or WhatsApp gets you to the right option, with Jazan joining soon."],
-  ["تنسيق متعدد المدن بين جدة وجازان والرياض ضمن رحلة واحدة", "تنسيق بين منشآت جدة والرياض ضمن رحلة واحدة"],
-  ["Multi-city coordination across Jeddah, Jazan, and Riyadh", "Multi-property coordination across Jeddah and Riyadh"],
-  ["فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في جميع فنادق وشقق سويس بلو في جدة وجازان والرياض — مكالمة أو رسالة واتساب واحدة تكفي.", "فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في منشآت سويس بلو المتاحة في جدة والرياض، مع جازان قريباً."],
-  ["One team, one number. Plan, book, and modify your stay across every Swiss Blue hotel and apartment in Jeddah, Jazan, and Riyadh — one call or WhatsApp away.", "One team, one number. Plan, book, and modify your stay across open Swiss Blue properties in Jeddah and Riyadh, with Jazan coming soon."],
-  ["خطط رحلات متعددة المنشآت بين جدة وجازان والرياض", "خطط رحلات متعددة المنشآت بين جدة والرياض"],
-  ["Multi-property itineraries across Jeddah, Jazan, and Riyadh", "Multi-property itineraries across Jeddah and Riyadh"],
+  [
+    "حلول إقامة طويلة في جدة وجازان والرياض، مناسبة للموظفين والانتقالات وضيوف الشركات.",
+    "حلول إقامة طويلة في جدة والرياض، مناسبة للموظفين والانتقالات وضيوف الشركات، مع جازان قريباً.",
+  ],
+  [
+    "Long-stay solutions in Jeddah, Jazan, and Riyadh, suitable for corporate relocations and monthly assignments.",
+    "Long-stay solutions in Jeddah and Riyadh for corporate relocations and monthly assignments, with Jazan coming soon.",
+  ],
+  [
+    "محفظة ضيافة واضحة في جدة وجازان والرياض.",
+    "محفظة ضيافة واضحة في جدة والرياض، وجازان قريباً.",
+  ],
+  [
+    "A clear hospitality portfolio in Jeddah, Jazan, and Riyadh.",
+    "A clear hospitality portfolio in Jeddah and Riyadh, with Jazan coming soon.",
+  ],
+  [
+    "جدة، الرياض، وجازان ضمن تجربة واحدة.",
+    "جدة والرياض ضمن تجربة واحدة، وجازان قريباً.",
+  ],
+  [
+    "Jeddah, Riyadh, and Jazan under one brand.",
+    "Jeddah and Riyadh under one brand, with Jazan coming soon.",
+  ],
+  [
+    "ننمي فرقنا من الداخل. كن جزءاً من ثقافة خدمة متميزة في جدة والرياض وجازان.",
+    "ننمي فرقنا من الداخل في جدة والرياض، ونستعد للتوسع إلى جازان قريباً.",
+  ],
+  [
+    "We grow our teams from within. Be part of a service-driven culture across Jeddah, Riyadh, and Jazan.",
+    "We grow our teams from within across Jeddah and Riyadh, and we are preparing to expand into Jazan soon.",
+  ],
+  [
+    "احجز أو عدّل إقامتك عبر فريق واحد يعرف جميع منشآت سويس بلو في جدة وجازان والرياض. مكالمة أو رسالة واتساب واحدة تكفي للوصول إلى الخيار الأنسب.",
+    "احجز أو عدّل إقامتك عبر فريق واحد يعرف جميع منشآت سويس بلو المتاحة في جدة والرياض. مكالمة أو رسالة واتساب واحدة تكفي، وجازان تنضم قريباً.",
+  ],
+  [
+    "Book or modify your stay through one team that knows every Swiss Blue property in Jeddah, Jazan, and Riyadh. One call or WhatsApp message gets you to the right option faster.",
+    "Book or modify your stay through one team that knows every open Swiss Blue property in Jeddah and Riyadh. One call or WhatsApp gets you to the right option, with Jazan joining soon.",
+  ],
+  [
+    "تنسيق متعدد المدن بين جدة وجازان والرياض ضمن رحلة واحدة",
+    "تنسيق بين منشآت جدة والرياض ضمن رحلة واحدة",
+  ],
+  [
+    "Multi-city coordination across Jeddah, Jazan, and Riyadh",
+    "Multi-property coordination across Jeddah and Riyadh",
+  ],
+  [
+    "فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في جميع فنادق وشقق سويس بلو في جدة وجازان والرياض — مكالمة أو رسالة واتساب واحدة تكفي.",
+    "فريق واحد، رقم واحد. خطّط واحجز وعدّل إقامتك في منشآت سويس بلو المتاحة في جدة والرياض، مع جازان قريباً.",
+  ],
+  [
+    "One team, one number. Plan, book, and modify your stay across every Swiss Blue hotel and apartment in Jeddah, Jazan, and Riyadh — one call or WhatsApp away.",
+    "One team, one number. Plan, book, and modify your stay across open Swiss Blue properties in Jeddah and Riyadh, with Jazan coming soon.",
+  ],
+  [
+    "خطط رحلات متعددة المنشآت بين جدة وجازان والرياض",
+    "خطط رحلات متعددة المنشآت بين جدة والرياض",
+  ],
+  [
+    "Multi-property itineraries across Jeddah, Jazan, and Riyadh",
+    "Multi-property itineraries across Jeddah and Riyadh",
+  ],
   ["إقامة شهرية – جازان", "إقامة شهرية"],
   ["Monthly stay – Jazan", "Monthly stay"],
   ["إقامة منفردة – جازان", "إقامة منفردة"],
   ["Solo traveler – Jazan", "Solo traveler"],
-  ["قيمة ممتازة مقابل المنطقة. الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.", "الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، مع مساحة مريحة وخدمة سريعة عند الحاجة."],
-  ["Great value for the area. The apart-hotel felt like home for a longer stay, and the location is convenient for getting around Jazan.", "The apart-hotel felt like home during a longer stay, with comfortable space and prompt support when needed."],
+  [
+    "قيمة ممتازة مقابل المنطقة. الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.",
+    "الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، مع مساحة مريحة وخدمة سريعة عند الحاجة.",
+  ],
+  [
+    "Great value for the area. The apart-hotel felt like home for a longer stay, and the location is convenient for getting around Jazan.",
+    "The apart-hotel felt like home during a longer stay, with comfortable space and prompt support when needed.",
+  ],
 ]);
 
 function replaceAvailabilityCopy(value: unknown): unknown {
-  if (typeof value === "string") return availabilityCopyReplacements.get(value) ?? value;
+  if (typeof value === "string")
+    return availabilityCopyReplacements.get(value) ?? value;
   if (Array.isArray(value)) return value.map(replaceAvailabilityCopy);
   if (!isRecord(value)) return value;
 
   return Object.fromEntries(
-    Object.entries(value).map(([key, item]) => [key, replaceAvailabilityCopy(item)]),
+    Object.entries(value).map(([key, item]) => [
+      key,
+      replaceAvailabilityCopy(item),
+    ]),
   );
 }
 
-function normalizeAvailabilityContent(content: EditableSiteContent): EditableSiteContent {
+function normalizeAvailabilityContent(
+  content: EditableSiteContent,
+): EditableSiteContent {
   const normalized = replaceAvailabilityCopy(content) as EditableSiteContent;
   const normalizeStats = <T extends { value: string; label: string }>(
     stats: T[],
     locale: "ar" | "en",
-  ): T[] => stats.map((stat, index) => {
-    if (index === 0 && stat.value === "6") return { ...stat, value: "5" } as T;
-    if (index === 1 && stat.value === "3") return { ...stat, value: "2" } as T;
-    if (index === 2 && (stat.value === "+280" || stat.value === "280+")) {
-      return { ...stat, value: locale === "ar" ? "+227" : "227+" } as T;
-    }
-    return stat;
-  });
-  const normalizeReservationStats = <T extends { value: string; label: string }>(
+  ): T[] =>
+    stats.map((stat, index) => {
+      if (index === 0 && stat.value === "6")
+        return { ...stat, value: "5" } as T;
+      if (index === 1 && stat.value === "3")
+        return { ...stat, value: "2" } as T;
+      if (index === 2 && (stat.value === "+280" || stat.value === "280+")) {
+        return { ...stat, value: locale === "ar" ? "+227" : "227+" } as T;
+      }
+      return stat;
+    });
+  const normalizeReservationStats = <
+    T extends { value: string; label: string },
+  >(
     stats: T[],
     locale: "ar" | "en",
-  ): T[] => stats.map((stat, index) => index === 2 && stat.value === "3"
-    ? { ...stat, value: "2", label: locale === "ar" ? "مدينتان متاحتان، وجازان قريباً" : "Two open cities, with Jazan coming soon" } as T
-    : stat);
+  ): T[] =>
+    stats.map((stat, index) =>
+      index === 2 && stat.value === "3"
+        ? ({
+            ...stat,
+            value: "2",
+            label:
+              locale === "ar"
+                ? "مدينتان متاحتان، وجازان قريباً"
+                : "Two open cities, with Jazan coming soon",
+          } as T)
+        : stat,
+    );
 
   return {
     ...normalized,
@@ -3758,10 +4245,16 @@ function normalizeAvailabilityContent(content: EditableSiteContent): EditableSit
       ...normalized.ar,
       subpages: {
         ...normalized.ar.subpages,
-        about: { ...normalized.ar.subpages.about, stats: normalizeStats(normalized.ar.subpages.about.stats, "ar") },
+        about: {
+          ...normalized.ar.subpages.about,
+          stats: normalizeStats(normalized.ar.subpages.about.stats, "ar"),
+        },
         reservationOfficePage: {
           ...normalized.ar.subpages.reservationOfficePage,
-          stats: normalizeReservationStats(normalized.ar.subpages.reservationOfficePage.stats, "ar"),
+          stats: normalizeReservationStats(
+            normalized.ar.subpages.reservationOfficePage.stats,
+            "ar",
+          ),
         },
       },
     },
@@ -3769,17 +4262,25 @@ function normalizeAvailabilityContent(content: EditableSiteContent): EditableSit
       ...normalized.en,
       subpages: {
         ...normalized.en.subpages,
-        about: { ...normalized.en.subpages.about, stats: normalizeStats(normalized.en.subpages.about.stats, "en") },
+        about: {
+          ...normalized.en.subpages.about,
+          stats: normalizeStats(normalized.en.subpages.about.stats, "en"),
+        },
         reservationOfficePage: {
           ...normalized.en.subpages.reservationOfficePage,
-          stats: normalizeReservationStats(normalized.en.subpages.reservationOfficePage.stats, "en"),
+          stats: normalizeReservationStats(
+            normalized.en.subpages.reservationOfficePage.stats,
+            "en",
+          ),
         },
       },
     },
   };
 }
 
-function normalizeReservationOfficeContent(content: EditableSiteContent): EditableSiteContent {
+function normalizeReservationOfficeContent(
+  content: EditableSiteContent,
+): EditableSiteContent {
   const arReservationOfficePage = replaceLegacyValues(
     content.ar.subpages.reservationOfficePage,
     legacyReservationOfficePage.ar,
@@ -3817,21 +4318,32 @@ function normalizeReservationOfficeContent(content: EditableSiteContent): Editab
   };
 }
 
-function normalizeClientFacingContent(content: EditableSiteContent): EditableSiteContent {
-  const contentWithReservationOffice = normalizeAvailabilityContent(normalizeReservationOfficeContent(content));
-  const requestForm = contentWithReservationOffice.en.subpages.corporateDealsPage.requestForm;
-  const arGallery = contentWithReservationOffice.ar.media.gallery.map((item, index) => ({
-    ...item,
-    title: item.title === legacyGalleryTitles.ar[index]
-      ? galleryImages[index]?.title ?? item.title
-      : item.title,
-  }));
-  const enGallery = contentWithReservationOffice.en.media.gallery.map((item, index) => ({
-    ...item,
-    title: item.title === legacyGalleryTitles.en[index]
-      ? galleryImagesEn[index]?.title ?? item.title
-      : item.title,
-  }));
+function normalizeClientFacingContent(
+  content: EditableSiteContent,
+): EditableSiteContent {
+  const contentWithReservationOffice = normalizeAvailabilityContent(
+    normalizeReservationOfficeContent(content),
+  );
+  const requestForm =
+    contentWithReservationOffice.en.subpages.corporateDealsPage.requestForm;
+  const arGallery = contentWithReservationOffice.ar.media.gallery.map(
+    (item, index) => ({
+      ...item,
+      title:
+        item.title === legacyGalleryTitles.ar[index]
+          ? (galleryImages[index]?.title ?? item.title)
+          : item.title,
+    }),
+  );
+  const enGallery = contentWithReservationOffice.en.media.gallery.map(
+    (item, index) => ({
+      ...item,
+      title:
+        item.title === legacyGalleryTitles.en[index]
+          ? (galleryImagesEn[index]?.title ?? item.title)
+          : item.title,
+    }),
+  );
 
   return {
     ...contentWithReservationOffice,
@@ -3854,9 +4366,10 @@ function normalizeClientFacingContent(content: EditableSiteContent): EditableSit
           ...contentWithReservationOffice.en.subpages.corporateDealsPage,
           requestForm: {
             ...requestForm,
-            eyebrow: requestForm.eyebrow === LEGACY_B2B_REQUEST_FORM_EYEBROW_EN
-              ? B2B_REQUEST_FORM_EYEBROW_EN
-              : requestForm.eyebrow,
+            eyebrow:
+              requestForm.eyebrow === LEGACY_B2B_REQUEST_FORM_EYEBROW_EN
+                ? B2B_REQUEST_FORM_EYEBROW_EN
+                : requestForm.eyebrow,
           },
         },
       },
@@ -3864,7 +4377,10 @@ function normalizeClientFacingContent(content: EditableSiteContent): EditableSit
   };
 }
 
-function stripKeys<T extends Record<string, unknown>>(media: T, keys: readonly string[]): T {
+function stripKeys<T extends Record<string, unknown>>(
+  media: T,
+  keys: readonly string[],
+): T {
   const next = { ...media };
   for (const key of keys) {
     delete next[key];
@@ -3872,11 +4388,15 @@ function stripKeys<T extends Record<string, unknown>>(media: T, keys: readonly s
   return next;
 }
 
-function stripDeprecatedArMediaKeys<T extends Record<string, unknown>>(media: T): T {
+function stripDeprecatedArMediaKeys<T extends Record<string, unknown>>(
+  media: T,
+): T {
   return stripKeys(media, DEPRECATED_MEDIA_KEYS_AR);
 }
 
-function stripDeprecatedEnMediaKeys<T extends Record<string, unknown>>(media: T): T {
+function stripDeprecatedEnMediaKeys<T extends Record<string, unknown>>(
+  media: T,
+): T {
   return stripKeys(media, DEPRECATED_MEDIA_KEYS_SHARED);
 }
 
@@ -3915,8 +4435,10 @@ function syncMediaGallery(
 
   return {
     ar: Array.from({ length: maxLength }, (_, index) => {
-      const arItem = arGallery[index] ?? defaultSiteContent.ar.media.gallery[index];
-      const enItem = enGallery[index] ?? defaultSiteContent.en.media.gallery[index];
+      const arItem =
+        arGallery[index] ?? defaultSiteContent.ar.media.gallery[index];
+      const enItem =
+        enGallery[index] ?? defaultSiteContent.en.media.gallery[index];
 
       if (!arItem) {
         return arItem;
@@ -3936,8 +4458,10 @@ function syncMediaGallery(
       return { ...arItem, image };
     }).filter(Boolean) as EditableSiteContent["ar"]["media"]["gallery"],
     en: Array.from({ length: maxLength }, (_, index) => {
-      const arItem = arGallery[index] ?? defaultSiteContent.ar.media.gallery[index];
-      const enItem = enGallery[index] ?? defaultSiteContent.en.media.gallery[index];
+      const arItem =
+        arGallery[index] ?? defaultSiteContent.ar.media.gallery[index];
+      const enItem =
+        enGallery[index] ?? defaultSiteContent.en.media.gallery[index];
 
       if (!enItem) {
         return enItem;
@@ -4030,8 +4554,10 @@ function syncHeroSlides(
 
   return {
     ar: Array.from({ length: maxLength }, (_, index) => {
-      const arItem = arSlides[index] ?? defaultSiteContent.ar.media.mainHeroSlides[index];
-      const enItem = enSlides[index] ?? defaultSiteContent.en.media.mainHeroSlides[index];
+      const arItem =
+        arSlides[index] ?? defaultSiteContent.ar.media.mainHeroSlides[index];
+      const enItem =
+        enSlides[index] ?? defaultSiteContent.en.media.mainHeroSlides[index];
 
       if (!arItem) {
         return arItem;
@@ -4044,16 +4570,20 @@ function syncHeroSlides(
       const [source] = sharedImageValue(
         arItem.source,
         enItem.source,
-        defaultSiteContent.ar.media.mainHeroSlides[index]?.source ?? arItem.source,
-        defaultSiteContent.en.media.mainHeroSlides[index]?.source ?? enItem.source,
+        defaultSiteContent.ar.media.mainHeroSlides[index]?.source ??
+          arItem.source,
+        defaultSiteContent.en.media.mainHeroSlides[index]?.source ??
+          enItem.source,
       );
       const [focus] = sharedFocusValue(arItem.focus, enItem.focus);
 
       return { ...arItem, kind: arItem.kind || enItem.kind, source, focus };
     }).filter(Boolean) as EditableSiteContent["ar"]["media"]["mainHeroSlides"],
     en: Array.from({ length: maxLength }, (_, index) => {
-      const arItem = arSlides[index] ?? defaultSiteContent.ar.media.mainHeroSlides[index];
-      const enItem = enSlides[index] ?? defaultSiteContent.en.media.mainHeroSlides[index];
+      const arItem =
+        arSlides[index] ?? defaultSiteContent.ar.media.mainHeroSlides[index];
+      const enItem =
+        enSlides[index] ?? defaultSiteContent.en.media.mainHeroSlides[index];
 
       if (!enItem) {
         return enItem;
@@ -4066,8 +4596,10 @@ function syncHeroSlides(
       const [, source] = sharedImageValue(
         arItem.source,
         enItem.source,
-        defaultSiteContent.ar.media.mainHeroSlides[index]?.source ?? arItem.source,
-        defaultSiteContent.en.media.mainHeroSlides[index]?.source ?? enItem.source,
+        defaultSiteContent.ar.media.mainHeroSlides[index]?.source ??
+          arItem.source,
+        defaultSiteContent.en.media.mainHeroSlides[index]?.source ??
+          enItem.source,
       );
       const [, focus] = sharedFocusValue(arItem.focus, enItem.focus);
 
@@ -4085,7 +4617,9 @@ function heroFallbackFromSlides(
       return false;
     }
 
-    return slide.kind === "image" || !/\.(mp4|mov|webm)(\?|$)/i.test(slide.source);
+    return (
+      slide.kind === "image" || !/\.(mp4|mov|webm)(\?|$)/i.test(slide.source)
+    );
   });
 
   return imageSlide?.source ?? fallback;
@@ -4095,9 +4629,21 @@ function syncPropertyImages(
   arProperties: EditableSiteContent["ar"]["homepage"]["properties"]["items"],
   enProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
 ) {
-  const enBySlug = new Map(enProperties.map((property) => [property.slug, property]));
-  const defaultArBySlug = new Map(defaultSiteContent.ar.homepage.properties.items.map((property) => [property.slug, property]));
-  const defaultEnBySlug = new Map(defaultSiteContent.en.homepage.properties.items.map((property) => [property.slug, property]));
+  const enBySlug = new Map(
+    enProperties.map((property) => [property.slug, property]),
+  );
+  const defaultArBySlug = new Map(
+    defaultSiteContent.ar.homepage.properties.items.map((property) => [
+      property.slug,
+      property,
+    ]),
+  );
+  const defaultEnBySlug = new Map(
+    defaultSiteContent.en.homepage.properties.items.map((property) => [
+      property.slug,
+      property,
+    ]),
+  );
 
   const ar = arProperties.map((property) => {
     const enProperty = enBySlug.get(property.slug);
@@ -4108,24 +4654,40 @@ function syncPropertyImages(
       return property;
     }
 
-    const arGallery = completePropertyGallery(property.gallery ?? arDefault.gallery, arDefault.gallery);
-    const enGallery = completePropertyGallery(enProperty.gallery ?? enDefault.gallery, enDefault.gallery);
-    const [image] = sharedImageValue(property.image, enProperty.image, arDefault.image, enDefault.image);
-    const gallery = arGallery.map((galleryImage, index) => {
+    const arGallery = completePropertyGallery(
+      property.gallery ?? arDefault.gallery,
+      arDefault.gallery,
+      "ar",
+    );
+    const enGallery = completePropertyGallery(
+      enProperty.gallery ?? enDefault.gallery,
+      enDefault.gallery,
+      "en",
+    );
+    const [image] = sharedImageValue(
+      property.image,
+      enProperty.image,
+      arDefault.image,
+      enDefault.image,
+    );
+    const gallery = arGallery.map((galleryItem, index) => {
+      const enGalleryItem = enGallery[index] ?? galleryItem;
       const [nextImage] = sharedImageValue(
-        galleryImage,
-        enGallery[index] ?? galleryImage,
-        arDefault.gallery[index] ?? galleryImage,
-        enDefault.gallery[index] ?? enGallery[index] ?? galleryImage,
+        galleryImageValue(galleryItem),
+        galleryImageValue(enGalleryItem),
+        galleryImageValue(arDefault.gallery[index] ?? galleryItem),
+        galleryImageValue(enDefault.gallery[index] ?? enGalleryItem),
       );
 
-      return nextImage;
+      return { ...galleryItem, image: nextImage };
     });
 
     return { ...arDefault, ...property, image, gallery };
   });
 
-  const arBySlug = new Map(arProperties.map((property) => [property.slug, property]));
+  const arBySlug = new Map(
+    arProperties.map((property) => [property.slug, property]),
+  );
   const en = enProperties.map((property) => {
     const arProperty = arBySlug.get(property.slug);
     const arDefault = defaultArBySlug.get(property.slug);
@@ -4135,33 +4697,102 @@ function syncPropertyImages(
       return property;
     }
 
-    const arGallery = completePropertyGallery(arProperty.gallery ?? arDefault.gallery, arDefault.gallery);
-    const enGallery = completePropertyGallery(property.gallery ?? enDefault.gallery, enDefault.gallery);
-    const [, image] = sharedImageValue(arProperty.image, property.image, arDefault.image, enDefault.image);
-    const gallery = enGallery.map((galleryImage, index) => {
+    const arGallery = completePropertyGallery(
+      arProperty.gallery ?? arDefault.gallery,
+      arDefault.gallery,
+      "ar",
+    );
+    const enGallery = completePropertyGallery(
+      property.gallery ?? enDefault.gallery,
+      enDefault.gallery,
+      "en",
+    );
+    const [, image] = sharedImageValue(
+      arProperty.image,
+      property.image,
+      arDefault.image,
+      enDefault.image,
+    );
+    const gallery = enGallery.map((galleryItem, index) => {
+      const arGalleryItem = arGallery[index] ?? galleryItem;
       const [, nextImage] = sharedImageValue(
-        arGallery[index] ?? galleryImage,
-        galleryImage,
-        arDefault.gallery[index] ?? arGallery[index] ?? galleryImage,
-        enDefault.gallery[index] ?? galleryImage,
+        galleryImageValue(arGalleryItem),
+        galleryImageValue(galleryItem),
+        galleryImageValue(arDefault.gallery[index] ?? arGalleryItem),
+        galleryImageValue(enDefault.gallery[index] ?? galleryItem),
       );
 
-      return nextImage;
+      return { ...galleryItem, image: nextImage };
     });
 
     return { ...enDefault, ...property, image, gallery };
   });
 
-  return { ar, en };
+  return {
+    ar: ar as EditableSiteContent["ar"]["homepage"]["properties"]["items"],
+    en: en as EditableSiteContent["en"]["homepage"]["properties"]["items"],
+  };
 }
 
 function completePropertyGallery(
-  gallery: string[],
-  defaults: string[],
+  gallery: PropertyGalleryValue[],
+  defaults: PropertyGalleryValue[],
+  language: "ar" | "en",
 ) {
-  return Array.from(
-    new Set([...gallery, ...defaults, ...propertyGallerySupplement]),
-  ).slice(0, PROPERTY_GALLERY_IMAGE_COUNT);
+  const seen = new Set<string>();
+  const items: PropertyGalleryItem[] = [];
+
+  [...gallery, ...defaults, ...propertyGallerySupplement].forEach(
+    (item, index) => {
+      const normalized = normalizePropertyGalleryItem(item, index, language);
+      if (
+        language === "en" &&
+        typeof item === "string" &&
+        propertyGallerySupplement.includes(item)
+      ) {
+        normalized.title = `Property photo ${index + 1}`;
+      }
+      if (!normalized.image || seen.has(normalized.image)) {
+        return;
+      }
+
+      seen.add(normalized.image);
+      items.push(normalized);
+    },
+  );
+
+  return items.slice(0, PROPERTY_GALLERY_IMAGE_COUNT);
+}
+
+function normalizePropertyGalleryItem(
+  item: PropertyGalleryValue,
+  index: number,
+  language: "ar" | "en",
+): PropertyGalleryItem {
+  const fallbackTitle =
+    language === "ar"
+      ? `صورة الفندق ${index + 1}`
+      : `Property photo ${index + 1}`;
+
+  if (typeof item === "string") {
+    return {
+      title: fallbackTitle,
+      image: item,
+    };
+  }
+
+  return {
+    title: item.title || fallbackTitle,
+    image: item.image || "",
+  };
+}
+
+function galleryImageValue(item: PropertyGalleryValue | undefined) {
+  if (!item) {
+    return "";
+  }
+
+  return typeof item === "string" ? item : item.image;
 }
 
 function syncDestinationImages(
@@ -4174,29 +4805,47 @@ function syncDestinationImages(
     ar: Array.from({ length: maxLength }, (_, index) => {
       const arItem = arDestinations[index];
       const enItem = enDestinations[index];
-      const arDefault = defaultSiteContent.ar.homepage.destinations.items[index];
-      const enDefault = defaultSiteContent.en.homepage.destinations.items[index];
+      const arDefault =
+        defaultSiteContent.ar.homepage.destinations.items[index];
+      const enDefault =
+        defaultSiteContent.en.homepage.destinations.items[index];
 
       if (!arItem || !enItem || !arDefault || !enDefault) {
         return arItem;
       }
 
-      const [image] = sharedImageValue(arItem.image, enItem.image, arDefault.image, enDefault.image);
+      const [image] = sharedImageValue(
+        arItem.image,
+        enItem.image,
+        arDefault.image,
+        enDefault.image,
+      );
       return { ...arItem, image };
-    }).filter(Boolean) as EditableSiteContent["ar"]["homepage"]["destinations"]["items"],
+    }).filter(
+      Boolean,
+    ) as EditableSiteContent["ar"]["homepage"]["destinations"]["items"],
     en: Array.from({ length: maxLength }, (_, index) => {
       const arItem = arDestinations[index];
       const enItem = enDestinations[index];
-      const arDefault = defaultSiteContent.ar.homepage.destinations.items[index];
-      const enDefault = defaultSiteContent.en.homepage.destinations.items[index];
+      const arDefault =
+        defaultSiteContent.ar.homepage.destinations.items[index];
+      const enDefault =
+        defaultSiteContent.en.homepage.destinations.items[index];
 
       if (!arItem || !enItem || !arDefault || !enDefault) {
         return enItem;
       }
 
-      const [, image] = sharedImageValue(arItem.image, enItem.image, arDefault.image, enDefault.image);
+      const [, image] = sharedImageValue(
+        arItem.image,
+        enItem.image,
+        arDefault.image,
+        enDefault.image,
+      );
       return { ...enItem, image };
-    }).filter(Boolean) as EditableSiteContent["en"]["homepage"]["destinations"]["items"],
+    }).filter(
+      Boolean,
+    ) as EditableSiteContent["en"]["homepage"]["destinations"]["items"],
   };
 }
 
@@ -4240,7 +4889,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     defaultSiteContent.ar.media.jazan,
     defaultSiteContent.en.media.jazan,
   );
-  const syncedGallery = syncMediaGallery(content.ar.media.gallery, content.en.media.gallery);
+  const syncedGallery = syncMediaGallery(
+    content.ar.media.gallery,
+    content.en.media.gallery,
+  );
   const syncedAdminAuthBackdrop = syncAdminAuthBackdrop(
     content.ar.media.adminAuthBackdrop,
     content.en.media.adminAuthBackdrop,
@@ -4368,7 +5020,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
       },
       homepage: {
         ...content.ar.homepage,
-        highlights: normalizeHighlights(content.ar.homepage.highlights, defaultSiteContent.ar.homepage.highlights),
+        highlights: normalizeHighlights(
+          content.ar.homepage.highlights,
+          defaultSiteContent.ar.homepage.highlights,
+        ),
         properties: {
           ...content.ar.homepage.properties,
           items: syncedProperties.ar,
@@ -4390,31 +5045,52 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         },
         roomsSuites: {
           ...content.ar.subpages.roomsSuites,
-          hero: { ...content.ar.subpages.roomsSuites.hero, image: roomsSuitesHeroAr },
+          hero: {
+            ...content.ar.subpages.roomsSuites.hero,
+            image: roomsSuitesHeroAr,
+          },
         },
         servicedApartments: {
           ...content.ar.subpages.servicedApartments,
-          hero: { ...content.ar.subpages.servicedApartments.hero, image: servicedApartmentsHeroAr },
+          hero: {
+            ...content.ar.subpages.servicedApartments.hero,
+            image: servicedApartmentsHeroAr,
+          },
         },
         amenitiesServices: {
           ...content.ar.subpages.amenitiesServices,
-          hero: { ...content.ar.subpages.amenitiesServices.hero, image: amenitiesServicesHeroAr },
+          hero: {
+            ...content.ar.subpages.amenitiesServices.hero,
+            image: amenitiesServicesHeroAr,
+          },
         },
         loyaltyPage: {
           ...content.ar.subpages.loyaltyPage,
-          hero: { ...content.ar.subpages.loyaltyPage.hero, image: loyaltyPageHeroAr },
+          hero: {
+            ...content.ar.subpages.loyaltyPage.hero,
+            image: loyaltyPageHeroAr,
+          },
         },
         meetingsEvents: {
           ...content.ar.subpages.meetingsEvents,
-          hero: { ...content.ar.subpages.meetingsEvents.hero, image: meetingsEventsHeroAr },
+          hero: {
+            ...content.ar.subpages.meetingsEvents.hero,
+            image: meetingsEventsHeroAr,
+          },
         },
         corporateDealsPage: {
           ...content.ar.subpages.corporateDealsPage,
-          hero: { ...content.ar.subpages.corporateDealsPage.hero, image: corporateDealsPageHeroAr },
+          hero: {
+            ...content.ar.subpages.corporateDealsPage.hero,
+            image: corporateDealsPageHeroAr,
+          },
         },
         groupBookings: {
           ...content.ar.subpages.groupBookings,
-          hero: { ...content.ar.subpages.groupBookings.hero, image: groupBookingsHeroAr },
+          hero: {
+            ...content.ar.subpages.groupBookings.hero,
+            image: groupBookingsHeroAr,
+          },
         },
         contact: {
           ...content.ar.subpages.contact,
@@ -4422,7 +5098,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         },
         offersPage: {
           ...content.ar.subpages.offersPage,
-          hero: { ...content.ar.subpages.offersPage.hero, image: offersPageHeroAr },
+          hero: {
+            ...content.ar.subpages.offersPage.hero,
+            image: offersPageHeroAr,
+          },
         },
         faqPage: {
           ...content.ar.subpages.faqPage,
@@ -4430,15 +5109,24 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         },
         hotelsPage: {
           ...content.ar.subpages.hotelsPage,
-          hero: { ...content.ar.subpages.hotelsPage.hero, image: hotelsPageHeroAr },
+          hero: {
+            ...content.ar.subpages.hotelsPage.hero,
+            image: hotelsPageHeroAr,
+          },
         },
         destinationsPage: {
           ...content.ar.subpages.destinationsPage,
-          hero: { ...content.ar.subpages.destinationsPage.hero, image: destinationsPageHeroAr },
+          hero: {
+            ...content.ar.subpages.destinationsPage.hero,
+            image: destinationsPageHeroAr,
+          },
         },
         hotelPolicy: {
           ...content.ar.subpages.hotelPolicy,
-          hero: { ...content.ar.subpages.hotelPolicy.hero, image: hotelPolicyHeroAr },
+          hero: {
+            ...content.ar.subpages.hotelPolicy.hero,
+            image: hotelPolicyHeroAr,
+          },
         },
       },
     },
@@ -4456,7 +5144,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
       },
       homepage: {
         ...content.en.homepage,
-        highlights: normalizeHighlights(content.en.homepage.highlights, defaultSiteContent.en.homepage.highlights),
+        highlights: normalizeHighlights(
+          content.en.homepage.highlights,
+          defaultSiteContent.en.homepage.highlights,
+        ),
         properties: {
           ...content.en.homepage.properties,
           items: syncedProperties.en,
@@ -4478,31 +5169,52 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         },
         roomsSuites: {
           ...content.en.subpages.roomsSuites,
-          hero: { ...content.en.subpages.roomsSuites.hero, image: roomsSuitesHeroEn },
+          hero: {
+            ...content.en.subpages.roomsSuites.hero,
+            image: roomsSuitesHeroEn,
+          },
         },
         servicedApartments: {
           ...content.en.subpages.servicedApartments,
-          hero: { ...content.en.subpages.servicedApartments.hero, image: servicedApartmentsHeroEn },
+          hero: {
+            ...content.en.subpages.servicedApartments.hero,
+            image: servicedApartmentsHeroEn,
+          },
         },
         amenitiesServices: {
           ...content.en.subpages.amenitiesServices,
-          hero: { ...content.en.subpages.amenitiesServices.hero, image: amenitiesServicesHeroEn },
+          hero: {
+            ...content.en.subpages.amenitiesServices.hero,
+            image: amenitiesServicesHeroEn,
+          },
         },
         loyaltyPage: {
           ...content.en.subpages.loyaltyPage,
-          hero: { ...content.en.subpages.loyaltyPage.hero, image: loyaltyPageHeroEn },
+          hero: {
+            ...content.en.subpages.loyaltyPage.hero,
+            image: loyaltyPageHeroEn,
+          },
         },
         meetingsEvents: {
           ...content.en.subpages.meetingsEvents,
-          hero: { ...content.en.subpages.meetingsEvents.hero, image: meetingsEventsHeroEn },
+          hero: {
+            ...content.en.subpages.meetingsEvents.hero,
+            image: meetingsEventsHeroEn,
+          },
         },
         corporateDealsPage: {
           ...content.en.subpages.corporateDealsPage,
-          hero: { ...content.en.subpages.corporateDealsPage.hero, image: corporateDealsPageHeroEn },
+          hero: {
+            ...content.en.subpages.corporateDealsPage.hero,
+            image: corporateDealsPageHeroEn,
+          },
         },
         groupBookings: {
           ...content.en.subpages.groupBookings,
-          hero: { ...content.en.subpages.groupBookings.hero, image: groupBookingsHeroEn },
+          hero: {
+            ...content.en.subpages.groupBookings.hero,
+            image: groupBookingsHeroEn,
+          },
         },
         contact: {
           ...content.en.subpages.contact,
@@ -4510,7 +5222,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         },
         offersPage: {
           ...content.en.subpages.offersPage,
-          hero: { ...content.en.subpages.offersPage.hero, image: offersPageHeroEn },
+          hero: {
+            ...content.en.subpages.offersPage.hero,
+            image: offersPageHeroEn,
+          },
         },
         faqPage: {
           ...content.en.subpages.faqPage,
@@ -4518,15 +5233,24 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         },
         hotelsPage: {
           ...content.en.subpages.hotelsPage,
-          hero: { ...content.en.subpages.hotelsPage.hero, image: hotelsPageHeroEn },
+          hero: {
+            ...content.en.subpages.hotelsPage.hero,
+            image: hotelsPageHeroEn,
+          },
         },
         destinationsPage: {
           ...content.en.subpages.destinationsPage,
-          hero: { ...content.en.subpages.destinationsPage.hero, image: destinationsPageHeroEn },
+          hero: {
+            ...content.en.subpages.destinationsPage.hero,
+            image: destinationsPageHeroEn,
+          },
         },
         hotelPolicy: {
           ...content.en.subpages.hotelPolicy,
-          hero: { ...content.en.subpages.hotelPolicy.hero, image: hotelPolicyHeroEn },
+          hero: {
+            ...content.en.subpages.hotelPolicy.hero,
+            image: hotelPolicyHeroEn,
+          },
         },
       },
     },
@@ -4552,137 +5276,261 @@ function getSanityClient(token?: string) {
   });
 }
 
-function mergeContent(content: Partial<EditableSiteContent> | null): EditableSiteContent {
-  return normalizeClientFacingContent(syncSharedImages({
-    ar: {
-      ...defaultSiteContent.ar,
-      ...(content?.ar ?? {}),
-      seo: {
-        ...defaultSiteContent.ar.seo,
-        ...(content?.ar?.seo ?? {}),
-        ogImage: content?.ar?.seo?.ogImage || defaultSiteContent.ar.seo.ogImage,
-        favicon: content?.ar?.seo?.favicon || defaultSiteContent.ar.seo.favicon,
-        siteUrl: content?.ar?.seo?.siteUrl || defaultSiteContent.ar.seo.siteUrl,
-        pages: {
-          ...defaultSiteContent.ar.seo.pages,
-          ...(content?.ar?.seo?.pages ?? {}),
+function mergeContent(
+  content: Partial<EditableSiteContent> | null,
+): EditableSiteContent {
+  return normalizeClientFacingContent(
+    syncSharedImages({
+      ar: {
+        ...defaultSiteContent.ar,
+        ...(content?.ar ?? {}),
+        seo: {
+          ...defaultSiteContent.ar.seo,
+          ...(content?.ar?.seo ?? {}),
+          ogImage:
+            content?.ar?.seo?.ogImage || defaultSiteContent.ar.seo.ogImage,
+          favicon:
+            content?.ar?.seo?.favicon || defaultSiteContent.ar.seo.favicon,
+          siteUrl:
+            content?.ar?.seo?.siteUrl || defaultSiteContent.ar.seo.siteUrl,
+          pages: {
+            ...defaultSiteContent.ar.seo.pages,
+            ...(content?.ar?.seo?.pages ?? {}),
+          },
+        },
+        social: {
+          ...defaultSiteContent.ar.social,
+          ...(content?.ar?.social ?? {}),
+        },
+        chatAssistant: {
+          ...defaultSiteContent.ar.chatAssistant,
+          ...(content?.ar?.chatAssistant ?? {}),
+          leadActions: {
+            ...defaultSiteContent.ar.chatAssistant.leadActions,
+            ...(content?.ar?.chatAssistant?.leadActions ?? {}),
+          },
+          leadComplete: {
+            ...defaultSiteContent.ar.chatAssistant.leadComplete,
+            ...(content?.ar?.chatAssistant?.leadComplete ?? {}),
+          },
+        },
+        media: {
+          ...defaultSiteContent.ar.media,
+          ...(content?.ar?.media ?? {}),
+        },
+        faq: {
+          ...defaultSiteContent.ar.faq,
+          ...(content?.ar?.faq ?? {}),
+        },
+        homepage: {
+          ...defaultSiteContent.ar.homepage,
+          ...(content?.ar?.homepage ?? {}),
+        },
+        subpages: {
+          about: {
+            ...defaultSiteContent.ar.subpages.about,
+            ...(content?.ar?.subpages?.about ?? {}),
+          },
+          dining: {
+            ...defaultSiteContent.ar.subpages.dining,
+            ...(content?.ar?.subpages?.dining ?? {}),
+          },
+          roomsSuites: {
+            ...defaultSiteContent.ar.subpages.roomsSuites,
+            ...(content?.ar?.subpages?.roomsSuites ?? {}),
+          },
+          servicedApartments: {
+            ...defaultSiteContent.ar.subpages.servicedApartments,
+            ...(content?.ar?.subpages?.servicedApartments ?? {}),
+          },
+          amenitiesServices: {
+            ...defaultSiteContent.ar.subpages.amenitiesServices,
+            ...(content?.ar?.subpages?.amenitiesServices ?? {}),
+          },
+          loyaltyPage: {
+            ...defaultSiteContent.ar.subpages.loyaltyPage,
+            ...(content?.ar?.subpages?.loyaltyPage ?? {}),
+          },
+          meetingsEvents: {
+            ...defaultSiteContent.ar.subpages.meetingsEvents,
+            ...(content?.ar?.subpages?.meetingsEvents ?? {}),
+          },
+          corporateDealsPage: {
+            ...defaultSiteContent.ar.subpages.corporateDealsPage,
+            ...(content?.ar?.subpages?.corporateDealsPage ?? {}),
+          },
+          groupBookings: {
+            ...defaultSiteContent.ar.subpages.groupBookings,
+            ...(content?.ar?.subpages?.groupBookings ?? {}),
+          },
+          contact: {
+            ...defaultSiteContent.ar.subpages.contact,
+            ...(content?.ar?.subpages?.contact ?? {}),
+          },
+          offersPage: {
+            ...defaultSiteContent.ar.subpages.offersPage,
+            ...(content?.ar?.subpages?.offersPage ?? {}),
+          },
+          faqPage: {
+            ...defaultSiteContent.ar.subpages.faqPage,
+            ...(content?.ar?.subpages?.faqPage ?? {}),
+          },
+          hotelsPage: {
+            ...defaultSiteContent.ar.subpages.hotelsPage,
+            ...(content?.ar?.subpages?.hotelsPage ?? {}),
+          },
+          destinationsPage: {
+            ...defaultSiteContent.ar.subpages.destinationsPage,
+            ...(content?.ar?.subpages?.destinationsPage ?? {}),
+          },
+          hotelPolicy: {
+            ...defaultSiteContent.ar.subpages.hotelPolicy,
+            ...(content?.ar?.subpages?.hotelPolicy ?? {}),
+          },
+          careersPage: {
+            ...defaultSiteContent.ar.subpages.careersPage,
+            ...(content?.ar?.subpages?.careersPage ?? {}),
+          },
+          csrPage: {
+            ...defaultSiteContent.ar.subpages.csrPage,
+            ...(content?.ar?.subpages?.csrPage ?? {}),
+          },
+          reservationOfficePage: {
+            ...defaultSiteContent.ar.subpages.reservationOfficePage,
+            ...(content?.ar?.subpages?.reservationOfficePage ?? {}),
+          },
+          feedbackPage: {
+            ...defaultSiteContent.ar.subpages.feedbackPage,
+            ...(content?.ar?.subpages?.feedbackPage ?? {}),
+          },
         },
       },
-      social: {
-        ...defaultSiteContent.ar.social,
-        ...(content?.ar?.social ?? {}),
-      },
-      chatAssistant: {
-        ...defaultSiteContent.ar.chatAssistant,
-        ...(content?.ar?.chatAssistant ?? {}),
-        leadActions: {
-          ...defaultSiteContent.ar.chatAssistant.leadActions,
-          ...(content?.ar?.chatAssistant?.leadActions ?? {}),
+      en: {
+        ...defaultSiteContent.en,
+        ...(content?.en ?? {}),
+        seo: {
+          ...defaultSiteContent.en.seo,
+          ...(content?.en?.seo ?? {}),
+          ogImage:
+            content?.en?.seo?.ogImage || defaultSiteContent.en.seo.ogImage,
+          favicon:
+            content?.en?.seo?.favicon || defaultSiteContent.en.seo.favicon,
+          siteUrl:
+            content?.en?.seo?.siteUrl || defaultSiteContent.en.seo.siteUrl,
+          pages: {
+            ...defaultSiteContent.en.seo.pages,
+            ...(content?.en?.seo?.pages ?? {}),
+          },
         },
-        leadComplete: {
-          ...defaultSiteContent.ar.chatAssistant.leadComplete,
-          ...(content?.ar?.chatAssistant?.leadComplete ?? {}),
+        social: {
+          ...defaultSiteContent.en.social,
+          ...(content?.en?.social ?? {}),
+        },
+        chatAssistant: {
+          ...defaultSiteContent.en.chatAssistant,
+          ...(content?.en?.chatAssistant ?? {}),
+          leadActions: {
+            ...defaultSiteContent.en.chatAssistant.leadActions,
+            ...(content?.en?.chatAssistant?.leadActions ?? {}),
+          },
+          leadComplete: {
+            ...defaultSiteContent.en.chatAssistant.leadComplete,
+            ...(content?.en?.chatAssistant?.leadComplete ?? {}),
+          },
+        },
+        media: {
+          ...defaultSiteContent.en.media,
+          ...(content?.en?.media ?? {}),
+        },
+        faq: {
+          ...defaultSiteContent.en.faq,
+          ...(content?.en?.faq ?? {}),
+        },
+        homepage: {
+          ...defaultSiteContent.en.homepage,
+          ...(content?.en?.homepage ?? {}),
+        },
+        subpages: {
+          about: {
+            ...defaultSiteContent.en.subpages.about,
+            ...(content?.en?.subpages?.about ?? {}),
+          },
+          dining: {
+            ...defaultSiteContent.en.subpages.dining,
+            ...(content?.en?.subpages?.dining ?? {}),
+          },
+          roomsSuites: {
+            ...defaultSiteContent.en.subpages.roomsSuites,
+            ...(content?.en?.subpages?.roomsSuites ?? {}),
+          },
+          servicedApartments: {
+            ...defaultSiteContent.en.subpages.servicedApartments,
+            ...(content?.en?.subpages?.servicedApartments ?? {}),
+          },
+          amenitiesServices: {
+            ...defaultSiteContent.en.subpages.amenitiesServices,
+            ...(content?.en?.subpages?.amenitiesServices ?? {}),
+          },
+          loyaltyPage: {
+            ...defaultSiteContent.en.subpages.loyaltyPage,
+            ...(content?.en?.subpages?.loyaltyPage ?? {}),
+          },
+          meetingsEvents: {
+            ...defaultSiteContent.en.subpages.meetingsEvents,
+            ...(content?.en?.subpages?.meetingsEvents ?? {}),
+          },
+          corporateDealsPage: {
+            ...defaultSiteContent.en.subpages.corporateDealsPage,
+            ...(content?.en?.subpages?.corporateDealsPage ?? {}),
+          },
+          groupBookings: {
+            ...defaultSiteContent.en.subpages.groupBookings,
+            ...(content?.en?.subpages?.groupBookings ?? {}),
+          },
+          contact: {
+            ...defaultSiteContent.en.subpages.contact,
+            ...(content?.en?.subpages?.contact ?? {}),
+          },
+          offersPage: {
+            ...defaultSiteContent.en.subpages.offersPage,
+            ...(content?.en?.subpages?.offersPage ?? {}),
+          },
+          faqPage: {
+            ...defaultSiteContent.en.subpages.faqPage,
+            ...(content?.en?.subpages?.faqPage ?? {}),
+          },
+          hotelsPage: {
+            ...defaultSiteContent.en.subpages.hotelsPage,
+            ...(content?.en?.subpages?.hotelsPage ?? {}),
+          },
+          destinationsPage: {
+            ...defaultSiteContent.en.subpages.destinationsPage,
+            ...(content?.en?.subpages?.destinationsPage ?? {}),
+          },
+          hotelPolicy: {
+            ...defaultSiteContent.en.subpages.hotelPolicy,
+            ...(content?.en?.subpages?.hotelPolicy ?? {}),
+          },
+          careersPage: {
+            ...defaultSiteContent.en.subpages.careersPage,
+            ...(content?.en?.subpages?.careersPage ?? {}),
+          },
+          csrPage: {
+            ...defaultSiteContent.en.subpages.csrPage,
+            ...(content?.en?.subpages?.csrPage ?? {}),
+          },
+          reservationOfficePage: {
+            ...defaultSiteContent.en.subpages.reservationOfficePage,
+            ...(content?.en?.subpages?.reservationOfficePage ?? {}),
+          },
+          feedbackPage: {
+            ...defaultSiteContent.en.subpages.feedbackPage,
+            ...(content?.en?.subpages?.feedbackPage ?? {}),
+          },
         },
       },
-      media: {
-        ...defaultSiteContent.ar.media,
-        ...(content?.ar?.media ?? {}),
-      },
-      faq: {
-        ...defaultSiteContent.ar.faq,
-        ...(content?.ar?.faq ?? {}),
-      },
-      homepage: {
-        ...defaultSiteContent.ar.homepage,
-        ...(content?.ar?.homepage ?? {}),
-      },
-      subpages: {
-        about: { ...defaultSiteContent.ar.subpages.about, ...(content?.ar?.subpages?.about ?? {}) },
-        dining: { ...defaultSiteContent.ar.subpages.dining, ...(content?.ar?.subpages?.dining ?? {}) },
-        roomsSuites: { ...defaultSiteContent.ar.subpages.roomsSuites, ...(content?.ar?.subpages?.roomsSuites ?? {}) },
-        servicedApartments: { ...defaultSiteContent.ar.subpages.servicedApartments, ...(content?.ar?.subpages?.servicedApartments ?? {}) },
-        amenitiesServices: { ...defaultSiteContent.ar.subpages.amenitiesServices, ...(content?.ar?.subpages?.amenitiesServices ?? {}) },
-        loyaltyPage: { ...defaultSiteContent.ar.subpages.loyaltyPage, ...(content?.ar?.subpages?.loyaltyPage ?? {}) },
-        meetingsEvents: { ...defaultSiteContent.ar.subpages.meetingsEvents, ...(content?.ar?.subpages?.meetingsEvents ?? {}) },
-        corporateDealsPage: { ...defaultSiteContent.ar.subpages.corporateDealsPage, ...(content?.ar?.subpages?.corporateDealsPage ?? {}) },
-        groupBookings: { ...defaultSiteContent.ar.subpages.groupBookings, ...(content?.ar?.subpages?.groupBookings ?? {}) },
-        contact: { ...defaultSiteContent.ar.subpages.contact, ...(content?.ar?.subpages?.contact ?? {}) },
-        offersPage: { ...defaultSiteContent.ar.subpages.offersPage, ...(content?.ar?.subpages?.offersPage ?? {}) },
-        faqPage: { ...defaultSiteContent.ar.subpages.faqPage, ...(content?.ar?.subpages?.faqPage ?? {}) },
-        hotelsPage: { ...defaultSiteContent.ar.subpages.hotelsPage, ...(content?.ar?.subpages?.hotelsPage ?? {}) },
-        destinationsPage: { ...defaultSiteContent.ar.subpages.destinationsPage, ...(content?.ar?.subpages?.destinationsPage ?? {}) },
-        hotelPolicy: { ...defaultSiteContent.ar.subpages.hotelPolicy, ...(content?.ar?.subpages?.hotelPolicy ?? {}) },
-        careersPage: { ...defaultSiteContent.ar.subpages.careersPage, ...(content?.ar?.subpages?.careersPage ?? {}) },
-        csrPage: { ...defaultSiteContent.ar.subpages.csrPage, ...(content?.ar?.subpages?.csrPage ?? {}) },
-        reservationOfficePage: { ...defaultSiteContent.ar.subpages.reservationOfficePage, ...(content?.ar?.subpages?.reservationOfficePage ?? {}) },
-        feedbackPage: { ...defaultSiteContent.ar.subpages.feedbackPage, ...(content?.ar?.subpages?.feedbackPage ?? {}) },
-      },
-    },
-    en: {
-      ...defaultSiteContent.en,
-      ...(content?.en ?? {}),
-      seo: {
-        ...defaultSiteContent.en.seo,
-        ...(content?.en?.seo ?? {}),
-        ogImage: content?.en?.seo?.ogImage || defaultSiteContent.en.seo.ogImage,
-        favicon: content?.en?.seo?.favicon || defaultSiteContent.en.seo.favicon,
-        siteUrl: content?.en?.seo?.siteUrl || defaultSiteContent.en.seo.siteUrl,
-        pages: {
-          ...defaultSiteContent.en.seo.pages,
-          ...(content?.en?.seo?.pages ?? {}),
-        },
-      },
-      social: {
-        ...defaultSiteContent.en.social,
-        ...(content?.en?.social ?? {}),
-      },
-      chatAssistant: {
-        ...defaultSiteContent.en.chatAssistant,
-        ...(content?.en?.chatAssistant ?? {}),
-        leadActions: {
-          ...defaultSiteContent.en.chatAssistant.leadActions,
-          ...(content?.en?.chatAssistant?.leadActions ?? {}),
-        },
-        leadComplete: {
-          ...defaultSiteContent.en.chatAssistant.leadComplete,
-          ...(content?.en?.chatAssistant?.leadComplete ?? {}),
-        },
-      },
-      media: {
-        ...defaultSiteContent.en.media,
-        ...(content?.en?.media ?? {}),
-      },
-      faq: {
-        ...defaultSiteContent.en.faq,
-        ...(content?.en?.faq ?? {}),
-      },
-      homepage: {
-        ...defaultSiteContent.en.homepage,
-        ...(content?.en?.homepage ?? {}),
-      },
-      subpages: {
-        about: { ...defaultSiteContent.en.subpages.about, ...(content?.en?.subpages?.about ?? {}) },
-        dining: { ...defaultSiteContent.en.subpages.dining, ...(content?.en?.subpages?.dining ?? {}) },
-        roomsSuites: { ...defaultSiteContent.en.subpages.roomsSuites, ...(content?.en?.subpages?.roomsSuites ?? {}) },
-        servicedApartments: { ...defaultSiteContent.en.subpages.servicedApartments, ...(content?.en?.subpages?.servicedApartments ?? {}) },
-        amenitiesServices: { ...defaultSiteContent.en.subpages.amenitiesServices, ...(content?.en?.subpages?.amenitiesServices ?? {}) },
-        loyaltyPage: { ...defaultSiteContent.en.subpages.loyaltyPage, ...(content?.en?.subpages?.loyaltyPage ?? {}) },
-        meetingsEvents: { ...defaultSiteContent.en.subpages.meetingsEvents, ...(content?.en?.subpages?.meetingsEvents ?? {}) },
-        corporateDealsPage: { ...defaultSiteContent.en.subpages.corporateDealsPage, ...(content?.en?.subpages?.corporateDealsPage ?? {}) },
-        groupBookings: { ...defaultSiteContent.en.subpages.groupBookings, ...(content?.en?.subpages?.groupBookings ?? {}) },
-        contact: { ...defaultSiteContent.en.subpages.contact, ...(content?.en?.subpages?.contact ?? {}) },
-        offersPage: { ...defaultSiteContent.en.subpages.offersPage, ...(content?.en?.subpages?.offersPage ?? {}) },
-        faqPage: { ...defaultSiteContent.en.subpages.faqPage, ...(content?.en?.subpages?.faqPage ?? {}) },
-        hotelsPage: { ...defaultSiteContent.en.subpages.hotelsPage, ...(content?.en?.subpages?.hotelsPage ?? {}) },
-        destinationsPage: { ...defaultSiteContent.en.subpages.destinationsPage, ...(content?.en?.subpages?.destinationsPage ?? {}) },
-        hotelPolicy: { ...defaultSiteContent.en.subpages.hotelPolicy, ...(content?.en?.subpages?.hotelPolicy ?? {}) },
-        careersPage: { ...defaultSiteContent.en.subpages.careersPage, ...(content?.en?.subpages?.careersPage ?? {}) },
-        csrPage: { ...defaultSiteContent.en.subpages.csrPage, ...(content?.en?.subpages?.csrPage ?? {}) },
-        reservationOfficePage: { ...defaultSiteContent.en.subpages.reservationOfficePage, ...(content?.en?.subpages?.reservationOfficePage ?? {}) },
-        feedbackPage: { ...defaultSiteContent.en.subpages.feedbackPage, ...(content?.en?.subpages?.feedbackPage ?? {}) },
-      },
-    },
-  }));
+    }),
+  );
 }
 
 /**
@@ -4696,7 +5544,14 @@ function mergeContent(content: Partial<EditableSiteContent> | null): EditableSit
  * The in-memory shape is unchanged — only storage is chunked, transparently.
  */
 const LANGS = ["ar", "en"] as const;
-const CHUNK_KINDS = ["shell", "faq", "homepage", "rooms", "subpages", "forms"] as const;
+const CHUNK_KINDS = [
+  "shell",
+  "faq",
+  "homepage",
+  "rooms",
+  "subpages",
+  "forms",
+] as const;
 const METADATA_ID = "site-content--meta";
 
 type AnyRecord = Record<string, unknown>;
@@ -4706,11 +5561,15 @@ function chunkId(lang: string, kind: string) {
 }
 
 function allChunkIds(): string[] {
-  return LANGS.flatMap((lang) => CHUNK_KINDS.map((kind) => chunkId(lang, kind)));
+  return LANGS.flatMap((lang) =>
+    CHUNK_KINDS.map((kind) => chunkId(lang, kind)),
+  );
 }
 
 /** Slice one language's content into the persisted chunks. */
-function splitLang(langContent: AnyRecord): Record<(typeof CHUNK_KINDS)[number], AnyRecord> {
+function splitLang(
+  langContent: AnyRecord,
+): Record<(typeof CHUNK_KINDS)[number], AnyRecord> {
   const {
     navGroups,
     footerSections,
@@ -4737,7 +5596,9 @@ function splitLang(langContent: AnyRecord): Record<(typeof CHUNK_KINDS)[number],
 }
 
 /** Build the list of chunk documents to write for a full content tree. */
-function splitContent(content: EditableSiteContent): { id: string; content: AnyRecord }[] {
+function splitContent(
+  content: EditableSiteContent,
+): { id: string; content: AnyRecord }[] {
   const docs: { id: string; content: AnyRecord }[] = [];
   for (const lang of LANGS) {
     const slices = splitLang(content[lang] as unknown as AnyRecord);
@@ -4749,7 +5610,9 @@ function splitContent(content: EditableSiteContent): { id: string; content: AnyR
 }
 
 /** Reassemble a partial content tree from fetched chunk documents. */
-function assembleChunks(byId: Map<string, AnyRecord>): Partial<EditableSiteContent> | null {
+function assembleChunks(
+  byId: Map<string, AnyRecord>,
+): Partial<EditableSiteContent> | null {
   const out: AnyRecord = {};
   let found = false;
   for (const lang of LANGS) {
@@ -4806,7 +5669,10 @@ export async function getEditableContent(): Promise<
 
     // Prefer chunked storage; fall back to the legacy singleton until first save.
     const assembled = assembleChunks(byId);
-    const partial = assembled ?? (legacy?.content as Partial<EditableSiteContent> | undefined) ?? null;
+    const partial =
+      assembled ??
+      (legacy?.content as Partial<EditableSiteContent> | undefined) ??
+      null;
     const hidden = assembled ? meta?.hiddenSections : legacy?.hiddenSections;
 
     return {

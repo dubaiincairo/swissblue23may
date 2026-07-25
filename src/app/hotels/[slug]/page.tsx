@@ -7,7 +7,11 @@ import { rich } from "@/components/rich-text";
 import { CtaBand, PageHero, PageShell } from "@/components/site";
 import SocialShare from "@/components/social-share";
 import { hotels } from "@/lib/content";
-import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
+import {
+  getEditableContent,
+  isSectionHidden,
+  BOOKING_URL,
+} from "@/lib/editable-content";
 import { isComingSoonProperty } from "@/lib/property-availability";
 
 export const dynamic = "force-dynamic";
@@ -38,6 +42,18 @@ export default async function HotelDetailPage({
     notFound();
   }
 
+  const galleryImages = (
+    hotel.gallery as Array<string | { image: string; title?: string }>
+  )
+    .slice(0, 6)
+    .map((item, index) => ({
+      image: typeof item === "string" ? item : item.image,
+      title:
+        typeof item === "string"
+          ? `${hotel.title} صورة ${index + 1}`
+          : item.title || `${hotel.title} صورة ${index + 1}`,
+    }));
+
   return (
     <PageShell>
       <PageHero
@@ -58,13 +74,17 @@ export default async function HotelDetailPage({
           <p>{rich(hotel.positioning)}</p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <div className="stat-tile">
-              <div className="text-2xl font-bold text-[var(--primary)]">{rich(hotel.units)}</div>
+              <div className="text-2xl font-bold text-[var(--primary)]">
+                {rich(hotel.units)}
+              </div>
               <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
                 إجمالي الوحدات
               </div>
             </div>
             <div className="stat-tile">
-              <div className="text-2xl font-bold text-[var(--primary)]">{rich(hotel.city)}</div>
+              <div className="text-2xl font-bold text-[var(--primary)]">
+                {rich(hotel.city)}
+              </div>
               <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
                 المدينة
               </div>
@@ -76,13 +96,19 @@ export default async function HotelDetailPage({
         </div>
 
         <div className="grid gap-4">
-          <div className="content-card reveal-slide-up" style={{ "--delay": "100ms" } as React.CSSProperties}>
+          <div
+            className="content-card reveal-slide-up"
+            style={{ "--delay": "100ms" } as React.CSSProperties}
+          >
             <span className="eyebrow">إبراز الموقع</span>
             <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
               {rich(hotel.locationHighlight)}
             </p>
           </div>
-          <div className="content-card reveal-slide-up" style={{ "--delay": "200ms" } as React.CSSProperties}>
+          <div
+            className="content-card reveal-slide-up"
+            style={{ "--delay": "200ms" } as React.CSSProperties}
+          >
             <span className="eyebrow">معالم قريبة</span>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {hotel.landmarks.map((item) => (
@@ -110,13 +136,17 @@ export default async function HotelDetailPage({
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
               <span>
-                {rich("totalUnits" in unit ? `${unit.totalUnits} وحدة` : unit.count)}
+                {rich(
+                  "totalUnits" in unit ? `${unit.totalUnits} وحدة` : unit.count,
+                )}
               </span>
               <h3>{rich("type" in unit ? unit.type : unit.title)}</h3>
               <p>
-                {rich("type" in unit
-                  ? `${unit.bedrooms} غرفة نوم | ${unit.bedConfig} | ${unit.view} | أرقام الغرف: ${unit.rooms}`
-                  : unit.description)}
+                {rich(
+                  "type" in unit
+                    ? `${unit.bedrooms} غرفة نوم | ${unit.bedConfig} | ${unit.view} | أرقام الغرف: ${unit.rooms}`
+                    : unit.description,
+                )}
               </p>
             </article>
           ))}
@@ -130,14 +160,19 @@ export default async function HotelDetailPage({
             ما يحتاجه الضيف داخل هذه الوجهة.
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
-            تعرض كل صفحة فندق الخدمات المتوقعة في الوجهة نفسها حتى تصبح
-            المقارنة بين الفنادق والشقق أكثر وضوحا.
+            تعرض كل صفحة فندق الخدمات المتوقعة في الوجهة نفسها حتى تصبح المقارنة
+            بين الفنادق والشقق أكثر وضوحا.
           </p>
         </div>
         <FeatureChipGrid items={hotel.amenities} variant="check" columns={2} />
       </section>
 
-      <PropertyMap city={hotel.city} locale="ar" query={hotel.mapQuery} title={hotel.title} />
+      <PropertyMap
+        city={hotel.city}
+        locale="ar"
+        query={hotel.mapQuery}
+        title={hotel.title}
+      />
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
@@ -146,12 +181,7 @@ export default async function HotelDetailPage({
         </div>
         <div className="mt-8">
           <PhotoGalleryLightbox
-            images={hotel.gallery
-              .slice(0, 6)
-              .map((image, index) => ({
-                image,
-                title: `${hotel.title} صورة ${index + 1}`,
-              }))}
+            images={galleryImages}
             locale="ar"
             variant="property"
           />
@@ -159,16 +189,27 @@ export default async function HotelDetailPage({
       </section>
 
       {!isSectionHidden(hiddenSections, "propertyFaq") && (
-      <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="rtl">
-        <div className="faq-heading reveal-slide-up">
-          <span className="eyebrow">أسئلة هذا الفرع</span>
-          <h2>معلومات مهمة عن {rich(hotel.title)}.</h2>
-        </div>
-        <FaqAccordion items={ar.faq.property} />
-      </section>
+        <section
+          className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8"
+          dir="rtl"
+        >
+          <div className="faq-heading reveal-slide-up">
+            <span className="eyebrow">أسئلة هذا الفرع</span>
+            <h2>معلومات مهمة عن {rich(hotel.title)}.</h2>
+          </div>
+          <FaqAccordion items={ar.faq.property} />
+        </section>
       )}
 
-      <CtaBand eyebrow={ar.closingCtas.eyebrow} title={ar.closingCtas.hotelDetail.titleTemplate.replace("{hotel}", hotel.title)} text={ar.closingCtas.defaultText} cta={ar.closingCtas.hotelDetail.cta} />
+      <CtaBand
+        eyebrow={ar.closingCtas.eyebrow}
+        title={ar.closingCtas.hotelDetail.titleTemplate.replace(
+          "{hotel}",
+          hotel.title,
+        )}
+        text={ar.closingCtas.defaultText}
+        cta={ar.closingCtas.hotelDetail.cta}
+      />
     </PageShell>
   );
 }
