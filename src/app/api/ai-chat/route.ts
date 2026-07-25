@@ -238,8 +238,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ answer: unsupportedAnswer(locale) });
   }
 
-  const useDocumentSearch = Boolean(vectorStoreId && shouldSearchDocuments(message, websiteKnowledge.hasRelevantSource));
-  const tools = useDocumentSearch
+  const tools = vectorStoreId && shouldSearchDocuments(message, websiteKnowledge.hasRelevantSource)
     ? [{ type: "file_search" as const, vector_store_ids: [vectorStoreId], max_num_results: 3 }]
     : undefined;
 
