@@ -6883,19 +6883,22 @@ html[dir="rtl"] .sb-ai-chat-header {
 
 .admin-gallery-arrange-image {
   align-items: center;
-  aspect-ratio: 4 / 3;
-  background: #eaf1fb;
+  aspect-ratio: 16 / 10;
+  background:
+    linear-gradient(135deg, #f8fbff, #edf3fb);
   color: var(--admin-muted);
   display: flex;
   justify-content: center;
   overflow: hidden;
+  padding: 6px;
   width: 100%;
 }
 
 .admin-gallery-arrange-image img {
+  border-radius: 7px;
   display: block;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
 }
 
