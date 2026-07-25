@@ -592,6 +592,341 @@ function HotelGalleryBulkUpload({
   );
 }
 
+function PropertyGalleriesEditor({
+  value,
+  path,
+  language,
+  onChange,
+  onReorder,
+  focusItem,
+}: {
+  value: JsonObject;
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+  onReorder: (path: Array<string | number>, from: number, to: number) => void;
+  focusItem?: string;
+}) {
+  const properties = Array.isArray(value.items) ? value.items : [];
+  const firstProperty = properties.find(
+    (property) => isPlainObject(property) && typeof property.slug === "string",
+  );
+  const firstSlug =
+    isPlainObject(firstProperty) && typeof firstProperty.slug === "string"
+      ? firstProperty.slug
+      : "";
+  const [selectedSlug, setSelectedSlug] = useState(focusItem ?? firstSlug);
+  const activeIndex = Math.max(
+    0,
+    properties.findIndex(
+      (property) =>
+        isPlainObject(property) &&
+        property.slug === (selectedSlug || focusItem || firstSlug),
+    ),
+  );
+  const activeProperty = isPlainObject(properties[activeIndex])
+    ? properties[activeIndex]
+    : null;
+  const activePropertyPath = [...path, "items", activeIndex];
+  const activeGallery = Array.isArray(activeProperty?.gallery)
+    ? activeProperty.gallery
+    : [];
+
+  if (!activeProperty) {
+    return (
+      <div className="content-card">
+        {language === "ar"
+          ? "لا توجد فنادق قابلة للتحرير."
+          : "No hotels available to edit."}
+      </div>
+    );
+  }
+
+  return (
+    <section className="admin-property-gallery-editor">
+      <div className="admin-property-gallery-selector">
+        {properties.map((property, index) => {
+          if (!isPlainObject(property)) {
+            return null;
+          }
+
+          const slug = typeof property.slug === "string" ? property.slug : "";
+          const title = itemTitle(
+            property,
+            language === "ar" ? `فندق ${index + 1}` : `Hotel ${index + 1}`,
+          );
+          const city = typeof property.city === "string" ? property.city : "";
+          const image = typeof property.image === "string" ? property.image : "";
+          const galleryCount = Array.isArray(property.gallery)
+            ? property.gallery.length
+            : 0;
+          const isSelected = index === activeIndex;
+
+          return (
+            <button
+              aria-pressed={isSelected}
+              className={`admin-property-gallery-tab${isSelected ? " is-selected" : ""}`}
+              key={slug || index}
+              type="button"
+              onClick={() => setSelectedSlug(slug)}
+            >
+              <span className="admin-property-gallery-tab-photo">
+                {image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={image} alt="" />
+                ) : null}
+              </span>
+              <span>
+                <strong>{title}</strong>
+                <small>
+                  {city}
+                  {city ? " · " : ""}
+                  {language === "ar"
+                    ? `${galleryCount} صور`
+                    : `${galleryCount} photos`}
+                </small>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="admin-property-gallery-workspace">
+        <div className="admin-property-gallery-heading">
+          <div>
+            <p className="admin-kicker">
+              {language === "ar" ? "الفندق المحدد" : "Selected hotel"}
+            </p>
+            <h4>{itemTitle(activeProperty, "Hotel")}</h4>
+            <span>
+              {typeof activeProperty.city === "string" ? activeProperty.city : ""}
+            </span>
+          </div>
+          <span className="admin-property-gallery-count">
+            {language === "ar"
+              ? `${activeGallery.length} صور داخلية`
+              : `${activeGallery.length} detail photos`}
+          </span>
+        </div>
+
+        <div className="admin-property-gallery-panel">
+          <ImageFieldEditor
+            name="image"
+            value={typeof activeProperty.image === "string" ? activeProperty.image : ""}
+            path={[...activePropertyPath, "image"]}
+            language={language}
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="admin-property-gallery-panel">
+          <div className="admin-property-gallery-panel-head">
+            <div>
+              <h5>{hotelPageGalleryLabel(language)}</h5>
+              <p>
+                {language === "ar"
+                  ? "هذه الصور تظهر فقط داخل صفحة الفندق بعد أن يفتحها الزائر."
+                  : "These photos appear only inside the hotel detail page after the visitor opens it."}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() =>
+                onChange([...activePropertyPath, "gallery"], [
+                  ...activeGallery,
+                  {
+                    title: uploadedGalleryTitle(activeGallery.length, language),
+                    image: "",
+                  },
+                ])
+              }
+            >
+              <Plus aria-hidden="true" size={16} strokeWidth={2.3} />
+              {language === "ar" ? "إضافة صورة" : "Add photo"}
+            </button>
+          </div>
+          <HotelGalleryBulkUpload
+            value={activeGallery}
+            path={[...activePropertyPath, "gallery"]}
+            language={language}
+            onChange={onChange}
+          />
+          <HotelGalleryItemList
+            value={activeGallery}
+            path={[...activePropertyPath, "gallery"]}
+            language={language}
+            onChange={onChange}
+            onReorder={onReorder}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HotelGalleryItemList({
+  value,
+  path,
+  language,
+  onChange,
+  onReorder,
+}: {
+  value: JsonValue[];
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+  onReorder: (path: Array<string | number>, from: number, to: number) => void;
+}) {
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
+  function clearDragState() {
+    setDragIndex(null);
+    setDragOverIndex(null);
+  }
+
+  function normalizedItem(item: JsonValue, index: number): JsonObject {
+    if (isPlainObject(item)) {
+      return {
+        title:
+          typeof item.title === "string"
+            ? item.title
+            : uploadedGalleryTitle(index, language),
+        image: typeof item.image === "string" ? item.image : "",
+      };
+    }
+
+    return {
+      title: uploadedGalleryTitle(index, language),
+      image: typeof item === "string" ? item : "",
+    };
+  }
+
+  if (value.length === 0) {
+    return (
+      <div className="admin-gallery-empty">
+        {language === "ar"
+          ? "لا توجد صور داخلية بعد. ارفع صور الفندق دفعة واحدة أو أضف صورة."
+          : "No detail photos yet. Bulk upload hotel photos or add one photo."}
+      </div>
+    );
+  }
+
+  return (
+    <div className="admin-gallery-flat-list">
+      {value.map((item, index) => {
+        const current = normalizedItem(item, index);
+
+        return (
+          <div
+            className={[
+              "admin-gallery-flat-item",
+              dragIndex === index ? "is-dragging" : "",
+              dragOverIndex === index &&
+              dragIndex !== null &&
+              dragIndex !== index
+                ? "is-drop-target"
+                : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            key={`${path.join(".")}-${index}`}
+            onDragLeave={() =>
+              setDragOverIndex((currentIndex) =>
+                currentIndex === index ? null : currentIndex,
+              )
+            }
+            onDragOver={(event) => {
+              event.preventDefault();
+              event.dataTransfer.dropEffect = "move";
+              if (dragIndex !== null && dragIndex !== index) {
+                setDragOverIndex(index);
+              }
+            }}
+            onDrop={() => {
+              if (dragIndex !== null && dragIndex !== index) {
+                onReorder(path, dragIndex, index);
+              }
+              clearDragState();
+            }}
+          >
+            <span
+              className="admin-drag-handle"
+              draggable
+              aria-label={
+                language === "ar"
+                  ? "اسحب لتغيير ترتيب الصورة"
+                  : "Drag photo to reorder"
+              }
+              title={
+                language === "ar"
+                  ? "اسحب لتغيير الترتيب"
+                  : "Drag to reorder"
+              }
+              onDragStart={(event) => {
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData("text/plain", String(index));
+                setDragIndex(index);
+                setDragOverIndex(null);
+              }}
+              onDragEnd={clearDragState}
+            >
+              <GripVertical aria-hidden="true" size={20} strokeWidth={2.2} />
+            </span>
+
+            <div className="admin-gallery-flat-fields">
+              <label className="admin-field">
+                <span>{hotelGalleryTitleLabel(language)}</span>
+                <input
+                  type="text"
+                  value={String(current.title ?? "")}
+                  onChange={(event) =>
+                    onChange([...path, index], {
+                      ...current,
+                      title: event.target.value,
+                    })
+                  }
+                />
+              </label>
+              <ImageFieldEditor
+                name="image"
+                value={String(current.image ?? "")}
+                path={[...path, index, "image"]}
+                language={language}
+                onChange={(_, nextValue) =>
+                  onChange([...path, index], {
+                    ...current,
+                    image: typeof nextValue === "string" ? nextValue : "",
+                  })
+                }
+              />
+            </div>
+
+            <button
+              className="admin-remove admin-icon-button"
+              type="button"
+              onClick={() =>
+                onChange(
+                  path,
+                  value.filter((_, itemIndex) => itemIndex !== index),
+                )
+              }
+              aria-label={
+                language === "ar"
+                  ? `حذف الصورة ${index + 1}`
+                  : `Delete photo ${index + 1}`
+              }
+              title={language === "ar" ? "حذف الصورة" : "Delete photo"}
+            >
+              <Trash2 aria-hidden="true" size={18} strokeWidth={2.1} />
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 const FOCUS_OPTIONS: Array<{ value: string; en: string; ar: string }> = [
   { value: "center", en: "Center", ar: "المنتصف" },
   { value: "top", en: "Top", ar: "الأعلى" },
@@ -1500,6 +1835,19 @@ export function FieldEditor({
           language={language}
           onChange={onChange}
           onReorder={onReorder}
+        />
+      );
+    }
+
+    if (name === "propertyGalleries") {
+      return (
+        <PropertyGalleriesEditor
+          value={value}
+          path={path}
+          language={language}
+          onChange={onChange}
+          onReorder={onReorder}
+          focusItem={focusItem}
         />
       );
     }
