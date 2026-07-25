@@ -1717,6 +1717,12 @@ export const defaultSiteContent = {
       twitterHandle: "",
       themeColor: "#2b6fe8",
       siteUrl: "https://swissblue.sa",
+      analytics: {
+        googleTagManagerId: "",
+        ga4MeasurementId: "",
+        ga4PropertyId: "",
+        requireCookieConsent: true,
+      },
       pages: {
         home: { title: "", description: "", ogImage: "" },
         about: { title: "", description: "", ogImage: "" },
@@ -2774,6 +2780,12 @@ export const defaultSiteContent = {
       twitterHandle: "",
       themeColor: "#2b6fe8",
       siteUrl: "https://swissblue.sa",
+      analytics: {
+        googleTagManagerId: "",
+        ga4MeasurementId: "",
+        ga4PropertyId: "",
+        requireCookieConsent: true,
+      },
       pages: {
         home: { title: "", description: "", ogImage: "" },
         about: { title: "", description: "", ogImage: "" },

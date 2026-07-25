@@ -154,8 +154,12 @@ async function loadLeads(range: OverviewRange, data: OverviewData) {
   };
 }
 
-async function loadGa4(range: OverviewRange, data: OverviewData) {
-  const propertyId = process.env.GOOGLE_ANALYTICS_PROPERTY_ID;
+async function loadGa4(
+  range: OverviewRange,
+  data: OverviewData,
+  configuredPropertyId?: string,
+) {
+  const propertyId = configuredPropertyId || process.env.GOOGLE_ANALYTICS_PROPERTY_ID;
   const rawServiceAccount = process.env.GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON;
   if (!propertyId || !rawServiceAccount) return;
   let serviceAccount: { client_email?: string; private_key?: string };
@@ -243,12 +247,15 @@ async function loadGa4(range: OverviewRange, data: OverviewData) {
   }
 }
 
-export async function getAdminOverview(range: OverviewRange): Promise<OverviewData> {
+export async function getAdminOverview(
+  range: OverviewRange,
+  configuredPropertyId?: string,
+): Promise<OverviewData> {
   const data = emptyData(range);
   await loadLeads(range, data).catch(() => {
     data.sources.leads = { status: "unavailable", message: "Submission storage could not be reached." };
   });
-  await loadGa4(range, data);
+  await loadGa4(range, data, configuredPropertyId);
   return data;
 }
 

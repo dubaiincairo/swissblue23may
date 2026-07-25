@@ -58,6 +58,22 @@ export const adminSections: AdminSection[] = [
     path: ["seo", "pages"],
   },
   {
+    id: "analytics",
+    group: "SEO & Publishing",
+    label: "Analytics & Tag Manager",
+    description:
+      "Google Tag Manager, GA4 measurement and reporting IDs, plus consent-controlled tracking. Use IDs only; service-account credentials remain securely in Vercel.",
+    path: ["seo", "analytics"],
+  },
+  {
+    id: "cookieBanner",
+    group: "SEO & Publishing",
+    label: "Cookie consent banner",
+    description:
+      "The visitor consent message and the accept, decline, and policy-link labels shown before analytics is enabled.",
+    path: ["ui", "cookie"],
+  },
+  {
     id: "navGroups",
     group: "Website",
     label: "Navigation",
@@ -412,6 +428,18 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     description:
       "عنوان ووصف وصورة مشاركة اختيارية لكل صفحة على حدة. تتجاوز الإعدادات العامة، والحقول الفارغة تعود تلقائيا للقيم الافتراضية.",
   },
+  analytics: {
+    group: "تحسين النشر",
+    label: "التحليلات ومدير العلامات",
+    description:
+      "معرّف Google Tag Manager ومعرّفات GA4 وإعدادات الموافقة على التتبع. استخدم المعرّفات فقط؛ تبقى بيانات حساب الخدمة آمنة في Vercel.",
+  },
+  cookieBanner: {
+    group: "تحسين النشر",
+    label: "لافتة الموافقة على الكوكيز",
+    description:
+      "رسالة موافقة الزائر وتسميات القبول والرفض ورابط السياسة، وتظهر قبل تفعيل التحليلات.",
+  },
   social: {
     group: "إعدادات الموقع",
     label: "روابط التواصل الاجتماعي",
@@ -671,6 +699,11 @@ export const fieldLabels: Record<string, string> = {
   twitterHandle: "Twitter @handle",
   themeColor: "Theme color (hex)",
   siteUrl: "Site URL (canonical base)",
+  analytics: "Analytics & Tag Manager",
+  googleTagManagerId: "Google Tag Manager container ID (GTM-...)",
+  ga4MeasurementId: "GA4 measurement ID (G-...)",
+  ga4PropertyId: "GA4 property ID (numbers only)",
+  requireCookieConsent: "Require cookie consent before tracking",
   "rooms-suites": "Rooms & Suites",
   "serviced-apartments": "Serviced Apartments",
   "amenities-services": "Amenities & Services",
@@ -845,6 +878,11 @@ export const arabicFieldLabels: Record<string, string> = {
   twitterHandle: "حساب تويتر @",
   themeColor: "لون السمة (Hex)",
   siteUrl: "رابط الموقع (الأساسي)",
+  analytics: "التحليلات ومدير العلامات",
+  googleTagManagerId: "معرّف حاوية Google Tag Manager ‏(GTM-...)",
+  ga4MeasurementId: "معرّف قياس GA4 ‏(G-...)",
+  ga4PropertyId: "معرّف خاصية GA4 (أرقام فقط)",
+  requireCookieConsent: "اطلب موافقة الكوكيز قبل التتبع",
   "rooms-suites": "الغرف والأجنحة",
   "serviced-apartments": "الشقق الفندقية",
   "amenities-services": "المرافق والخدمات",
