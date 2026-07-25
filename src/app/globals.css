@@ -6822,10 +6822,10 @@ html[dir="rtl"] .sb-ai-chat-header {
 
 .admin-gallery-arrange-grid {
   display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   overflow-y: auto;
-  padding: 18px;
+  padding: 22px;
 }
 
 .admin-gallery-arrange-tile {
@@ -6883,14 +6883,14 @@ html[dir="rtl"] .sb-ai-chat-header {
 
 .admin-gallery-arrange-image {
   align-items: center;
-  aspect-ratio: 16 / 10;
   background:
     linear-gradient(135deg, #f8fbff, #edf3fb);
   color: var(--admin-muted);
   display: flex;
+  height: 190px;
   justify-content: center;
   overflow: hidden;
-  padding: 6px;
+  padding: 10px;
   width: 100%;
 }
 
@@ -7075,9 +7075,14 @@ html[dir="rtl"] .sb-ai-chat-header {
   }
 
   .admin-gallery-arrange-grid {
-    gap: 10px;
+    gap: 12px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 12px;
+  }
+
+  .admin-gallery-arrange-image {
+    height: 128px;
+    padding: 7px;
   }
 
   .admin-gallery-arrange-title {
