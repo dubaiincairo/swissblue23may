@@ -3,6 +3,7 @@
 import type { FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { DatePicker } from "@/components/date-picker";
+import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Locale = "ar" | "en";
@@ -134,6 +135,7 @@ export default function CorporateDealForm({
       }
 
       setStatus(t.success);
+      trackAnalyticsEvent("corporate_request_submitted", { locale });
       setModalOpen(false);
       setBasic(emptyBasic);
       form.reset();

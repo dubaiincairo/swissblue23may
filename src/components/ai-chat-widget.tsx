@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
 import AiChatLeadForm from "@/components/ai-chat-lead-form";
 import { detectChatLeadKind, type ChatLeadKind } from "@/lib/chat-leads";
+import { trackAnalyticsEvent } from "@/lib/analytics-events";
 
 type ChatMessage = {
   id: number;
@@ -396,7 +397,7 @@ export default function AiChatWidget({
           </form>
         </section>
       ) : null}
-      <button ref={triggerRef} type="button" className="sb-ai-chat-trigger" onClick={() => setOpen(true)} aria-label={openLabel}>
+      <button ref={triggerRef} type="button" className="sb-ai-chat-trigger" onClick={() => { trackAnalyticsEvent("chat_opened", { locale }); setOpen(true); }} aria-label={openLabel}>
         <span className="sb-ai-chat-trigger-avatar">
           <Image src={copy.avatar} alt="" aria-hidden="true" width={64} height={64} />
         </span>

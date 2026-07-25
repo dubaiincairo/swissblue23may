@@ -34,6 +34,8 @@ function needsAuth(pathname: string): boolean {
 function requiredAuthority(pathname: string): AuthorityId | "content-any" | null {
   if (pathname === "/admin/users" || pathname.startsWith("/admin/users/")) return "users";
   if (pathname.startsWith("/api/admin/users")) return "users";
+  if (pathname === "/admin/overview" || pathname.startsWith("/admin/overview/")) return "analytics";
+  if (pathname.startsWith("/api/admin/overview")) return "analytics";
   if (pathname.startsWith("/api/admin/chat-knowledge")) return "content-any";
   if (pathname === "/admin/reservation-layouts" || pathname.startsWith("/admin/reservation-layouts/")) return "content-any";
   if (pathname === "/admin/submissions" || pathname.startsWith("/admin/submissions/")) return "submissions";

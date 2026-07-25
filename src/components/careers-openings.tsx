@@ -3,6 +3,7 @@
 import type { FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import type { EditableSiteContent } from "@/lib/editable-content";
+import { trackAnalyticsEvent } from "@/lib/analytics-events";
 
 type Locale = "ar" | "en";
 
@@ -65,6 +66,7 @@ function JobCard({
 
       setSubmitting(false);
       setSubmitted(true);
+      trackAnalyticsEvent("career_application_submitted", { locale, position: job.title });
       formEl.reset();
     } catch {
       setSubmitting(false);

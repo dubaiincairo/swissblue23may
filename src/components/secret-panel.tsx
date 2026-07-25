@@ -378,6 +378,7 @@ export default function SecretPanel({
     language === "ar" ? "content.ar" : "content.en",
   );
   const canSeeSubmissions = hasAuthority(perms, "submissions");
+  const canSeeAnalytics = hasAuthority(perms, "analytics");
   const canManageUsers = hasAuthority(perms, "users");
   const canSwitchPanel = hasAuthority(
     perms,
@@ -525,6 +526,29 @@ export default function SecretPanel({
           className="admin-section-list"
           aria-label={language === "ar" ? "أقسام لوحة الإدارة" : "CMS sections"}
         >
+          {canSeeAnalytics ? (
+            <a
+              className="admin-overview-link"
+              href={`/admin/overview?locale=${language}`}
+              onClick={(event) => {
+                if (!confirmLeave()) {
+                  event.preventDefault();
+                  return;
+                }
+                setMobileNavigationOpen(false);
+              }}
+            >
+              <span className="admin-overview-link-icon" aria-hidden="true">◫</span>
+              <span>
+                <strong>{language === "ar" ? "نظرة عامة" : "Overview"}</strong>
+                <small>
+                  {language === "ar"
+                    ? "زيارات الموقع والطلبات ومؤشرات الحجز"
+                    : "Traffic, leads, and booking-intent insights"}
+                </small>
+              </span>
+            </a>
+          ) : null}
           {visibleNavGroups.map((group) => {
             const sections = groupedSections[group] ?? [];
             const links = filteredAdminSidebarLinks.filter(

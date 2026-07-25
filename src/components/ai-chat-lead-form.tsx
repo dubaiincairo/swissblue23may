@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ChatLeadKind } from "@/lib/chat-leads";
 import type { ChatLocale } from "@/lib/ai-chat";
+import { trackAnalyticsEvent } from "@/lib/analytics-events";
 
 type Copy = {
   title: Record<ChatLeadKind, string>;
@@ -86,6 +87,7 @@ export default function AiChatLeadForm({ kind, locale, onCancel, onComplete }: P
         setError(data.error || (locale === "ar" ? "تعذر إرسال الطلب." : "Your request could not be sent."));
         return;
       }
+      trackAnalyticsEvent("chat_lead_submitted", { locale, lead_kind: kind });
       onComplete(kind);
     } catch {
       setError(locale === "ar" ? "تعذر الاتصال بالخدمة." : "The request service could not be reached.");

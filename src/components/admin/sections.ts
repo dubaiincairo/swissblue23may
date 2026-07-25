@@ -15,7 +15,7 @@ export const languages: Record<
 };
 
 export const ADMIN_GROUP_ORDER = [
-  "Dashboard",
+  "Homepage",
   "Website",
   "Media",
   "Forms & Submissions",
@@ -29,7 +29,7 @@ export function adminGroupLabel(group: string, language: Language) {
 
   return (
     {
-      Dashboard: "لوحة التحكم",
+      Homepage: "الصفحة الرئيسية",
       Website: "الموقع",
       Media: "الوسائط",
       "Forms & Submissions": "النماذج والطلبات",
@@ -158,63 +158,63 @@ export const adminSections: AdminSection[] = [
   },
   {
     id: "hero",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Hero & booking",
     description: "Main banner headline, supporting copy, and primary actions.",
     path: ["homepage", "hero"],
   },
   {
     id: "highlights",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Key numbers",
     description: "The four statistics displayed under the hero section.",
     path: ["homepage", "highlights"],
   },
   {
     id: "properties",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Hotel Overview",
     description: "The six hotel overview entries shown on the homepage.",
     path: ["homepage", "properties"],
   },
   {
     id: "loyalty",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Loyalty program",
     description: "Program headline, intro text, and guest benefits.",
     path: ["homepage", "loyalty"],
   },
   {
     id: "destinations",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Destinations",
     description: "Jeddah and Riyadh cards, plus Jazan coming-soon guidance.",
     path: ["homepage", "destinations"],
   },
   {
     id: "offers",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Offers",
     description: "Business, family, and monthly-stay offer blocks.",
     path: ["homepage", "offers"],
   },
   {
     id: "services",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Services",
     description: "Service section text and amenity list.",
     path: ["homepage", "services"],
   },
   {
     id: "categories",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Stay categories",
     description: "Hotel, apart-hotel, and serviced-apartment comparison.",
     path: ["homepage", "categories"],
   },
   {
     id: "testimonials",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Guest testimonials",
     description:
       "Reviews shown on the homepage. Pull real testimonials from Google Maps, Booking.com, Agoda, Expedia, and other platforms.",
@@ -222,14 +222,14 @@ export const adminSections: AdminSection[] = [
   },
   {
     id: "cta",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Closing CTA",
     description: "Final booking call-to-action at the bottom of the page.",
     path: ["homepage", "cta"],
   },
   {
     id: "homepageFaq",
-    group: "Dashboard",
+    group: "Homepage",
     label: "Homepage FAQ",
     description: "Questions shown near the bottom of the homepage.",
     path: ["faq", "homepage"],

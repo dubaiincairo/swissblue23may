@@ -7,6 +7,7 @@ import CookieBanner from "@/components/cookie-banner";
 import LiveContentRefresh from "@/components/live-content-refresh";
 import NavScrollState from "@/components/nav-scroll-state";
 import ScrollObserver from "@/components/scroll-observer";
+import Ga4Analytics from "@/components/ga4-analytics";
 import { getEditableContent } from "@/lib/editable-content";
 import { defaultPageTitle, pageKeyFromPath } from "@/lib/page-seo";
 import "./globals.css";
@@ -56,6 +57,8 @@ async function currentSeo() {
   const { ar, en } = await loadContent();
   const requestHeaders = await headers();
   const locale = requestHeaders.get("x-locale") === "ar" ? "ar" : "en";
+  const pathname = requestHeaders.get("x-pathname") || "";
+  const isAdmin = pathname.startsWith("/admin") || pathname.startsWith("/studio");
   const pathname = requestHeaders.get("x-pathname") || "";
   const pageKey = pageKeyFromPath(pathname);
 
@@ -154,6 +157,7 @@ export default async function RootLayout({
         <LiveContentRefresh />
         <NavScrollState />
         <ScrollObserver />
+        {!isAdmin ? <Ga4Analytics measurementId={process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID} /> : null}
         {children}
         <AiChatWidget settings={{ ar: ar.chatAssistant, en: en.chatAssistant }} />
         <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />

@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BadgeCheck, ShieldCheck } from "lucide-react";
 import { BOOKING_URL } from "@/lib/content";
+import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
 type Property = { slug: string; title: string; city: string };
@@ -299,7 +300,13 @@ export default function BookingBar({
     };
   }, []);
 
+  function selectProperty(nextSlug: string) {
+    setSlug(nextSlug);
+    trackAnalyticsEvent("property_selected", { locale, property_slug: nextSlug });
+  }
+
   function search() {
+    trackAnalyticsEvent("booking_cta_click", { locale, property_slug: slug, placement: "booking_bar" });
     window.location.assign(BOOKING_URL);
   }
 
@@ -322,7 +329,7 @@ export default function BookingBar({
           locale={locale}
           label={propertyLabel}
           value={slug}
-          onChange={setSlug}
+          onChange={selectProperty}
         />
       </div>
 
