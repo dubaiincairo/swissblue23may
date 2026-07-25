@@ -645,9 +645,11 @@ function PropertyGalleriesEditor({
   const firstProperty = properties.find(
     (property) => isPlainObject(property) && typeof property.slug === "string",
   );
+  const firstPropertyValue = firstProperty ?? null;
   const firstSlug =
-    isPlainObject(firstProperty ?? null) && typeof firstProperty.slug === "string"
-      ? firstProperty.slug
+    isPlainObject(firstPropertyValue) &&
+    typeof firstPropertyValue.slug === "string"
+      ? firstPropertyValue.slug
       : "";
   const [selectedSlug, setSelectedSlug] = useState(focusItem ?? firstSlug);
   const activeIndex = Math.max(
