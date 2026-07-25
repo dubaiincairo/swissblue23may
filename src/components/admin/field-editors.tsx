@@ -46,7 +46,9 @@ export function ImageFieldEditor({
   const [pickerSource, setPickerSource] = useState<
     "unsplash" | "pexels" | null
   >(null);
-  const uploadOnly = isHotelGalleryImage(path);
+  const fieldLabel = fieldLabelFor(name, path, language);
+  const uploadOnly =
+    isHotelGalleryImage(path) || isHomepagePropertyPreviewImage(name, path);
 
   function handleStockSelect(asset: {
     url: string;
@@ -123,7 +125,7 @@ export function ImageFieldEditor({
     <div
       className={`admin-field admin-image-field${name === "ogImage" ? " admin-image-field-og" : ""}`}
     >
-      <span>{labelFor(name, language)}</span>
+      <span>{fieldLabel}</span>
       <div className="admin-image-control">
         <div className="admin-image-preview">
           {value ? (
@@ -204,7 +206,7 @@ export function ImageFieldEditor({
       {pickerSource ? (
         <StockPhotoPicker
           language={language}
-          initialQuery={labelFor(name, "en")}
+          initialQuery={fieldLabelFor(name, path, "en")}
           initialSource={pickerSource}
           onSelect={handleStockSelect}
           onClose={() => setPickerSource(null)}
@@ -231,9 +233,7 @@ export function StringFieldEditor({
 }) {
   const isUrl = ["href", "image", "secondaryHref", "source"].includes(name);
   const isOpaque = ["slug", "type", "kind", "mapQuery"].includes(name);
-  const fieldLabel = isHotelGalleryTitle(name, path)
-    ? hotelGalleryTitleLabel(language)
-    : labelFor(name, language);
+  const fieldLabel = fieldLabelFor(name, path, language);
 
   if (isUrl) {
     return (
@@ -338,8 +338,60 @@ function isHotelGalleryTitle(name: string, path: Array<string | number>) {
   return name === "title" && isHotelGalleryImage(path);
 }
 
+function isHomepagePropertyPreviewImage(
+  name: string,
+  path: Array<string | number>,
+) {
+  const pathText = path.map(String).join(".");
+
+  return (
+    name === "image" && /homepage\.properties\.items\.\d+\.image$/.test(pathText)
+  );
+}
+
+function isHotelPageGalleryField(name: string, path: Array<string | number>) {
+  const pathText = path.map(String).join(".");
+
+  return (
+    name === "gallery" &&
+    /homepage\.properties\.items\.\d+\.gallery$/.test(pathText)
+  );
+}
+
 function hotelGalleryTitleLabel(language: Language) {
   return language === "ar" ? "عنوان الصورة" : "Photo headline";
+}
+
+function homepagePropertyPreviewImageLabel(language: Language) {
+  return language === "ar"
+    ? "صورة بطاقة الفندق في الصفحة الرئيسية"
+    : "Homepage hotel preview photo";
+}
+
+function hotelPageGalleryLabel(language: Language) {
+  return language === "ar"
+    ? "صور معرض صفحة الفندق"
+    : "Hotel page gallery photos";
+}
+
+function fieldLabelFor(
+  name: string,
+  path: Array<string | number>,
+  language: Language,
+) {
+  if (isHotelGalleryTitle(name, path)) {
+    return hotelGalleryTitleLabel(language);
+  }
+
+  if (isHomepagePropertyPreviewImage(name, path)) {
+    return homepagePropertyPreviewImageLabel(language);
+  }
+
+  if (isHotelPageGalleryField(name, path)) {
+    return hotelPageGalleryLabel(language);
+  }
+
+  return labelFor(name, language);
 }
 
 function visiblePropertyGalleryKeys(path: Array<string | number>, key: string) {
@@ -350,7 +402,7 @@ function visiblePropertyGalleryKeys(path: Array<string | number>, key: string) {
   }
 
   if (/homepage\.properties\.items\.\d+$/.test(pathText)) {
-    return ["title", "name", "city", "slug", "gallery"].includes(key);
+    return ["title", "name", "city", "slug", "image", "gallery"].includes(key);
   }
 
   if (/homepage\.properties\.items\.\d+\.gallery\.\d+$/.test(pathText)) {
@@ -1014,7 +1066,7 @@ export function FieldEditor({
         <summary className="admin-fold-summary">
           <span className="admin-fold-summary-main">
             <span>
-              <strong>{labelFor(name, language)}</strong>
+              <strong>{fieldLabelFor(name, path, language)}</strong>
               <small>
                 {language === "ar"
                   ? `${value.length} عنصر${value.length === 0 ? "" : " · يدعم السحب والترتيب"}`
@@ -1049,7 +1101,9 @@ export function FieldEditor({
             className={primitiveList ? "admin-list-editor" : "admin-array-list"}
           >
             {value.map((item, index) => {
-              const fallback = `${labelFor(name, language)} ${index + 1}`;
+              const fallback = `${fieldLabelFor(name, path, language)} ${
+                index + 1
+              }`;
               const itemSlug =
                 isPlainObject(item) && typeof item.slug === "string"
                   ? item.slug
@@ -1274,7 +1328,7 @@ export function FieldEditor({
           <summary className="admin-fold-summary">
             <span className="admin-fold-summary-main">
               <span>
-                <strong>{labelFor(name, language)}</strong>
+                <strong>{fieldLabelFor(name, path, language)}</strong>
                 <small>
                   {language === "ar"
                     ? `${entries.length} حقول`

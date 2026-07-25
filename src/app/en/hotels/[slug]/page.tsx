@@ -45,6 +45,11 @@ export default async function HotelDetailPageEn({
   const galleryImages = (
     hotel.gallery as Array<string | { image: string; title?: string }>
   )
+    .filter((item) => {
+      const image = typeof item === "string" ? item : item.image;
+
+      return image && image !== hotel.image;
+    })
     .slice(0, 6)
     .map((item, index) => ({
       image: typeof item === "string" ? item : item.image,

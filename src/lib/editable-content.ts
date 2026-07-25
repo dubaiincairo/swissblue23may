@@ -4654,21 +4654,23 @@ function syncPropertyImages(
       return property;
     }
 
-    const arGallery = completePropertyGallery(
-      property.gallery ?? arDefault.gallery,
-      arDefault.gallery,
-      "ar",
-    );
-    const enGallery = completePropertyGallery(
-      enProperty.gallery ?? enDefault.gallery,
-      enDefault.gallery,
-      "en",
-    );
     const [image] = sharedImageValue(
       property.image,
       enProperty.image,
       arDefault.image,
       enDefault.image,
+    );
+    const arGallery = completePropertyGallery(
+      property.gallery ?? arDefault.gallery,
+      arDefault.gallery,
+      "ar",
+      [image],
+    );
+    const enGallery = completePropertyGallery(
+      enProperty.gallery ?? enDefault.gallery,
+      enDefault.gallery,
+      "en",
+      [image],
     );
     const gallery = arGallery.map((galleryItem, index) => {
       const enGalleryItem = enGallery[index] ?? galleryItem;
@@ -4697,21 +4699,23 @@ function syncPropertyImages(
       return property;
     }
 
-    const arGallery = completePropertyGallery(
-      arProperty.gallery ?? arDefault.gallery,
-      arDefault.gallery,
-      "ar",
-    );
-    const enGallery = completePropertyGallery(
-      property.gallery ?? enDefault.gallery,
-      enDefault.gallery,
-      "en",
-    );
     const [, image] = sharedImageValue(
       arProperty.image,
       property.image,
       arDefault.image,
       enDefault.image,
+    );
+    const arGallery = completePropertyGallery(
+      arProperty.gallery ?? arDefault.gallery,
+      arDefault.gallery,
+      "ar",
+      [image],
+    );
+    const enGallery = completePropertyGallery(
+      property.gallery ?? enDefault.gallery,
+      enDefault.gallery,
+      "en",
+      [image],
     );
     const gallery = enGallery.map((galleryItem, index) => {
       const arGalleryItem = arGallery[index] ?? galleryItem;
@@ -4738,8 +4742,10 @@ function completePropertyGallery(
   gallery: PropertyGalleryValue[],
   defaults: PropertyGalleryValue[],
   language: "ar" | "en",
+  excludedImages: string[] = [],
 ) {
   const seen = new Set<string>();
+  const excluded = new Set(excludedImages.filter(Boolean));
   const items: PropertyGalleryItem[] = [];
 
   [...gallery, ...defaults, ...propertyGallerySupplement].forEach(
@@ -4752,7 +4758,11 @@ function completePropertyGallery(
       ) {
         normalized.title = `Property photo ${index + 1}`;
       }
-      if (!normalized.image || seen.has(normalized.image)) {
+      if (
+        !normalized.image ||
+        seen.has(normalized.image) ||
+        excluded.has(normalized.image)
+      ) {
         return;
       }
 
