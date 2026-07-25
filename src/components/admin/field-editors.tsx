@@ -29,6 +29,39 @@ import {
   removeLogoBackground,
 } from "./image-utils";
 
+type UploadedAsset = {
+  url: string;
+  width?: number;
+  height?: number;
+  type?: string;
+};
+
+type UploadResponse = Partial<UploadedAsset> & {
+  error?: string;
+};
+
+async function uploadSiteContentFile(file: File): Promise<UploadedAsset> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch("/api/site-content/upload", {
+    body: formData,
+    method: "POST",
+  });
+  const data = (await response.json()) as UploadResponse;
+
+  if (!response.ok || !data.url) {
+    throw new Error(data.error ?? "Upload failed.");
+  }
+
+  return {
+    url: data.url,
+    width: data.width,
+    height: data.height,
+    type: data.type,
+  };
+}
+
 export function ImageFieldEditor({
   name,
   value,
@@ -85,19 +118,9 @@ export function ImageFieldEditor({
         isLogoField(name) && file.type.startsWith("image/")
           ? await removeLogoBackground(file)
           : file;
-      const formData = new FormData();
-      formData.append("file", uploadFile);
 
       setUploadStatus("Uploading image...");
-      const response = await fetch("/api/site-content/upload", {
-        body: formData,
-        method: "POST",
-      });
-      const data = await response.json();
-
-      if (!response.ok || !data.url) {
-        throw new Error(data.error ?? "Upload failed.");
-      }
+      const data = await uploadSiteContentFile(uploadFile);
 
       onChange(path, data.url);
       if (path.at(-1) === "source" && typeof data.type === "string") {
@@ -410,6 +433,163 @@ function visiblePropertyGalleryKeys(path: Array<string | number>, key: string) {
   }
 
   return true;
+}
+
+function uploadedGalleryTitle(index: number, language: Language) {
+  return language === "ar"
+    ? `صورة الفندق ${index + 1}`
+    : `Hotel photo ${index + 1}`;
+}
+
+function galleryItemImage(item: JsonValue) {
+  if (typeof item === "string") {
+    return item;
+  }
+
+  if (isPlainObject(item) && typeof item.image === "string") {
+    return item.image;
+  }
+
+  return "";
+}
+
+function HotelGalleryBulkUpload({
+  value,
+  path,
+  language,
+  onChange,
+}: {
+  value: JsonValue[];
+  path: Array<string | number>;
+  language: Language;
+  onChange: (path: Array<string | number>, value: JsonValue) => void;
+}) {
+  const [status, setStatus] = useState("");
+
+  async function uploadFiles(
+    files: FileList | null,
+    mode: "append" | "replace",
+  ) {
+    const selectedFiles = Array.from(files ?? []).filter((file) =>
+      file.type.startsWith("image/"),
+    );
+
+    if (selectedFiles.length === 0) {
+      setStatus(
+        language === "ar"
+          ? "اختر صور الفندق أولاً."
+          : "Choose hotel photos first.",
+      );
+      return;
+    }
+
+    try {
+      const uploadedItems: JsonObject[] = [];
+
+      for (const [index, file] of selectedFiles.entries()) {
+        setStatus(
+          language === "ar"
+            ? `جاري رفع الصورة ${index + 1} من ${selectedFiles.length}...`
+            : `Uploading photo ${index + 1} of ${selectedFiles.length}...`,
+        );
+        const asset = await uploadSiteContentFile(file);
+
+        uploadedItems.push({
+          title: uploadedGalleryTitle(
+            mode === "replace" ? index : value.length + index,
+            language,
+          ),
+          image: asset.url,
+        });
+      }
+
+      const existingImages = new Set(
+        value.map(galleryItemImage).filter(Boolean),
+      );
+      const nextUploads = uploadedItems.filter((item) => {
+        const image = typeof item.image === "string" ? item.image : "";
+
+        return image && (mode === "replace" || !existingImages.has(image));
+      });
+      const nextValue =
+        mode === "replace" ? nextUploads : [...value, ...nextUploads];
+
+      onChange(path, nextValue);
+      setStatus(
+        language === "ar"
+          ? mode === "replace"
+            ? `تم استبدال المعرض بـ ${nextUploads.length} صور. احفظ التغييرات للنشر.`
+            : `تمت إضافة ${nextUploads.length} صور. احفظ التغييرات للنشر.`
+          : mode === "replace"
+            ? `Replaced gallery with ${nextUploads.length} photos. Save changes to publish.`
+            : `Added ${nextUploads.length} photos. Save changes to publish.`,
+      );
+    } catch (error) {
+      setStatus(
+        error instanceof Error
+          ? error.message
+          : language === "ar"
+            ? "فشل رفع الصور. حاول مرة أخرى."
+            : "Photo upload failed. Please try again.",
+      );
+    }
+  }
+
+  return (
+    <div className="admin-gallery-bulk-upload">
+      <div>
+        <strong>
+          {language === "ar"
+            ? "تحديث صور الفندق دفعة واحدة"
+            : "Bulk update hotel photos"}
+        </strong>
+        <small>
+          {language === "ar"
+            ? "ارفع صور الفندق الحقيقية فقط. يمكنك تعديل عنوان كل صورة بعد الرفع."
+            : "Upload real hotel photos only. You can edit each photo headline after upload."}
+        </small>
+      </div>
+      <div className="admin-gallery-bulk-actions">
+        <label className="admin-gallery-bulk-button">
+          <Plus aria-hidden="true" size={16} strokeWidth={2.3} />
+          <span>{language === "ar" ? "إضافة صور" : "Add photos"}</span>
+          <input
+            accept="image/avif,image/jpeg,image/png,image/webp"
+            multiple
+            type="file"
+            onChange={(event) => {
+              const input = event.currentTarget;
+
+              void uploadFiles(input.files, "append").finally(() => {
+                input.value = "";
+              });
+            }}
+          />
+        </label>
+        <label className="admin-gallery-bulk-button is-danger">
+          <Upload aria-hidden="true" size={16} strokeWidth={2.3} />
+          <span>
+            {language === "ar" ? "استبدال المعرض" : "Replace gallery"}
+          </span>
+          <input
+            accept="image/avif,image/jpeg,image/png,image/webp"
+            multiple
+            type="file"
+            onChange={(event) => {
+              const input = event.currentTarget;
+
+              void uploadFiles(input.files, "replace").finally(() => {
+                input.value = "";
+              });
+            }}
+          />
+        </label>
+      </div>
+      {status ? (
+        <small className="admin-gallery-bulk-status">{status}</small>
+      ) : null}
+    </div>
+  );
 }
 
 const FOCUS_OPTIONS: Array<{ value: string; en: string; ar: string }> = [
@@ -1027,6 +1207,7 @@ export function FieldEditor({
       name === "photos" && isAdminAuthBackdropPath(path);
     const isPropertyList = name === "items" && path.includes("properties");
     const isGalleryOnlyPropertyList = galleryOnly && isPropertyList;
+    const isHotelGalleryArray = isHotelPageGalleryField(name, path);
     const openForDirectLink = Boolean(
       (isPropertyList && focusItem) || (name === "gallery" && isFocusedItem),
     );
@@ -1096,6 +1277,15 @@ export function FieldEditor({
               </button>
             </div>
           )}
+
+          {isHotelGalleryArray ? (
+            <HotelGalleryBulkUpload
+              value={value}
+              path={path}
+              language={language}
+              onChange={onChange}
+            />
+          ) : null}
 
           <div
             className={primitiveList ? "admin-list-editor" : "admin-array-list"}

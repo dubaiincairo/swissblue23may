@@ -6394,6 +6394,100 @@ html[dir="rtl"] .sb-ai-chat-header {
   border-color: rgba(43, 111, 232, 0.4);
 }
 
+.admin-gallery-bulk-upload {
+  align-items: center;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef5ff 100%);
+  border: 1px solid rgba(43, 111, 232, 0.16);
+  border-radius: 10px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-bottom: 12px;
+  padding: 14px;
+}
+
+.admin-gallery-bulk-upload strong {
+  color: var(--admin-ink);
+  display: block;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.admin-gallery-bulk-upload small {
+  color: var(--admin-muted);
+  display: block;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+  margin-top: 3px;
+}
+
+.admin-gallery-bulk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.admin-gallery-bulk-button {
+  align-items: center;
+  background: white;
+  border: 1px solid rgba(43, 111, 232, 0.22);
+  border-radius: 8px;
+  color: var(--primary);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 900;
+  gap: 7px;
+  min-height: 40px;
+  padding: 8px 12px;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.admin-gallery-bulk-button:hover {
+  background: #e9f1ff;
+  border-color: rgba(43, 111, 232, 0.45);
+  transform: translateY(-1px);
+}
+
+.admin-gallery-bulk-button.is-danger {
+  border-color: rgba(185, 28, 28, 0.18);
+  color: #991b1b;
+}
+
+.admin-gallery-bulk-button.is-danger:hover {
+  background: #fff1f2;
+  border-color: rgba(185, 28, 28, 0.32);
+}
+
+.admin-gallery-bulk-button input[type="file"] {
+  display: none;
+}
+
+.admin-gallery-bulk-status {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .admin-gallery-bulk-upload {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-gallery-bulk-actions {
+    justify-content: stretch;
+  }
+
+  .admin-gallery-bulk-button {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
 .admin-field {
   display: grid;
   gap: 7px;
