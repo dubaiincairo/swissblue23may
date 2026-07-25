@@ -1765,7 +1765,7 @@ export const defaultSiteContent = {
       properties: {
         eyebrow: "منشآت الضيافة",
         title: "ست وجهات، ولكل إقامة سبب واضح للاختيار.",
-        text: "صممت بطاقات الفنادق لتساعد الضيف على مقارنة المدينة، نوع الإقامة، وعدد الوحدات بسرعة قبل الانتقال إلى صفحة الفندق التفصيلية.",
+        text: "تساعد نظرة عامة على الفنادق الضيف على مقارنة المدينة، نوع الإقامة، وعدد الوحدات بسرعة قبل الانتقال إلى صفحة الفندق التفصيلية.",
         items: hotels,
       },
       loyalty: loyaltyProgram,
@@ -2821,7 +2821,7 @@ export const defaultSiteContent = {
       properties: {
         eyebrow: "Hospitality properties",
         title: "Six destinations, each with a clear reason to book.",
-        text: "Property cards help guests compare the city, stay type, and unit count before moving into the detailed property page.",
+        text: "Hotel Overview helps guests compare the city, stay type, and unit count before moving into the detailed property page.",
         items: hotelsEn,
       },
       loyalty: loyaltyProgramEn,

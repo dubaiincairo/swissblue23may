@@ -387,8 +387,8 @@ function hotelGalleryTitleLabel(language: Language) {
 
 function homepagePropertyPreviewImageLabel(language: Language) {
   return language === "ar"
-    ? "صورة بطاقة الفندق في الصفحة الرئيسية"
-    : "Homepage hotel preview photo";
+    ? "صورة نظرة عامة على الفندق"
+    : "Hotel Overview photo";
 }
 
 function hotelPageGalleryLabel(language: Language) {

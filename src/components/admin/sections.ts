@@ -173,8 +173,8 @@ export const adminSections: AdminSection[] = [
   {
     id: "properties",
     group: "Dashboard",
-    label: "Property cards",
-    description: "The six hospitality property cards shown on the homepage.",
+    label: "Hotel Overview",
+    description: "The six hotel overview entries shown on the homepage.",
     path: ["homepage", "properties"],
   },
   {
@@ -491,8 +491,8 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   },
   properties: {
     group: "الصفحة الرئيسية",
-    label: "بطاقات الفنادق",
-    description: "بطاقات منشآت الضيافة المعروضة في الصفحة الرئيسية.",
+    label: "نظرة عامة على الفنادق",
+    description: "مدخلات نظرة عامة على الفنادق المعروضة في الصفحة الرئيسية.",
   },
   propertyGalleries: {
     group: "على مستوى الموقع",
