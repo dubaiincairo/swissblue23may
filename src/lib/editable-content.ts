@@ -1487,7 +1487,7 @@ const chatAssistant = {
     "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
   placeholder: "اكتب سؤالك...",
   send: "إرسال",
-  typing: "يكتب الآن...",
+  typing: "سارة تكتب ..",
   leadActions: {
     booking: "طلب حجز",
     corporate: "طلب شركات",
@@ -1510,7 +1510,7 @@ const chatAssistantEn = {
     "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
   placeholder: "Type your question...",
   send: "Send",
-  typing: "Writing...",
+  typing: "Sarah is writing ..",
   leadActions: {
     booking: "Booking help",
     corporate: "Corporate help",

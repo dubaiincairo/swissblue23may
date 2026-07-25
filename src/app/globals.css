@@ -3496,6 +3496,30 @@ html[dir="rtl"] .sb-ai-chat-header {
   padding: 9px 11px;
 }
 
+.sb-ai-chat-message p,
+.sb-ai-chat-message ul {
+  margin: 0;
+}
+
+.sb-ai-chat-message p + p,
+.sb-ai-chat-message p + ul,
+.sb-ai-chat-message ul + p {
+  margin-top: 8px;
+}
+
+.sb-ai-chat-message ul {
+  padding-inline-start: 18px;
+}
+
+.sb-ai-chat.is-rtl .sb-ai-chat-message ul {
+  padding-inline-end: 18px;
+  padding-inline-start: 0;
+}
+
+.sb-ai-chat-message li + li {
+  margin-top: 3px;
+}
+
 .sb-ai-chat.is-ltr .sb-ai-chat-welcome,
 .sb-ai-chat.is-ltr .sb-ai-chat-message.is-assistant,
 .sb-ai-chat.is-ltr .sb-ai-chat-typing,

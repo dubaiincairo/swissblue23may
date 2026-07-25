@@ -155,12 +155,12 @@ export function fastWebsiteAnswer(content: EditableSiteContent, locale: ChatLoca
     .filter((item): item is string => Boolean(item));
 
   if (locale === "ar") {
-    const details = unitList.length ? ` وتشمل الفئات: ${unitList.join("، ")}.` : ".";
-    return `يسعدني مساعدتك. ${property.title} في ${property.city ?? "سويس بلو"} تضم ${property.units ?? "عدة وحدات"}${details} للتوفر الفعلي في تاريخ إقامتك، يرجى استخدام زر الحجز أو التواصل مع فريق الحجوزات.`;
+    const details = unitList.length ? `\n\nالفئات:\n- ${unitList.join("\n- ")}` : "";
+    return `${property.title} في ${property.city ?? "سويس بلو"} تضم ${property.units ?? "عدة وحدات"}.${details}\n\nهذا هو حجم المنشأة، أما التوفر الفعلي فيعتمد على تاريخ الإقامة. يرجى استخدام زر الحجز أو التواصل مع فريق الحجوزات للتأكد.`;
   }
 
-  const details = unitList.length ? ` The categories are: ${unitList.join("; ")}.` : "";
-  return `I'd be happy to help. ${property.title} in ${property.city ?? "Swiss Blue"} has ${property.units ?? "several units"}.${details} For live availability on your travel dates, please use the Book now button or contact reservations.`;
+  const details = unitList.length ? `\n\nUnit types:\n- ${unitList.join("\n- ")}` : "";
+  return `${property.title} in ${property.city ?? "Swiss Blue"} has ${property.units ?? "several units"}.${details}\n\nThis is the property size. Live availability depends on the stay dates, so please use the Book now button or contact reservations to confirm.`;
 }
 
 /**
@@ -203,12 +203,17 @@ Use only the retrieved website knowledge below and approved documents returned b
 
 Customer service style:
 - Sound warm, calm, and helpful, like a real reservations agent.
-- Answer the visitor's question first, then offer the next useful step.
-- Use natural phrases such as "I'd be happy to help" and "For live availability..." when appropriate.
+- Answer the visitor's question directly in the first sentence, then offer the next useful step.
+- Do not begin replies with repeated generic openers such as "I'd be happy to help", "Certainly", "Of course", "يسعدني مساعدتك", or "بالطبع".
 - Do not say "listed on the Swiss Blue site", "retrieved sources", "documents", or similar internal/source wording.
 - Do not open with definitions such as "'Tulip' refers to..."; instead use the full property name naturally.
 - If the visitor asks about live availability, exact prices, today's inventory, or booking confirmation, explain that live availability must be checked through reservations or the booking link.
 - If the visitor seems ready to book, invite them to share dates and preferred property, or use the Book now button.
+
+Formatting rules:
+- Use professional plain text only. Do not use emojis.
+- Keep replies scannable: use short paragraphs, or a short hyphen-bullet list when listing options.
+- Do not use markdown tables, headings, decorative symbols, or long blocks of text.
 
 Do not invent property features, live availability, rates, policies, contact details, offers, or careers information. If the exact answer is not supported by the retrieved sources, politely say that you do not have verified details and direct the visitor to reservations. Do not claim that a reservation is confirmed. Keep replies helpful, concise, and under 120 words. Use ${language} only; do not mix languages.
 
@@ -218,6 +223,6 @@ ${context}`;
 
 export function unsupportedAnswer(locale: ChatLocale) {
   return locale === "ar"
-    ? "يسعدني مساعدتك. لا أملك حالياً معلومة موثقة عن هذا الطلب، لذلك الأفضل التواصل مع فريق الحجوزات للتأكد من التفاصيل والتوافر."
-    : "I’d be happy to help. I do not have verified details for that request right now, so please contact reservations to confirm the latest information and availability.";
+    ? "لا أملك حالياً معلومة موثقة عن هذا الطلب. يرجى التواصل مع فريق الحجوزات للتأكد من التفاصيل والتوافر."
+    : "I do not have verified details for that request right now. Please contact reservations to confirm the latest information and availability.";
 }

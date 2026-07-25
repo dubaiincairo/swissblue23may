@@ -6,9 +6,63 @@ import { durableRateLimit, getClientIp, hasDurableRateLimitStore } from "@/lib/r
 export const dynamic = "force-dynamic";
 
 const MAX_MESSAGE_CHARS = 800;
-const MAX_OUTPUT_TOKENS = 900;
+const MAX_OUTPUT_TOKENS = 520;
 const DAY_SECONDS = 24 * 60 * 60;
 const MONTH_SECONDS = 30 * DAY_SECONDS;
+
+const DOCUMENT_SEARCH_TERMS = [
+  "policy",
+  "policies",
+  "cancel",
+  "cancellation",
+  "refund",
+  "check-in",
+  "check in",
+  "checkout",
+  "check out",
+  "breakfast",
+  "parking",
+  "wifi",
+  "wi-fi",
+  "smoking",
+  "pet",
+  "pets",
+  "deposit",
+  "payment",
+  "invoice",
+  "manager",
+  "complaint",
+  "problem",
+  "issue",
+  "corporate",
+  "contract",
+  "job",
+  "career",
+  "سياسة",
+  "سياسات",
+  "الغاء",
+  "إلغاء",
+  "استرداد",
+  "دخول",
+  "مغادرة",
+  "فطور",
+  "افطار",
+  "إفطار",
+  "مواقف",
+  "واي فاي",
+  "تدخين",
+  "حيوان",
+  "حيوانات",
+  "دفع",
+  "فاتورة",
+  "مدير",
+  "شكوى",
+  "مشكلة",
+  "شركات",
+  "عقد",
+  "وظيفة",
+  "توظيف",
+];
 
 type OpenAIResponse = {
   output_text?: string;
@@ -25,6 +79,21 @@ function asPositiveInt(value: string | undefined, fallback: number) {
 
 function localized(locale: ChatLocale, english: string, arabic: string) {
   return locale === "ar" ? arabic : english;
+}
+
+function normalizeIntent(value: string) {
+  return value
+    .toLocaleLowerCase()
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .replace(/[إأآ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه");
+}
+
+function shouldSearchDocuments(message: string, hasRelevantWebsiteSource: boolean) {
+  if (!hasRelevantWebsiteSource) return true;
+  const normalized = normalizeIntent(message);
+  return DOCUMENT_SEARCH_TERMS.some((term) => normalized.includes(normalizeIntent(term)));
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -169,7 +238,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ answer: unsupportedAnswer(locale) });
   }
 
-  const tools = vectorStoreId
+  const useDocumentSearch = Boolean(vectorStoreId && shouldSearchDocuments(message, websiteKnowledge.hasRelevantSource));
+  const tools = useDocumentSearch
     ? [{ type: "file_search" as const, vector_store_ids: [vectorStoreId], max_num_results: 3 }]
     : undefined;
 

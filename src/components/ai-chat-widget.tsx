@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
@@ -46,7 +46,7 @@ const DEFAULT_ASSISTANT_COPY: Record<ChatLocale, AssistantCopy> = {
     welcome: "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
     placeholder: "اكتب سؤالك...",
     send: "إرسال",
-    typing: "يكتب الآن...",
+    typing: "سارة تكتب ..",
     leadComplete: {
       booking: "تم إرسال طلب الحجز إلى فريق الحجوزات. سيتواصل معك قريباً.",
       corporate: "تم إرسال طلب الشركات إلى فريق الحجوزات. سيتواصل معك قريباً.",
@@ -67,7 +67,7 @@ const DEFAULT_ASSISTANT_COPY: Record<ChatLocale, AssistantCopy> = {
     welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
     placeholder: "Type your question...",
     send: "Send",
-    typing: "Writing...",
+    typing: "Sarah is writing ..",
     leadComplete: {
       booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
       corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
@@ -87,7 +87,58 @@ function nonEmpty(value: string | undefined, fallback: string) {
 
 function typingCopy(value: string | undefined, fallback: string) {
   const copy = nonEmpty(value, fallback);
-  return copy.trim().toLocaleLowerCase() === "thinking..." ? fallback : copy;
+  const normalized = copy.trim().toLocaleLowerCase();
+  return ["thinking...", "writing...", "writing ..", "يكتب الآن...", "يكتب الان..."].includes(normalized)
+    ? fallback
+    : copy;
+}
+
+function cleanAssistantText(text: string) {
+  return text
+    .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "")
+    .replace(/[ \t]+\n/g, "\n")
+    .trim();
+}
+
+function FormattedChatText({ text }: { text: string }) {
+  const blocks = text
+    .replace(/\r\n/g, "\n")
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  return (
+    <>
+      {blocks.map((block, blockIndex) => {
+        const lines = block
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean);
+        const isList = lines.length > 1 && lines.every((line) => /^[-•]\s+/.test(line));
+
+        if (isList) {
+          return (
+            <ul key={`block-${blockIndex}`}>
+              {lines.map((line, lineIndex) => (
+                <li key={`item-${lineIndex}`}>{line.replace(/^[-•]\s+/, "")}</li>
+              ))}
+            </ul>
+          );
+        }
+
+        return (
+          <p key={`block-${blockIndex}`}>
+            {lines.map((line, lineIndex) => (
+              <Fragment key={`line-${lineIndex}`}>
+                {lineIndex > 0 ? <br /> : null}
+                {line}
+              </Fragment>
+            ))}
+          </p>
+        );
+      })}
+    </>
+  );
 }
 
 function getAssistantCopy(locale: ChatLocale, settings?: AssistantSettings): AssistantCopy {
@@ -218,7 +269,10 @@ export default function AiChatWidget({
   }
 
   function addMessage(role: ChatMessage["role"], text: string) {
-    setMessages((current) => [...current, { id: nextId.current++, role, text }]);
+    setMessages((current) => [
+      ...current,
+      { id: nextId.current++, role, text: role === "assistant" ? cleanAssistantText(text) : text },
+    ]);
   }
 
   function openLead(kind: ChatLeadKind) {
@@ -308,7 +362,9 @@ export default function AiChatWidget({
                   </div>
                 ) : null}
                 {messages.map((item) => (
-                  <p className={`sb-ai-chat-message is-${item.role}`} key={item.id}>{item.text}</p>
+                  <div className={`sb-ai-chat-message is-${item.role}`} key={item.id}>
+                    <FormattedChatText text={item.text} />
+                  </div>
                 ))}
               </>
             )}
