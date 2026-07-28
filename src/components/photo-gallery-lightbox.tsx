@@ -8,6 +8,7 @@ import { rich } from "@/components/rich-text";
 type GalleryImage = {
   image: string;
   title: string;
+  showHeadline?: boolean;
 };
 
 function subscribeToMounted(onStoreChange: () => void) {
@@ -142,7 +143,9 @@ export default function PhotoGalleryLightbox({
                     : "(min-width: 1024px) 33vw, 100vw"
                 }
               />
-              <span className="gallery-caption">{rich(image.title)}</span>
+              {image.showHeadline ? (
+                <span className="gallery-caption">{rich(image.title)}</span>
+              ) : null}
             </button>
           </figure>
         ))}
@@ -244,7 +247,7 @@ export default function PhotoGalleryLightbox({
                 ) : null}
               </div>
 
-              {activeImage.title ? (
+              {activeImage.showHeadline && activeImage.title ? (
                 <p className="lightbox-caption">{rich(activeImage.title)}</p>
               ) : null}
 

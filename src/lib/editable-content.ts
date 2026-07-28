@@ -51,6 +51,7 @@ const LEGACY_B2B_REQUEST_FORM_EYEBROW_EN = "B2B request form";
 type PropertyGalleryItem = {
   title: string;
   image: string;
+  showHeadline: boolean;
 };
 type PropertyGalleryValue = string | PropertyGalleryItem;
 
@@ -69,7 +70,9 @@ function createPropertyGalleryCollection(
       city: property.city,
       gallery: Array.isArray(property.gallery)
         ? property.gallery.map((item) =>
-            typeof item === "string" ? item : { ...item },
+            typeof item === "string"
+              ? item
+              : { ...item, showHeadline: item.showHeadline === true },
           )
         : [],
     })),
@@ -756,26 +759,31 @@ const galleryImages = [
     image:
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1500&q=82",
     title: "صورة ضيافة 1",
+    showHeadline: false,
   },
   {
     image:
       "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=82",
     title: "صورة ضيافة 2",
+    showHeadline: false,
   },
   {
     image:
       "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=82",
     title: "صورة ضيافة 3",
+    showHeadline: false,
   },
   {
     image:
       "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=82",
     title: "صورة ضيافة 4",
+    showHeadline: false,
   },
   {
     image:
       "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=82",
     title: "صورة ضيافة 5",
+    showHeadline: false,
   },
 ];
 
@@ -4362,6 +4370,7 @@ function normalizeClientFacingContent(
   const arGallery = contentWithReservationOffice.ar.media.gallery.map(
     (item, index) => ({
       ...item,
+      showHeadline: item.showHeadline === true,
       title:
         item.title === legacyGalleryTitles.ar[index]
           ? (galleryImages[index]?.title ?? item.title)
@@ -4371,6 +4380,7 @@ function normalizeClientFacingContent(
   const enGallery = contentWithReservationOffice.en.media.gallery.map(
     (item, index) => ({
       ...item,
+      showHeadline: item.showHeadline === true,
       title:
         item.title === legacyGalleryTitles.en[index]
           ? (galleryImagesEn[index]?.title ?? item.title)
@@ -4929,12 +4939,14 @@ function normalizePropertyGalleryItem(
     return {
       title: fallbackTitle,
       image: item,
+      showHeadline: false,
     };
   }
 
   return {
     title: item.title || fallbackTitle,
     image: item.image || "",
+    showHeadline: item.showHeadline === true,
   };
 }
 
