@@ -386,6 +386,12 @@ function hotelGalleryTitleLabel(language: Language) {
   return language === "ar" ? "عنوان الصورة" : "Photo headline";
 }
 
+function galleryHeadlineVisibilityLabel(language: Language) {
+  return language === "ar"
+    ? "إظهار عنوان الصورة في الموقع"
+    : "Show headline on website";
+}
+
 function homepagePropertyPreviewImageLabel(language: Language) {
   return language === "ar"
     ? "صورة نظرة عامة على الفندق"
@@ -405,6 +411,10 @@ function fieldLabelFor(
 ) {
   if (isHotelGalleryTitle(name, path)) {
     return hotelGalleryTitleLabel(language);
+  }
+
+  if (name === "showHeadline" && path.map(String).includes("gallery")) {
+    return galleryHeadlineVisibilityLabel(language);
   }
 
   if (isHomepagePropertyPreviewImage(name, path)) {
@@ -430,7 +440,7 @@ function visiblePropertyGalleryKeys(path: Array<string | number>, key: string) {
   }
 
   if (/media\.propertyGalleries\.items\.\d+\.gallery\.\d+$/.test(pathText)) {
-    return ["title", "image"].includes(key);
+    return ["title", "showHeadline", "image"].includes(key);
   }
 
   return true;
@@ -534,6 +544,7 @@ function HotelGalleryBulkUpload({
             language,
           ),
           image: asset.url,
+          showHeadline: false,
         });
       }
 
@@ -777,6 +788,7 @@ function PropertyGalleriesEditor({
                     {
                       title: uploadedGalleryTitle(activeGallery.length, language),
                       image: "",
+                      showHeadline: false,
                     },
                   ])
                 }
@@ -999,12 +1011,14 @@ function HotelGalleryItemList({
             ? item.title
             : uploadedGalleryTitle(index, language),
         image: typeof item.image === "string" ? item.image : "",
+        showHeadline: item.showHeadline === true,
       };
     }
 
     return {
       title: uploadedGalleryTitle(index, language),
       image: typeof item === "string" ? item : "",
+      showHeadline: false,
     };
   }
 
@@ -1093,6 +1107,19 @@ function HotelGalleryItemList({
                     })
                   }
                 />
+              </label>
+              <label className="admin-check admin-gallery-headline-toggle">
+                <input
+                  type="checkbox"
+                  checked={current.showHeadline === true}
+                  onChange={(event) =>
+                    onChange([...path, index], {
+                      ...current,
+                      showHeadline: event.target.checked,
+                    })
+                  }
+                />
+                <span>{galleryHeadlineVisibilityLabel(language)}</span>
               </label>
               <ImageFieldEditor
                 name="image"

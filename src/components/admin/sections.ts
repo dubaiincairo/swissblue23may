@@ -1049,6 +1049,7 @@ export const arabicFieldLabels: Record<string, string> = {
 export const fieldOrder = [
   "eyebrow",
   "title",
+  "showHeadline",
   "question",
   "answer",
   "text",

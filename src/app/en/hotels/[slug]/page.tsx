@@ -59,6 +59,8 @@ export default async function HotelDetailPageEn({
         typeof item === "string"
           ? `${hotel.title} image ${index + 1}`
           : item.title || `${hotel.title} image ${index + 1}`,
+      showHeadline:
+        typeof item === "string" ? false : item.showHeadline === true,
     }));
 
   return (
