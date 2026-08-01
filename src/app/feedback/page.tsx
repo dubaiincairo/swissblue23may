@@ -55,15 +55,17 @@ export default async function FeedbackPage() {
         <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {content.process.map((step, index) => (
             <li
-              className="content-card reveal-slide-up"
+              className="content-card feedback-process-card reveal-slide-up"
               key={step.title}
               style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
             >
-              <span className="text-2xl font-black text-[var(--primary)]">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="eyebrow mt-3 block">{rich(step.title)}</span>
-              <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              <div className="feedback-process-heading">
+                <span className="feedback-process-number">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="feedback-process-title">{rich(step.title)}</span>
+              </div>
+              <p className="feedback-process-text">
                 {rich(step.text)}
               </p>
             </li>
