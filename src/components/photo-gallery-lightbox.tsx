@@ -41,6 +41,7 @@ export default function PhotoGalleryLightbox({
     getServerMountedSnapshot,
   );
   const galleryClass = variant === "property" ? "gallery-grid" : "hotel-showcase-grid";
+  const previewImages = variant === "homepage" ? images.slice(0, 5) : images;
   const touchStartX = useRef<number | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
 
@@ -120,7 +121,7 @@ export default function PhotoGalleryLightbox({
   return (
     <>
       <div className={galleryClass}>
-        {images.map((image, index) => (
+        {previewImages.map((image, index) => (
           <figure
             className={`${variant === "homepage" && index === 0 ? "feature" : ""} reveal-scale-up`}
             style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
