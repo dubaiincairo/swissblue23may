@@ -86,7 +86,7 @@ export default async function FeedbackPage() {
         <div className="amenity-grid">
           {content.categories.map((category, index) => (
             <div
-              className="amenity-pill reveal-elastic-pop"
+              className="amenity-pill feedback-pill reveal-elastic-pop"
               key={category}
               style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
             >
@@ -109,7 +109,7 @@ export default async function FeedbackPage() {
         <div className="amenity-grid">
           {(content.include ?? []).map((item, index) => (
             <div
-              className="amenity-pill reveal-elastic-pop"
+              className="amenity-pill feedback-pill reveal-elastic-pop"
               key={item}
               style={{ "--delay": `${index * 40}ms` } as React.CSSProperties}
             >

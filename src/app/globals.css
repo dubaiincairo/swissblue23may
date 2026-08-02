@@ -2632,6 +2632,15 @@ section:has(> .insight-grid) {
   margin: 0;
 }
 
+.feedback-pill {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  line-height: 1.5;
+  min-height: 62px;
+  padding-block: 12px;
+}
+
 .reservation-command-section {
   background:
     linear-gradient(180deg, white 0%, var(--bluehost-foam) 100%);
