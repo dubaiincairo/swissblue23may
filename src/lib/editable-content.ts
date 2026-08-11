@@ -181,7 +181,7 @@ const otas = [
     name: "Airbnb",
     accent: "#ff385c",
     weight: "800",
-    note: "خيار شائع لإقامات الشقق الفندقية",
+    note: "خيار شائع لإقامات الشقق المخدومة",
   },
 ];
 
@@ -332,7 +332,7 @@ const testimonialsSection = {
       image:
         "https://cdn.sanity.io/images/uoj8zwj3/production/af728bb74bd33bce0a4188f0b10d2679ea49c225-4160x6240.jpg",
       quote:
-        "قيمة ممتازة مقابل المنطقة. الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.",
+        "قيمة ممتازة مقابل المنطقة. الشقة المخدومة أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.",
       platform: "Trivago",
       rating: 4,
     },
@@ -411,13 +411,13 @@ const hotelPolicyAr = {
   hero: {
     eyebrow: "سياسة الفنادق",
     title: "سياسات واضحة لإقامة أكثر اطمئنانًا.",
-    text: "تجمع هذه الصفحة سياسات الإقامة المعتمدة عبر فنادق سويس بلو والشقق الفندقية والشقق المخدومة، لضمان وضوح كامل قبل الحجز وأثناء الإقامة، بما يتماشى مع أعلى معايير الضيافة في المملكة العربية السعودية والخليج.",
+    text: "تجمع هذه الصفحة سياسات الإقامة المعتمدة عبر فنادق سويس بلو والشقق المخدومة، لضمان وضوح كامل قبل الحجز وأثناء الإقامة، بما يتماشى مع أعلى معايير الضيافة في المملكة العربية السعودية والخليج.",
     image: heroImage,
   },
   intro: {
     eyebrow: "تجربة ضيافة مهنية",
-    title: "إطار سياسات متناسق عبر كافة فنادقنا وشققنا الفندقية.",
-    text: "صُممت سياسات سويس بلو لتغطي الفنادق والشقق الفندقية والشقق المخدومة على حدٍّ سواء، مع مرونة عملية تلبي احتياج ضيوف الأعمال والعائلات وضيوف الإقامة الطويلة. تُراجَع هذه السياسات بشكل دوري بما يتوافق مع الأنظمة السعودية ومعايير هيئة السياحة.",
+    title: "إطار سياسات متناسق عبر كافة فنادقنا وشققنا المخدومة.",
+    text: "صُممت سياسات سويس بلو لتغطي الفنادق والشقق المخدومة على حدٍّ سواء، مع مرونة عملية تلبي احتياج ضيوف الأعمال والعائلات وضيوف الإقامة الطويلة. تُراجَع هذه السياسات بشكل دوري بما يتوافق مع الأنظمة السعودية ومعايير هيئة السياحة.",
   },
   principles: [
     "شفافية كاملة في الأسعار والشروط قبل تأكيد الحجز",
@@ -466,7 +466,7 @@ const hotelPolicyAr = {
     {
       title: "الأطفال والأسرّة الإضافية",
       items: [
-        "نرحب بالأطفال من جميع الأعمار في فنادقنا وشققنا الفندقية.",
+        "نرحب بالأطفال من جميع الأعمار في فنادقنا وشققنا المخدومة.",
         "يقيم الأطفال دون سن السادسة مجانًا عند استخدام الأسرّة الموجودة في الوحدة.",
         "تتوفر أسرّة أطفال (مهد) مجانية حسب التوفر وعند الطلب المسبق.",
         "تُطبق رسوم رمزية على السرير الإضافي للأطفال من سن 6 إلى 12 سنة.",
@@ -475,7 +475,7 @@ const hotelPolicyAr = {
     {
       title: "الحيوانات الأليفة",
       items: [
-        "لا يُسمح باصطحاب الحيوانات الأليفة داخل الفنادق والشقق الفندقية حفاظًا على راحة جميع الضيوف.",
+        "لا يُسمح باصطحاب الحيوانات الأليفة داخل الفنادق والشقق المخدومة حفاظًا على راحة جميع الضيوف.",
         "يُستثنى من ذلك الكلاب المدربة لمرافقة ذوي الإعاقة مع إبراز الوثائق الرسمية.",
         "يمكن لفريق الكونسيرج مساعدتكم في ترتيب خدمات إيواء الحيوانات في مرافق قريبة معتمدة.",
       ],
@@ -726,7 +726,7 @@ const highlights = [
   {
     value: "+10",
     label: "سنوات خبرة",
-    text: "خبراء في تشغيل وإدارة الفنادق والشقق الفندقية داخل السوق السعودي",
+    text: "خبراء في تشغيل وإدارة الفنادق والشقق المخدومة داخل السوق السعودي",
   },
   {
     value: "+852",
@@ -973,7 +973,7 @@ const careersRecruitment = {
         "التنسيق مع الصيانة والاستقبال لجاهزية الوحدات.",
       ],
       qualifications: [
-        "خبرة في إدارة التدبير الفندقي في فندق أو شقق فندقية.",
+        "خبرة في إدارة التدبير الفندقي في فندق أو شقق مخدومة.",
         "معرفة بمعايير السلامة والصحة المهنية.",
         "القدرة على إدارة الميزانية والمخزون.",
       ],
@@ -1355,7 +1355,7 @@ const b2bRequestForm = {
   ],
   cityOptions: ["جدة", "الرياض", "جازان", "أكثر من مدينة"],
   propertyTypePlaceholder: "اختر نوع المنشأة",
-  propertyTypeOptions: ["فندق", "شقق فندقية", "شقق مخدومة", "مرونة حسب العرض"],
+  propertyTypeOptions: ["فندق", "شقق مخدومة", "مرونة حسب العرض"],
   requestTypeOptions: [
     "سعر شركات",
     "حجز مجموعة",
@@ -1464,7 +1464,7 @@ const b2bRequestFormEn = {
 
 const footerMeta = {
   description:
-    "فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.",
+    "فنادق وأجنحة وشقق مخدومة في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.",
   cityBadges: ["جدة", "الرياض", "جازان"],
   supportHeading: "الدعم والحجز",
   contactCta: "تواصل معنا",
@@ -1584,7 +1584,7 @@ const chatAssistantEn = {
 const closingCtas = {
   eyebrow: "احجز مباشرة",
   defaultText:
-    "قارن بين الغرف والأجنحة والشقق الفندقية ضمن تجربة حجز واضحة تليق بضيوف الضيافة الحديثة.",
+    "قارن بين الغرف والأجنحة والشقق المخدومة ضمن تجربة حجز واضحة تليق بضيوف الضيافة الحديثة.",
   hotelDetail: {
     titleTemplate: "احجز إقامتك في {hotel}.",
     cta: "تحقق من التوفر",
@@ -1608,7 +1608,7 @@ const closingCtas = {
       title: "احجز إقامة مدعومة بكل أساسيات الراحة.",
       cta: "احجز الآن",
     },
-    about: { title: "استكشف فنادقنا وشققنا الفندقية.", cta: "عرض الفنادق" },
+    about: { title: "استكشف فنادقنا وشققنا المخدومة.", cta: "عرض الفنادق" },
     destinations: { title: "اختر المدينة الأقرب لرحلتك.", cta: "احجز الآن" },
     loyalty: {
       title: "ابدأ من الحجز المباشر للحصول على مزايا أوضح.",
@@ -1637,7 +1637,7 @@ const closingCtas = {
     },
     dining: { title: "اختر إقامة تجعل يومك أسهل.", cta: "احجز إقامتك" },
     servicedApartments: {
-      title: "استكشف الشقق الفندقية واحجز مباشرة.",
+      title: "استكشف الشقق المخدومة واحجز مباشرة.",
       cta: "استعرض التوفر",
     },
     socialResponsibility: {
@@ -1741,10 +1741,10 @@ const closingCtasEn = {
 export const defaultSiteContent = {
   ar: {
     seo: {
-      siteTitle: "سويس بلو للفنادق | غرف وأجنحة وشقق فندقية",
+      siteTitle: "سويس بلو للفنادق | غرف وأجنحة وشقق مخدومة",
       metaDescription:
-        "موقع سويس بلو للفنادق: فنادق وأجنحة وشقق فندقية وحجز مباشر ووجهات وخدمات الضيوف.",
-      keywords: "سويس بلو, فنادق جدة, شقق فندقية, حجز مباشر, أجنحة",
+        "موقع سويس بلو للفنادق: فنادق وأجنحة وشقق مخدومة وحجز مباشر ووجهات وخدمات الضيوف.",
+      keywords: "سويس بلو, فنادق جدة, شقق مخدومة, حجز مباشر, أجنحة",
       ogTitle: "",
       ogDescription: "",
       ogImage: "/opengraph-image",
@@ -1815,9 +1815,9 @@ export const defaultSiteContent = {
     },
     homepage: {
       hero: {
-        eyebrow: "فنادق وشقق فندقية في السعودية",
+        eyebrow: "فنادق وشقق مخدومة في السعودية",
         title: "سويس بلو، إقامة أوضح لكل رحلة.",
-        text: "محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة وجازان والرياض، مصممة للأعمال والعائلات والإقامات الشهرية.",
+        text: "محفظة ضيافة تجمع الفنادق والشقق المخدومة في جدة وجازان والرياض، مصممة للأعمال والعائلات والإقامات الشهرية.",
         primaryCta: "احجز إقامتك",
         secondaryCta: "استكشف الفنادق",
         secondaryHref: "/hotels",
@@ -1853,7 +1853,7 @@ export const defaultSiteContent = {
       },
       categories: {
         eyebrow: "فئات الإقامة",
-        title: "الفرق بين الفندق، الشقق الفندقية، والشقق المخدومة.",
+        title: "الفرق بين الفندق، الشقق المخدومة.",
         text: "هذا التقسيم يجعل قرار الحجز أكثر وضوحا للضيف، ويساعد فرق الشركات والعائلات على اختيار الفئة المناسبة لمدة الإقامة وطبيعة الرحلة.",
         items: accommodationCategories,
       },
@@ -1862,7 +1862,7 @@ export const defaultSiteContent = {
       cta: {
         eyebrow: "جاهزون لاستقبالكم",
         title: "اعثر على إقامتك القادمة مع سويس بلو.",
-        text: "قارن بين الفنادق والشقق الفندقية والشقق المخدومة، ثم انتقل إلى الحجز المباشر بخطوة واحدة.",
+        text: "قارن بين الفنادق والشقق المخدومة، ثم انتقل إلى الحجز المباشر بخطوة واحدة.",
         button: "احجز الآن",
       },
     },
@@ -1871,7 +1871,7 @@ export const defaultSiteContent = {
         hero: {
           eyebrow: "من نحن",
           title: "محفظة ضيافة سعودية بخيارات واضحة.",
-          text: "سويس بلو للفنادق هي محفظة ضيافة تقدم فنادق وشققا فندقية في وجهات حضرية رئيسية، للضيوف الذين يقدرون وضوح الاختيار والراحة العملية والخدمة الودية.",
+          text: "سويس بلو للفنادق هي محفظة ضيافة تقدم فنادق وشققا مخدومة في وجهات حضرية رئيسية، للضيوف الذين يقدرون وضوح الاختيار والراحة العملية والخدمة الودية.",
           image: heroImage,
         },
         philosophy: {
@@ -1883,7 +1883,7 @@ export const defaultSiteContent = {
           "فئات إقامة واضحة",
           "مواقع قريبة من المدينة",
           "راحة لرجال الأعمال والعائلات",
-          "مرونة الشقق الفندقية",
+          "مرونة الشقق المخدومة",
           "ثقة في الحجز المباشر",
         ],
         stats: [
@@ -1897,7 +1897,7 @@ export const defaultSiteContent = {
           title: "بدأنا من فكرة واحدة: إقامة واضحة بلا تعقيد.",
           paragraphs: [
             "انطلقت سويس بلو من قناعة بأن الإقامة الفندقية يجب أن تكون صادقة وسهلة، تركّز على ما يهم الضيف فعلاً: غرفة مريحة، موقع عملي، خدمة ودودة، وسعر مفهوم دون وعود مبالغ فيها.",
-            "اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض وجازان، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة واحدة متّسقة، تُدار كل منشأة فيها وفق المعايير ذاتها في النظافة والسلامة والضيافة.",
+            "اليوم تجمع المحفظة بين الفنادق والشقق المخدومة في جدة والرياض وجازان، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة واحدة متّسقة، تُدار كل منشأة فيها وفق المعايير ذاتها في النظافة والسلامة والضيافة.",
             "ونؤمن بأن الضيافة المسؤولة جزء من هويتنا، فنستثمر في الكوادر السعودية وندعم مجتمعاتنا المحلية، ونعمل بما يتوافق مع مستهدفات رؤية المملكة 2030 في السياحة وتنمية الإنسان.",
           ],
         },
@@ -1974,13 +1974,13 @@ export const defaultSiteContent = {
       },
       servicedApartments: {
         hero: {
-          eyebrow: "الشقق الفندقية",
-          title: "شقق فندقية لإقامات أطول وأسهل.",
+          eyebrow: "الشقق المخدومة",
+          title: "شقق مخدومة لإقامات أطول وأسهل.",
           text: "تعد شقق سويس بلو خيارا مثاليا للعائلات وانتقالات العمل والزيارات الطويلة والضيوف الذين يفضلون مساحة أكبر مع خدمات فندقية.",
           image: jeddahImage,
         },
         benefits: [
-          "شقق فندقية واسعة مع مطبخ وغسالة ملابس ومساحة معيشة",
+          "شقق مخدومة واسعة مع مطبخ وغسالة ملابس ومساحة معيشة",
           "مساحة معيشة ممتازة للعائلات وللإقامات الطويلة",
           "راحة عملية مع خدمات فندقية متكاملة",
           "حضور في مواقع حيوية في جدة والرياض وجازان",
@@ -1988,9 +1988,9 @@ export const defaultSiteContent = {
           "خصوصية أعلى مع دعم حجز مباشر مخصص",
         ],
         intro: {
-          eyebrow: "لماذا الشقق الفندقية",
+          eyebrow: "لماذا الشقق المخدومة",
           title: "مساحة بيت كامل مع راحة الفندق.",
-          text: "تجمع الشقق الفندقية بين استقلالية السكن الخاص وخدمات الضيافة اليومية، فهي الخيار الأمثل للإقامات الأطول التي تحتاج إلى مطبخ ومساحة معيشة وخصوصية إضافية دون التخلي عن الاستقبال والتدبير والدعم الفندقي.",
+          text: "تجمع الشقق المخدومة بين استقلالية السكن الخاص وخدمات الضيافة اليومية، فهي الخيار الأمثل للإقامات الأطول التي تحتاج إلى مطبخ ومساحة معيشة وخصوصية إضافية دون التخلي عن الاستقبال والتدبير والدعم الفندقي.",
         },
         includedIntro: {
           eyebrow: "ماذا تتضمن كل شقة",
@@ -2006,37 +2006,37 @@ export const defaultSiteContent = {
           "استقبال ودعم ضيوف على مدار اليوم",
         ],
         propertiesIntro: {
-          eyebrow: "وجهات الشقق الفندقية",
+          eyebrow: "وجهات الشقق المخدومة",
           title: "خمس منشآت في ثلاث مدن.",
           text: "اختر الموقع الأنسب لرحلتك بين جدة والرياض وجازان.",
         },
         properties: [
           {
-            name: "شقق الزهراء الفندقية",
+            name: "شقق الزهراء المخدومة",
             city: "جدة",
             units: "46 شقة",
             slug: "al-zahraa-serviced-apartments",
           },
           {
-            name: "شقق السامر الفندقية",
+            name: "شقق السامر المخدومة",
             city: "جدة",
             units: "33 شقة",
             slug: "al-samer-serviced-apartments",
           },
           {
-            name: "سويس بلو للشقق الفندقية جازان",
+            name: "سويس بلو للشقق المخدومة جازان",
             city: "جازان",
             units: "55 شقة",
             slug: "swiss-blue-jazan",
           },
           {
-            name: "شقق فيناس الرياض الفندقية",
+            name: "شقق فيناس الرياض المخدومة",
             city: "الرياض",
             units: "35 شقة",
             slug: "vinas-riyadh-serviced-apartments",
           },
           {
-            name: "شقق توليب الروضة الفندقية",
+            name: "شقق توليب الروضة المخدومة",
             city: "الرياض",
             units: "37 شقة",
             slug: "tulip-alrawdah-serviced-apartments",
@@ -2045,7 +2045,7 @@ export const defaultSiteContent = {
         idealForIntro: {
           eyebrow: "لمن تناسب",
           title: "صُممت لمن يحتاج مساحة ومرونة.",
-          text: "تخدم الشقق الفندقية أنماط إقامة مختلفة، تجمعها الحاجة إلى راحة تشبه البيت.",
+          text: "تخدم الشقق المخدومة أنماط إقامة مختلفة، تجمعها الحاجة إلى راحة تشبه البيت.",
         },
         idealFor: [
           {
@@ -2379,9 +2379,9 @@ export const defaultSiteContent = {
       },
       hotelsPage: {
         hero: {
-          eyebrow: "فنادقنا وشققنا الفندقية",
+          eyebrow: "فنادقنا وشققنا المخدومة",
           title: "محفظة ضيافة واضحة في جدة وجازان والرياض.",
-          text: "استكشف وجهات سويس بلو في المملكة العربية السعودية، من الفنادق المناسبة لرحلات العمل إلى الشقق الفندقية للعائلات والإقامات الممتدة.",
+          text: "استكشف وجهات سويس بلو في المملكة العربية السعودية، من الفنادق المناسبة لرحلات العمل إلى الشقق المخدومة للعائلات والإقامات الممتدة.",
           image: heroImage,
         },
         intro: {
@@ -4123,8 +4123,8 @@ const availabilityCopyReplacements = new Map<string, string>([
     "Better value for guests who need a reliable long-stay base in Jeddah or Riyadh, with Jazan joining soon.",
   ],
   [
-    "محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة وجازان والرياض، مصممة للأعمال والعائلات والإقامات الشهرية.",
-    "محفظة ضيافة تجمع الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض، مع وجهة جديدة في جازان قريباً.",
+    "محفظة ضيافة تجمع الفنادق والشقق المخدومة في جدة وجازان والرياض، مصممة للأعمال والعائلات والإقامات الشهرية.",
+    "محفظة ضيافة تجمع الفنادق والشقق المخدومة في جدة والرياض، مع وجهة جديدة في جازان قريباً.",
   ],
   [
     "A hospitality portfolio of hotels, apart-hotels, and serviced apartments in Jeddah, Jazan, and Riyadh, designed for business, families, and monthly stays.",
@@ -4141,8 +4141,8 @@ const availabilityCopyReplacements = new Map<string, string>([
     "Five open properties, with Jazan coming soon.",
   ],
   [
-    "اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض وجازان، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة واحدة متّسقة، تُدار كل منشأة فيها وفق المعايير ذاتها في النظافة والسلامة والضيافة.",
-    "اليوم تجمع المحفظة بين الفنادق والشقق الفندقية والشقق المخدومة في جدة والرياض، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة متّسقة، فيما تستعد جازان للانضمام إلى المحفظة قريباً.",
+    "اليوم تجمع المحفظة بين الفنادق والشقق المخدومة في جدة والرياض وجازان، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة واحدة متّسقة، تُدار كل منشأة فيها وفق المعايير ذاتها في النظافة والسلامة والضيافة.",
+    "اليوم تجمع المحفظة بين الفنادق والشقق المخدومة في جدة والرياض، لتخدم ضيف الأعمال والعائلة والمقيم لفترة طويلة ضمن تجربة متّسقة، فيما تستعد جازان للانضمام إلى المحفظة قريباً.",
   ],
   [
     "Today the portfolio brings together hotels, serviced apartments, and serviced residences across Jeddah, Riyadh, and Jazan, serving the business guest, the family, and the long-stay resident within one consistent experience, where every property is run to the same standards of cleanliness, safety, and hospitality.",
@@ -4170,8 +4170,8 @@ const availabilityCopyReplacements = new Map<string, string>([
     "Choose the location best suited to your trip in Jeddah or Riyadh, and watch for Jazan opening soon.",
   ],
   [
-    "فنادق وأجنحة وشقق فندقية في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.",
-    "فنادق وأجنحة وشقق فندقية في جدة والرياض، مع جازان قريباً، وتجربة حجز واضحة للأفراد والشركات والإقامات الطويلة.",
+    "فنادق وأجنحة وشقق مخدومة في جدة والرياض وجازان، بتجربة حجز واضحة للضيوف الأفراد والشركات والإقامات الطويلة.",
+    "فنادق وأجنحة وشقق مخدومة في جدة والرياض، مع جازان قريباً، وتجربة حجز واضحة للأفراد والشركات والإقامات الطويلة.",
   ],
   [
     "Hotels, suites, and serviced apartments in Jeddah, Riyadh, and Jazan, with a clear booking journey for individual guests, companies, and long stays.",
@@ -4248,8 +4248,8 @@ const availabilityCopyReplacements = new Map<string, string>([
   ["إقامة منفردة – جازان", "إقامة منفردة"],
   ["Solo traveler – Jazan", "Solo traveler"],
   [
-    "قيمة ممتازة مقابل المنطقة. الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.",
-    "الشقة الفندقية أشعرتني بأنني في بيتي خلال إقامة طويلة، مع مساحة مريحة وخدمة سريعة عند الحاجة.",
+    "قيمة ممتازة مقابل المنطقة. الشقة المخدومة أشعرتني بأنني في بيتي خلال إقامة طويلة، والموقع مريح للتنقل في جازان.",
+    "الشقة المخدومة أشعرتني بأنني في بيتي خلال إقامة طويلة، مع مساحة مريحة وخدمة سريعة عند الحاجة.",
   ],
   [
     "Great value for the area. The apart-hotel felt like home for a longer stay, and the location is convenient for getting around Jazan.",
@@ -4390,8 +4390,8 @@ function normalizeReservationOfficeContent(
 function normalizeClientFacingContent(
   content: EditableSiteContent,
 ): EditableSiteContent {
-  const contentWithReservationOffice = normalizeAvailabilityContent(
-    normalizeReservationOfficeContent(content),
+  const contentWithReservationOffice = normalizeSourceTruthContent(
+    normalizeAvailabilityContent(normalizeReservationOfficeContent(content)),
   );
   const requestForm =
     contentWithReservationOffice.en.subpages.corporateDealsPage.requestForm;
@@ -4442,6 +4442,178 @@ function normalizeClientFacingContent(
                 ? B2B_REQUEST_FORM_EYEBROW_EN
                 : requestForm.eyebrow,
           },
+        },
+      },
+    },
+  };
+}
+
+const ARABIC_SERVICED_APARTMENT_REPLACEMENTS = [
+  ["سويس بلو للشقق الفندقية جازان", "سويس بلو للشقق المخدومة جازان"],
+  ["شقق الزهراء الفندقية", "شقق الزهراء المخدومة"],
+  ["شقق السامر الفندقية", "شقق السامر المخدومة"],
+  ["شقق فيناس الرياض الفندقية", "شقق فيناس الرياض المخدومة"],
+  ["شقق توليب الروضة الفندقية", "شقق توليب الروضة المخدومة"],
+  ["الشقق الفندقية", "الشقق المخدومة"],
+  ["الشقة الفندقية", "الشقة المخدومة"],
+  ["شقق فندقية", "شقق مخدومة"],
+  ["شقة فندقية", "شقة مخدومة"],
+  ["شققنا الفندقية", "شققنا المخدومة"],
+  ["شققا فندقية", "شققا مخدومة"],
+] as const;
+
+function normalizeArabicServicedApartmentTerms(value: unknown): unknown {
+  if (typeof value === "string") {
+    return ARABIC_SERVICED_APARTMENT_REPLACEMENTS.reduce(
+      (text, [legacy, replacement]) => text.replaceAll(legacy, replacement),
+      value,
+    );
+  }
+  if (Array.isArray(value)) {
+    return value.map(normalizeArabicServicedApartmentTerms);
+  }
+  if (!isRecord(value)) {
+    return value;
+  }
+
+  return Object.fromEntries(
+    Object.entries(value).map(([key, item]) => [
+      key,
+      normalizeArabicServicedApartmentTerms(item),
+    ]),
+  );
+}
+
+function unitCountLabel(type: string, count: string, locale: ContentLanguage) {
+  if (locale === "en") {
+    if (/studio/i.test(type))
+      return `${count} ${count === "1" ? "studio" : "studios"}`;
+    if (/suite/i.test(type))
+      return `${count} ${count === "1" ? "suite" : "suites"}`;
+    if (/room/i.test(type) && !/apartment/i.test(type)) {
+      return `${count} ${count === "1" ? "room" : "rooms"}`;
+    }
+    return `${count} ${count === "1" ? "apartment" : "apartments"}`;
+  }
+
+  const numericCount = Number(count);
+  const arabicCount = (singular: string, dual: string, plural: string) => {
+    if (numericCount === 1) return `1 ${singular}`;
+    if (numericCount === 2) return `2 ${dual}`;
+    if (numericCount >= 3 && numericCount <= 10) return `${count} ${plural}`;
+    return `${count} ${singular}`;
+  };
+
+  if (type.includes("استوديو")) {
+    return arabicCount("استوديو", "استوديو", "استوديوهات");
+  }
+  if (type.includes("جناح")) return arabicCount("جناح", "جناحان", "أجنحة");
+  if (type.includes("غرفة") && !type.includes("شقة")) {
+    return arabicCount("غرفة", "غرفتان", "غرف");
+  }
+  return arabicCount("شقة", "شقتان", "شقق");
+}
+
+function sourceTruthUnitTypes(
+  classification:
+    | (typeof roomClassifications)[number]
+    | (typeof roomClassificationsEn)[number],
+  locale: ContentLanguage,
+) {
+  return classification.rows.map((row) => ({
+    title: row.type,
+    count: unitCountLabel(row.type, row.totalUnits, locale),
+    description:
+      locale === "ar"
+        ? `${row.bedrooms} غرفة نوم | ${row.bedConfig} | ${row.view}`
+        : `${row.bedrooms} bedroom${row.bedrooms === "1" ? "" : "s"} | ${row.bedConfig} | ${row.view}`,
+  }));
+}
+
+function normalizeSourceTruthContent(
+  content: EditableSiteContent,
+): EditableSiteContent {
+  const normalizedTerms = {
+    ...content,
+    ar: normalizeArabicServicedApartmentTerms(
+      content.ar,
+    ) as EditableSiteContent["ar"],
+  };
+  const sourceByLocale = {
+    ar: new Map(
+      hotels.map((hotel, index) => [hotel.slug, roomClassifications[index]]),
+    ),
+    en: new Map(
+      hotelsEn.map((hotel, index) => [
+        hotel.slug,
+        roomClassificationsEn[index],
+      ]),
+    ),
+  };
+  const arCategories = normalizedTerms.ar.homepage.categories.items.filter(
+    (item, index, items) =>
+      items.findIndex((candidate) => candidate.title === item.title) === index,
+  );
+  const arPropertyTypeOptions =
+    normalizedTerms.ar.subpages.corporateDealsPage.requestForm.propertyTypeOptions.filter(
+      (item, index, items) => items.indexOf(item) === index,
+    );
+
+  const normalizeProperties = <
+    T extends EditableSiteContent["ar"]["homepage"]["properties"]["items"],
+  >(
+    items: T,
+    locale: ContentLanguage,
+  ): T =>
+    items.map((property) => {
+      const classification = sourceByLocale[locale].get(property.slug);
+      if (!classification) return property;
+
+      const canonical = sourceTruthUnitTypes(classification, locale);
+      if (property.unitTypes.length >= canonical.length) return property;
+
+      return { ...property, unitTypes: canonical } as T[number];
+    }) as T;
+
+  return {
+    ...normalizedTerms,
+    ar: {
+      ...normalizedTerms.ar,
+      homepage: {
+        ...normalizedTerms.ar.homepage,
+        categories: {
+          ...normalizedTerms.ar.homepage.categories,
+          items: arCategories,
+        },
+        properties: {
+          ...normalizedTerms.ar.homepage.properties,
+          items: normalizeProperties(
+            normalizedTerms.ar.homepage.properties.items,
+            "ar",
+          ),
+        },
+      },
+      subpages: {
+        ...normalizedTerms.ar.subpages,
+        corporateDealsPage: {
+          ...normalizedTerms.ar.subpages.corporateDealsPage,
+          requestForm: {
+            ...normalizedTerms.ar.subpages.corporateDealsPage.requestForm,
+            propertyTypeOptions: arPropertyTypeOptions,
+          },
+        },
+      },
+    },
+    en: {
+      ...normalizedTerms.en,
+      homepage: {
+        ...normalizedTerms.en.homepage,
+        properties: {
+          ...normalizedTerms.en.homepage.properties,
+          items: normalizeProperties(
+            normalizedTerms.en.homepage.properties.items,
+            "en",
+          ),
         },
       },
     },
@@ -4624,7 +4796,8 @@ function heroFallbackFromSlides(
 function withoutPropertyGallery<
   T extends { gallery?: PropertyGalleryValue[] },
 >(property: T) {
-  const { gallery: _gallery, ...overview } = property;
+  const { gallery, ...overview } = property;
+  void gallery;
   return overview;
 }
 
@@ -5810,7 +5983,7 @@ export async function getEditableContent(): Promise<
   const client = getSanityClient(readToken());
 
   if (!client) {
-    return { ...defaultSiteContent, hiddenSections: [] };
+    return { ...mergeContent(null), hiddenSections: [] };
   }
 
   try {
@@ -5846,7 +6019,7 @@ export async function getEditableContent(): Promise<
       hiddenSections: Array.isArray(hidden) ? (hidden as string[]) : [],
     };
   } catch {
-    return { ...defaultSiteContent, hiddenSections: [] };
+    return { ...mergeContent(null), hiddenSections: [] };
   }
 }
 
@@ -5892,7 +6065,9 @@ export async function saveEditableContent(
     throw new Error("Sanity write client is not configured.");
   }
 
-  const normalizedContent = syncSharedImages(content, editedLanguage);
+  const normalizedContent = normalizeSourceTruthContent(
+    syncSharedImages(content, editedLanguage),
+  );
   const normalizedHidden = Array.isArray(hiddenSections)
     ? Array.from(new Set(hiddenSections.filter((id) => typeof id === "string")))
     : [];
