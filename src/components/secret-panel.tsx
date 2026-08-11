@@ -306,7 +306,11 @@ export default function SecretPanel({
 
     try {
       const response = await fetch("/api/site-content", {
-        body: JSON.stringify({ content, hiddenSections }),
+        body: JSON.stringify({
+          content,
+          hiddenSections,
+          editedLanguage: language,
+        }),
         headers: { "Content-Type": "application/json" },
         method: "PUT",
       });

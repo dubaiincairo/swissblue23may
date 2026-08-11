@@ -54,6 +54,34 @@ type PropertyGalleryItem = {
   showHeadline: boolean;
 };
 type PropertyGalleryValue = string | PropertyGalleryItem;
+type ContentLanguage = "ar" | "en";
+
+const SERVICE_TRANSLATIONS = [
+  ["High-Speed Wi-Fi", "إنترنت عالي السرعة"],
+  ["Breakfast Buffet", "بوفيه إفطار"],
+  ["Professional Housekeeping", "خدمة تنظيف احترافية"],
+  ["24/7 Restaurant", "مطعم على مدار الساعة"],
+  ["Indoor Pool", "مسبح داخلي"],
+  ["Gym", "نادٍ رياضي"],
+  ["Free Parking", "مواقف سيارات مجانية"],
+  ["Meeting Rooms", "قاعات اجتماعات"],
+  ["Smart TV", "تلفاز ذكي"],
+  ["F&B Room Service", "خدمة الطعام والمشروبات للغرف"],
+  ["Airport Pick-up", "خدمة استقبال من المطار"],
+  ["Room Minibar", "ميني بار داخل الغرفة"],
+  ["24-hour Security Monitoring", "مراقبة أمنية على مدار الساعة"],
+  ["Steam Room", "غرفة بخار"],
+  ["Corporate Support", "دعم الشركات"],
+  ["Safe Locker", "خزنة آمنة"],
+  ["Fire Emergency Systems", "أنظمة طوارئ الحريق"],
+] as const;
+
+const SERVICES_EN_TO_AR = new Map<string, string>(
+  SERVICE_TRANSLATIONS.map(([en, ar]) => [en.toLocaleLowerCase("en"), ar]),
+);
+const SERVICES_AR_TO_EN = new Map<string, string>(
+  SERVICE_TRANSLATIONS.map(([en, ar]) => [ar, en]),
+);
 
 function createPropertyGalleryCollection(
   properties: Array<{
@@ -4448,7 +4476,11 @@ function sharedImageValue(
   right: string,
   leftDefault: string,
   rightDefault: string,
+  editedLanguage?: ContentLanguage,
 ) {
+  if (editedLanguage === "ar") return [left, left] as const;
+  if (editedLanguage === "en") return [right, right] as const;
+
   if (left === leftDefault && right !== rightDefault) {
     return [right, right] as const;
   }
@@ -4460,70 +4492,66 @@ function sharedImageValue(
   return [left, right] as const;
 }
 
-// A banner's crop focus is a property of the photo, not the language, so mirror
-// whichever locale set a non-default focus onto both (set once, applies to both).
-function sharedFocusValue(left: string | undefined, right: string | undefined) {
-  const l = left || "center";
-  const r = right || "center";
-  if (l === "center" && r !== "center") return [r, r] as const;
-  if (r === "center" && l !== "center") return [l, l] as const;
-  return [l, r] as const;
-}
-
 function syncMediaGallery(
   arGallery: EditableSiteContent["ar"]["media"]["gallery"],
   enGallery: EditableSiteContent["en"]["media"]["gallery"],
+  editedLanguage?: ContentLanguage,
 ) {
-  const maxLength = Math.max(arGallery.length, enGallery.length);
+  const sourceLanguage =
+    editedLanguage ?? (enGallery.length >= arGallery.length ? "en" : "ar");
+  const source = sourceLanguage === "ar" ? arGallery : enGallery;
+
+  const localize = (
+    language: ContentLanguage,
+    target: typeof arGallery,
+  ) => {
+    const targetByImage = new Map(target.map((item) => [item.image, item]));
+
+    return source.map((sourceItem, index) => {
+      const localized = targetByImage.get(sourceItem.image);
+      const fallbackTitle =
+        language === "ar"
+          ? `صورة ضيافة ${index + 1}`
+          : `Hospitality photo ${index + 1}`;
+
+      return {
+        ...sourceItem,
+        title: localized?.title || fallbackTitle,
+        image: sourceItem.image,
+        showHeadline: sourceItem.showHeadline === true,
+      };
+    });
+  };
 
   return {
-    ar: Array.from({ length: maxLength }, (_, index) => {
-      const arItem =
-        arGallery[index] ?? defaultSiteContent.ar.media.gallery[index];
-      const enItem =
-        enGallery[index] ?? defaultSiteContent.en.media.gallery[index];
-
-      if (!arItem) {
-        return arItem;
-      }
-
-      if (!enItem) {
-        return arItem;
-      }
-
-      const [image] = sharedImageValue(
-        arItem.image,
-        enItem.image,
-        defaultSiteContent.ar.media.gallery[index]?.image ?? arItem.image,
-        defaultSiteContent.en.media.gallery[index]?.image ?? enItem.image,
-      );
-
-      return { ...arItem, image };
-    }).filter(Boolean) as EditableSiteContent["ar"]["media"]["gallery"],
-    en: Array.from({ length: maxLength }, (_, index) => {
-      const arItem =
-        arGallery[index] ?? defaultSiteContent.ar.media.gallery[index];
-      const enItem =
-        enGallery[index] ?? defaultSiteContent.en.media.gallery[index];
-
-      if (!enItem) {
-        return enItem;
-      }
-
-      if (!arItem) {
-        return enItem;
-      }
-
-      const [, image] = sharedImageValue(
-        arItem.image,
-        enItem.image,
-        defaultSiteContent.ar.media.gallery[index]?.image ?? arItem.image,
-        defaultSiteContent.en.media.gallery[index]?.image ?? enItem.image,
-      );
-
-      return { ...enItem, image };
-    }).filter(Boolean) as EditableSiteContent["en"]["media"]["gallery"],
+    ar: localize("ar", arGallery),
+    en: localize("en", enGallery),
   };
+}
+
+function syncServiceItems(
+  arItems: EditableSiteContent["ar"]["homepage"]["services"]["items"],
+  enItems: EditableSiteContent["en"]["homepage"]["services"]["items"],
+  editedLanguage?: ContentLanguage,
+) {
+  const sourceLanguage =
+    editedLanguage ?? (enItems.length >= arItems.length ? "en" : "ar");
+  const source = sourceLanguage === "ar" ? arItems : enItems;
+
+  const ar = source.map((item, index) => {
+    if (sourceLanguage === "ar") return item;
+    return (
+      SERVICES_EN_TO_AR.get(item.toLocaleLowerCase("en")) ??
+      arItems[index] ??
+      item
+    );
+  });
+  const en = source.map((item, index) => {
+    if (sourceLanguage === "en") return item;
+    return SERVICES_AR_TO_EN.get(item) ?? enItems[index] ?? item;
+  });
+
+  return { ar, en };
 }
 
 // The admin sign-in artwork is shared infrastructure rather than language
@@ -4532,59 +4560,20 @@ function syncMediaGallery(
 function syncAdminAuthBackdrop(
   arBackdrop: AdminAuthBackdrop,
   enBackdrop: AdminAuthBackdrop,
+  editedLanguage?: ContentLanguage,
 ) {
   const ar = normalizeAdminAuthBackdrop(arBackdrop);
   const en = normalizeAdminAuthBackdrop(enBackdrop);
-  const defaults = createDefaultAdminAuthBackdrop();
-  const [layoutAr, layoutEn] = sharedImageValue(
-    ar.layout,
-    en.layout,
-    defaults.layout,
-    defaults.layout,
-  );
+  const source = editedLanguage === "ar" ? ar : en;
 
   return {
     ar: {
-      layout: layoutAr === "slices" ? "slices" : "tiles",
-      photos: ar.photos.map((photo, index) => {
-        const [image, focus] = [
-          sharedImageValue(
-            photo.image,
-            en.photos[index].image,
-            defaults.photos[index].image,
-            defaults.photos[index].image,
-          )[0],
-          sharedImageValue(
-            photo.focus,
-            en.photos[index].focus,
-            defaults.photos[index].focus,
-            defaults.photos[index].focus,
-          )[0],
-        ];
-
-        return { image, focus };
-      }),
+      layout: source.layout === "slices" ? "slices" : "tiles",
+      photos: source.photos.map((photo) => ({ ...photo })),
     },
     en: {
-      layout: layoutEn === "slices" ? "slices" : "tiles",
-      photos: en.photos.map((photo, index) => {
-        const [image, focus] = [
-          sharedImageValue(
-            ar.photos[index].image,
-            photo.image,
-            defaults.photos[index].image,
-            defaults.photos[index].image,
-          )[1],
-          sharedImageValue(
-            ar.photos[index].focus,
-            photo.focus,
-            defaults.photos[index].focus,
-            defaults.photos[index].focus,
-          )[1],
-        ];
-
-        return { image, focus };
-      }),
+      layout: source.layout === "slices" ? "slices" : "tiles",
+      photos: source.photos.map((photo) => ({ ...photo })),
     },
   } as const;
 }
@@ -4592,62 +4581,20 @@ function syncAdminAuthBackdrop(
 function syncHeroSlides(
   arSlides: EditableSiteContent["ar"]["media"]["mainHeroSlides"],
   enSlides: EditableSiteContent["en"]["media"]["mainHeroSlides"],
+  editedLanguage?: ContentLanguage,
 ) {
-  const maxLength = Math.max(arSlides.length, enSlides.length);
+  const source =
+    editedLanguage === "ar"
+      ? arSlides
+      : editedLanguage === "en"
+        ? enSlides
+        : enSlides.length >= arSlides.length
+          ? enSlides
+          : arSlides;
 
   return {
-    ar: Array.from({ length: maxLength }, (_, index) => {
-      const arItem =
-        arSlides[index] ?? defaultSiteContent.ar.media.mainHeroSlides[index];
-      const enItem =
-        enSlides[index] ?? defaultSiteContent.en.media.mainHeroSlides[index];
-
-      if (!arItem) {
-        return arItem;
-      }
-
-      if (!enItem) {
-        return arItem;
-      }
-
-      const [source] = sharedImageValue(
-        arItem.source,
-        enItem.source,
-        defaultSiteContent.ar.media.mainHeroSlides[index]?.source ??
-          arItem.source,
-        defaultSiteContent.en.media.mainHeroSlides[index]?.source ??
-          enItem.source,
-      );
-      const [focus] = sharedFocusValue(arItem.focus, enItem.focus);
-
-      return { ...arItem, kind: arItem.kind || enItem.kind, source, focus };
-    }).filter(Boolean) as EditableSiteContent["ar"]["media"]["mainHeroSlides"],
-    en: Array.from({ length: maxLength }, (_, index) => {
-      const arItem =
-        arSlides[index] ?? defaultSiteContent.ar.media.mainHeroSlides[index];
-      const enItem =
-        enSlides[index] ?? defaultSiteContent.en.media.mainHeroSlides[index];
-
-      if (!enItem) {
-        return enItem;
-      }
-
-      if (!arItem) {
-        return enItem;
-      }
-
-      const [, source] = sharedImageValue(
-        arItem.source,
-        enItem.source,
-        defaultSiteContent.ar.media.mainHeroSlides[index]?.source ??
-          arItem.source,
-        defaultSiteContent.en.media.mainHeroSlides[index]?.source ??
-          enItem.source,
-      );
-      const [, focus] = sharedFocusValue(arItem.focus, enItem.focus);
-
-      return { ...enItem, kind: enItem.kind || arItem.kind, source, focus };
-    }).filter(Boolean) as EditableSiteContent["en"]["media"]["mainHeroSlides"],
+    ar: source.map((slide) => ({ ...slide })),
+    en: source.map((slide) => ({ ...slide })),
   };
 }
 
@@ -4678,6 +4625,7 @@ function withoutPropertyGallery<
 function syncPropertyOverviewImages(
   arProperties: EditableSiteContent["ar"]["homepage"]["properties"]["items"],
   enProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
+  editedLanguage?: ContentLanguage,
 ) {
   const enBySlug = new Map(
     enProperties.map((property) => [property.slug, property]),
@@ -4704,12 +4652,12 @@ function syncPropertyOverviewImages(
       return property;
     }
 
-    const [image] = sharedImageValue(
-      property.image,
-      enProperty.image,
-      arDefault.image,
-      enDefault.image,
-    );
+    const image =
+      editedLanguage === "ar"
+        ? property.image
+        : editedLanguage === "en"
+          ? enProperty.image
+          : enProperty.image || property.image;
     return {
       ...withoutPropertyGallery(arDefault),
       ...withoutPropertyGallery(property),
@@ -4729,12 +4677,12 @@ function syncPropertyOverviewImages(
       return property;
     }
 
-    const [, image] = sharedImageValue(
-      arProperty.image,
-      property.image,
-      arDefault.image,
-      enDefault.image,
-    );
+    const image =
+      editedLanguage === "ar"
+        ? arProperty.image
+        : editedLanguage === "en"
+          ? property.image
+          : property.image || arProperty.image;
     return {
       ...withoutPropertyGallery(enDefault),
       ...withoutPropertyGallery(property),
@@ -4786,6 +4734,7 @@ function syncPropertyGalleries(
   enLegacyProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
   arProperties: EditableSiteContent["ar"]["homepage"]["properties"]["items"],
   enProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
+  editedLanguage?: ContentLanguage,
 ) {
   const arMediaBySlug = new Map(
     arCollection.items.map((item) => [item.slug, item]),
@@ -4814,85 +4763,80 @@ function syncPropertyGalleries(
   const enPropertiesBySlug = new Map(
     enProperties.map((item) => [item.slug, item]),
   );
-  const arPropertiesBySlug = new Map(
-    arProperties.map((item) => [item.slug, item]),
-  );
 
-  const syncLocale = (language: "ar" | "en") => {
-    const properties = language === "ar" ? arProperties : enProperties;
-    return properties.map((property) => {
-      const slug = property.slug;
-      const ownMedia =
-        language === "ar" ? arMediaBySlug.get(slug) : enMediaBySlug.get(slug);
-      const otherMedia =
-        language === "ar" ? enMediaBySlug.get(slug) : arMediaBySlug.get(slug);
-      const ownLegacy =
-        language === "ar"
-          ? arLegacyBySlug.get(slug)
-          : enLegacyBySlug.get(slug);
-      const otherLegacy =
-        language === "ar"
-          ? enLegacyBySlug.get(slug)
-          : arLegacyBySlug.get(slug);
-      const ownDefault =
-        language === "ar"
-          ? arDefaultBySlug.get(slug)
-          : enDefaultBySlug.get(slug);
-      const otherDefault =
-        language === "ar"
-          ? enDefaultBySlug.get(slug)
-          : arDefaultBySlug.get(slug);
-      const otherProperty =
-        language === "ar"
-          ? enPropertiesBySlug.get(slug)
-          : arPropertiesBySlug.get(slug);
-      const ownGallery = completePropertyGallery(
-        propertyGallerySource(
-          ownMedia?.gallery,
-          ownLegacy?.gallery,
-          ownDefault?.gallery ?? [],
-        ),
-        language,
-        [property.image],
-      );
-      const otherGallery = completePropertyGallery(
-        propertyGallerySource(
-          otherMedia?.gallery,
-          otherLegacy?.gallery,
-          otherDefault?.gallery ?? [],
-        ),
-        language === "ar" ? "en" : "ar",
-        [otherProperty?.image ?? ""],
-      );
+  const localizeGallery = (
+    source: PropertyGalleryItem[],
+    target: PropertyGalleryItem[],
+    language: ContentLanguage,
+  ) => {
+    const targetByImage = new Map(target.map((item) => [item.image, item]));
 
+    return source.map((sourceItem, index) => {
+      const localized = targetByImage.get(sourceItem.image);
       return {
-        slug,
-        title: ownMedia?.title || property.title,
-        city: ownMedia?.city || property.city,
-        gallery: ownGallery.map((galleryItem, index) => {
-          const otherItem = otherGallery[index];
-          const [arImage, enImage] = sharedImageValue(
-            language === "ar" ? galleryItem.image : otherItem?.image ?? "",
-            language === "ar" ? otherItem?.image ?? "" : galleryItem.image,
-            language === "ar"
-              ? galleryImageValue(ownDefault?.gallery[index])
-              : galleryImageValue(otherDefault?.gallery[index]),
-            language === "ar"
-              ? galleryImageValue(otherDefault?.gallery[index])
-              : galleryImageValue(ownDefault?.gallery[index]),
-          );
-          return {
-            ...galleryItem,
-            image: language === "ar" ? arImage : enImage,
-          };
-        }),
+        ...sourceItem,
+        title:
+          localized?.title ||
+          (language === "ar"
+            ? `صورة الفندق ${index + 1}`
+            : `Property photo ${index + 1}`),
+        image: sourceItem.image,
+        showHeadline: sourceItem.showHeadline === true,
       };
     });
   };
 
+  const arItems: EditableSiteContent["ar"]["media"]["propertyGalleries"]["items"] =
+    [];
+  const enItems: EditableSiteContent["en"]["media"]["propertyGalleries"]["items"] =
+    [];
+
+  for (const arProperty of arProperties) {
+    const slug = arProperty.slug;
+    const enProperty = enPropertiesBySlug.get(slug);
+    if (!enProperty) continue;
+
+    const arMedia = arMediaBySlug.get(slug);
+    const enMedia = enMediaBySlug.get(slug);
+    const arGallery = completePropertyGallery(
+      propertyGallerySource(
+        arMedia?.gallery,
+        arLegacyBySlug.get(slug)?.gallery,
+        arDefaultBySlug.get(slug)?.gallery ?? [],
+      ),
+      "ar",
+      [arProperty.image],
+    );
+    const enGallery = completePropertyGallery(
+      propertyGallerySource(
+        enMedia?.gallery,
+        enLegacyBySlug.get(slug)?.gallery,
+        enDefaultBySlug.get(slug)?.gallery ?? [],
+      ),
+      "en",
+      [enProperty.image],
+    );
+    const sourceLanguage =
+      editedLanguage ?? (enGallery.length >= arGallery.length ? "en" : "ar");
+    const source = sourceLanguage === "ar" ? arGallery : enGallery;
+
+    arItems.push({
+      slug,
+      title: arMedia?.title || arProperty.title,
+      city: arMedia?.city || arProperty.city,
+      gallery: localizeGallery(source, arGallery, "ar"),
+    });
+    enItems.push({
+      slug,
+      title: enMedia?.title || enProperty.title,
+      city: enMedia?.city || enProperty.city,
+      gallery: localizeGallery(source, enGallery, "en"),
+    });
+  }
+
   return {
-    ar: { items: syncLocale("ar") },
-    en: { items: syncLocale("en") },
+    ar: { items: arItems },
+    en: { items: enItems },
   } as {
     ar: EditableSiteContent["ar"]["media"]["propertyGalleries"];
     en: EditableSiteContent["en"]["media"]["propertyGalleries"];
@@ -4961,6 +4905,7 @@ function galleryImageValue(item: PropertyGalleryValue | undefined) {
 function syncDestinationImages(
   arDestinations: EditableSiteContent["ar"]["homepage"]["destinations"]["items"],
   enDestinations: EditableSiteContent["en"]["homepage"]["destinations"]["items"],
+  editedLanguage?: ContentLanguage,
 ) {
   const maxLength = Math.max(arDestinations.length, enDestinations.length);
 
@@ -4982,6 +4927,7 @@ function syncDestinationImages(
         enItem.image,
         arDefault.image,
         enDefault.image,
+        editedLanguage,
       );
       return { ...arItem, image };
     }).filter(
@@ -5004,6 +4950,7 @@ function syncDestinationImages(
         enItem.image,
         arDefault.image,
         enDefault.image,
+        editedLanguage,
       );
       return { ...enItem, image };
     }).filter(
@@ -5027,7 +4974,10 @@ function normalizeHighlights(
   });
 }
 
-function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
+function syncSharedImages(
+  content: EditableSiteContent,
+  editedLanguage?: ContentLanguage,
+): EditableSiteContent {
   const [logoAr, logoEn] = sharedImageValue(
     content.ar.media.arabicLogo,
     content.en.media.logo,
@@ -5039,34 +4989,46 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     content.en.media.mainHero,
     defaultSiteContent.ar.media.mainHero,
     defaultSiteContent.en.media.mainHero,
+    editedLanguage,
   );
   const [jeddahAr, jeddahEn] = sharedImageValue(
     content.ar.media.jeddah,
     content.en.media.jeddah,
     defaultSiteContent.ar.media.jeddah,
     defaultSiteContent.en.media.jeddah,
+    editedLanguage,
   );
   const [jazanAr, jazanEn] = sharedImageValue(
     content.ar.media.jazan,
     content.en.media.jazan,
     defaultSiteContent.ar.media.jazan,
     defaultSiteContent.en.media.jazan,
+    editedLanguage,
   );
   const syncedGallery = syncMediaGallery(
     content.ar.media.gallery,
     content.en.media.gallery,
+    editedLanguage,
+  );
+  const syncedServices = syncServiceItems(
+    content.ar.homepage.services.items,
+    content.en.homepage.services.items,
+    editedLanguage,
   );
   const syncedAdminAuthBackdrop = syncAdminAuthBackdrop(
     content.ar.media.adminAuthBackdrop,
     content.en.media.adminAuthBackdrop,
+    editedLanguage,
   );
   const syncedHeroSlides = syncHeroSlides(
     content.ar.media.mainHeroSlides,
     content.en.media.mainHeroSlides,
+    editedLanguage,
   );
   const syncedProperties = syncPropertyOverviewImages(
     content.ar.homepage.properties.items,
     content.en.homepage.properties.items,
+    editedLanguage,
   );
   const syncedPropertyGalleries = syncPropertyGalleries(
     content.ar.media.propertyGalleries,
@@ -5075,10 +5037,12 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     content.en.homepage.properties.items,
     syncedProperties.ar,
     syncedProperties.en,
+    editedLanguage,
   );
   const syncedDestinations = syncDestinationImages(
     content.ar.homepage.destinations.items,
     content.en.homepage.destinations.items,
+    editedLanguage,
   );
 
   // Subpages hero image syncing
@@ -5087,90 +5051,105 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
     content.en.subpages.about.hero.image,
     defaultSiteContent.ar.subpages.about.hero.image,
     defaultSiteContent.en.subpages.about.hero.image,
+    editedLanguage,
   );
   const [diningHeroAr, diningHeroEn] = sharedImageValue(
     content.ar.subpages.dining.hero.image,
     content.en.subpages.dining.hero.image,
     defaultSiteContent.ar.subpages.dining.hero.image,
     defaultSiteContent.en.subpages.dining.hero.image,
+    editedLanguage,
   );
   const [roomsSuitesHeroAr, roomsSuitesHeroEn] = sharedImageValue(
     content.ar.subpages.roomsSuites.hero.image,
     content.en.subpages.roomsSuites.hero.image,
     defaultSiteContent.ar.subpages.roomsSuites.hero.image,
     defaultSiteContent.en.subpages.roomsSuites.hero.image,
+    editedLanguage,
   );
   const [servicedApartmentsHeroAr, servicedApartmentsHeroEn] = sharedImageValue(
     content.ar.subpages.servicedApartments.hero.image,
     content.en.subpages.servicedApartments.hero.image,
     defaultSiteContent.ar.subpages.servicedApartments.hero.image,
     defaultSiteContent.en.subpages.servicedApartments.hero.image,
+    editedLanguage,
   );
   const [amenitiesServicesHeroAr, amenitiesServicesHeroEn] = sharedImageValue(
     content.ar.subpages.amenitiesServices.hero.image,
     content.en.subpages.amenitiesServices.hero.image,
     defaultSiteContent.ar.subpages.amenitiesServices.hero.image,
     defaultSiteContent.en.subpages.amenitiesServices.hero.image,
+    editedLanguage,
   );
   const [loyaltyPageHeroAr, loyaltyPageHeroEn] = sharedImageValue(
     content.ar.subpages.loyaltyPage.hero.image,
     content.en.subpages.loyaltyPage.hero.image,
     defaultSiteContent.ar.subpages.loyaltyPage.hero.image,
     defaultSiteContent.en.subpages.loyaltyPage.hero.image,
+    editedLanguage,
   );
   const [meetingsEventsHeroAr, meetingsEventsHeroEn] = sharedImageValue(
     content.ar.subpages.meetingsEvents.hero.image,
     content.en.subpages.meetingsEvents.hero.image,
     defaultSiteContent.ar.subpages.meetingsEvents.hero.image,
     defaultSiteContent.en.subpages.meetingsEvents.hero.image,
+    editedLanguage,
   );
   const [corporateDealsPageHeroAr, corporateDealsPageHeroEn] = sharedImageValue(
     content.ar.subpages.corporateDealsPage.hero.image,
     content.en.subpages.corporateDealsPage.hero.image,
     defaultSiteContent.ar.subpages.corporateDealsPage.hero.image,
     defaultSiteContent.en.subpages.corporateDealsPage.hero.image,
+    editedLanguage,
   );
   const [groupBookingsHeroAr, groupBookingsHeroEn] = sharedImageValue(
     content.ar.subpages.groupBookings.hero.image,
     content.en.subpages.groupBookings.hero.image,
     defaultSiteContent.ar.subpages.groupBookings.hero.image,
     defaultSiteContent.en.subpages.groupBookings.hero.image,
+    editedLanguage,
   );
   const [contactHeroAr, contactHeroEn] = sharedImageValue(
     content.ar.subpages.contact.hero.image,
     content.en.subpages.contact.hero.image,
     defaultSiteContent.ar.subpages.contact.hero.image,
     defaultSiteContent.en.subpages.contact.hero.image,
+    editedLanguage,
   );
   const [offersPageHeroAr, offersPageHeroEn] = sharedImageValue(
     content.ar.subpages.offersPage.hero.image,
     content.en.subpages.offersPage.hero.image,
     defaultSiteContent.ar.subpages.offersPage.hero.image,
     defaultSiteContent.en.subpages.offersPage.hero.image,
+    editedLanguage,
   );
   const [faqPageHeroAr, faqPageHeroEn] = sharedImageValue(
     content.ar.subpages.faqPage.hero.image,
     content.en.subpages.faqPage.hero.image,
     defaultSiteContent.ar.subpages.faqPage.hero.image,
     defaultSiteContent.en.subpages.faqPage.hero.image,
+    editedLanguage,
   );
   const [hotelsPageHeroAr, hotelsPageHeroEn] = sharedImageValue(
     content.ar.subpages.hotelsPage.hero.image,
     content.en.subpages.hotelsPage.hero.image,
     defaultSiteContent.ar.subpages.hotelsPage.hero.image,
     defaultSiteContent.en.subpages.hotelsPage.hero.image,
+    editedLanguage,
   );
   const [destinationsPageHeroAr, destinationsPageHeroEn] = sharedImageValue(
     content.ar.subpages.destinationsPage.hero.image,
     content.en.subpages.destinationsPage.hero.image,
     defaultSiteContent.ar.subpages.destinationsPage.hero.image,
     defaultSiteContent.en.subpages.destinationsPage.hero.image,
+    editedLanguage,
   );
   const [hotelPolicyHeroAr, hotelPolicyHeroEn] = sharedImageValue(
     content.ar.subpages.hotelPolicy.hero.image,
     content.en.subpages.hotelPolicy.hero.image,
     defaultSiteContent.ar.subpages.hotelPolicy.hero.image,
     defaultSiteContent.en.subpages.hotelPolicy.hero.image,
+    editedLanguage,
   );
 
   const arMediaWithoutDeprecated = stripDeprecatedArMediaKeys(content.ar.media);
@@ -5199,6 +5178,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         properties: {
           ...content.ar.homepage.properties,
           items: syncedProperties.ar,
+        },
+        services: {
+          ...content.ar.homepage.services,
+          items: syncedServices.ar,
         },
         destinations: {
           ...content.ar.homepage.destinations,
@@ -5324,6 +5307,10 @@ function syncSharedImages(content: EditableSiteContent): EditableSiteContent {
         properties: {
           ...content.en.homepage.properties,
           items: syncedProperties.en,
+        },
+        services: {
+          ...content.en.homepage.services,
+          items: syncedServices.en,
         },
         destinations: {
           ...content.en.homepage.destinations,
@@ -5891,6 +5878,7 @@ export async function getEditableContentVersion() {
 export async function saveEditableContent(
   content: EditableSiteContent,
   hiddenSections: string[] = [],
+  editedLanguage?: ContentLanguage,
 ) {
   const client = getSanityClient(process.env.SANITY_API_WRITE_TOKEN);
 
@@ -5898,7 +5886,7 @@ export async function saveEditableContent(
     throw new Error("Sanity write client is not configured.");
   }
 
-  const normalizedContent = syncSharedImages(content);
+  const normalizedContent = syncSharedImages(content, editedLanguage);
   const normalizedHidden = Array.isArray(hiddenSections)
     ? Array.from(new Set(hiddenSections.filter((id) => typeof id === "string")))
     : [];
