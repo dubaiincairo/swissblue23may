@@ -4539,16 +4539,22 @@ function syncServiceItems(
   const source = sourceLanguage === "ar" ? arItems : enItems;
 
   const ar = source.map((item, index) => {
-    if (sourceLanguage === "ar") return item;
+    const normalizedItem = item.trim();
+    if (sourceLanguage === "ar") return normalizedItem;
     return (
-      SERVICES_EN_TO_AR.get(item.toLocaleLowerCase("en")) ??
-      arItems[index] ??
-      item
+      SERVICES_EN_TO_AR.get(normalizedItem.toLocaleLowerCase("en")) ??
+      arItems[index]?.trim() ??
+      normalizedItem
     );
   });
   const en = source.map((item, index) => {
-    if (sourceLanguage === "en") return item;
-    return SERVICES_AR_TO_EN.get(item) ?? enItems[index] ?? item;
+    const normalizedItem = item.trim();
+    if (sourceLanguage === "en") return normalizedItem;
+    return (
+      SERVICES_AR_TO_EN.get(normalizedItem) ??
+      enItems[index]?.trim() ??
+      normalizedItem
+    );
   });
 
   return { ar, en };
