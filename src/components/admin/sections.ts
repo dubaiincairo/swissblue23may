@@ -550,7 +550,7 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   categories: {
     group: "الصفحة الرئيسية",
     label: "فئات الإقامة",
-    description: "مقارنة الفندق والشقق الفندقية والشقق المخدومة.",
+    description: "مقارنة الفندق والشقق المخدومة.",
   },
   testimonials: {
     group: "الصفحة الرئيسية",
@@ -581,8 +581,8 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   },
   servicedApartmentsPage: {
     group: "الإقامة",
-    label: "صفحة الشقق الفندقية",
-    description: "بانر صفحة الشقق الفندقية والخيارات المتاحة.",
+    label: "صفحة الشقق المخدومة",
+    description: "بانر صفحة الشقق المخدومة والخيارات المتاحة.",
   },
   amenitiesServicesPage: {
     group: "الإقامة",
@@ -884,7 +884,7 @@ export const arabicFieldLabels: Record<string, string> = {
   ga4PropertyId: "معرّف خاصية GA4 (أرقام فقط)",
   requireCookieConsent: "اطلب موافقة الكوكيز قبل التتبع",
   "rooms-suites": "الغرف والأجنحة",
-  "serviced-apartments": "الشقق الفندقية",
+  "serviced-apartments": "الشقق المخدومة",
   "amenities-services": "المرافق والخدمات",
   "meetings-events": "الاجتماعات والفعاليات",
   "corporate-deals": "عروض الشركات",
