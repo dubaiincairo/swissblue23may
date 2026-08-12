@@ -21,7 +21,11 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  let body: { content?: typeof defaultSiteContent; hiddenSections?: string[] };
+  let body: {
+    content?: typeof defaultSiteContent;
+    hiddenSections?: string[];
+    editedLanguage?: "ar" | "en";
+  };
 
   try {
     const text = await request.text();
@@ -42,9 +46,19 @@ export async function PUT(request: Request) {
   }
 
   const content = body?.content ?? defaultSiteContent;
-  const hiddenSections = Array.isArray(body?.hiddenSections) ? body.hiddenSections : [];
+  const hiddenSections = Array.isArray(body?.hiddenSections)
+    ? body.hiddenSections
+    : [];
+  const editedLanguage =
+    body?.editedLanguage === "ar" || body?.editedLanguage === "en"
+      ? body.editedLanguage
+      : undefined;
 
-  const saved = await saveEditableContent(content, hiddenSections);
+  const saved = await saveEditableContent(
+    content,
+    hiddenSections,
+    editedLanguage,
+  );
 
   return NextResponse.json({
     ok: true,

@@ -31,6 +31,7 @@ export function isImageField(name: string, path: Array<string | number>, value: 
 
 export function imageGuidance(name: string, path: Array<string | number>) {
   const location = path.join(".");
+  const normalizedLocation = location.toLocaleLowerCase("en");
 
   if (location.includes("adminAuthBackdrop")) {
     return "Recommended: at least 1600 x 1000 px. Keep the main subject near the selected crop focus; each photo may be cropped to a tile or a tall vertical slice. Accepted: JPG, PNG, WebP, AVIF, SVG.";
@@ -60,7 +61,10 @@ export function imageGuidance(name: string, path: Array<string | number>) {
     return "Recommended: 1920 x 1080 px or wider landscape. Accepted: JPG, PNG, WebP, AVIF, SVG.";
   }
 
-  if (location.includes("gallery")) {
+  if (normalizedLocation.includes("gallery")) {
+    if (normalizedLocation.includes("dininggallery")) {
+      return "Recommended: 1600 x 1200 px (4:3 landscape). Accepted: JPG, PNG, WebP, AVIF, SVG.";
+    }
     return "Recommended: 1600 x 1100 px landscape. Accepted: JPG, PNG, WebP, AVIF, SVG.";
   }
 
@@ -73,6 +77,7 @@ export function localizedImageGuidance(name: string, path: Array<string | number
   }
 
   const location = path.join(".");
+  const normalizedLocation = location.toLocaleLowerCase("en");
 
   if (location.includes("adminAuthBackdrop")) {
     return "المقاس المقترح: 1600 x 1000 بكسل على الأقل. ضع العنصر الرئيسي قرب نقطة الاقتصاص المختارة؛ قد يتم اقتصاص كل صورة كبلاطة أو كشريحة عمودية طويلة. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
@@ -102,7 +107,10 @@ export function localizedImageGuidance(name: string, path: Array<string | number
     return "المقاس المقترح: 1920 x 1080 بكسل أو صورة أفقية أكبر. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
   }
 
-  if (location.includes("gallery")) {
+  if (normalizedLocation.includes("gallery")) {
+    if (normalizedLocation.includes("dininggallery")) {
+      return "المقاس المقترح: 1600 x 1200 بكسل بنسبة 4:3 أفقية. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
+    }
     return "المقاس المقترح: 1600 x 1100 بكسل بصورة أفقية. الصيغ المقبولة: JPG, PNG, WebP, AVIF, SVG.";
   }
 

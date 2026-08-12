@@ -1,16 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
 import AiChatLeadForm from "@/components/ai-chat-lead-form";
 import { detectChatLeadKind, type ChatLeadKind } from "@/lib/chat-leads";
+import { trackAnalyticsEvent } from "@/lib/analytics-events";
 
 type ChatMessage = {
   id: number;
   role: "assistant" | "user";
   text: string;
+};
+
+type ActiveLead = {
+  kind: ChatLeadKind;
+  initialRequest: string;
 };
 
 type ChatLocale = "ar" | "en";
@@ -46,16 +52,18 @@ const DEFAULT_ASSISTANT_COPY: Record<ChatLocale, AssistantCopy> = {
     welcome: "مرحباً، أنا سارة. كيف يمكنني مساعدتك في حجز إقامتك أو معرفة المزيد عن وجهات سويس بلو؟",
     placeholder: "اكتب سؤالك...",
     send: "إرسال",
-    typing: "يكتب الآن...",
+    typing: "سارة تكتب ..",
     leadComplete: {
       booking: "تم إرسال طلب الحجز إلى فريق الحجوزات. سيتواصل معك قريباً.",
       corporate: "تم إرسال طلب الشركات إلى فريق الحجوزات. سيتواصل معك قريباً.",
       career: "تم إرسال طلبك إلى فريق التوظيف. سيتواصل معك قريباً.",
+      support: "تم إرسال طلب التواصل إلى فريق الحجوزات مع ملخص المحادثة. سيتواصل معك الفريق قريباً.",
     },
     leadActions: {
       booking: "طلب حجز",
       corporate: "طلب شركات",
       career: "استفسار وظيفي",
+      support: "التحدث مع موظف",
     },
   },
   en: {
@@ -67,22 +75,80 @@ const DEFAULT_ASSISTANT_COPY: Record<ChatLocale, AssistantCopy> = {
     welcome: "Hello, I am Sarah. How can I help with your stay or a Swiss Blue destination today?",
     placeholder: "Type your question...",
     send: "Send",
-    typing: "Thinking...",
+    typing: "Sarah is writing ..",
     leadComplete: {
       booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
       corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
       career: "Your career enquiry has been sent to the careers team. They will contact you shortly.",
+      support: "Your request and conversation summary have been sent to reservations. The team will contact you shortly.",
     },
     leadActions: {
       booking: "Booking help",
       corporate: "Corporate help",
       career: "Career help",
+      support: "Speak to the team",
     },
   },
 };
 
 function nonEmpty(value: string | undefined, fallback: string) {
   return typeof value === "string" && value.trim() ? value : fallback;
+}
+
+function typingCopy(value: string | undefined, fallback: string) {
+  const copy = nonEmpty(value, fallback);
+  const normalized = copy.trim().toLocaleLowerCase();
+  return ["thinking...", "writing...", "writing ..", "يكتب الآن...", "يكتب الان..."].includes(normalized)
+    ? fallback
+    : copy;
+}
+
+function cleanAssistantText(text: string) {
+  return text
+    .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "")
+    .replace(/[ \t]+\n/g, "\n")
+    .trim();
+}
+
+function FormattedChatText({ text }: { text: string }) {
+  const blocks = text
+    .replace(/\r\n/g, "\n")
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  return (
+    <>
+      {blocks.map((block, blockIndex) => {
+        const lines = block
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean);
+        const isList = lines.length > 1 && lines.every((line) => /^[-•]\s+/.test(line));
+
+        if (isList) {
+          return (
+            <ul key={`block-${blockIndex}`}>
+              {lines.map((line, lineIndex) => (
+                <li key={`item-${lineIndex}`}>{line.replace(/^[-•]\s+/, "")}</li>
+              ))}
+            </ul>
+          );
+        }
+
+        return (
+          <p key={`block-${blockIndex}`}>
+            {lines.map((line, lineIndex) => (
+              <Fragment key={`line-${lineIndex}`}>
+                {lineIndex > 0 ? <br /> : null}
+                {line}
+              </Fragment>
+            ))}
+          </p>
+        );
+      })}
+    </>
+  );
 }
 
 function getAssistantCopy(locale: ChatLocale, settings?: AssistantSettings): AssistantCopy {
@@ -97,7 +163,7 @@ function getAssistantCopy(locale: ChatLocale, settings?: AssistantSettings): Ass
     welcome: nonEmpty(settings?.welcome, fallback.welcome),
     placeholder: nonEmpty(settings?.placeholder, fallback.placeholder),
     send: nonEmpty(settings?.send, fallback.send),
-    typing: nonEmpty(settings?.typing, fallback.typing),
+    typing: typingCopy(settings?.typing, fallback.typing),
     leadActions: { ...fallback.leadActions, ...settings?.leadActions },
     leadComplete: { ...fallback.leadComplete, ...settings?.leadComplete },
   };
@@ -152,7 +218,9 @@ export default function AiChatWidget({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
-  const [activeLead, setActiveLead] = useState<ChatLeadKind | null>(null);
+  const [streamStarted, setStreamStarted] = useState(false);
+  const [sessionNudged, setSessionNudged] = useState(false);
+  const [activeLead, setActiveLead] = useState<ActiveLead | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -203,6 +271,28 @@ export default function AiChatWidget({
     messagesElement.scrollTo({ top: messagesElement.scrollHeight, behavior: "smooth" });
   }, [activeLead, error, messages, sending]);
 
+  useEffect(() => {
+    if (!open || sending || activeLead || sessionNudged || messages.length === 0) return;
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage.role !== "assistant") return;
+
+    const timer = window.setTimeout(() => {
+      setSessionNudged(true);
+      setMessages((current) => [
+        ...current,
+        {
+          id: nextId.current++,
+          role: "assistant",
+          text: isArabic
+            ? "هل ترغب في مساعدة أخرى قبل إنهاء المحادثة؟"
+            : "May I help with anything else before we close this conversation?",
+        },
+      ]);
+    }, 120_000);
+
+    return () => window.clearTimeout(timer);
+  }, [activeLead, isArabic, messages, open, sending, sessionNudged]);
+
   if (
     process.env.NEXT_PUBLIC_AI_CHAT_ENABLED !== "true" ||
     isAdminPath(pathname) ||
@@ -213,12 +303,21 @@ export default function AiChatWidget({
   }
 
   function addMessage(role: ChatMessage["role"], text: string) {
-    setMessages((current) => [...current, { id: nextId.current++, role, text }]);
+    const id = nextId.current++;
+    setMessages((current) => [
+      ...current,
+      { id, role, text: role === "assistant" ? cleanAssistantText(text) : text },
+    ]);
+    return id;
   }
 
-  function openLead(kind: ChatLeadKind) {
+  function updateMessage(id: number, text: string) {
+    setMessages((current) => current.map((item) => item.id === id ? { ...item, text } : item));
+  }
+
+  function openLead(kind: ChatLeadKind, initialRequest = "") {
     setError("");
-    setActiveLead(kind);
+    setActiveLead({ kind, initialRequest });
   }
 
   function completeLead(kind: ChatLeadKind) {
@@ -233,10 +332,13 @@ export default function AiChatWidget({
 
     setMessage("");
     setError("");
+    setSessionNudged(false);
+    setStreamStarted(false);
     addMessage("user", text);
+    const history = messages.slice(-8).map((item) => ({ role: item.role, content: item.text }));
     const leadKind = detectChatLeadKind(text);
     if (leadKind) {
-      openLead(leadKind);
+      openLead(leadKind, text);
       return;
     }
 
@@ -245,18 +347,44 @@ export default function AiChatWidget({
       const response = await fetch("/api/ai-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, locale }),
+        body: JSON.stringify({ message: text, locale, history, pagePath: pathname, stream: true }),
       });
-      const data = (await response.json()) as { answer?: string; error?: string };
-      if (!response.ok || !data.answer) {
+      if (!response.ok) {
+        const data = (await response.json().catch(() => ({}))) as { error?: string };
         setError(data.error || (isArabic ? "تعذر إرسال رسالتك." : "Your message could not be sent."));
         return;
       }
-      addMessage("assistant", data.answer);
+
+      if (!response.body) {
+        setError(isArabic ? "تعذر استلام الرد." : "The response could not be received.");
+        return;
+      }
+
+      const assistantMessageId = addMessage("assistant", "");
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let answer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        answer += decoder.decode(value, { stream: true });
+        if (answer) setStreamStarted(true);
+        updateMessage(assistantMessageId, answer);
+      }
+      answer += decoder.decode();
+
+      const cleanedAnswer = cleanAssistantText(answer);
+      if (!cleanedAnswer) {
+        setMessages((current) => current.filter((item) => item.id !== assistantMessageId));
+        setError(isArabic ? "تعذر استلام الرد." : "The response could not be received.");
+        return;
+      }
+      updateMessage(assistantMessageId, cleanedAnswer);
     } catch {
       setError(isArabic ? "تعذر الاتصال بالمساعد." : "The assistant could not be reached.");
     } finally {
       setSending(false);
+      setStreamStarted(false);
     }
   }
 
@@ -284,8 +412,10 @@ export default function AiChatWidget({
           <div ref={messagesRef} className="sb-ai-chat-messages" aria-live="polite">
             {activeLead ? (
               <AiChatLeadForm
-                kind={activeLead}
+                kind={activeLead.kind}
                 locale={locale}
+                initialRequest={activeLead.initialRequest}
+                transcript={messages.slice(-8).map((item) => `${item.role}: ${item.text}`).join("\n")}
                 onCancel={() => setActiveLead(null)}
                 onComplete={completeLead}
               />
@@ -297,17 +427,19 @@ export default function AiChatWidget({
                 </div>
                 {messages.length === 0 ? (
                   <div className="sb-ai-chat-actions" aria-label={isArabic ? "طرق يمكننا مساعدتك بها" : "Ways we can help"}>
-                    {(Object.keys(copy.leadActions) as ChatLeadKind[]).map((kind) => (
+                    {(Object.keys(copy.leadActions) as ChatLeadKind[]).filter((kind) => kind !== "support").map((kind) => (
                       <button key={kind} type="button" onClick={() => openLead(kind)}>{copy.leadActions[kind]}</button>
                     ))}
                   </div>
                 ) : null}
-                {messages.map((item) => (
-                  <p className={`sb-ai-chat-message is-${item.role}`} key={item.id}>{item.text}</p>
+                {messages.filter((item) => item.text).map((item) => (
+                  <div className={`sb-ai-chat-message is-${item.role}`} key={item.id}>
+                    <FormattedChatText text={item.text} />
+                  </div>
                 ))}
               </>
             )}
-            {sending ? <p className="sb-ai-chat-typing">{copy.typing}</p> : null}
+            {sending && !streamStarted ? <p className="sb-ai-chat-typing">{copy.typing}</p> : null}
             {error ? <p className="sb-ai-chat-error" role="alert">{error}</p> : null}
           </div>
           <form className="sb-ai-chat-form" onSubmit={submit}>
@@ -335,7 +467,7 @@ export default function AiChatWidget({
           </form>
         </section>
       ) : null}
-      <button ref={triggerRef} type="button" className="sb-ai-chat-trigger" onClick={() => setOpen(true)} aria-label={openLabel}>
+      <button ref={triggerRef} type="button" className="sb-ai-chat-trigger" onClick={() => { trackAnalyticsEvent("chat_opened", { locale }); setOpen(true); }} aria-label={openLabel}>
         <span className="sb-ai-chat-trigger-avatar">
           <Image src={copy.avatar} alt="" aria-hidden="true" width={64} height={64} />
         </span>

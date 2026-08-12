@@ -37,10 +37,18 @@ export async function getFreshAdminSession(): Promise<SessionInfo | null> {
   if (!stored || !stored.secret.active) return null;
   if ((stored.secret.tokenVersion || 1) !== session.tv) return null;
 
+  // Analytics is a newly introduced manager capability. Preserve custom roles
+  // exactly as configured while allowing existing manager/owner sessions to use
+  // the Overview without a manual permission migration.
+  const perms =
+    stored.secret.role === "manager" || stored.secret.role === "owner"
+      ? Array.from(new Set([...stored.secret.authorities, "analytics"]))
+      : stored.secret.authorities;
+
   return {
     uid: session.uid,
     role: stored.secret.role,
-    perms: stored.secret.authorities,
+    perms,
     tv: stored.secret.tokenVersion || 1,
   };
 }

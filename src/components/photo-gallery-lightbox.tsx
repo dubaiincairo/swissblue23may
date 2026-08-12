@@ -8,6 +8,7 @@ import { rich } from "@/components/rich-text";
 type GalleryImage = {
   image: string;
   title: string;
+  showHeadline?: boolean;
 };
 
 function subscribeToMounted(onStoreChange: () => void) {
@@ -40,6 +41,7 @@ export default function PhotoGalleryLightbox({
     getServerMountedSnapshot,
   );
   const galleryClass = variant === "property" ? "gallery-grid" : "hotel-showcase-grid";
+  const previewImages = variant === "homepage" ? images.slice(0, 5) : images;
   const touchStartX = useRef<number | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
 
@@ -119,7 +121,7 @@ export default function PhotoGalleryLightbox({
   return (
     <>
       <div className={galleryClass}>
-        {images.map((image, index) => (
+        {previewImages.map((image, index) => (
           <figure
             className={`${variant === "homepage" && index === 0 ? "feature" : ""} reveal-scale-up`}
             style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
@@ -142,7 +144,9 @@ export default function PhotoGalleryLightbox({
                     : "(min-width: 1024px) 33vw, 100vw"
                 }
               />
-              <span className="gallery-caption">{rich(image.title)}</span>
+              {image.showHeadline ? (
+                <span className="gallery-caption">{rich(image.title)}</span>
+              ) : null}
             </button>
           </figure>
         ))}
@@ -244,7 +248,7 @@ export default function PhotoGalleryLightbox({
                 ) : null}
               </div>
 
-              {activeImage.title ? (
+              {activeImage.showHeadline && activeImage.title ? (
                 <p className="lightbox-caption">{rich(activeImage.title)}</p>
               ) : null}
 

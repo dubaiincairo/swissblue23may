@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ChatLeadKind } from "@/lib/chat-leads";
 import type { ChatLocale } from "@/lib/ai-chat";
+import { trackAnalyticsEvent } from "@/lib/analytics-events";
 
 type Copy = {
   title: Record<ChatLeadKind, string>;
@@ -21,11 +22,13 @@ const COPY: Record<ChatLocale, Copy> = {
       booking: "Booking request",
       corporate: "Corporate request",
       career: "Career enquiry",
+      support: "Speak to our team",
     },
     intro: {
       booking: "Share your details and our reservations team will follow up.",
       corporate: "Share your details and our corporate reservations team will follow up.",
       career: "Share your details and our careers team will follow up.",
+      support: "Share your contact details and our reservations team will continue from this conversation.",
     },
     name: "Full name",
     contact: "Email or mobile number",
@@ -39,11 +42,13 @@ const COPY: Record<ChatLocale, Copy> = {
       booking: "طلب حجز",
       corporate: "طلب شركات",
       career: "استفسار وظيفي",
+      support: "التحدث مع الفريق",
     },
     intro: {
       booking: "أرسل بياناتك وسيتواصل معك فريق الحجوزات.",
       corporate: "أرسل بياناتك وسيتواصل معك فريق حجوزات الشركات.",
       career: "أرسل بياناتك وسيتواصل معك فريق التوظيف.",
+      support: "أرسل بيانات التواصل وسيكمل فريق الحجوزات معك من هذه المحادثة.",
     },
     name: "الاسم الكامل",
     contact: "البريد الإلكتروني أو رقم الجوال",
@@ -59,13 +64,15 @@ type Props = {
   locale: ChatLocale;
   onCancel: () => void;
   onComplete: (kind: ChatLeadKind) => void;
+  initialRequest?: string;
+  transcript?: string;
 };
 
-export default function AiChatLeadForm({ kind, locale, onCancel, onComplete }: Props) {
+export default function AiChatLeadForm({ kind, locale, onCancel, onComplete, initialRequest = "", transcript = "" }: Props) {
   const copy = COPY[locale];
   const [fullName, setFullName] = useState("");
   const [contact, setContact] = useState("");
-  const [request, setRequest] = useState("");
+  const [request, setRequest] = useState(initialRequest);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
 
@@ -79,13 +86,14 @@ export default function AiChatLeadForm({ kind, locale, onCancel, onComplete }: P
       const response = await fetch("/api/ai-chat/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ kind, locale, fullName, contact, request, company_url: "" }),
+        body: JSON.stringify({ kind, locale, fullName, contact, request, transcript, company_url: "" }),
       });
       const data = (await response.json()) as { ok?: boolean; error?: string };
       if (!response.ok || !data.ok) {
         setError(data.error || (locale === "ar" ? "تعذر إرسال الطلب." : "Your request could not be sent."));
         return;
       }
+      trackAnalyticsEvent("chat_lead_submitted", { locale, lead_kind: kind });
       onComplete(kind);
     } catch {
       setError(locale === "ar" ? "تعذر الاتصال بالخدمة." : "The request service could not be reached.");

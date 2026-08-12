@@ -3,6 +3,7 @@ import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 type GalleryImage = {
   readonly image: string;
   readonly title: string;
+  readonly showHeadline?: boolean;
 };
 
 const fallbackGalleryImages = [
@@ -46,10 +47,12 @@ export default function HomepageGallery({
       ? images.map((image) => ({
           image: image.image,
           title: image.title,
+          showHeadline: image.showHeadline === true,
         }))
       : fallbackGalleryImages.map((image) => ({
           image: image.image,
           title: isArabic ? image.titleAr : image.titleEn,
+          showHeadline: false,
         }));
 
   return (

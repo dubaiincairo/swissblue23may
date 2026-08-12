@@ -16,6 +16,12 @@ const PUBLIC_ADMIN_PATHS = new Set([LOGIN_PATH, "/admin/forgot", "/admin/reset"]
 /** Admin areas that require a valid session (login + recovery pages are exempt). */
 function needsAuth(pathname: string): boolean {
   if (PUBLIC_ADMIN_PATHS.has(pathname)) return false;
+  if (
+    process.env.NODE_ENV === "development" &&
+    pathname === "/admin/loyalty-layouts"
+  ) {
+    return false;
+  }
   return (
     pathname === "/admin" ||
     pathname.startsWith("/admin/") ||
@@ -34,8 +40,11 @@ function needsAuth(pathname: string): boolean {
 function requiredAuthority(pathname: string): AuthorityId | "content-any" | null {
   if (pathname === "/admin/users" || pathname.startsWith("/admin/users/")) return "users";
   if (pathname.startsWith("/api/admin/users")) return "users";
+  if (pathname === "/admin/overview" || pathname.startsWith("/admin/overview/")) return "analytics";
+  if (pathname.startsWith("/api/admin/overview")) return "analytics";
   if (pathname.startsWith("/api/admin/chat-knowledge")) return "content-any";
   if (pathname === "/admin/reservation-layouts" || pathname.startsWith("/admin/reservation-layouts/")) return "content-any";
+  if (pathname === "/admin/loyalty-layouts" || pathname.startsWith("/admin/loyalty-layouts/")) return "content-any";
   if (pathname === "/admin/submissions" || pathname.startsWith("/admin/submissions/")) return "submissions";
   if (pathname === "/studio" || pathname.startsWith("/studio/")) return "studio";
   if (pathname.startsWith("/api/site-content")) return "content-any";

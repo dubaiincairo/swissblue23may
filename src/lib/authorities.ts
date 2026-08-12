@@ -7,7 +7,7 @@
  * source of truth for enforcement; `role` is only a label + a UI seeding aid.
  */
 
-export type AuthorityId = "content.en" | "content.ar" | "submissions" | "studio" | "users";
+export type AuthorityId = "analytics" | "content.en" | "content.ar" | "submissions" | "studio" | "users";
 
 export type Authority = {
   id: AuthorityId;
@@ -17,6 +17,12 @@ export type Authority = {
 };
 
 export const AUTHORITIES: Authority[] = [
+  {
+    id: "analytics",
+    label: "View website overview",
+    description: "Read website traffic, booking-intent, and lead insights.",
+    group: "Operations",
+  },
   {
     id: "content.en",
     label: "Edit English content",
@@ -63,7 +69,7 @@ export const ROLES: { id: AdminRole; label: string; description: string }[] = [
 
 export const ROLE_PRESETS: Record<AdminRole, AuthorityId[]> = {
   owner: [...ALL_AUTHORITY_IDS],
-  manager: ["content.en", "content.ar", "submissions", "studio"],
+  manager: ["analytics", "content.en", "content.ar", "submissions", "studio"],
   editor: ["content.en", "content.ar"],
   viewer: ["submissions"],
   custom: [],
@@ -98,6 +104,7 @@ export function sanitizeAuthorities(input: unknown): AuthorityId[] {
 
 /** Admin areas in priority order — the first one a user can reach is their landing page. */
 export const AREA_PATHS: { authority: AuthorityId; path: string }[] = [
+  { authority: "analytics", path: "/admin/overview" },
   { authority: "content.en", path: "/admin" },
   { authority: "content.ar", path: "/admin/ar" },
   { authority: "submissions", path: "/admin/submissions" },

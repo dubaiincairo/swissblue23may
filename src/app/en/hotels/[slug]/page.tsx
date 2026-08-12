@@ -7,8 +7,11 @@ import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import SocialShare from "@/components/social-share";
 import { hotelsEn } from "@/lib/content-en";
-import { propertyGallerySupplement } from "@/lib/content";
-import { getEditableContent, isSectionHidden, BOOKING_URL } from "@/lib/editable-content";
+import {
+  getEditableContent,
+  isSectionHidden,
+  BOOKING_URL,
+} from "@/lib/editable-content";
 import { isComingSoonProperty } from "@/lib/property-availability";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +42,27 @@ export default async function HotelDetailPageEn({
     notFound();
   }
 
+  const propertyGallery = en.media.propertyGalleries.items.find(
+    (item) => item.slug === slug,
+  );
+  const galleryImages = (
+    propertyGallery?.gallery ?? []
+  )
+    .filter((item) => {
+      const image = typeof item === "string" ? item : item.image;
+
+      return image && image !== hotel.image;
+    })
+    .map((item, index) => ({
+      image: typeof item === "string" ? item : item.image,
+      title:
+        typeof item === "string"
+          ? `${hotel.title} image ${index + 1}`
+          : item.title || `${hotel.title} image ${index + 1}`,
+      showHeadline:
+        typeof item === "string" ? false : item.showHeadline === true,
+    }));
+
   return (
     <PageShellEn>
       <PageHeroEn
@@ -59,13 +83,17 @@ export default async function HotelDetailPageEn({
           <p>{rich(hotel.positioning)}</p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <div className="stat-tile">
-              <div className="text-2xl font-bold text-[var(--primary)]">{rich(hotel.units)}</div>
+              <div className="text-2xl font-bold text-[var(--primary)]">
+                {rich(hotel.units)}
+              </div>
               <div className="stat-tile-label mt-1 text-sm font-semibold text-[var(--text-secondary)]">
                 Total inventory
               </div>
             </div>
             <div className="stat-tile">
-              <div className="text-2xl font-bold text-[var(--primary)]">{rich(hotel.city)}</div>
+              <div className="text-2xl font-bold text-[var(--primary)]">
+                {rich(hotel.city)}
+              </div>
               <div className="stat-tile-label mt-1 text-sm font-semibold text-[var(--text-secondary)]">
                 City
               </div>
@@ -77,13 +105,19 @@ export default async function HotelDetailPageEn({
         </div>
 
         <div className="grid gap-4">
-          <div className="content-card reveal-slide-up" style={{ "--delay": "100ms" } as React.CSSProperties}>
+          <div
+            className="content-card reveal-slide-up"
+            style={{ "--delay": "100ms" } as React.CSSProperties}
+          >
             <span className="eyebrow">Location highlight</span>
             <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
               {rich(hotel.locationHighlight)}
             </p>
           </div>
-          <div className="content-card reveal-slide-up" style={{ "--delay": "200ms" } as React.CSSProperties}>
+          <div
+            className="content-card reveal-slide-up"
+            style={{ "--delay": "200ms" } as React.CSSProperties}
+          >
             <span className="eyebrow">Nearby landmarks</span>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {hotel.landmarks.map((item) => (
@@ -111,7 +145,9 @@ export default async function HotelDetailPageEn({
               style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
             >
               <span>
-                {"totalUnits" in unit ? `${unit.totalUnits} units` : rich(unit.count)}
+                {"totalUnits" in unit
+                  ? `${unit.totalUnits} units`
+                  : rich(unit.count)}
               </span>
               <h3>{"type" in unit ? rich(unit.type) : rich(unit.title)}</h3>
               <p>
@@ -138,7 +174,12 @@ export default async function HotelDetailPageEn({
         <FeatureChipGrid items={hotel.amenities} variant="check" columns={2} />
       </section>
 
-      <PropertyMap city={hotel.city} locale="en" query={hotel.mapQuery} title={hotel.title} />
+      <PropertyMap
+        city={hotel.city}
+        locale="en"
+        query={hotel.mapQuery}
+        title={hotel.title}
+      />
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="section-heading reveal-slide-up">
@@ -147,14 +188,7 @@ export default async function HotelDetailPageEn({
         </div>
         <div className="mt-8">
           <PhotoGalleryLightbox
-            images={Array.from(
-              new Set([...hotel.gallery, ...propertyGallerySupplement]),
-            )
-              .slice(0, 6)
-              .map((image, index) => ({
-                image,
-                title: `${hotel.title} image ${index + 1}`,
-              }))}
+            images={galleryImages}
             locale="en"
             variant="property"
           />
@@ -162,16 +196,27 @@ export default async function HotelDetailPageEn({
       </section>
 
       {!isSectionHidden(hiddenSections, "propertyFaq") && (
-      <section className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8" dir="ltr">
-        <div className="faq-heading reveal-slide-up">
-          <span className="eyebrow">Property FAQ</span>
-          <h2>Important information about {hotel.title}.</h2>
-        </div>
-        <FaqAccordion items={en.faq.property} />
-      </section>
+        <section
+          className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8"
+          dir="ltr"
+        >
+          <div className="faq-heading reveal-slide-up">
+            <span className="eyebrow">Property FAQ</span>
+            <h2>Important information about {hotel.title}.</h2>
+          </div>
+          <FaqAccordion items={en.faq.property} />
+        </section>
       )}
 
-      <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.hotelDetail.titleTemplate.replace("{hotel}", hotel.title)} text={en.closingCtas.defaultText} cta={en.closingCtas.hotelDetail.cta} />
+      <CtaBandEn
+        eyebrow={en.closingCtas.eyebrow}
+        title={en.closingCtas.hotelDetail.titleTemplate.replace(
+          "{hotel}",
+          hotel.title,
+        )}
+        text={en.closingCtas.defaultText}
+        cta={en.closingCtas.hotelDetail.cta}
+      />
     </PageShellEn>
   );
 }
