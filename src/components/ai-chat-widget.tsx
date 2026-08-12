@@ -427,7 +427,7 @@ export default function AiChatWidget({
                 </div>
                 {messages.length === 0 ? (
                   <div className="sb-ai-chat-actions" aria-label={isArabic ? "طرق يمكننا مساعدتك بها" : "Ways we can help"}>
-                    {(Object.keys(copy.leadActions) as ChatLeadKind[]).map((kind) => (
+                    {(Object.keys(copy.leadActions) as ChatLeadKind[]).filter((kind) => kind !== "support").map((kind) => (
                       <button key={kind} type="button" onClick={() => openLead(kind)}>{copy.leadActions[kind]}</button>
                     ))}
                   </div>
