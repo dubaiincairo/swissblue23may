@@ -1549,11 +1549,13 @@ const chatAssistant = {
     booking: "طلب حجز",
     corporate: "طلب شركات",
     career: "استفسار وظيفي",
+    support: "التحدث مع موظف",
   },
   leadComplete: {
     booking: "تم إرسال طلب الحجز إلى فريق الحجوزات. سيتواصل معك قريباً.",
     corporate: "تم إرسال طلب الشركات إلى فريق الحجوزات. سيتواصل معك قريباً.",
     career: "تم إرسال طلبك إلى فريق التوظيف. سيتواصل معك قريباً.",
+    support: "تم إرسال طلب التواصل إلى فريق الحجوزات مع ملخص المحادثة. سيتواصل معك الفريق قريباً.",
   },
 };
 
@@ -1572,6 +1574,7 @@ const chatAssistantEn = {
     booking: "Booking help",
     corporate: "Corporate help",
     career: "Career help",
+    support: "Speak to the team",
   },
   leadComplete: {
     booking:
@@ -1580,6 +1583,8 @@ const chatAssistantEn = {
       "Your corporate request has been sent to reservations. The team will contact you shortly.",
     career:
       "Your career enquiry has been sent to the careers team. They will contact you shortly.",
+    support:
+      "Your request and conversation summary have been sent to reservations. The team will contact you shortly.",
   },
 };
 

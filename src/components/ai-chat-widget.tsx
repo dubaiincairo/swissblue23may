@@ -14,6 +14,11 @@ type ChatMessage = {
   text: string;
 };
 
+type ActiveLead = {
+  kind: ChatLeadKind;
+  initialRequest: string;
+};
+
 type ChatLocale = "ar" | "en";
 
 type AssistantCopy = {
@@ -52,11 +57,13 @@ const DEFAULT_ASSISTANT_COPY: Record<ChatLocale, AssistantCopy> = {
       booking: "تم إرسال طلب الحجز إلى فريق الحجوزات. سيتواصل معك قريباً.",
       corporate: "تم إرسال طلب الشركات إلى فريق الحجوزات. سيتواصل معك قريباً.",
       career: "تم إرسال طلبك إلى فريق التوظيف. سيتواصل معك قريباً.",
+      support: "تم إرسال طلب التواصل إلى فريق الحجوزات مع ملخص المحادثة. سيتواصل معك الفريق قريباً.",
     },
     leadActions: {
       booking: "طلب حجز",
       corporate: "طلب شركات",
       career: "استفسار وظيفي",
+      support: "التحدث مع موظف",
     },
   },
   en: {
@@ -73,11 +80,13 @@ const DEFAULT_ASSISTANT_COPY: Record<ChatLocale, AssistantCopy> = {
       booking: "Your booking request has been sent to reservations. The team will contact you shortly.",
       corporate: "Your corporate request has been sent to reservations. The team will contact you shortly.",
       career: "Your career enquiry has been sent to the careers team. They will contact you shortly.",
+      support: "Your request and conversation summary have been sent to reservations. The team will contact you shortly.",
     },
     leadActions: {
       booking: "Booking help",
       corporate: "Corporate help",
       career: "Career help",
+      support: "Speak to the team",
     },
   },
 };
@@ -209,7 +218,9 @@ export default function AiChatWidget({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
-  const [activeLead, setActiveLead] = useState<ChatLeadKind | null>(null);
+  const [streamStarted, setStreamStarted] = useState(false);
+  const [sessionNudged, setSessionNudged] = useState(false);
+  const [activeLead, setActiveLead] = useState<ActiveLead | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -260,6 +271,28 @@ export default function AiChatWidget({
     messagesElement.scrollTo({ top: messagesElement.scrollHeight, behavior: "smooth" });
   }, [activeLead, error, messages, sending]);
 
+  useEffect(() => {
+    if (!open || sending || activeLead || sessionNudged || messages.length === 0) return;
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage.role !== "assistant") return;
+
+    const timer = window.setTimeout(() => {
+      setSessionNudged(true);
+      setMessages((current) => [
+        ...current,
+        {
+          id: nextId.current++,
+          role: "assistant",
+          text: isArabic
+            ? "هل ترغب في مساعدة أخرى قبل إنهاء المحادثة؟"
+            : "May I help with anything else before we close this conversation?",
+        },
+      ]);
+    }, 120_000);
+
+    return () => window.clearTimeout(timer);
+  }, [activeLead, isArabic, messages, open, sending, sessionNudged]);
+
   if (
     process.env.NEXT_PUBLIC_AI_CHAT_ENABLED !== "true" ||
     isAdminPath(pathname) ||
@@ -270,15 +303,21 @@ export default function AiChatWidget({
   }
 
   function addMessage(role: ChatMessage["role"], text: string) {
+    const id = nextId.current++;
     setMessages((current) => [
       ...current,
-      { id: nextId.current++, role, text: role === "assistant" ? cleanAssistantText(text) : text },
+      { id, role, text: role === "assistant" ? cleanAssistantText(text) : text },
     ]);
+    return id;
   }
 
-  function openLead(kind: ChatLeadKind) {
+  function updateMessage(id: number, text: string) {
+    setMessages((current) => current.map((item) => item.id === id ? { ...item, text } : item));
+  }
+
+  function openLead(kind: ChatLeadKind, initialRequest = "") {
     setError("");
-    setActiveLead(kind);
+    setActiveLead({ kind, initialRequest });
   }
 
   function completeLead(kind: ChatLeadKind) {
@@ -293,10 +332,13 @@ export default function AiChatWidget({
 
     setMessage("");
     setError("");
+    setSessionNudged(false);
+    setStreamStarted(false);
     addMessage("user", text);
+    const history = messages.slice(-8).map((item) => ({ role: item.role, content: item.text }));
     const leadKind = detectChatLeadKind(text);
     if (leadKind) {
-      openLead(leadKind);
+      openLead(leadKind, text);
       return;
     }
 
@@ -305,18 +347,44 @@ export default function AiChatWidget({
       const response = await fetch("/api/ai-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, locale }),
+        body: JSON.stringify({ message: text, locale, history, pagePath: pathname, stream: true }),
       });
-      const data = (await response.json()) as { answer?: string; error?: string };
-      if (!response.ok || !data.answer) {
+      if (!response.ok) {
+        const data = (await response.json().catch(() => ({}))) as { error?: string };
         setError(data.error || (isArabic ? "تعذر إرسال رسالتك." : "Your message could not be sent."));
         return;
       }
-      addMessage("assistant", data.answer);
+
+      if (!response.body) {
+        setError(isArabic ? "تعذر استلام الرد." : "The response could not be received.");
+        return;
+      }
+
+      const assistantMessageId = addMessage("assistant", "");
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let answer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        answer += decoder.decode(value, { stream: true });
+        if (answer) setStreamStarted(true);
+        updateMessage(assistantMessageId, answer);
+      }
+      answer += decoder.decode();
+
+      const cleanedAnswer = cleanAssistantText(answer);
+      if (!cleanedAnswer) {
+        setMessages((current) => current.filter((item) => item.id !== assistantMessageId));
+        setError(isArabic ? "تعذر استلام الرد." : "The response could not be received.");
+        return;
+      }
+      updateMessage(assistantMessageId, cleanedAnswer);
     } catch {
       setError(isArabic ? "تعذر الاتصال بالمساعد." : "The assistant could not be reached.");
     } finally {
       setSending(false);
+      setStreamStarted(false);
     }
   }
 
@@ -344,8 +412,10 @@ export default function AiChatWidget({
           <div ref={messagesRef} className="sb-ai-chat-messages" aria-live="polite">
             {activeLead ? (
               <AiChatLeadForm
-                kind={activeLead}
+                kind={activeLead.kind}
                 locale={locale}
+                initialRequest={activeLead.initialRequest}
+                transcript={messages.slice(-8).map((item) => `${item.role}: ${item.text}`).join("\n")}
                 onCancel={() => setActiveLead(null)}
                 onComplete={completeLead}
               />
@@ -362,14 +432,14 @@ export default function AiChatWidget({
                     ))}
                   </div>
                 ) : null}
-                {messages.map((item) => (
+                {messages.filter((item) => item.text).map((item) => (
                   <div className={`sb-ai-chat-message is-${item.role}`} key={item.id}>
                     <FormattedChatText text={item.text} />
                   </div>
                 ))}
               </>
             )}
-            {sending ? <p className="sb-ai-chat-typing">{copy.typing}</p> : null}
+            {sending && !streamStarted ? <p className="sb-ai-chat-typing">{copy.typing}</p> : null}
             {error ? <p className="sb-ai-chat-error" role="alert">{error}</p> : null}
           </div>
           <form className="sb-ai-chat-form" onSubmit={submit}>
