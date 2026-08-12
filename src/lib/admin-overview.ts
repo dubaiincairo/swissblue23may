@@ -182,7 +182,7 @@ async function loadGa4(
 
   try {
     const token = await googleAccessToken(serviceAccount);
-    const reports = await gaReports(propertyId, token, [
+    const reportRequests = [
       { dateRanges: [currentRange], metrics: [{ name: "activeUsers" }, { name: "engagedSessions" }] },
       { dateRanges: [previousRange], metrics: [{ name: "activeUsers" }] },
       { dateRanges: [currentRange], metrics: [{ name: "eventCount" }], dimensionFilter: eventFilter("booking_cta_click") },
@@ -193,7 +193,12 @@ async function loadGa4(
       { dateRanges: [currentRange], dimensions: [{ name: "pagePath" }], metrics: [{ name: "screenPageViews" }], orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }], limit: "8" },
       { dateRanges: [currentRange], dimensions: [{ name: "deviceCategory" }], metrics: [{ name: "activeUsers" }], orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }] },
       { dateRanges: [currentRange], dimensions: [{ name: "country" }], metrics: [{ name: "activeUsers" }], orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }], limit: "5" },
-    ]);
+    ];
+    // The GA4 Data API accepts at most five reports in each batch request.
+    const reports = (await Promise.all([
+      gaReports(propertyId, token, reportRequests.slice(0, 5)),
+      gaReports(propertyId, token, reportRequests.slice(5)),
+    ])).flat();
     const metric = (report: GaReport | undefined, index = 0) => asNumber(report?.rows?.[0]?.metricValues?.[index]?.value);
     const list = (report: GaReport | undefined) => (report?.rows ?? []).map((row) => ({ label: row.dimensionValues?.[0]?.value || "Other", value: asNumber(row.metricValues?.[0]?.value) }));
     const visitors = metric(reports[0], 0);
