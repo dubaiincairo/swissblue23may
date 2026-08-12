@@ -329,11 +329,14 @@ export async function notifyChatLead(doc: Record<string, unknown>): Promise<void
   const email = get("email");
   const phone = get("phone");
   const request = get("request");
+  const transcript = get("transcript");
   const label = kind === "career"
     ? "Career help"
     : kind === "corporate"
       ? "Corporate request"
-      : "Booking request";
+      : kind === "support"
+        ? "Guest support"
+        : "Booking request";
   const recipient = kind === "career" ? CAREERS_NOTIFY_TO : CORPORATE_NOTIFY_TO;
 
   const html = emailShell(
@@ -346,6 +349,7 @@ export async function notifyChatLead(doc: Record<string, unknown>): Promise<void
       ["Email", email],
       ["Phone", phone],
       ["Request", request],
+      ["Recent conversation", transcript],
       ["Language", get("locale")],
     ],
   );

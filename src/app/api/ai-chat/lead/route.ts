@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 const MAX_NAME_CHARS = 120;
 const MAX_CONTACT_CHARS = 160;
 const MAX_REQUEST_CHARS = 2_000;
+const MAX_TRANSCRIPT_CHARS = 6_000;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -30,6 +31,16 @@ function localized(locale: "ar" | "en", english: string, arabic: string) {
 
 function cleanString(value: unknown, limit: number) {
   return typeof value === "string" ? value.replace(/\s+/g, " ").trim().slice(0, limit) : "";
+}
+
+function cleanTranscript(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.replace(/\s+/g, " ").trim())
+    .filter(Boolean)
+    .join("\n")
+    .slice(0, MAX_TRANSCRIPT_CHARS);
 }
 
 function contactParts(contact: string) {
@@ -79,6 +90,7 @@ export async function POST(request: Request) {
   const fullName = cleanString(body.fullName, MAX_NAME_CHARS);
   const contact = cleanString(body.contact, MAX_CONTACT_CHARS);
   const requestText = cleanString(body.request, MAX_REQUEST_CHARS);
+  const transcript = cleanTranscript(body.transcript);
   const { email, phone } = contactParts(contact);
 
   if (!isChatLeadKind(kind) || !fullName || !requestText || (!email && !phone)) {
@@ -106,6 +118,7 @@ export async function POST(request: Request) {
     email,
     phone,
     request: requestText,
+    transcript,
     locale,
   };
 
