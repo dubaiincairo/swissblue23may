@@ -12,6 +12,7 @@ import {
   loyaltyProgram,
   navGroups,
   services,
+  diningGalleryPhotos,
   diningOptions,
   contactChannels,
   roomClassifications,
@@ -27,6 +28,7 @@ import {
   navGroupsEn,
   offersEn,
   servicesEn,
+  diningGalleryPhotosEn,
   diningOptionsEn,
   contactChannelsEn,
   roomClassificationsEn,
@@ -1805,6 +1807,10 @@ export const defaultSiteContent = {
       jeddah: jeddahImage,
       jazan: jazanImage,
       gallery: galleryImages,
+      diningGallery: diningGalleryPhotos.map((item) => ({
+        ...item,
+        showHeadline: false,
+      })),
       propertyGalleries: createPropertyGalleryCollection(hotels),
       adminAuthBackdrop: createDefaultAdminAuthBackdrop(),
     },
@@ -2868,6 +2874,10 @@ export const defaultSiteContent = {
       jeddah: jeddahImage,
       jazan: jazanImage,
       gallery: galleryImagesEn,
+      diningGallery: diningGalleryPhotosEn.map((item) => ({
+        ...item,
+        showHeadline: false,
+      })),
       propertyGalleries: createPropertyGalleryCollection(hotelsEn),
       adminAuthBackdrop: createDefaultAdminAuthBackdrop(),
     },
@@ -4701,6 +4711,43 @@ function syncMediaGallery(
   };
 }
 
+function syncDiningGallery(
+  arGallery: EditableSiteContent["ar"]["media"]["diningGallery"],
+  enGallery: EditableSiteContent["en"]["media"]["diningGallery"],
+  editedLanguage?: ContentLanguage,
+) {
+  const sourceLanguage =
+    editedLanguage ?? (enGallery.length >= arGallery.length ? "en" : "ar");
+  const source = sourceLanguage === "ar" ? arGallery : enGallery;
+
+  const localize = (
+    language: ContentLanguage,
+    target: typeof arGallery,
+  ) => {
+    const targetByImage = new Map(target.map((item) => [item.image, item]));
+
+    return source.map((sourceItem, index) => {
+      const localized = targetByImage.get(sourceItem.image);
+
+      return {
+        ...sourceItem,
+        title:
+          localized?.title ||
+          (language === "ar"
+            ? `صورة طعام ${index + 1}`
+            : `Dining photo ${index + 1}`),
+        image: sourceItem.image,
+        showHeadline: sourceItem.showHeadline === true,
+      };
+    });
+  };
+
+  return {
+    ar: localize("ar", arGallery),
+    en: localize("en", enGallery),
+  };
+}
+
 function syncServiceItems(
   arItems: EditableSiteContent["ar"]["homepage"]["services"]["items"],
   enItems: EditableSiteContent["en"]["homepage"]["services"]["items"],
@@ -5189,6 +5236,11 @@ function syncSharedImages(
     content.en.media.gallery,
     editedLanguage,
   );
+  const syncedDiningGallery = syncDiningGallery(
+    content.ar.media.diningGallery,
+    content.en.media.diningGallery,
+    editedLanguage,
+  );
   const syncedServices = syncServiceItems(
     content.ar.homepage.services.items,
     content.en.homepage.services.items,
@@ -5345,6 +5397,7 @@ function syncSharedImages(
         jeddah: jeddahAr,
         jazan: jazanAr,
         gallery: syncedGallery.ar,
+        diningGallery: syncedDiningGallery.ar,
         propertyGalleries: syncedPropertyGalleries.ar,
         adminAuthBackdrop: syncedAdminAuthBackdrop.ar,
       },
@@ -5474,6 +5527,7 @@ function syncSharedImages(
         jeddah: jeddahEn,
         jazan: jazanEn,
         gallery: syncedGallery.en,
+        diningGallery: syncedDiningGallery.en,
         propertyGalleries: syncedPropertyGalleries.en,
         adminAuthBackdrop: syncedAdminAuthBackdrop.en,
       },

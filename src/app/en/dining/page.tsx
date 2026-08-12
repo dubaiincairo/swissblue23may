@@ -1,7 +1,6 @@
 import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { rich } from "@/components/rich-text";
-import { diningGalleryPhotosEn } from "@/lib/content-en";
 import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -52,7 +51,7 @@ export default async function DiningPageEn() {
           </p>
         </div>
         <div className="mt-8">
-          <PhotoGalleryLightbox images={[...diningGalleryPhotosEn]} locale="en" />
+          <PhotoGalleryLightbox images={en.media.diningGallery} locale="en" />
         </div>
       </section>
 

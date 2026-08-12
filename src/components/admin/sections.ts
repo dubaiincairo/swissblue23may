@@ -103,6 +103,14 @@ export const adminSections: AdminSection[] = [
     path: ["media", "gallery"],
   },
   {
+    id: "diningGallery",
+    group: "Media",
+    label: "Dining gallery",
+    description:
+      "Food and dining photos shown in the Dining page gallery. Images are shared across Arabic and English.",
+    path: ["media", "diningGallery"],
+  },
+  {
     id: "propertyGalleries",
     group: "Media",
     label: "Hotel galleries",
@@ -467,6 +475,12 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     label: "معرض الضيافة",
     description: "صور معرض الضيافة في الصفحة الرئيسية وعناوينها.",
   },
+  diningGallery: {
+    group: "الوسائط",
+    label: "معرض الطعام",
+    description:
+      "صور الطعام والمطاعم المعروضة في صفحة المطاعم. تتم مشاركة الصور بين النسختين العربية والإنجليزية.",
+  },
   footerSections: {
     group: "إعدادات الموقع",
     label: "روابط الفوتر",
@@ -800,6 +814,7 @@ export const fieldLabels: Record<string, string> = {
   eyebrow: "Small heading",
   faqCategories: "FAQ categories",
   gallery: "Gallery images",
+  diningGallery: "Dining gallery photos",
   hero: "Main banner",
   href: "Link URL",
   howToEnjoy: "How to enjoy",
@@ -980,6 +995,7 @@ export const arabicFieldLabels: Record<string, string> = {
   eyebrow: "العنوان الصغير",
   faqCategories: "تصنيفات الأسئلة الشائعة",
   gallery: "صور المعرض",
+  diningGallery: "صور معرض الطعام",
   hero: "البانر الرئيسي",
   href: "رابط الصفحة",
   howToEnjoy: "طريقة الاستفادة",
