@@ -145,6 +145,16 @@ function findMentionedProperty(properties: PropertySummary[], question: string) 
   return properties.find((property) => propertyAliases(property).some((alias) => normalizedQuestion.includes(alias)));
 }
 
+function formatArabicUnitCount(value: string) {
+  const match = value.match(/^(\d+)\s+(?:شقة|شقتان|شقق)$/);
+  if (!match) return value;
+  const count = Number.parseInt(match[1], 10);
+  if (count === 1) return "شقة واحدة";
+  if (count === 2) return "شقتان";
+  if (count >= 3 && count <= 10) return `${count} شقق`;
+  return `${count} شقة`;
+}
+
 export function fastWebsiteAnswer(
   content: EditableSiteContent,
   locale: ChatLocale,
@@ -162,7 +172,9 @@ export function fastWebsiteAnswer(
   const unitList = unitTypes
     .map((unit) => {
       if (!unit.title || !unit.count) return null;
-      return locale === "ar" ? `${unit.title}: ${unit.count}` : `${unit.title}: ${unit.count}`;
+      return locale === "ar"
+        ? `${unit.title}: ${formatArabicUnitCount(unit.count)}`
+        : `${unit.title}: ${unit.count}`;
     })
     .filter((item): item is string => Boolean(item));
 
