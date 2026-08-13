@@ -8,6 +8,9 @@ import {
 
 export const dynamic = "force-dynamic";
 
+const FETCH_TIMEOUT_MS = 12_000;
+const MAX_REDIRECTS = 4;
+
 type ImportBody = {
   source?: unknown;
   downloadUrl?: unknown;
@@ -57,6 +60,37 @@ function extensionForMime(mime: string) {
   }
 }
 
+async function fetchAllowedSource(
+  rawUrl: string,
+  source: "unsplash" | "pexels",
+  init: RequestInit = {},
+): Promise<Response> {
+  let current = rawUrl;
+
+  for (let redirect = 0; redirect <= MAX_REDIRECTS; redirect += 1) {
+    if (!current.startsWith("https://") || !hostAllowed(current, source)) {
+      throw new Error("Resolved image URL is not allowed.");
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    let response: Response;
+    try {
+      response = await fetch(current, { ...init, redirect: "manual", signal: controller.signal });
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    if (response.status < 300 || response.status >= 400) return response;
+
+    const location = response.headers.get("location");
+    if (!location) throw new Error("Image source redirected without a destination.");
+    current = new URL(location, current).toString();
+  }
+
+  throw new Error("Image source redirected too many times.");
+}
+
 export async function POST(request: Request) {
   if (!isUploadConfigured()) {
     return NextResponse.json({ error: "CMS upload is not configured." }, { status: 500 });
@@ -93,9 +127,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unsplash isn't configured." }, { status: 503 });
     }
 
-    const trackResponse = await fetch(downloadUrl, {
-      headers: { Authorization: `Client-ID ${key}` },
-    });
+    let trackResponse: Response;
+    try {
+      trackResponse = await fetchAllowedSource(downloadUrl, source, {
+        headers: { Authorization: `Client-ID ${key}` },
+      });
+    } catch {
+      return NextResponse.json({ error: "Could not securely reach the image source." }, { status: 502 });
+    }
 
     if (!trackResponse.ok) {
       return NextResponse.json(
@@ -116,7 +155,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Resolved image URL is not allowed." }, { status: 502 });
   }
 
-  const imageResponse = await fetch(imageUrl);
+  let imageResponse: Response;
+  try {
+    imageResponse = await fetchAllowedSource(imageUrl, source);
+  } catch {
+    return NextResponse.json({ error: "Could not securely reach the image source." }, { status: 502 });
+  }
   if (!imageResponse.ok) {
     return NextResponse.json(
       { error: `Could not fetch the image (${imageResponse.status}).` },

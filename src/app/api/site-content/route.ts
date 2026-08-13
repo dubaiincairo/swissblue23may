@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import {
-  defaultSiteContent,
   getEditableContent,
   saveEditableContent,
+  type EditableSiteContent,
 } from "@/lib/editable-content";
 
 export const dynamic = "force-dynamic";
@@ -22,7 +22,7 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   let body: {
-    content?: typeof defaultSiteContent;
+    content?: EditableSiteContent;
     hiddenSections?: string[];
     editedLanguage?: "ar" | "en";
   };
@@ -45,10 +45,25 @@ export async function PUT(request: Request) {
     );
   }
 
-  const content = body?.content ?? defaultSiteContent;
-  const hiddenSections = Array.isArray(body?.hiddenSections)
-    ? body.hiddenSections
-    : [];
+  if (
+    !body?.content ||
+    typeof body.content !== "object" ||
+    Array.isArray(body.content)
+  ) {
+    return NextResponse.json(
+      { error: "Save request did not include a content object." },
+      { status: 400 },
+    );
+  }
+  if (!Array.isArray(body.hiddenSections)) {
+    return NextResponse.json(
+      { error: "Save request did not include hiddenSections." },
+      { status: 400 },
+    );
+  }
+
+  const content = body.content;
+  const hiddenSections = body.hiddenSections;
   const editedLanguage =
     body?.editedLanguage === "ar" || body?.editedLanguage === "en"
       ? body.editedLanguage
