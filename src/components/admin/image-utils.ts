@@ -11,6 +11,7 @@ export function isLongField(name: string, value: string) {
 export function isImageField(name: string, path: Array<string | number>, value: string) {
   const imageKeys = new Set([
     "image",
+    "photos",
     "logo",
     "arabicLogo",
     "mainHero",
@@ -20,13 +21,22 @@ export function isImageField(name: string, path: Array<string | number>, value: 
     "favicon",
     "avatar",
   ]);
+  const isPhotoCollectionItem =
+    name === "photos" &&
+    path.some((segment) => String(segment).toLocaleLowerCase("en").includes("photos"));
   const isGalleryImage = path.some((segment) => segment === "gallery") && name === "image";
   const isHeroSlideSource = path.some((segment) => segment === "mainHeroSlides") && name === "source";
   const looksLikeImage =
     /^https?:\/\//.test(value) &&
     /\.(avif|jpe?g|png|svg|webp|mp4|mov|webm)(\?|$)/i.test(value);
 
-  return imageKeys.has(name) || isGalleryImage || isHeroSlideSource || (name === "gallery" && looksLikeImage);
+  return (
+    imageKeys.has(name) ||
+    isPhotoCollectionItem ||
+    isGalleryImage ||
+    isHeroSlideSource ||
+    (name === "gallery" && looksLikeImage)
+  );
 }
 
 export function imageGuidance(name: string, path: Array<string | number>) {
