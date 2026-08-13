@@ -1681,7 +1681,7 @@ function PrimitiveListValueEditor({
   const stringValue = typeof value === "string" ? value : "";
   const useTextarea = isLongField(name, stringValue) || stringValue.length > 96;
 
-  if (typeof value === "string" && isHotelGalleryImage(path)) {
+  if (typeof value === "string" && isImageField(name, path, value)) {
     return (
       <div className="admin-list-value admin-list-value-image">
         <ImageFieldEditor
