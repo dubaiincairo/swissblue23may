@@ -145,10 +145,7 @@ export default async function EnglishHomePage() {
               {rich(home.loyalty.description)}
             </p>
             <div className="loyalty-actions mt-7">
-              <Link className="btn btn-loyalty" href="/en/loyalty">
-                Join the loyalty program
-              </Link>
-              <span className="loyalty-note">Free membership with instant direct-booking perks</span>
+              <span className="loyalty-status">Coming soon</span>
             </div>
           </div>
           <div className="loyalty-benefits grid gap-4 sm:grid-cols-2">

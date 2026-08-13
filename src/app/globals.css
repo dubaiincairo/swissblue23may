@@ -4192,24 +4192,17 @@ html[dir="rtl"] .sb-ai-chat-header {
   gap: 14px;
 }
 
-.btn-loyalty {
-  background: white;
+.loyalty-status {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 999px;
-  box-shadow: 0 12px 26px rgba(8, 28, 70, 0.2);
-  color: var(--primary);
-  padding-inline: 22px;
-}
-
-.btn-loyalty:hover {
-  background: var(--bluehost-foam, #eef4ff);
-  color: var(--bluehost-deep);
-}
-
-.loyalty-note {
-  color: rgba(255, 255, 255, 0.74);
+  color: white;
+  display: inline-flex;
   font-size: 13px;
-  font-weight: 600;
-  max-width: 220px;
+  font-weight: 800;
+  min-height: 40px;
+  padding: 0 18px;
 }
 
 .loyalty-benefits {
