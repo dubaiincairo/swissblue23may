@@ -20,7 +20,7 @@ export function AccessibleStayPanel({ locale }: { locale: "ar" | "en" }) {
           </span>
           <h2 id={`accessible-stay-heading-${locale}`}>
             {isArabic
-              ? "غرف مهيأة للضيوف من ذوي الإعاقة."
+              ? "غرف مهيأة للضيوف من ذوي الهمم."
               : "Accessible rooms for guests with disabilities."}
           </h2>
           <p>
