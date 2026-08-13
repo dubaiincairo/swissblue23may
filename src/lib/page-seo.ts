@@ -18,7 +18,7 @@ export const PAGE_NAMES: Record<string, { en: string; ar: string }> = {
   home: { en: "Swiss Blue Hotels", ar: "سويس بلو للفنادق" },
   about: { en: "About Us", ar: "من نحن" },
   "rooms-suites": { en: "Rooms & Suites", ar: "الغرف والأجنحة" },
-  "serviced-apartments": { en: "Serviced Apartments", ar: "الشقق الفندقية" },
+  "serviced-apartments": { en: "Serviced Apartments", ar: "الشقق المخدومة" },
   "amenities-services": { en: "Amenities & Services", ar: "المرافق والخدمات" },
   dining: { en: "Dining", ar: "المطاعم" },
   "meetings-events": { en: "Meetings & Events", ar: "الاجتماعات والفعاليات" },

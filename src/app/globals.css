@@ -2588,6 +2588,59 @@ section:has(> .insight-grid) {
   line-height: 1.8;
 }
 
+.feedback-process-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback-process-heading {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.feedback-process-number {
+  align-items: center;
+  background: var(--bluehost-foam);
+  border: 1px solid rgba(43, 111, 232, 0.2);
+  border-radius: 8px;
+  color: var(--primary);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  justify-content: center;
+  min-height: 38px;
+  min-width: 46px;
+  padding: 5px 9px;
+}
+
+.feedback-process-title {
+  color: var(--text-primary);
+  display: block;
+  font-size: 15px;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.feedback-process-text {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.feedback-pill {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  line-height: 1.5;
+  min-height: 62px;
+  padding-block: 12px;
+}
+
 .reservation-command-section {
   background:
     linear-gradient(180deg, white 0%, var(--bluehost-foam) 100%);
@@ -4127,6 +4180,11 @@ html[dir="rtl"] .sb-ai-chat-header {
   align-self: center;
 }
 
+.loyalty-layout {
+  align-items: center;
+  column-gap: clamp(36px, 5vw, 72px);
+}
+
 .loyalty-actions {
   align-items: center;
   display: flex;
@@ -4154,21 +4212,37 @@ html[dir="rtl"] .sb-ai-chat-header {
   max-width: 220px;
 }
 
+.loyalty-benefits {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  gap: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+}
+
 .brand-point {
   align-items: center;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: var(--radius-lg);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   color: white;
   display: grid;
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 750;
-  gap: 14px;
+  gap: 12px;
   grid-template-columns: auto minmax(0, 1fr);
-  line-height: 1.5;
-  min-height: 96px;
-  padding: 18px 20px;
+  line-height: 1.45;
+  min-height: 84px;
+  padding: 15px 17px;
+}
+
+.brand-point:nth-child(odd) {
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.brand-point:nth-child(n + 3) {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .brand-point-icon {
@@ -4181,18 +4255,36 @@ html[dir="rtl"] .sb-ai-chat-header {
   color: white;
   display: inline-flex;
   flex: 0 0 auto;
-  height: 42px;
+  height: 34px;
   justify-content: center;
-  width: 42px;
+  width: 34px;
 }
 
 .brand-point-icon svg {
-  height: 21px;
-  width: 21px;
+  height: 17px;
+  width: 17px;
 }
 
 .brand-point-text {
   align-self: center;
+}
+
+@media (max-width: 639px) {
+  .loyalty-benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-point {
+    min-height: 66px;
+  }
+
+  .brand-point:nth-child(odd) {
+    border-inline-end: 0;
+  }
+
+  .brand-point + .brand-point {
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
 }
 
 .property-map-card {
@@ -11186,9 +11278,9 @@ html[dir="rtl"] .sb-ai-chat-header {
 }
 
 .brand-point:hover {
-  transform: translateY(-4px) scale(1.02);
-  background-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+  transform: none;
 }
 
 .amenity-pill:hover {

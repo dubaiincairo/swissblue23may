@@ -139,7 +139,7 @@ export default async function Home() {
 
       {show("loyalty") && (
       <section className="brand-band section">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
+        <div className="loyalty-layout mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
           <div className="loyalty-intro reveal-slide-right">
             <span className="eyebrow text-white/72">{rich(home.loyalty.subtitle)}</span>
             <h2 className="t-h2 mt-4 text-white">

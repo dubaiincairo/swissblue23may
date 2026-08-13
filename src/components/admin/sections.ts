@@ -103,6 +103,14 @@ export const adminSections: AdminSection[] = [
     path: ["media", "gallery"],
   },
   {
+    id: "diningGallery",
+    group: "Media",
+    label: "Dining gallery",
+    description:
+      "Food and dining photos shown in the Dining page gallery. Images are shared across Arabic and English.",
+    path: ["media", "diningGallery"],
+  },
+  {
     id: "propertyGalleries",
     group: "Media",
     label: "Hotel galleries",
@@ -474,6 +482,12 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     label: "معرض الضيافة",
     description: "صور معرض الضيافة في الصفحة الرئيسية وعناوينها.",
   },
+  diningGallery: {
+    group: "الوسائط",
+    label: "معرض الطعام",
+    description:
+      "صور الطعام والمطاعم المعروضة في صفحة المطاعم. تتم مشاركة الصور بين النسختين العربية والإنجليزية.",
+  },
   footerSections: {
     group: "إعدادات الموقع",
     label: "روابط الفوتر",
@@ -557,7 +571,7 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   categories: {
     group: "الصفحة الرئيسية",
     label: "فئات الإقامة",
-    description: "مقارنة الفندق والشقق الفندقية والشقق المخدومة.",
+    description: "مقارنة الفندق والشقق المخدومة.",
   },
   testimonials: {
     group: "الصفحة الرئيسية",
@@ -588,8 +602,8 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
   },
   servicedApartmentsPage: {
     group: "الإقامة",
-    label: "صفحة الشقق الفندقية",
-    description: "بانر صفحة الشقق الفندقية والخيارات المتاحة.",
+    label: "صفحة الشقق المخدومة",
+    description: "بانر صفحة الشقق المخدومة والخيارات المتاحة.",
   },
   amenitiesServicesPage: {
     group: "الإقامة",
@@ -752,6 +766,7 @@ export const fieldLabels: Record<string, string> = {
   booking: "Booking request",
   corporate: "Corporate request",
   career: "Career enquiry",
+  support: "Guest support",
   accept: "Accept button",
   decline: "Decline button",
   policy: "Policy link text",
@@ -812,6 +827,7 @@ export const fieldLabels: Record<string, string> = {
   eyebrow: "Small heading",
   faqCategories: "FAQ categories",
   gallery: "Gallery images",
+  diningGallery: "Dining gallery photos",
   hero: "Main banner",
   href: "Link URL",
   howToEnjoy: "How to enjoy",
@@ -896,7 +912,7 @@ export const arabicFieldLabels: Record<string, string> = {
   ga4PropertyId: "معرّف خاصية GA4 (أرقام فقط)",
   requireCookieConsent: "اطلب موافقة الكوكيز قبل التتبع",
   "rooms-suites": "الغرف والأجنحة",
-  "serviced-apartments": "الشقق الفندقية",
+  "serviced-apartments": "الشقق المخدومة",
   "amenities-services": "المرافق والخدمات",
   "meetings-events": "الاجتماعات والفعاليات",
   "corporate-deals": "عروض الشركات",
@@ -931,6 +947,7 @@ export const arabicFieldLabels: Record<string, string> = {
   booking: "طلب حجز",
   corporate: "طلب شركات",
   career: "استفسار وظيفي",
+  support: "دعم الضيوف",
   accept: "زر القبول",
   decline: "زر الرفض",
   policy: "نص رابط السياسة",
@@ -992,6 +1009,7 @@ export const arabicFieldLabels: Record<string, string> = {
   eyebrow: "العنوان الصغير",
   faqCategories: "تصنيفات الأسئلة الشائعة",
   gallery: "صور المعرض",
+  diningGallery: "صور معرض الطعام",
   hero: "البانر الرئيسي",
   href: "رابط الصفحة",
   howToEnjoy: "طريقة الاستفادة",

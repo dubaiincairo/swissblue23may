@@ -397,6 +397,11 @@ function galleryHeadlineVisibilityLabel(language: Language) {
     : "Show headline on website";
 }
 
+function isGalleryItemPath(path: Array<string | number>) {
+  return path.some((segment) =>
+    String(segment).toLocaleLowerCase("en").includes("gallery"),
+  );
+}
 function homepagePropertyPreviewImageLabel(language: Language) {
   return language === "ar"
     ? "صورة غلاف صفحة الفندق"
@@ -427,7 +432,7 @@ function fieldLabelFor(
     return hotelGalleryTitleLabel(language);
   }
 
-  if (name === "showHeadline" && path.map(String).includes("gallery")) {
+  if (name === "showHeadline" && isGalleryItemPath(path)) {
     return galleryHeadlineVisibilityLabel(language);
   }
 
@@ -468,6 +473,12 @@ function uploadedGalleryTitle(index: number, language: Language) {
   return language === "ar"
     ? `صورة الفندق ${index + 1}`
     : `Hotel photo ${index + 1}`;
+}
+
+function uploadedDiningGalleryTitle(index: number, language: Language) {
+  return language === "ar"
+    ? `صورة طعام ${index + 1}`
+    : `Dining photo ${index + 1}`;
 }
 
 function galleryItemImage(item: JsonValue) {
@@ -520,11 +531,13 @@ function HotelGalleryBulkUpload({
   path,
   language,
   onChange,
+  galleryType = "hotel",
 }: {
   value: JsonValue[];
   path: Array<string | number>;
   language: Language;
   onChange: (path: Array<string | number>, value: JsonValue) => void;
+  galleryType?: "hotel" | "dining";
 }) {
   const [status, setStatus] = useState("");
 
@@ -539,8 +552,12 @@ function HotelGalleryBulkUpload({
     if (selectedFiles.length === 0) {
       setStatus(
         language === "ar"
-          ? "اختر صور الفندق أولاً."
-          : "Choose hotel photos first.",
+          ? galleryType === "dining"
+            ? "اختر صور الطعام أولاً."
+            : "اختر صور الفندق أولاً."
+          : galleryType === "dining"
+            ? "Choose dining photos first."
+            : "Choose hotel photos first.",
       );
       return;
     }
@@ -563,6 +580,15 @@ function HotelGalleryBulkUpload({
           ),
           image: asset.url,
           showHeadline: false,
+        });
+      }
+
+      if (galleryType === "dining") {
+        uploadedItems.forEach((item, index) => {
+          item.title = uploadedDiningGalleryTitle(
+            mode === "replace" ? index : value.length + index,
+            language,
+          );
         });
       }
 
@@ -603,19 +629,35 @@ function HotelGalleryBulkUpload({
       <div>
         <strong>
           {language === "ar"
-            ? "تحديث صور الفندق دفعة واحدة"
-            : "Bulk update hotel photos"}
+            ? galleryType === "dining"
+              ? "تحديث صور الطعام دفعة واحدة"
+              : "تحديث صور الفندق دفعة واحدة"
+            : galleryType === "dining"
+              ? "Bulk update dining photos"
+              : "Bulk update hotel photos"}
         </strong>
         <small>
           {language === "ar"
-            ? "ارفع صور الفندق الحقيقية فقط. يمكنك تعديل عنوان كل صورة بعد الرفع."
-            : "Upload real hotel photos only. You can edit each photo headline after upload."}
+            ? galleryType === "dining"
+              ? "ارفع صور الطعام بنسبة 4:3 (المقاس المقترح 1600 × 1200). عناوين الصور مخفية افتراضياً."
+              : "ارفع صور الفندق الحقيقية فقط. يمكنك تعديل عنوان كل صورة بعد الرفع."
+            : galleryType === "dining"
+              ? "Upload 4:3 dining photos (recommended 1600 × 1200). Headlines are hidden by default."
+              : "Upload real hotel photos only. You can edit each photo headline after upload."}
         </small>
       </div>
       <div className="admin-gallery-bulk-actions">
         <label className="admin-gallery-bulk-button">
           <Plus aria-hidden="true" size={16} strokeWidth={2.3} />
-          <span>{language === "ar" ? "إضافة صور" : "Add photos"}</span>
+          <span>
+            {language === "ar"
+              ? galleryType === "dining"
+                ? "إضافة صور طعام"
+                : "إضافة صور"
+              : galleryType === "dining"
+                ? "Add dining photos"
+                : "Add photos"}
+          </span>
           <input
             accept="image/avif,image/jpeg,image/png,image/webp"
             multiple
@@ -1780,7 +1822,7 @@ export function FieldEditor({
           type="checkbox"
           onChange={(event) => onChange(path, event.target.checked)}
         />
-        <span>{labelFor(name, language)}</span>
+        <span>{fieldLabelFor(name, path, language)}</span>
       </label>
     );
   }
@@ -1794,6 +1836,9 @@ export function FieldEditor({
     const isPropertyList = name === "items" && path.includes("properties");
     const isGalleryOnlyPropertyList = galleryOnly && isPropertyList;
     const isHotelGalleryArray = isHotelPageGalleryField(name, path);
+    const isDiningGalleryArray =
+      name === "diningGallery" &&
+      path.map(String).join(".").endsWith("media.diningGallery");
     const openForDirectLink = Boolean(
       (isPropertyList && focusItem) || (name === "gallery" && isFocusedItem),
     );
@@ -1850,7 +1895,9 @@ export function FieldEditor({
         </summary>
 
         <div className="admin-fold-body">
-          {isFixedAdminAuthPhotos || isGalleryOnlyPropertyList ? null : (
+          {isFixedAdminAuthPhotos ||
+          isGalleryOnlyPropertyList ||
+          isDiningGalleryArray ? null : (
             <div className="admin-array-toolbar">
               <button
                 type="button"
@@ -1870,6 +1917,16 @@ export function FieldEditor({
               path={path}
               language={language}
               onChange={onChange}
+            />
+          ) : null}
+
+          {isDiningGalleryArray ? (
+            <HotelGalleryBulkUpload
+              value={value}
+              path={path}
+              language={language}
+              onChange={onChange}
+              galleryType="dining"
             />
           ) : null}
 
