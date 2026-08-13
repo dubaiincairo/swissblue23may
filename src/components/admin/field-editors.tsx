@@ -81,6 +81,7 @@ export function ImageFieldEditor({
     "unsplash" | "pexels" | null
   >(null);
   const fieldLabel = fieldLabelFor(name, path, language);
+  const isCoverPhoto = isCoverPhotoField(name, path);
   const uploadOnly =
     isHotelGalleryImage(path) || isHomepagePropertyPreviewImage(name, path);
 
@@ -170,9 +171,13 @@ export function ImageFieldEditor({
                 {language === "ar"
                   ? acceptsVideo(name, path)
                     ? "رفع ملف"
+                    : isCoverPhoto
+                      ? "رفع صورة الغلاف"
                     : "رفع صورة"
                   : acceptsVideo(name, path)
                     ? "Upload media"
+                    : isCoverPhoto
+                      ? "Upload cover photo"
                     : "Upload photo"}
               </span>
               <input
@@ -397,11 +402,19 @@ function isGalleryItemPath(path: Array<string | number>) {
     String(segment).toLocaleLowerCase("en").includes("gallery"),
   );
 }
-
 function homepagePropertyPreviewImageLabel(language: Language) {
   return language === "ar"
-    ? "صورة نظرة عامة على الفندق"
-    : "Hotel Overview photo";
+    ? "صورة غلاف صفحة الفندق"
+    : "Hotel page cover photo";
+}
+
+function isCoverPhotoField(name: string, path: Array<string | number>) {
+  const pathText = path.map(String).join(".");
+
+  return (
+    (name === "image" && pathText.endsWith(".hero.image")) ||
+    isHomepagePropertyPreviewImage(name, path)
+  );
 }
 
 function hotelPageGalleryLabel(language: Language) {
@@ -425,6 +438,10 @@ function fieldLabelFor(
 
   if (isHomepagePropertyPreviewImage(name, path)) {
     return homepagePropertyPreviewImageLabel(language);
+  }
+
+  if (isCoverPhotoField(name, path)) {
+    return language === "ar" ? "صورة الغلاف" : "Cover photo";
   }
 
   if (isHotelPageGalleryField(name, path)) {
