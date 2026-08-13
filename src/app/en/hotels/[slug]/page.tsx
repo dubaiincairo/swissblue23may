@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { FeatureChipGrid } from "@/components/feature-chip";
+import { AccessibleStayPanel } from "@/components/accessible-stay-panel";
 import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
 import PropertyMap from "@/components/property-map";
 import { rich } from "@/components/rich-text";
@@ -173,6 +174,8 @@ export default async function HotelDetailPageEn({
         </div>
         <FeatureChipGrid items={hotel.amenities} variant="check" columns={2} />
       </section>
+
+      <AccessibleStayPanel locale="en" />
 
       <PropertyMap
         city={hotel.city}
