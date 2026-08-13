@@ -407,6 +407,13 @@ export const adminSections: AdminSection[] = [
     path: ["subpages", "faqPage"],
   },
   {
+    id: "hotelPolicyPage",
+    group: "Website",
+    label: "Hotel Policy page",
+    description: "Hotel Policy page cover photo, headline, and policy content.",
+    path: ["subpages", "hotelPolicy"],
+  },
+  {
     id: "faqCategories",
     group: "Website",
     label: "Full FAQ page",
@@ -678,6 +685,11 @@ export const arabicSectionLabels: Record<string, AdminSectionTranslation> = {
     group: "عن الشركة",
     label: "صفحة الأسئلة الشائعة",
     description: "بانر صفحة الأسئلة الشائعة والمعلومات المساعدة.",
+  },
+  hotelPolicyPage: {
+    group: "الموقع",
+    label: "صفحة سياسة الفنادق",
+    description: "صورة الغلاف والعنوان ومحتوى سياسات الفنادق.",
   },
   faqCategories: {
     group: "عن الشركة",
