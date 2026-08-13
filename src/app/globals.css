@@ -4425,6 +4425,68 @@ html[dir="rtl"] .sb-ai-chat-header {
   text-wrap: balance;
 }
 
+.accessible-stay-panel-card {
+  align-items: center;
+  background: linear-gradient(135deg, #f7faff 0%, #eef5ff 100%);
+  border: 1px solid rgba(43, 111, 232, 0.2);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 26px 30px;
+}
+
+.accessible-stay-panel-icon {
+  align-items: center;
+  background: var(--primary);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  height: 56px;
+  justify-content: center;
+  width: 56px;
+}
+
+.accessible-stay-panel-copy h2 {
+  color: var(--text-primary);
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.18;
+  margin-top: 8px;
+}
+
+.accessible-stay-panel-copy p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  margin-top: 8px;
+  max-width: 760px;
+}
+
+.accessible-stay-panel-action {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .accessible-stay-panel-card {
+    align-items: start;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 24px;
+  }
+
+  .accessible-stay-panel-action {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  [dir="rtl"] .accessible-stay-panel-action {
+    justify-self: end;
+  }
+}
+
 /* Arabic display headings need more vertical breathing room (matches the
    homepage hero's RTL line-height) so big bold lines don't read cramped. */
 [dir="rtl"] .feature-panel h2,
