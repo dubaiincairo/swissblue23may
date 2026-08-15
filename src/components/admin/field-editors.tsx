@@ -463,6 +463,12 @@ function fieldLabelFor(
   path: Array<string | number>,
   language: Language,
 ) {
+  if (name === "enabled" && path.includes("promotionalPopups")) {
+    return language === "ar"
+      ? "إظهار النافذة الترويجية على الموقع"
+      : "Show promotional pop-up on the website";
+  }
+
   if (isHotelGalleryTitle(name, path)) {
     return hotelGalleryTitleLabel(language);
   }
