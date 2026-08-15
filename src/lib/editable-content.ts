@@ -1804,6 +1804,32 @@ export const defaultSiteContent = {
     },
     ui: uiText,
     chatAssistant,
+    promotionalPopups: {
+      displayDelayMs: 900,
+      items: [
+        {
+          id: "september-dinner-2026",
+          enabled: true,
+          designStyle: "midnight",
+          image:
+            "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=85",
+          eyebrow: "عرض سبتمبر",
+          title: "ليلتك علينا… والعشاء أيضاً",
+          description:
+            "احجز أي غرفة بأي خطة سعرية، واستمتع بعشاء مجاني مع كل ليلة مؤهلة خلال شهر سبتمبر.",
+          meal: "أرز مع السمك وسلطة طازجة",
+          alternative: "ويمكن استبدال السمك بالدجاج عند الطلب.",
+          eligibility: "يسري العرض على جميع أنواع الغرف وجميع خطط الأسعار.",
+          bookingWindow: "فترة الحجز: من 15 أغسطس إلى 15 سبتمبر",
+          stayWindow: "فترة الإقامة: من 1 إلى 30 سبتمبر",
+          activeFrom: "2026-08-15",
+          activeUntil: "2026-09-15",
+          ctaLabel: "احجز واستمتع بالعشاء",
+          ctaHref: BOOKING_URL,
+          dismissLabel: "إغلاق العرض",
+        },
+      ],
+    },
     closingCtas,
     media: {
       arabicLogo: defaultLogoImage,
@@ -2871,6 +2897,32 @@ export const defaultSiteContent = {
     },
     ui: uiTextEn,
     chatAssistant: chatAssistantEn,
+    promotionalPopups: {
+      displayDelayMs: 900,
+      items: [
+        {
+          id: "september-dinner-2026",
+          enabled: true,
+          designStyle: "midnight",
+          image:
+            "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=85",
+          eyebrow: "September offer",
+          title: "Stay the night. Dinner is on us.",
+          description:
+            "Book any room on any rate plan and enjoy a complimentary dinner with every eligible night you stay this September.",
+          meal: "Rice with fish and a fresh salad",
+          alternative: "Prefer chicken? We’ll happily swap it on request.",
+          eligibility: "Available across all room types and all rate plans.",
+          bookingWindow: "Book from 15 August to 15 September",
+          stayWindow: "Stay from 1 to 30 September",
+          activeFrom: "2026-08-15",
+          activeUntil: "2026-09-15",
+          ctaLabel: "Book and enjoy dinner",
+          ctaHref: BOOKING_URL,
+          dismissLabel: "Close offer",
+        },
+      ],
+    },
     closingCtas: closingCtasEn,
     media: {
       logo: defaultLogoImage,

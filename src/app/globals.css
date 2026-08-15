@@ -218,6 +218,126 @@ summary:focus:not(:focus-visible) {
     transform 160ms ease;
 }
 
+/* ===== Timed promotional pop-up ===== */
+.promotion-overlay {
+  align-items: center;
+  animation: promotion-backdrop-in 420ms var(--ease-out) both;
+  background: rgba(5, 18, 43, 0.72);
+  backdrop-filter: blur(10px);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.promotion-modal {
+  animation: promotion-modal-in 620ms var(--ease-out) both;
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 28px;
+  box-shadow: 0 36px 100px rgba(3, 16, 42, 0.38);
+  display: grid;
+  grid-template-columns: minmax(260px, 0.88fr) minmax(390px, 1.12fr);
+  max-height: min(720px, calc(100dvh - 48px));
+  max-width: 900px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.promotion-close {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  border-radius: 999px;
+  color: #10244e;
+  cursor: pointer;
+  display: flex;
+  height: 42px;
+  justify-content: center;
+  position: absolute;
+  inset-inline-end: 18px;
+  top: 18px;
+  transition: transform 180ms ease, background-color 180ms ease;
+  width: 42px;
+  z-index: 3;
+}
+
+.promotion-close:hover { background: #fff; transform: rotate(4deg) scale(1.04); }
+.promotion-close svg { fill: none; height: 20px; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; width: 20px; }
+
+.promotion-media { min-height: 100%; overflow: hidden; position: relative; }
+.promotion-image { object-fit: cover; transform: scale(1.025); }
+.promotion-media-shade { background: linear-gradient(180deg, transparent 40%, rgba(4, 17, 43, 0.74)); inset: 0; position: absolute; }
+.promotion-media-caption { align-items: center; bottom: 24px; color: #fff; display: flex; font-size: 14px; font-weight: 700; gap: 10px; inset-inline: 24px; line-height: 1.7; position: absolute; }
+.promotion-media-caption svg { fill: none; flex: 0 0 auto; height: 24px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; width: 24px; }
+
+.promotion-content { background: #fff; padding: 54px 48px 46px; }
+.promotion-eyebrow { color: var(--primary); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; margin-bottom: 12px; text-transform: uppercase; }
+[dir="rtl"] .promotion-eyebrow { letter-spacing: 0; }
+.promotion-content h2 { color: #0d2149; font-size: clamp(1.85rem, 3.4vw, 2.65rem); font-weight: 800; line-height: 1.18; text-wrap: balance; }
+.promotion-description { color: #56627a; font-size: 15px; line-height: 1.85; margin-top: 14px; }
+.promotion-meal { align-items: flex-start; background: #f3f7ff; border: 1px solid #dce8ff; border-radius: 16px; display: flex; gap: 13px; margin-top: 22px; padding: 15px 16px; }
+.promotion-meal > svg { color: var(--primary); fill: none; flex: 0 0 auto; height: 25px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; width: 25px; }
+.promotion-meal strong, .promotion-meal span { display: block; }
+.promotion-meal strong { color: #163267; font-size: 14px; }
+.promotion-meal span { color: #6b7890; font-size: 12px; line-height: 1.65; margin-top: 2px; }
+.promotion-eligibility { color: #42516d; font-size: 12px; font-weight: 650; line-height: 1.7; margin-top: 14px; }
+.promotion-dates { border-block: 1px solid #e5ebf4; display: grid; gap: 10px; margin-top: 16px; padding-block: 14px; }
+.promotion-dates div { align-items: center; color: #4f5d75; display: flex; font-size: 12px; font-weight: 650; gap: 9px; }
+.promotion-dates svg { color: var(--primary); fill: none; flex: 0 0 auto; height: 18px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; width: 18px; }
+.promotion-cta { align-items: center; background: var(--primary); border-radius: 13px; color: #fff; display: flex; font-size: 14px; font-weight: 800; justify-content: space-between; margin-top: 20px; min-height: 50px; padding: 12px 18px; transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+.promotion-cta:hover { background: var(--primary-hover); box-shadow: 0 12px 28px rgba(43, 111, 232, 0.28); transform: translateY(-2px); }
+.promotion-cta svg { fill: none; height: 19px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; width: 19px; }
+[dir="rtl"] .promotion-cta svg { transform: scaleX(-1); }
+
+.promotion-modal-midnight .promotion-content { background: linear-gradient(145deg, #0c2759, #071a3e); }
+.promotion-modal-midnight .promotion-content h2, .promotion-modal-midnight .promotion-eligibility { color: #fff; }
+.promotion-modal-midnight .promotion-eyebrow { color: #91baff; }
+.promotion-modal-midnight .promotion-description { color: rgba(255, 255, 255, 0.72); }
+.promotion-modal-midnight .promotion-meal { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.12); }
+.promotion-modal-midnight .promotion-meal strong { color: #fff; }
+.promotion-modal-midnight .promotion-meal span { color: rgba(255, 255, 255, 0.64); }
+.promotion-modal-midnight .promotion-dates { border-color: rgba(255, 255, 255, 0.14); }
+.promotion-modal-midnight .promotion-dates div { color: rgba(255, 255, 255, 0.76); }
+.promotion-modal-midnight .promotion-dates svg, .promotion-modal-midnight .promotion-meal > svg { color: #8db9ff; }
+
+.promotion-modal-immersive { grid-template-columns: 1fr; }
+.promotion-modal-immersive .promotion-media { inset: 0; position: absolute; }
+.promotion-modal-immersive .promotion-media-shade { background: linear-gradient(90deg, rgba(4, 17, 43, 0.94), rgba(4, 17, 43, 0.62)); }
+.promotion-modal-immersive .promotion-media-caption { display: none; }
+.promotion-modal-immersive .promotion-content { background: transparent; max-width: 590px; padding-inline: 56px; position: relative; z-index: 1; }
+.promotion-modal-immersive .promotion-content h2, .promotion-modal-immersive .promotion-eligibility { color: #fff; }
+.promotion-modal-immersive .promotion-description { color: rgba(255, 255, 255, 0.76); }
+.promotion-modal-immersive .promotion-meal { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.16); backdrop-filter: blur(10px); }
+.promotion-modal-immersive .promotion-meal strong { color: #fff; }
+.promotion-modal-immersive .promotion-meal span, .promotion-modal-immersive .promotion-dates div { color: rgba(255, 255, 255, 0.72); }
+.promotion-modal-immersive .promotion-dates { border-color: rgba(255, 255, 255, 0.17); }
+
+@keyframes promotion-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes promotion-modal-in { from { opacity: 0; transform: translateY(28px) scale(0.965); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+@media (max-width: 720px) {
+  .promotion-overlay { align-items: flex-end; padding: 12px; }
+  .promotion-modal { border-radius: 24px; grid-template-columns: 1fr; max-height: calc(100dvh - 24px); overflow-y: auto; }
+  .promotion-media { min-height: 190px; }
+  .promotion-media-caption { bottom: 18px; inset-inline: 20px; }
+  .promotion-content { padding: 28px 22px 24px; }
+  .promotion-content h2 { font-size: 1.75rem; }
+  .promotion-description { font-size: 14px; line-height: 1.75; }
+  .promotion-meal { margin-top: 17px; }
+  .promotion-modal-immersive .promotion-media { min-height: 100%; }
+  .promotion-modal-immersive .promotion-content { padding: 68px 24px 28px; }
+  .promotion-close { height: 40px; inset-inline-end: 14px; top: 14px; width: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promotion-overlay, .promotion-modal { animation: none; }
+  .promotion-cta, .promotion-close { transition: none; }
+}
+
 .btn:hover {
   transform: translateY(-1px);
 }
