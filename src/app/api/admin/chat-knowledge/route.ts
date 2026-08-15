@@ -15,6 +15,8 @@ import {
   getKnowledgeFileStatus,
   uploadKnowledgeFile,
 } from "@/lib/openai-files";
+import { getFreshAdminSession, sessionHas } from "@/lib/admin-session";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -25,6 +27,11 @@ const MAX_SOURCE_COUNT = 50;
 
 function error(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
+}
+
+async function requireKnowledgeSession() {
+  const session = await getFreshAdminSession();
+  return session && sessionHas(session, "content-any") ? session : null;
 }
 
 function isPrivateIp(address: string) {
@@ -122,6 +129,8 @@ async function createSource(file: File, source: Omit<ChatKnowledgeSource, "id" |
 }
 
 export async function GET() {
+  if (!(await requireKnowledgeSession())) return error("Unauthorized", 401);
+
   const configured = isChatKnowledgeConfigured();
   if (!configured) return NextResponse.json({ configured, sources: [] });
   const stored = await listChatKnowledgeSources();
@@ -135,6 +144,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!(await requireKnowledgeSession())) return error("Unauthorized", 401);
+  if (!(await rateLimit("admin-chat-knowledge-write", getClientIp(request), 20, 600)).success) {
+    return error("Too many requests. Please try again shortly.", 429);
+  }
+
   if (!isChatKnowledgeConfigured()) return error("Knowledge base is not configured.", 503);
   if ((await listChatKnowledgeSources()).length >= MAX_SOURCE_COUNT) {
     return error("The knowledge base has reached its 50-source limit.", 409);
@@ -176,6 +190,8 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  if (!(await requireKnowledgeSession())) return error("Unauthorized", 401);
+
   if (!isChatKnowledgeConfigured()) return error("Knowledge base is not configured.", 503);
   const id = new URL(request.url).searchParams.get("id")?.trim();
   if (!id) return error("Source id is required.");

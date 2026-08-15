@@ -149,10 +149,7 @@ export default async function Home() {
               {rich(home.loyalty.description)}
             </p>
             <div className="loyalty-actions mt-7">
-              <Link className="btn btn-loyalty" href="/loyalty">
-                انضم إلى برنامج الولاء
-              </Link>
-              <span className="loyalty-note">عضوية مجانية ومزايا فورية عند الحجز المباشر</span>
+              <span className="loyalty-status">قريباً</span>
             </div>
           </div>
           <div className="loyalty-benefits grid gap-4 sm:grid-cols-2">

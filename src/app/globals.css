@@ -4192,24 +4192,17 @@ html[dir="rtl"] .sb-ai-chat-header {
   gap: 14px;
 }
 
-.btn-loyalty {
-  background: white;
+.loyalty-status {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 999px;
-  box-shadow: 0 12px 26px rgba(8, 28, 70, 0.2);
-  color: var(--primary);
-  padding-inline: 22px;
-}
-
-.btn-loyalty:hover {
-  background: var(--bluehost-foam, #eef4ff);
-  color: var(--bluehost-deep);
-}
-
-.loyalty-note {
-  color: rgba(255, 255, 255, 0.74);
+  color: white;
+  display: inline-flex;
   font-size: 13px;
-  font-weight: 600;
-  max-width: 220px;
+  font-weight: 800;
+  min-height: 40px;
+  padding: 0 18px;
 }
 
 .loyalty-benefits {
@@ -4423,6 +4416,68 @@ html[dir="rtl"] .sb-ai-chat-header {
   line-height: 1.08;
   margin-top: 14px;
   text-wrap: balance;
+}
+
+.accessible-stay-panel-card {
+  align-items: center;
+  background: linear-gradient(135deg, #f7faff 0%, #eef5ff 100%);
+  border: 1px solid rgba(43, 111, 232, 0.2);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 26px 30px;
+}
+
+.accessible-stay-panel-icon {
+  align-items: center;
+  background: var(--primary);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  height: 56px;
+  justify-content: center;
+  width: 56px;
+}
+
+.accessible-stay-panel-copy h2 {
+  color: var(--text-primary);
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.18;
+  margin-top: 8px;
+}
+
+.accessible-stay-panel-copy p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  margin-top: 8px;
+  max-width: 760px;
+}
+
+.accessible-stay-panel-action {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .accessible-stay-panel-card {
+    align-items: start;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 24px;
+  }
+
+  .accessible-stay-panel-action {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  [dir="rtl"] .accessible-stay-panel-action {
+    justify-self: end;
+  }
 }
 
 /* Arabic display headings need more vertical breathing room (matches the
@@ -8069,7 +8124,7 @@ html[dir="rtl"] .sb-ai-chat-header {
   border-radius: 8px;
   display: grid;
   gap: 14px;
-  grid-template-columns: minmax(180px, 240px) 1fr;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
   padding: 12px;
 }
 
@@ -8084,11 +8139,14 @@ html[dir="rtl"] .sb-ai-chat-header {
   font-size: 12px;
   font-weight: 800;
   justify-content: center;
+  min-width: 0;
   overflow: hidden;
 }
 
 .admin-image-preview img {
+  display: block;
   height: 100%;
+  min-width: 0;
   object-fit: cover;
   width: 100%;
 }
@@ -8130,6 +8188,7 @@ html[dir="rtl"] .sb-ai-chat-header {
   align-content: center;
   display: grid;
   gap: 10px;
+  min-width: 0;
 }
 
 .admin-image-tools p,
@@ -8145,9 +8204,9 @@ html[dir="rtl"] .sb-ai-chat-header {
 
 .admin-image-actions {
   align-items: center;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .admin-image-source-icon {
@@ -8159,10 +8218,9 @@ html[dir="rtl"] .sb-ai-chat-header {
   font-size: 12px;
   font-weight: 800;
   gap: 6px;
-  flex: 1 1 136px;
   height: 40px;
   justify-content: center;
-  min-width: 136px;
+  min-width: 0;
   padding: 0 14px;
   transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
 }
@@ -10894,6 +10952,10 @@ html[dir="rtl"] .sb-ai-chat-header {
   }
 
   .admin-image-control {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-image-actions {
     grid-template-columns: 1fr;
   }
 
