@@ -260,9 +260,44 @@ export function StringFieldEditor({
   onChange: (path: Array<string | number>, value: JsonValue) => void;
   isNumber?: boolean;
 }) {
-  const isUrl = ["href", "image", "secondaryHref", "source"].includes(name);
+  const isUrl = ["href", "image", "secondaryHref", "source", "ctaHref"].includes(name);
   const isOpaque = ["slug", "type", "kind", "mapQuery"].includes(name);
   const fieldLabel = fieldLabelFor(name, path, language);
+
+  if (name === "designStyle" && path.includes("promotionalPopups")) {
+    return (
+      <label className="admin-field">
+        <span>{fieldLabel}</span>
+        <select
+          value={value}
+          onChange={(event) => onChange(path, event.target.value)}
+        >
+          <option value="midnight">
+            {language === "ar" ? "داكن فاخر" : "Midnight editorial"}
+          </option>
+          <option value="light">
+            {language === "ar" ? "فاتح وهادئ" : "Light and airy"}
+          </option>
+          <option value="immersive">
+            {language === "ar" ? "صورة غامرة" : "Immersive image"}
+          </option>
+        </select>
+      </label>
+    );
+  }
+
+  if (["activeFrom", "activeUntil"].includes(name) && path.includes("promotionalPopups")) {
+    return (
+      <label className="admin-field">
+        <span>{fieldLabel}</span>
+        <input
+          type="date"
+          value={value}
+          onChange={(event) => onChange(path, event.target.value)}
+        />
+      </label>
+    );
+  }
 
   if (isUrl) {
     return (
