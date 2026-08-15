@@ -6,6 +6,7 @@ import AiChatWidget from "@/components/ai-chat-widget";
 import CookieBanner from "@/components/cookie-banner";
 import LiveContentRefresh from "@/components/live-content-refresh";
 import NavScrollState from "@/components/nav-scroll-state";
+import PromotionalPopup from "@/components/promotional-popup";
 import ScrollObserver from "@/components/scroll-observer";
 import Ga4Analytics from "@/components/ga4-analytics";
 import { getEditableContent } from "@/lib/editable-content";
@@ -172,6 +173,11 @@ export default async function RootLayout({
           />
         ) : null}
         {children}
+        {!isAdmin ? (
+          <PromotionalPopup
+            settings={locale === "ar" ? ar.promotionalPopups : en.promotionalPopups}
+          />
+        ) : null}
         <AiChatWidget settings={{ ar: ar.chatAssistant, en: en.chatAssistant }} />
         <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />
       </body>
