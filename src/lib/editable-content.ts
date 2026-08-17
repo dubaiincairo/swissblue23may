@@ -5276,6 +5276,94 @@ function syncDestinationImages(
   };
 }
 
+function syncTestimonialImages(
+  arItems: EditableSiteContent["ar"]["homepage"]["testimonials"]["items"],
+  enItems: EditableSiteContent["en"]["homepage"]["testimonials"]["items"],
+  editedLanguage?: ContentLanguage,
+) {
+  const maxLength = Math.max(arItems.length, enItems.length);
+
+  const images = Array.from({ length: maxLength }, (_, index) => {
+    const arItem = arItems[index];
+    const enItem = enItems[index];
+
+    if (!arItem || !enItem) {
+      return [arItem?.image, enItem?.image] as const;
+    }
+
+    return sharedImageValue(
+      arItem.image,
+      enItem.image,
+      defaultSiteContent.ar.homepage.testimonials.items[index]?.image ??
+        arItem.image,
+      defaultSiteContent.en.homepage.testimonials.items[index]?.image ??
+        enItem.image,
+      editedLanguage,
+    );
+  });
+
+  return {
+    ar: arItems.map((item, index) => ({
+      ...item,
+      image: images[index]?.[0] ?? item.image,
+    })),
+    en: enItems.map((item, index) => ({
+      ...item,
+      image: images[index]?.[1] ?? item.image,
+    })),
+  };
+}
+
+function syncPromotionalPopupImages(
+  arSettings: EditableSiteContent["ar"]["promotionalPopups"],
+  enSettings: EditableSiteContent["en"]["promotionalPopups"],
+  editedLanguage?: ContentLanguage,
+) {
+  const arById = new Map(arSettings.items.map((item) => [item.id, item]));
+  const enById = new Map(enSettings.items.map((item) => [item.id, item]));
+  const defaultArById = new Map(
+    defaultSiteContent.ar.promotionalPopups.items.map((item) => [item.id, item]),
+  );
+  const defaultEnById = new Map(
+    defaultSiteContent.en.promotionalPopups.items.map((item) => [item.id, item]),
+  );
+
+  const sharedImages = new Map<string, readonly [string, string]>();
+  for (const id of new Set([...arById.keys(), ...enById.keys()])) {
+    const arItem = arById.get(id);
+    const enItem = enById.get(id);
+    if (!arItem || !enItem) continue;
+
+    sharedImages.set(
+      id,
+      sharedImageValue(
+        arItem.image,
+        enItem.image,
+        defaultArById.get(id)?.image ?? arItem.image,
+        defaultEnById.get(id)?.image ?? enItem.image,
+        editedLanguage,
+      ),
+    );
+  }
+
+  return {
+    ar: {
+      ...arSettings,
+      items: arSettings.items.map((item) => ({
+        ...item,
+        image: sharedImages.get(item.id)?.[0] ?? item.image,
+      })),
+    },
+    en: {
+      ...enSettings,
+      items: enSettings.items.map((item) => ({
+        ...item,
+        image: sharedImages.get(item.id)?.[1] ?? item.image,
+      })),
+    },
+  };
+}
+
 function normalizeHighlights(
   items: EditableSiteContent["ar"]["homepage"]["highlights"],
   defaults: EditableSiteContent["ar"]["homepage"]["highlights"],
@@ -5364,6 +5452,23 @@ function syncSharedImages(
   const syncedDestinations = syncDestinationImages(
     content.ar.homepage.destinations.items,
     content.en.homepage.destinations.items,
+    editedLanguage,
+  );
+  const syncedTestimonials = syncTestimonialImages(
+    content.ar.homepage.testimonials.items,
+    content.en.homepage.testimonials.items,
+    editedLanguage,
+  );
+  const syncedPromotionalPopups = syncPromotionalPopupImages(
+    content.ar.promotionalPopups,
+    content.en.promotionalPopups,
+    editedLanguage,
+  );
+  const [chatAvatarAr, chatAvatarEn] = sharedImageValue(
+    content.ar.chatAssistant.avatar,
+    content.en.chatAssistant.avatar,
+    defaultSiteContent.ar.chatAssistant.avatar,
+    defaultSiteContent.en.chatAssistant.avatar,
     editedLanguage,
   );
 
@@ -5473,6 +5578,35 @@ function syncSharedImages(
     defaultSiteContent.en.subpages.hotelPolicy.hero.image,
     editedLanguage,
   );
+  const [careersPageHeroAr, careersPageHeroEn] = sharedImageValue(
+    content.ar.subpages.careersPage.hero.image,
+    content.en.subpages.careersPage.hero.image,
+    defaultSiteContent.ar.subpages.careersPage.hero.image,
+    defaultSiteContent.en.subpages.careersPage.hero.image,
+    editedLanguage,
+  );
+  const [csrPageHeroAr, csrPageHeroEn] = sharedImageValue(
+    content.ar.subpages.csrPage.hero.image,
+    content.en.subpages.csrPage.hero.image,
+    defaultSiteContent.ar.subpages.csrPage.hero.image,
+    defaultSiteContent.en.subpages.csrPage.hero.image,
+    editedLanguage,
+  );
+  const [reservationOfficePageHeroAr, reservationOfficePageHeroEn] =
+    sharedImageValue(
+      content.ar.subpages.reservationOfficePage.hero.image,
+      content.en.subpages.reservationOfficePage.hero.image,
+      defaultSiteContent.ar.subpages.reservationOfficePage.hero.image,
+      defaultSiteContent.en.subpages.reservationOfficePage.hero.image,
+      editedLanguage,
+    );
+  const [feedbackPageHeroAr, feedbackPageHeroEn] = sharedImageValue(
+    content.ar.subpages.feedbackPage.hero.image,
+    content.en.subpages.feedbackPage.hero.image,
+    defaultSiteContent.ar.subpages.feedbackPage.hero.image,
+    defaultSiteContent.en.subpages.feedbackPage.hero.image,
+    editedLanguage,
+  );
 
   const arMediaWithoutDeprecated = stripDeprecatedArMediaKeys(content.ar.media);
   const enMediaWithoutDeprecated = stripDeprecatedEnMediaKeys(content.en.media);
@@ -5480,6 +5614,11 @@ function syncSharedImages(
   return {
     ar: {
       ...content.ar,
+      chatAssistant: {
+        ...content.ar.chatAssistant,
+        avatar: chatAvatarAr,
+      },
+      promotionalPopups: syncedPromotionalPopups.ar,
       media: {
         ...arMediaWithoutDeprecated,
         arabicLogo: logoAr,
@@ -5509,6 +5648,10 @@ function syncSharedImages(
         destinations: {
           ...content.ar.homepage.destinations,
           items: syncedDestinations.ar,
+        },
+        testimonials: {
+          ...content.ar.homepage.testimonials,
+          items: syncedTestimonials.ar,
         },
       },
       subpages: {
@@ -5606,10 +5749,43 @@ function syncSharedImages(
             image: hotelPolicyHeroAr,
           },
         },
+        careersPage: {
+          ...content.ar.subpages.careersPage,
+          hero: {
+            ...content.ar.subpages.careersPage.hero,
+            image: careersPageHeroAr,
+          },
+        },
+        csrPage: {
+          ...content.ar.subpages.csrPage,
+          hero: {
+            ...content.ar.subpages.csrPage.hero,
+            image: csrPageHeroAr,
+          },
+        },
+        reservationOfficePage: {
+          ...content.ar.subpages.reservationOfficePage,
+          hero: {
+            ...content.ar.subpages.reservationOfficePage.hero,
+            image: reservationOfficePageHeroAr,
+          },
+        },
+        feedbackPage: {
+          ...content.ar.subpages.feedbackPage,
+          hero: {
+            ...content.ar.subpages.feedbackPage.hero,
+            image: feedbackPageHeroAr,
+          },
+        },
       },
     },
     en: {
       ...content.en,
+      chatAssistant: {
+        ...content.en.chatAssistant,
+        avatar: chatAvatarEn,
+      },
+      promotionalPopups: syncedPromotionalPopups.en,
       media: {
         ...enMediaWithoutDeprecated,
         logo: logoEn,
@@ -5639,6 +5815,10 @@ function syncSharedImages(
         destinations: {
           ...content.en.homepage.destinations,
           items: syncedDestinations.en,
+        },
+        testimonials: {
+          ...content.en.homepage.testimonials,
+          items: syncedTestimonials.en,
         },
       },
       subpages: {
@@ -5734,6 +5914,34 @@ function syncSharedImages(
           hero: {
             ...content.en.subpages.hotelPolicy.hero,
             image: hotelPolicyHeroEn,
+          },
+        },
+        careersPage: {
+          ...content.en.subpages.careersPage,
+          hero: {
+            ...content.en.subpages.careersPage.hero,
+            image: careersPageHeroEn,
+          },
+        },
+        csrPage: {
+          ...content.en.subpages.csrPage,
+          hero: {
+            ...content.en.subpages.csrPage.hero,
+            image: csrPageHeroEn,
+          },
+        },
+        reservationOfficePage: {
+          ...content.en.subpages.reservationOfficePage,
+          hero: {
+            ...content.en.subpages.reservationOfficePage.hero,
+            image: reservationOfficePageHeroEn,
+          },
+        },
+        feedbackPage: {
+          ...content.en.subpages.feedbackPage,
+          hero: {
+            ...content.en.subpages.feedbackPage.hero,
+            image: feedbackPageHeroEn,
           },
         },
       },
