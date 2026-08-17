@@ -175,7 +175,7 @@ export default async function RootLayout({
         {children}
         {!isAdmin ? (
           <PromotionalPopup
-            settings={locale === "ar" ? ar.promotionalPopups : en.promotionalPopups}
+            settings={{ ar: ar.promotionalPopups, en: en.promotionalPopups }}
           />
         ) : null}
         <AiChatWidget settings={{ ar: ar.chatAssistant, en: en.chatAssistant }} />
