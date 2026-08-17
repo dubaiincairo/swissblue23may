@@ -172,7 +172,6 @@ const otas = [
     accent: "#0e9f8f",
     weight: "800",
     note: "منصة سعودية متكاملة لحجوزات السفر",
-    href: "https://almatar.com/",
   },
   {
     name: "Trivago",
@@ -236,7 +235,6 @@ const otasEn = [
     accent: "#0e9f8f",
     weight: "800",
     note: "A Saudi platform for flight and hotel bookings",
-    href: "https://almatar.com/",
   },
   {
     name: "Trivago",
@@ -4491,7 +4489,6 @@ function normalizeClientFacingContent(
             ...partner,
             name: "Almatar",
             note: "منصة سعودية متكاملة لحجوزات السفر",
-            href: "https://almatar.com/",
           }
         : partner,
   );
@@ -4502,7 +4499,6 @@ function normalizeClientFacingContent(
             ...partner,
             name: "Almatar",
             note: "A Saudi platform for flight and hotel bookings",
-            href: "https://almatar.com/",
           }
         : partner,
   );

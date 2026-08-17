@@ -7,7 +7,6 @@ export type Partner = {
   readonly accent: string;
   readonly weight: string;
   readonly note: string;
-  readonly href?: string;
 };
 
 export type PartnersContent = {
@@ -46,43 +45,25 @@ export function PartnersSection({
         </div>
 
         <div className="partners-grid">
-          {content.items.map((partner, index) => {
-            const cardContent = (
-              <>
-                <span className="partner-stripe" aria-hidden="true" />
-                <span
-                  className="partner-mark"
-                  style={{ fontWeight: partner.weight as React.CSSProperties["fontWeight"] }}
-                >
-                  {rich(partner.name)}
-                </span>
-                <span className="partner-note">{rich(partner.note)}</span>
-              </>
-            );
-            const cardProps = {
-              className: "partner-card reveal-slide-up",
-              style: {
+          {content.items.map((partner, index) => (
+            <div
+              key={partner.name}
+              className="partner-card reveal-slide-up"
+              style={{
                 "--delay": `${index * 40}ms`,
                 "--partner-accent": partner.accent,
-              } as React.CSSProperties,
-            };
-
-            return partner.href ? (
-              <a
-                key={partner.name}
-                {...cardProps}
-                href={partner.href}
-                target="_blank"
-                rel="noopener noreferrer"
+              } as React.CSSProperties}
+            >
+              <span className="partner-stripe" aria-hidden="true" />
+              <span
+                className="partner-mark"
+                style={{ fontWeight: partner.weight as React.CSSProperties["fontWeight"] }}
               >
-                {cardContent}
-              </a>
-            ) : (
-              <div key={partner.name} {...cardProps}>
-                {cardContent}
-              </div>
-            );
-          })}
+                {rich(partner.name)}
+              </span>
+              <span className="partner-note">{rich(partner.note)}</span>
+            </div>
+          ))}
         </div>
 
         <div className="partners-footer">
