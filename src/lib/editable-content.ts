@@ -1890,7 +1890,7 @@ export const defaultSiteContent = {
       },
       categories: {
         eyebrow: "فئات الإقامة",
-        title: "الفرق بين الفندق، الشقق المخدومة.",
+        title: "الفرق بين الفندق، الشقق الفندقية، والشقق المخدومة.",
         text: "هذا التقسيم يجعل قرار الحجز أكثر وضوحا للضيف، ويساعد فرق الشركات والعائلات على اختيار الفئة المناسبة لمدة الإقامة وطبيعة الرحلة.",
         items: accommodationCategories,
       },
@@ -4555,13 +4555,17 @@ const ARABIC_SERVICED_APARTMENT_REPLACEMENTS = [
   ["شقق السامر الفندقية", "شقق السامر المخدومة"],
   ["شقق فيناس الرياض الفندقية", "شقق فيناس الرياض المخدومة"],
   ["شقق توليب الروضة الفندقية", "شقق توليب الروضة المخدومة"],
-  ["الشقق الفندقية", "الشقق المخدومة"],
   ["الشقة الفندقية", "الشقة المخدومة"],
   ["شقق فندقية", "شقق مخدومة"],
   ["شقة فندقية", "شقة مخدومة"],
   ["شققنا الفندقية", "شققنا المخدومة"],
   ["شققا فندقية", "شققا مخدومة"],
 ] as const;
+
+const LEGACY_ARABIC_CATEGORY_HEADINGS = new Set([
+  "الفرق بين الفندق، الشقق المخدومة.",
+  "الفرق بين الفندق، الشقق المخدومة، والشقق المخدومة.",
+]);
 
 function normalizeArabicServicedApartmentTerms(value: unknown): unknown {
   if (typeof value === "string") {
@@ -4651,10 +4655,17 @@ function normalizeSourceTruthContent(
       ]),
     ),
   };
-  const arCategories = normalizedTerms.ar.homepage.categories.items.filter(
-    (item, index, items) =>
-      items.findIndex((candidate) => candidate.title === item.title) === index,
+  const arCategories = defaultSiteContent.ar.homepage.categories.items.map(
+    (defaultItem) =>
+      normalizedTerms.ar.homepage.categories.items.find(
+        (item) => item.title === defaultItem.title,
+      ) ?? defaultItem,
   );
+  const arCategoryTitle = LEGACY_ARABIC_CATEGORY_HEADINGS.has(
+    normalizedTerms.ar.homepage.categories.title,
+  )
+    ? defaultSiteContent.ar.homepage.categories.title
+    : normalizedTerms.ar.homepage.categories.title;
   const arPropertyTypeOptions =
     normalizedTerms.ar.subpages.corporateDealsPage.requestForm.propertyTypeOptions.filter(
       (item, index, items) => items.indexOf(item) === index,
@@ -4684,6 +4695,7 @@ function normalizeSourceTruthContent(
         ...normalizedTerms.ar.homepage,
         categories: {
           ...normalizedTerms.ar.homepage.categories,
+          title: arCategoryTitle,
           items: arCategories,
         },
         properties: {
