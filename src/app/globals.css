@@ -244,6 +244,7 @@ summary:focus:not(:focus-visible) {
   max-width: 900px;
   overflow: hidden;
   position: relative;
+  text-align: start;
   width: 100%;
 }
 
