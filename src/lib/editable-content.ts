@@ -168,10 +168,11 @@ const otas = [
     note: "خدمة دولية متخصصة في الفنادق",
   },
   {
-    name: "Tajawal",
+    name: "Almatar",
     accent: "#0e9f8f",
     weight: "800",
-    note: "وكالة سفر عربية مفضلة",
+    note: "منصة سعودية متكاملة لحجوزات السفر",
+    href: "https://almatar.com/",
   },
   {
     name: "Trivago",
@@ -231,10 +232,11 @@ const otasEn = [
     note: "A worldwide hotel-focused booking site",
   },
   {
-    name: "Tajawal",
+    name: "Almatar",
     accent: "#0e9f8f",
     weight: "800",
-    note: "A trusted Arab world travel agency",
+    note: "A Saudi platform for flight and hotel bookings",
+    href: "https://almatar.com/",
   },
   {
     name: "Trivago",
@@ -4482,6 +4484,28 @@ function normalizeClientFacingContent(
           : item.title,
     }),
   );
+  const arPartners = contentWithReservationOffice.ar.homepage.partners.items.map(
+    (partner) =>
+      partner.name === "Tajawal"
+        ? {
+            ...partner,
+            name: "Almatar",
+            note: "منصة سعودية متكاملة لحجوزات السفر",
+            href: "https://almatar.com/",
+          }
+        : partner,
+  );
+  const enPartners = contentWithReservationOffice.en.homepage.partners.items.map(
+    (partner) =>
+      partner.name === "Tajawal"
+        ? {
+            ...partner,
+            name: "Almatar",
+            note: "A Saudi platform for flight and hotel bookings",
+            href: "https://almatar.com/",
+          }
+        : partner,
+  );
 
   return {
     ...contentWithReservationOffice,
@@ -4491,12 +4515,26 @@ function normalizeClientFacingContent(
         ...contentWithReservationOffice.ar.media,
         gallery: arGallery,
       },
+      homepage: {
+        ...contentWithReservationOffice.ar.homepage,
+        partners: {
+          ...contentWithReservationOffice.ar.homepage.partners,
+          items: arPartners,
+        },
+      },
     },
     en: {
       ...contentWithReservationOffice.en,
       media: {
         ...contentWithReservationOffice.en.media,
         gallery: enGallery,
+      },
+      homepage: {
+        ...contentWithReservationOffice.en.homepage,
+        partners: {
+          ...contentWithReservationOffice.en.homepage.partners,
+          items: enPartners,
+        },
       },
       subpages: {
         ...contentWithReservationOffice.en.subpages,
