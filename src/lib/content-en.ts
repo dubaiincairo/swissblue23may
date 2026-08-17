@@ -1155,17 +1155,17 @@ export const faqsEn = [
   {
     question: "What are the check-in and check-out times at Swiss Blue Hotels?",
     answer:
-      "Times can vary by property. The reservations team can confirm the most suitable arrival and departure timing when you choose your hotel or apartment.",
+      "Standard check-in typically begins at 2:00 PM, and standard check-out is by 12:00 PM, unless stated otherwise in your booking confirmation.",
   },
   {
     question: "Does Swiss Blue allow pets?",
     answer:
-      "Pet policies may vary by property and unit type. Please confirm with the reservations team before completing your booking.",
+      "Pets are not allowed in order to ensure the comfort and safety of all guests.",
   },
   {
     question: "What parking options are available at Swiss Blue properties?",
     answer:
-      "Parking and access services vary by property. The team can confirm parking details for your selected hotel or serviced apartment.",
+      "Yes. Complimentary parking is available for all guests across all Swiss Blue properties.",
   },
   {
     question: "What property amenities are available at Swiss Blue?",

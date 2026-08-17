@@ -12,7 +12,7 @@ export const homepageFaqsEn = [
   },
   {
     "question": "What are the check-in and check-out times?",
-    "answer": "Standard check-in is usually from 3:00 PM and check-out is usually by 12:00 PM, unless otherwise stated in your booking confirmation."
+    "answer": "Standard check-in typically begins at 2:00 PM and check-out is by 12:00 PM, unless otherwise stated in your booking confirmation."
   },
   {
     "question": "Is free Wi-Fi available?",
@@ -32,7 +32,7 @@ export const homepageFaqsEn = [
   },
   {
     "question": "Is parking available?",
-    "answer": "Parking may be available at selected properties. Availability and fees vary by location."
+    "answer": "Yes. Complimentary parking is available for all guests across all Swiss Blue properties."
   },
   {
     "question": "Is breakfast included?",
@@ -47,7 +47,7 @@ export const homepageFaqsEn = [
 export const propertyFaqsEn = [
   {
     "question": "What time is check-in at SwissBlue?",
-    "answer": "Standard check-in is usually from 3:00 PM, unless otherwise stated in your booking confirmation."
+    "answer": "Standard check-in typically begins at 2:00 PM, unless otherwise stated in your booking confirmation."
   },
   {
     "question": "What time is check-out at SwissBlue?",
@@ -67,7 +67,7 @@ export const propertyFaqsEn = [
   },
   {
     "question": "Is parking available?",
-    "answer": "Parking may be available at selected properties. Availability and fees vary by location."
+    "answer": "Yes. Complimentary parking is available for all guests across all Swiss Blue properties."
   },
   {
     "question": "Is breakfast included in the rate?",
@@ -99,7 +99,7 @@ export const propertyFaqsEn = [
   },
   {
     "question": "Are pets allowed at SwissBlue?",
-    "answer": "Pets are generally not permitted unless clearly stated by the selected property. Please contact the property before booking."
+    "answer": "Pets are not allowed in order to ensure the comfort and safety of all guests."
   },
   {
     "question": "Can I contact each property directly?",
@@ -223,7 +223,7 @@ export const faqCategoriesEn = [
     "items": [
       {
         "question": "What time is check-in at SwissBlue?",
-        "answer": "Standard check-in is usually from 3:00 PM, unless otherwise stated in your booking confirmation."
+        "answer": "Standard check-in typically begins at 2:00 PM, unless otherwise stated in your booking confirmation."
       },
       {
         "question": "What time is check-out at SwissBlue?",
@@ -341,11 +341,11 @@ export const faqCategoriesEn = [
       },
       {
         "question": "Is parking available?",
-        "answer": "Parking may be available at selected properties. Availability and fees vary by location."
+        "answer": "Yes. Complimentary parking is available for all guests across all Swiss Blue properties."
       },
       {
         "question": "Is parking free?",
-        "answer": "Parking may be complimentary or chargeable depending on the property and booking conditions."
+        "answer": "Yes. Complimentary parking is available for all guests across all Swiss Blue properties."
       },
       {
         "question": "Is reception available 24 hours?",
@@ -598,11 +598,11 @@ export const faqCategoriesEn = [
       },
       {
         "question": "Are pets allowed at SwissBlue?",
-        "answer": "Pets are generally not permitted unless clearly stated by the selected property. Please contact the property before booking."
+        "answer": "Pets are not allowed in order to ensure the comfort and safety of all guests."
       },
       {
         "question": "Are there pet fees if pets are allowed?",
-        "answer": "If a property allows pets, additional fees, cleaning charges, and specific rules may apply."
+        "answer": "Pets are not permitted across all Swiss Blue properties, so no pet fees apply."
       },
       {
         "question": "What is the visitor policy?",
