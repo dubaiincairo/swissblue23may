@@ -62,7 +62,8 @@ const SERVICE_TRANSLATIONS = [
   ["High-Speed Wi-Fi", "إنترنت عالي السرعة"],
   ["Breakfast Buffet", "بوفيه إفطار"],
   ["Professional Housekeeping", "خدمة تنظيف احترافية"],
-  ["24/7 Restaurant", "مطعم مأكولات شرقية وعالمية"],
+  ["International Restaurant", "مطعم مأكولات شرقية وعالمية"],
+  ["24/7 Cafe", "مقهى 24/7"],
   ["Indoor Pool", "مسبح داخلي"],
   ["Gym", "نادي صحي"],
   ["Free Parking", "مواقف سيارات مجانية"],
@@ -78,12 +79,16 @@ const SERVICE_TRANSLATIONS = [
   ["Fire Emergency Systems", "أنظمة طوارئ الحريق"],
 ] as const;
 
-const SERVICES_EN_TO_AR = new Map<string, string>(
-  SERVICE_TRANSLATIONS.map(([en, ar]) => [en.toLocaleLowerCase("en"), ar]),
-);
-const SERVICES_AR_TO_EN = new Map<string, string>(
-  SERVICE_TRANSLATIONS.map(([en, ar]) => [ar, en]),
-);
+const SERVICES_EN_TO_AR = new Map<string, string>([
+  ...SERVICE_TRANSLATIONS.map(([en, ar]) => [en.toLocaleLowerCase("en"), ar] as [string, string]),
+  ["24/7 restaurant", "مطعم مأكولات شرقية وعالمية"],
+  ["restaurant and cafe", "مقهى 24/7"],
+  ["restaurant & cafe", "مقهى 24/7"],
+]);
+const SERVICES_AR_TO_EN = new Map<string, string>([
+  ...SERVICE_TRANSLATIONS.map(([en, ar]) => [ar, en] as [string, string]),
+  ["مطعم ومقهى", "24/7 Cafe"],
+]);
 
 function createPropertyGalleryCollection(
   properties: Array<{
@@ -4951,6 +4956,39 @@ function withoutPropertyGallery<
   return overview;
 }
 
+export function normalizePropertyAmenities(
+  slug: string,
+  amenities: readonly string[] = [],
+  locale: "ar" | "en",
+): string[] {
+  const isVinasOrTulip = slug.includes("vinas") || slug.includes("tulip");
+
+  return (amenities || [])
+    .map((item) => {
+      let text = item;
+      if (/restaurant\s*(and|&)\s*cafe/i.test(text)) {
+        text = locale === "ar" ? "مقهى 24/7" : "24/7 Cafe";
+      } else if (/مطعم\s*ومقهى/.test(text)) {
+        text = locale === "ar" ? "مقهى 24/7" : "24/7 Cafe";
+      }
+
+      if (isVinasOrTulip) {
+        if (/breakfast|إفطار/i.test(text)) {
+          text = locale === "ar" ? "بوفيه إفطار (قريباً)" : "Breakfast buffet (Soon)";
+        }
+      }
+      return text;
+    })
+    .filter((item) => {
+      if (isVinasOrTulip) {
+        if (/restaurant|مطعم/i.test(item) && !/cafe|مقهى/i.test(item)) {
+          return false;
+        }
+      }
+      return true;
+    });
+}
+
 function syncPropertyOverviewImages(
   arProperties: EditableSiteContent["ar"]["homepage"]["properties"]["items"],
   enProperties: EditableSiteContent["en"]["homepage"]["properties"]["items"],
@@ -4978,7 +5016,10 @@ function syncPropertyOverviewImages(
     const enDefault = defaultEnBySlug.get(property.slug);
 
     if (!enProperty || !arDefault || !enDefault) {
-      return property;
+      return {
+        ...property,
+        amenities: normalizePropertyAmenities(property.slug, property.amenities, "ar"),
+      };
     }
 
     const image =
@@ -4990,6 +5031,11 @@ function syncPropertyOverviewImages(
     return {
       ...withoutPropertyGallery(arDefault),
       ...withoutPropertyGallery(property),
+      amenities: normalizePropertyAmenities(
+        property.slug,
+        property.amenities || arDefault.amenities,
+        "ar",
+      ),
       image,
     };
   });
@@ -5003,7 +5049,10 @@ function syncPropertyOverviewImages(
     const enDefault = defaultEnBySlug.get(property.slug);
 
     if (!arProperty || !arDefault || !enDefault) {
-      return property;
+      return {
+        ...property,
+        amenities: normalizePropertyAmenities(property.slug, property.amenities, "en"),
+      };
     }
 
     const image =
@@ -5015,6 +5064,11 @@ function syncPropertyOverviewImages(
     return {
       ...withoutPropertyGallery(enDefault),
       ...withoutPropertyGallery(property),
+      amenities: normalizePropertyAmenities(
+        property.slug,
+        property.amenities || enDefault.amenities,
+        "en",
+      ),
       image,
     };
   });

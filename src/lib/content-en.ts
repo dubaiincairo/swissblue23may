@@ -109,7 +109,7 @@ export const footerContactEn = [
 export const propertyAmenitiesEn = [
   "High-speed Wi-Fi",
   "Breakfast buffet",
-  "Restaurant and cafe",
+  "24/7 Cafe",
   "Room service",
   "Taxi service",
   "Safe locker",
@@ -353,7 +353,14 @@ export const hotelsEn = [
       },
     ],
     amenities: [
-      ...propertyAmenitiesEn,
+      "High-speed Wi-Fi",
+      "Breakfast buffet (Soon)",
+      "24/7 Cafe",
+      "Room service",
+      "Taxi service",
+      "Safe locker",
+      "Coffee, tea, and minibar",
+      "Guest reception and support",
       "Monthly-stay support",
       "Corporate-friendly services",
     ],
@@ -374,7 +381,7 @@ export const hotelsEn = [
     title: "Tulip Alrawdah Serviced Apartments",
     city: "Riyadh",
     type: "Apart-hotel",
-    units: "37 apartments",
+    units: "36 apartments",
     image: jazanImage,
     summary:
       "Studios, one-bedroom, and two-bedroom apartments in Riyadh with selected city-view options for practical family and business stays.",
@@ -388,7 +395,7 @@ export const hotelsEn = [
       },
       {
         title: "One-Bedroom Apartments",
-        count: "26 apartments",
+        count: "25 apartments",
         description:
           "Superior and deluxe options, including selected city views.",
       },
@@ -398,7 +405,18 @@ export const hotelsEn = [
         description: "Deluxe and city-view two-bedroom layouts.",
       },
     ],
-    amenities: [...propertyAmenitiesEn, "Housekeeping", "Monthly-stay options"],
+    amenities: [
+      "High-speed Wi-Fi",
+      "Breakfast buffet (Soon)",
+      "24/7 Cafe",
+      "Room service",
+      "Taxi service",
+      "Safe locker",
+      "Coffee, tea, and minibar",
+      "Guest reception and support",
+      "Housekeeping",
+      "Monthly-stay options",
+    ],
     locationHighlight:
       "A practical Riyadh location near active neighborhoods, daily services, and main movement routes.",
     landmarks: [
@@ -626,7 +644,7 @@ export const contactChannelsEn = [
 export const servicesEn = [
   "High-speed Wi-Fi",
   "Breakfast buffet",
-  "Restaurant and cafe",
+  "24/7 Cafe",
   "Room service",
   "Meeting rooms",
   "Gym at selected properties",
@@ -1064,7 +1082,7 @@ export const roomClassificationsEn = [
   },
   {
     property: "Tulip Alrawdah Serviced Apartments",
-    total: "37 units",
+    total: "36 units",
     rows: [
       {
         type: "King Studio",
@@ -1093,9 +1111,9 @@ export const roomClassificationsEn = [
         view: "No View",
         bathrooms: "1",
         livingRooms: "1",
-        totalUnits: "16",
+        totalUnits: "15",
         rooms:
-          "203, 204, 204C, 205, 206, 208, 209, 209C, 301, 302, 303, 304, 304C, 306, 307, 307C",
+          "203, 204, 204C, 205, 206, 208, 209, 209C, 301, 302, 303, 304, 304C, 306, 307",
       },
       {
         type: "Superior Apartment with City View",

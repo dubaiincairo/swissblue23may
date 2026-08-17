@@ -107,7 +107,7 @@ const categories: ReadonlyArray<Category> = [
     description: "تجهيزات تجعل الإقامة أقرب لإحساس البيت، مع راحة فندقية يومية.",
     descriptionEn: "Touches that make the stay feel like home, with the daily comfort of a hotel.",
     icon: InRoomIcon,
-    match: [/coffee|tea|minibar|room\s*service|housekeeping|turndown|toiletries|قهوة|شاي|ميني\s*بار|خدمة\s*الغرف|تدبير|تنظيف|غسيل/i],
+    match: [/coffee|\btea\b|minibar|room\s*service|housekeeping|turndown|toiletries|قهوة|شاي|ميني\s*بار|خدمة\s*الغرف|تدبير|تنظيف|غسيل/i],
   },
   {
     key: "wellness",

@@ -11,6 +11,7 @@ import { hotelsEn } from "@/lib/content-en";
 import {
   getEditableContent,
   isSectionHidden,
+  normalizePropertyAmenities,
   BOOKING_URL,
 } from "@/lib/editable-content";
 import { isComingSoonProperty } from "@/lib/property-availability";
@@ -172,7 +173,11 @@ export default async function HotelDetailPageEn({
             hotels and apartments stays clear.
           </p>
         </div>
-        <FeatureChipGrid items={hotel.amenities} variant="check" columns={2} />
+        <FeatureChipGrid
+          items={normalizePropertyAmenities(hotel.slug, hotel.amenities, "en")}
+          variant="check"
+          columns={2}
+        />
       </section>
 
       <AccessibleStayPanel locale="en" />

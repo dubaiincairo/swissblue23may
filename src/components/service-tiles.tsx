@@ -147,8 +147,8 @@ const matchers: Matcher[] = [
   {
     icon: Coffee,
     tag: "ضيافة",
-    tagEn: "In-room",
-    keywords: [/coffee|tea|minibar|قهوة|شاي|ميني\s*بار/i],
+    tagEn: "In-house",
+    keywords: [/coffee|\btea\b|minibar|قهوة|شاي|ميني\s*بار/i],
   },
   {
     icon: Utensils,
@@ -158,8 +158,8 @@ const matchers: Matcher[] = [
   },
   {
     icon: RoomService,
-    tag: "في الغرفة",
-    tagEn: "In-room",
+    tag: "في المنشأة",
+    tagEn: "In-house",
     keywords: [/room\s*service|خدمة\s*الغرف/i],
   },
   {
@@ -172,7 +172,7 @@ const matchers: Matcher[] = [
     icon: Gym,
     tag: "عافية",
     tagEn: "Wellness",
-    keywords: [/gym|fitness|نادي\s*رياضي/i],
+    keywords: [/gym|fitness|steam|sauna|spa|نادي\s*رياضي|بخار|ساونا|سبا/i],
   },
   {
     icon: Pool,
@@ -230,12 +230,13 @@ export function ServiceTiles({
 }) {
   return (
     <div className="service-tile-grid">
-      {items.map((item, index) => {
+      {items.map((rawItem, index) => {
+        const item = rawItem.replace(/24\/7\s*restaurant/i, "International Restaurant");
         const match = resolve(item);
         return (
           <article
             className="service-tile reveal-slide-up"
-            key={item}
+            key={rawItem}
             style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
           >
             <span className="service-tile-icon" aria-hidden="true">
