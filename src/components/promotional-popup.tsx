@@ -131,6 +131,8 @@ function PromotionalPopupForLocale({
     >
       <section
         className={`promotion-modal promotion-modal-${style}`}
+        dir={locale === "ar" ? "rtl" : "ltr"}
+        lang={locale}
         role="dialog"
         aria-modal="true"
         aria-labelledby="promotion-title"
