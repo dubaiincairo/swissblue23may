@@ -5219,6 +5219,34 @@ function galleryImageValue(item: PropertyGalleryValue | undefined) {
   return typeof item === "string" ? item : item.image;
 }
 
+function sharedImageListValue(
+  left: readonly string[],
+  right: readonly string[],
+  leftDefault: readonly string[],
+  rightDefault: readonly string[],
+  editedLanguage?: ContentLanguage,
+) {
+  const sameImages = (value: readonly string[], fallback: readonly string[]) =>
+    value.length === fallback.length &&
+    value.every((image, index) => image === fallback[index]);
+
+  let source: readonly string[];
+
+  if (editedLanguage === "ar") {
+    source = left;
+  } else if (editedLanguage === "en") {
+    source = right;
+  } else if (sameImages(left, leftDefault) && !sameImages(right, rightDefault)) {
+    source = right;
+  } else if (sameImages(right, rightDefault) && !sameImages(left, leftDefault)) {
+    source = left;
+  } else {
+    source = right.length >= left.length ? right : left;
+  }
+
+  return [Array.from(source), Array.from(source)] as const;
+}
+
 function syncDestinationImages(
   arDestinations: EditableSiteContent["ar"]["homepage"]["destinations"]["items"],
   enDestinations: EditableSiteContent["en"]["homepage"]["destinations"]["items"],
@@ -5246,7 +5274,14 @@ function syncDestinationImages(
         enDefault.image,
         editedLanguage,
       );
-      return { ...arItem, image };
+      const [photos] = sharedImageListValue(
+        arItem.photos,
+        enItem.photos,
+        arDefault.photos,
+        enDefault.photos,
+        editedLanguage,
+      );
+      return { ...arItem, image, photos };
     }).filter(
       Boolean,
     ) as EditableSiteContent["ar"]["homepage"]["destinations"]["items"],
@@ -5269,7 +5304,14 @@ function syncDestinationImages(
         enDefault.image,
         editedLanguage,
       );
-      return { ...enItem, image };
+      const [, photos] = sharedImageListValue(
+        arItem.photos,
+        enItem.photos,
+        arDefault.photos,
+        enDefault.photos,
+        editedLanguage,
+      );
+      return { ...enItem, image, photos };
     }).filter(
       Boolean,
     ) as EditableSiteContent["en"]["homepage"]["destinations"]["items"],
