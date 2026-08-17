@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+
+type Locale = "ar" | "en";
 
 type PromotionalPopupItem = {
   id: string;
@@ -27,6 +30,10 @@ type PromotionalPopupSettings = {
   displayDelayMs: number;
   items: PromotionalPopupItem[];
 };
+
+function dismissalKey(locale: Locale, item: PromotionalPopupItem) {
+  return `swissblue-promotion:${locale}:${item.id}:${item.activeUntil}`;
+}
 
 function isActive(item: PromotionalPopupItem, now: Date) {
   if (!item.enabled) return false;
@@ -58,9 +65,11 @@ function DinnerIcon() {
   );
 }
 
-export default function PromotionalPopup({
+function PromotionalPopupForLocale({
+  locale,
   settings,
 }: {
+  locale: Locale;
   settings: PromotionalPopupSettings;
 }) {
   const [promotion, setPromotion] = useState<PromotionalPopupItem | null>(null);
@@ -69,26 +78,25 @@ export default function PromotionalPopup({
   const dismiss = useCallback(() => {
     if (promotion) {
       window.sessionStorage.setItem(
-        `swissblue-promotion:${promotion.id}:${promotion.activeUntil}`,
+        dismissalKey(locale, promotion),
         "dismissed",
       );
     }
     setPromotion(null);
-  }, [promotion]);
+  }, [locale, promotion]);
 
   useEffect(() => {
     const item = settings.items.find((candidate) => isActive(candidate, new Date()));
     if (!item) return;
 
-    const dismissalKey = `swissblue-promotion:${item.id}:${item.activeUntil}`;
-    if (window.sessionStorage.getItem(dismissalKey)) return;
+    if (window.sessionStorage.getItem(dismissalKey(locale, item))) return;
 
     const timer = window.setTimeout(
       () => setPromotion(item),
       Math.max(0, settings.displayDelayMs || 0),
     );
     return () => window.clearTimeout(timer);
-  }, [settings]);
+  }, [locale, settings]);
 
   useEffect(() => {
     if (!promotion) return;
@@ -186,5 +194,22 @@ export default function PromotionalPopup({
         </div>
       </section>
     </div>
+  );
+}
+
+export default function PromotionalPopup({
+  settings,
+}: {
+  settings: Record<Locale, PromotionalPopupSettings>;
+}) {
+  const pathname = usePathname();
+  const locale: Locale = pathname === "/ar" || pathname.startsWith("/ar/") ? "ar" : "en";
+
+  return (
+    <PromotionalPopupForLocale
+      key={locale}
+      locale={locale}
+      settings={settings[locale]}
+    />
   );
 }
