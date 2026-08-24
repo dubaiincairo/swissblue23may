@@ -25,6 +25,8 @@ function needsAuth(pathname: string): boolean {
   return (
     pathname === "/admin" ||
     pathname.startsWith("/admin/") ||
+    pathname === "/saudihospitalityweb/admin" ||
+    pathname.startsWith("/saudihospitalityweb/admin/") ||
     pathname === "/studio" ||
     pathname.startsWith("/studio/") ||
     pathname.startsWith("/api/site-content") ||
@@ -38,6 +40,9 @@ function needsAuth(pathname: string): boolean {
  * any content authority (the content API writes the whole {ar,en} tree).
  */
 function requiredAuthority(pathname: string): AuthorityId | "content-any" | null {
+  if (pathname === "/saudihospitalityweb/admin" || pathname.startsWith("/saudihospitalityweb/admin/")) return "content-any";
+  if (pathname.startsWith("/api/admin/saudi-hospitality")) return "content-any";
+  if (pathname.startsWith("/api/admin/submissions/b2b")) return "submissions";
   if (pathname === "/admin/users" || pathname.startsWith("/admin/users/")) return "users";
   if (pathname.startsWith("/api/admin/users")) return "users";
   if (pathname === "/admin/overview" || pathname.startsWith("/admin/overview/")) return "analytics";
@@ -170,6 +175,8 @@ export const config = {
     "/secretpanel/:path*",
     "/studio",
     "/studio/:path*",
+    "/saudihospitalityweb/admin",
+    "/saudihospitalityweb/admin/:path*",
     "/api/site-content",
     "/api/site-content/:path*",
     "/api/admin/:path*",
