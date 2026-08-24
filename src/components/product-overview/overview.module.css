@@ -1,15 +1,8 @@
 /* Swiss Blue Marketing Product Overview Stylesheet */
 
 .overviewContainer {
-  --sb-primary: #2b6fe8;
-  --sb-royal: #1246a8;
-  --sb-cream: #fff8eb;
-  --sb-radius-card: 1.75rem;
-  --sb-radius-control: 0.75rem;
-  --sb-elevation-card: 0 10px 30px rgba(18, 70, 168, 0.08);
-  --sb-elevation-action: 0 4px 14px rgba(43, 111, 232, 0.32);
   min-height: 100vh;
-  background: linear-gradient(180deg, var(--sb-cream) 0, #f7faff 28rem);
+  background-color: var(--background, #f7faff);
   color: var(--foreground, #111827);
   overflow-x: clip;
 }
@@ -190,11 +183,6 @@
   text-wrap: balance;
 }
 
-[dir="rtl"] .heroTitle {
-  line-height: 1.32;
-  letter-spacing: 0;
-}
-
 .heroSubtitle {
   font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   line-height: 1.7;
@@ -202,20 +190,6 @@
   max-width: 52rem;
   margin: 0 auto 2.5rem;
   text-wrap: balance;
-}
-
-[dir="rtl"] .heroSubtitle {
-  line-height: 1.8;
-  letter-spacing: 0;
-}
-
-[dir="rtl"] .heroPill,
-[dir="rtl"] .brandBadge,
-[dir="rtl"] .sectionBadge,
-[dir="rtl"] .pillarBadge,
-[dir="rtl"] .heroPrimaryBtn,
-[dir="rtl"] .heroSecondaryBtn {
-  letter-spacing: 0;
 }
 
 .heroCtas {
@@ -705,7 +679,7 @@
   background: rgba(8, 28, 70, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 1100;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -772,45 +746,6 @@
 .formInput:focus {
   border-color: #2b6fe8;
   box-shadow: 0 0 0 3px rgba(43, 111, 232, 0.15);
-
-}
-
-@media (max-width: 640px) {
-  .topHeaderInner {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-  }
-
-  .topHeaderInner > :first-child {
-    width: 100%;
-    min-width: 0;
-    justify-content: space-between;
-  }
-
-  .brandLink {
-    flex: 0 1 auto;
-    min-width: 7.5rem;
-  }
-
-  .brandBadge {
-    max-width: 11.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .headerActions {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .heroSection {
-    padding-inline: 1rem;
-  }
 }
 
 /* Print Styles (High Quality Pitch Deck Export) */

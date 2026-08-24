@@ -36,7 +36,6 @@ export const PAGE_NAMES: Record<string, { en: string; ar: string }> = {
   "central-reservation": { en: "Central Reservation", ar: "الحجز المركزي" },
   feedback: { en: "Feedback", ar: "آراء الضيوف" },
   "product-overview": { en: "Product Overview & Platform Showcase", ar: "ملف المنظومة الرقمية والعرض التسويقي" },
-  saudihospitalityweb: { en: "Saudi Hospitality Web Platform", ar: "منظومة الضيافة الرقمية" },
 };
 
 /** All per-page SEO keys (used to seed the editable map / iterate). */

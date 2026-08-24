@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type Locale = "ar" | "en";
@@ -91,12 +92,7 @@ function PromotionalPopupForLocale({
     if (window.sessionStorage.getItem(dismissalKey(locale, item))) return;
 
     const timer = window.setTimeout(
-      () => {
-        if (document.querySelector('[role="dialog"][aria-modal="true"]')) {
-          return;
-        }
-        setPromotion(item);
-      },
+      () => setPromotion(item),
       Math.max(0, settings.displayDelayMs || 0),
     );
     return () => window.clearTimeout(timer);
@@ -205,11 +201,12 @@ function PromotionalPopupForLocale({
 
 export default function PromotionalPopup({
   settings,
-  locale,
 }: {
   settings: Record<Locale, PromotionalPopupSettings>;
-  locale: Locale;
 }) {
+  const pathname = usePathname();
+  const locale: Locale = pathname === "/ar" || pathname.startsWith("/ar/") ? "ar" : "en";
+
   return (
     <PromotionalPopupForLocale
       key={locale}

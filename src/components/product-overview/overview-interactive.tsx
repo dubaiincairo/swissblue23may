@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { createPortal } from "react-dom";
 import {
   Bot,
+  CalendarCheck,
   Languages,
   Sliders,
   Building2,
@@ -16,22 +16,22 @@ import {
   ChevronRight,
   ChevronLeft,
   X,
+  PhoneCall,
   Send,
+  ShieldCheck,
+  BarChart3,
+  Layers,
+  ArrowUpRight,
 } from "lucide-react";
 import styles from "./overview.module.css";
-import { submitB2bLead } from "@/lib/b2b-lead";
-import type { SaudiHospitalityContent } from "@/lib/saudihospitalityweb-store";
-import { initialSaudiHospitalityContent } from "@/lib/saudihospitalityweb-store";
 
 export type Locale = "ar" | "en";
 
 interface OverviewInteractiveProps {
   locale: Locale;
-  content?: SaudiHospitalityContent;
 }
 
-export function OverviewInteractive({ locale, content: providedContent }: OverviewInteractiveProps) {
-  const content = providedContent ?? initialSaudiHospitalityContent[locale];
+export function OverviewInteractive({ locale }: OverviewInteractiveProps) {
   const isAr = locale === "ar";
   const [activeTab, setActiveTab] = useState<string>("ai-concierge");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -40,26 +40,38 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
   // AI Concierge Chat Simulator State
   const [chatMessages, setChatMessages] = useState<
     Array<{ sender: "bot" | "user"; text: string }>
-  >([{ sender: "bot", text: content.aiConcierge.initialGreeting }]);
+  >(
+    isAr
+      ? [
+          {
+            sender: "bot",
+            text: "مرحباً بك! أنا سارة، المساعد الذكي لفنادق سويس بلو. كيف يمكنني مساعدتك في استكشاف منشآتنا أو ترتيب حجزك اليوم؟",
+          },
+        ]
+      : [
+          {
+            sender: "bot",
+            text: "Welcome! I'm Sarah, your Swiss Blue AI Concierge. How can I assist you with exploring our properties or securing your reservation today?",
+          },
+        ],
+  );
   const [isTyping, setIsTyping] = useState<boolean>(false);
 
   // ROI Calculator State
-  const [roomsCount, setRoomsCount] = useState<number>(content.roiCalculator.defaultRooms);
-  const [adr, setAdr] = useState<number>(content.roiCalculator.defaultAdr);
-  const [occupancy, setOccupancy] = useState<number>(content.roiCalculator.defaultOccupancy);
+  const [roomsCount, setRoomsCount] = useState<number>(45);
+  const [adr, setAdr] = useState<number>(380);
+  const [occupancy, setOccupancy] = useState<number>(75);
 
-  // Calculate annual savings assuming 35% direct bookings shifting from 18% OTA commission
+  // Calculate annual savings assuming 30% direct bookings shifting from 18% OTA commission
   const monthlyRevenue = roomsCount * (occupancy / 100) * 30 * adr;
-  const directBookingShare = content.roiCalculator.directShareRate / 100;
-  const otaCommissionRate = content.roiCalculator.otaCommissionRate / 100;
+  const directBookingShare = 0.35; // 35% captured via direct web platform
+  const otaCommissionRate = 0.18; // 18% typical OTA fee
   const annualSavings = Math.round(
     monthlyRevenue * directBookingShare * otaCommissionRate * 12,
   );
 
   // Form State
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
-  const [formError, setFormError] = useState<string>("");
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -81,28 +93,24 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormError("");
-    setIsSubmitting(true);
     try {
-      await submitB2bLead({
-        company: formData.company || "Saudi Hospitality Showcase Lead",
-        contact: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        requestType: modalInterest || "Platform Demo & Partnership",
-        message: formData.message || "Lead submitted from Saudi Hospitality showcase",
-        locale,
+      await fetch("/api/forms/b2b", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          companyName: formData.company || "Marketing Overview Lead",
+          contactPerson: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          companyType: modalInterest || "Product Overview Pitch",
+          requestType: "Platform Demo & Partnership",
+          notes: formData.message || "Lead submitted from /product-overview page",
+        }),
       });
-      setFormSubmitted(true);
     } catch {
-      setFormError(
-        isAr
-          ? "تعذر إرسال الطلب. يرجى المحاولة مرة أخرى أو التواصل معنا مباشرة."
-          : "We could not send your request. Please try again or contact us directly.",
-      );
-    } finally {
-      setIsSubmitting(false);
+      // Graceful fallback
     }
+    setFormSubmitted(true);
   };
 
   const openDemoModal = (interest: string = "Platform Demo") => {
@@ -111,45 +119,46 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
     setIsModalOpen(true);
   };
 
-  const prompts = content.aiConcierge.prompts;
-  const tabOrder = [
-    "ai-concierge",
-    "direct-booking",
-    "bilingual-parity",
-    "headless-cms",
-    "multi-property",
-    "performance-seo",
-  ] as const;
+  const samplePromptsAr = [
+    {
+      q: "ما هي مزايا شقق فيناس بالرياض؟",
+      a: "تتميز شقق فيناس الرياض بموقع استراتيجي بالقرب من واجهة الرياض والبوليفارد، مع وحدات مجهزة بالكامل ومطابخ حديثة وخدمة واي فاي فائقة السرعة، ومثالية للإقامات الطويلة ورحلات الأعمال.",
+    },
+    {
+      q: "هل توجد أسعار خاصة لتعاقدات الشركات؟",
+      a: "نعم بالتأكيد! توفر سويس بلو تعاقدات مؤسسية بخصومات تصل إلى 25% مع تسهيلات فواتير شهرية وخدمة مدير حسابات مخصص. هل ترغب في تسجيل بيانات شركتك الآن؟",
+    },
+    {
+      q: "كيف يمكنني حجز جناح عائلي في جدة؟",
+      a: "يمكنك الحجز مباشرة عبر محرك الحجز في ثوانٍ مع الحصول على أفضل سعر مضمون، أو يمكنني توجيهك لأجنحة التوليب أو الزهراء الفندقية المجهزة للعائلات.",
+    },
+  ];
 
-  const handleTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-    const currentIndex = tabOrder.indexOf(activeTab as (typeof tabOrder)[number]);
-    if (currentIndex < 0) return;
+  const samplePromptsEn = [
+    {
+      q: "What makes Vinas Riyadh ideal for business?",
+      a: "Vinas Riyadh Serviced Apartments offer strategic access to Riyadh Front and the business district, featuring full kitchens, high-speed fiber Wi-Fi, and 24/7 dedicated support for corporate travelers.",
+    },
+    {
+      q: "Do you offer corporate rates & long stays?",
+      a: "Yes! We provide tailored B2B corporate contracts with up to 25% preferential savings, centralized invoicing, and dedicated corporate account management. Would you like to connect with our B2B team?",
+    },
+    {
+      q: "How fast is the direct booking engine?",
+      a: "Direct booking takes less than 30 seconds with real-time rate calculation, instant confirmation, zero OTA markup, and direct PMS integration.",
+    },
+  ];
 
-    let nextIndex = currentIndex;
-    if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = tabOrder.length - 1;
-    else if (event.key === "ArrowRight") nextIndex = (currentIndex + (isAr ? -1 : 1) + tabOrder.length) % tabOrder.length;
-    else if (event.key === "ArrowLeft") nextIndex = (currentIndex + (isAr ? 1 : -1) + tabOrder.length) % tabOrder.length;
-    else return;
-
-    event.preventDefault();
-    const nextTab = tabOrder[nextIndex];
-    setActiveTab(nextTab);
-    document.getElementById(`showcase-tab-${nextTab}`)?.focus();
-  };
+  const prompts = isAr ? samplePromptsAr : samplePromptsEn;
 
   return (
     <>
       {/* Interactive Tabs Navigation */}
-      <div className={styles.tabNav} role="tablist" aria-label={isAr ? "ميزات المنصة" : "Platform capabilities"}>
+      <div className={styles.tabNav} role="tablist">
         <button
           type="button"
-          id="showcase-tab-ai-concierge"
           role="tab"
-          aria-controls="showcase-panel-ai-concierge"
           aria-selected={activeTab === "ai-concierge"}
-          tabIndex={activeTab === "ai-concierge" ? 0 : -1}
-          onKeyDown={handleTabKeyDown}
           onClick={() => setActiveTab("ai-concierge")}
           className={`${styles.tabBtn} ${activeTab === "ai-concierge" ? styles.tabBtnActive : ""}`}
         >
@@ -159,12 +168,8 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
 
         <button
           type="button"
-          id="showcase-tab-direct-booking"
           role="tab"
-          aria-controls="showcase-panel-direct-booking"
           aria-selected={activeTab === "direct-booking"}
-          tabIndex={activeTab === "direct-booking" ? 0 : -1}
-          onKeyDown={handleTabKeyDown}
           onClick={() => setActiveTab("direct-booking")}
           className={`${styles.tabBtn} ${activeTab === "direct-booking" ? styles.tabBtnActive : ""}`}
         >
@@ -174,12 +179,8 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
 
         <button
           type="button"
-          id="showcase-tab-bilingual-parity"
           role="tab"
-          aria-controls="showcase-panel-bilingual-parity"
           aria-selected={activeTab === "bilingual-parity"}
-          tabIndex={activeTab === "bilingual-parity" ? 0 : -1}
-          onKeyDown={handleTabKeyDown}
           onClick={() => setActiveTab("bilingual-parity")}
           className={`${styles.tabBtn} ${activeTab === "bilingual-parity" ? styles.tabBtnActive : ""}`}
         >
@@ -189,12 +190,8 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
 
         <button
           type="button"
-          id="showcase-tab-headless-cms"
           role="tab"
-          aria-controls="showcase-panel-headless-cms"
           aria-selected={activeTab === "headless-cms"}
-          tabIndex={activeTab === "headless-cms" ? 0 : -1}
-          onKeyDown={handleTabKeyDown}
           onClick={() => setActiveTab("headless-cms")}
           className={`${styles.tabBtn} ${activeTab === "headless-cms" ? styles.tabBtnActive : ""}`}
         >
@@ -204,12 +201,8 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
 
         <button
           type="button"
-          id="showcase-tab-multi-property"
           role="tab"
-          aria-controls="showcase-panel-multi-property"
           aria-selected={activeTab === "multi-property"}
-          tabIndex={activeTab === "multi-property" ? 0 : -1}
-          onKeyDown={handleTabKeyDown}
           onClick={() => setActiveTab("multi-property")}
           className={`${styles.tabBtn} ${activeTab === "multi-property" ? styles.tabBtnActive : ""}`}
         >
@@ -219,12 +212,8 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
 
         <button
           type="button"
-          id="showcase-tab-performance-seo"
           role="tab"
-          aria-controls="showcase-panel-performance-seo"
           aria-selected={activeTab === "performance-seo"}
-          tabIndex={activeTab === "performance-seo" ? 0 : -1}
-          onKeyDown={handleTabKeyDown}
           onClick={() => setActiveTab("performance-seo")}
           className={`${styles.tabBtn} ${activeTab === "performance-seo" ? styles.tabBtnActive : ""}`}
         >
@@ -235,33 +224,54 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
 
       {/* Feature Spotlight Tab Panels */}
       {activeTab === "ai-concierge" && (
-        <div
-          className={styles.featureSpotlight}
-          id="showcase-panel-ai-concierge"
-          role="tabpanel"
-          aria-labelledby="showcase-tab-ai-concierge"
-        >
+        <div className={styles.featureSpotlight}>
           <div className={styles.featureCopy}>
             <div className={styles.sectionBadge}>
               <Sparkles size={14} />
-              <span>{content.aiConcierge.badge}</span>
+              <span>{isAr ? "الميزة الحصرية" : "Flagship AI Capability"}</span>
             </div>
-            <h3>{content.aiConcierge.title}</h3>
-            <p>{content.aiConcierge.description}</p>
+            <h3>
+              {isAr
+                ? "مساعد فندقي ذكي يعمل على مدار الساعة لزيادة المبيعات"
+                : "24/7 Intelligent Concierge Driving Direct Conversion"}
+            </h3>
+            <p>
+              {isAr
+                ? "مدمج بالكامل في رحلة الضيف، يجيب باللغتين العربية والإنجليزية على جميع الاستفسارات الفندقية، يوصي بالغرف المناسبة، ويجمع بيانات الحجوزات وتعاقدات الشركات آلياً إلى لوحة التحكم."
+                : "A native conversational AI agent answering property inquiries in Arabic and English, recommending room categories, and capturing qualified booking & B2B leads instantly."}
+            </p>
             <div className={styles.featureList}>
-              {content.aiConcierge.bulletPoints.map((point) => (
-                <div className={styles.featureListItem} key={point}>
-                  <CheckCircle2 className={styles.featureListIcon} />
-                  <span>{point}</span>
-                </div>
-              ))}
+              <div className={styles.featureListItem}>
+                <CheckCircle2 className={styles.featureListIcon} />
+                <span>
+                  {isAr
+                    ? "استجابة فورية فائقة السرعة في أقل من ثانيتين."
+                    : "Ultra-fast response time in under 2 seconds."}
+                </span>
+              </div>
+              <div className={styles.featureListItem}>
+                <CheckCircle2 className={styles.featureListIcon} />
+                <span>
+                  {isAr
+                    ? "التقاط بيانات العميل المهتم (الاسم، الجوال، التواريخ) وتحويلها كفرصة بيعية."
+                    : "Automated guest lead capture directly to the CRM."}
+                </span>
+              </div>
+              <div className={styles.featureListItem}>
+                <CheckCircle2 className={styles.featureListIcon} />
+                <span>
+                  {isAr
+                    ? "معرفة تامة بتفاصيل جميع الفنادق والخدمات والمطاعم وعروض الشركات."
+                    : "Trained on all 6 properties, policies, amenities, and B2B packages."}
+                </span>
+              </div>
             </div>
             <button
               type="button"
               onClick={() => openDemoModal("AI Concierge Demo")}
               className={styles.ctaBtn}
             >
-              <span>{content.aiConcierge.ctaText}</span>
+              <span>{isAr ? "طلب تجربة المساعد الذكي لعلامتك" : "Request AI Demo for Your Brand"}</span>
               {isAr ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
             </button>
           </div>
@@ -278,18 +288,18 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
                 />
                 <div>
                   <div style={{ fontWeight: 700, fontSize: "0.9375rem", color: "#0f172a" }}>
-                    {content.aiConcierge.agentName}
+                    {isAr ? "سارة العتيبي - المرشد الذكي" : "Sarah Al-Otaibi - AI Concierge"}
                   </div>
                   <div style={{ fontSize: "0.75rem", color: "#16a34a", fontWeight: 600 }}>
-                    {content.aiConcierge.agentStatus}
+                    {isAr ? "متصلة الآن • الرد فوري" : "Online • Instant Answers"}
                   </div>
                 </div>
               </div>
 
-              <div className={styles.chatSimBody} aria-live="polite">
-                {chatMessages.map((msg) => (
+              <div className={styles.chatSimBody}>
+                {chatMessages.map((msg, idx) => (
                   <div
-                    key={`${msg.sender}-${msg.text}`}
+                    key={idx}
                     className={msg.sender === "bot" ? styles.chatBubbleBot : styles.chatBubbleUser}
                   >
                     {msg.text}
@@ -307,9 +317,9 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
                   {isAr ? "جرّب النقر على أحد الأسئلة الشائعة:" : "Click a sample question to test live:"}
                 </div>
                 <div className={styles.chatPromptChips}>
-                  {prompts.map((p) => (
+                  {prompts.map((p, idx) => (
                     <button
-                      key={p.q}
+                      key={idx}
                       type="button"
                       className={styles.chatPromptChip}
                       onClick={() => handleSimPrompt(p.q, p.a)}
@@ -325,19 +335,22 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
       )}
 
       {activeTab === "direct-booking" && (
-        <div
-          className={styles.featureSpotlight}
-          id="showcase-panel-direct-booking"
-          role="tabpanel"
-          aria-labelledby="showcase-tab-direct-booking"
-        >
+        <div className={styles.featureSpotlight}>
           <div className={styles.featureCopy}>
             <div className={styles.sectionBadge}>
               <TrendingUp size={14} />
-              <span>{content.roiCalculator.badge}</span>
+              <span>{isAr ? "تحقيق أعلى هوامش ربحية" : "Direct Revenue Optimization"}</span>
             </div>
-            <h3>{content.roiCalculator.title}</h3>
-            <p>{content.roiCalculator.description}</p>
+            <h3>
+              {isAr
+                ? "محرك حجز مباشر يوفر عمولات منصات السفر بنسبة 100%"
+                : "High-Converting Direct Booking Slashing OTA Commissions"}
+            </h3>
+            <p>
+              {isAr
+                ? "تم تصميم تدفق الحجز السريع لتقليل خطوات إتمام الطلب إلى النصف، مع التكامل المباشر مع أنظمة إدارة الفنادق (PMS)، مما يحافظ على ولاء العميل وهوامش الربح الكاملة."
+                : "Streamlined 2-step booking funnel deeply linked with PMS engines, driving guests away from commission-heavy OTAs like Booking.com and Agoda directly into your direct revenue channel."}
+            </p>
             <div className={styles.featureList}>
               <div className={styles.featureListItem}>
                 <CheckCircle2 className={styles.featureListIcon} />
@@ -369,7 +382,7 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
               onClick={() => openDemoModal("Direct Booking Engine")}
               className={styles.ctaBtn}
             >
-              <span>{content.roiCalculator.ctaText}</span>
+              <span>{isAr ? "حساب العائد المتوقع لمنشأتك" : "Calculate Brand ROI"}</span>
               {isAr ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
             </button>
           </div>
@@ -377,7 +390,7 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
           <div className={styles.featureInteractivePreview}>
             <div className={styles.calcCard}>
               <div style={{ fontWeight: 800, fontSize: "1.125rem", color: "#0f172a", marginBottom: "1.25rem" }}>
-                {content.roiCalculator.cardTitle}
+                {isAr ? "حاسبة التوفير المالي من الحجز المباشر" : "Direct Booking Savings Calculator"}
               </div>
 
               <div className={styles.calcSliderGroup}>
@@ -386,8 +399,6 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
                   <span className={styles.calcVal}>{roomsCount} {isAr ? "وحدة" : "units"}</span>
                 </div>
                 <input
-                  id="roi-rooms"
-                  aria-label={isAr ? "عدد الغرف الإجمالي" : "Total room inventory"}
                   type="range"
                   min={10}
                   max={250}
@@ -404,8 +415,6 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
                   <span className={styles.calcVal}>{adr} {isAr ? "ريال" : "SAR"}</span>
                 </div>
                 <input
-                  id="roi-adr"
-                  aria-label={isAr ? "متوسط السعر اليومي" : "Average daily rate"}
                   type="range"
                   min={150}
                   max={1200}
@@ -422,8 +431,6 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
                   <span className={styles.calcVal}>{occupancy}%</span>
                 </div>
                 <input
-                  id="roi-occupancy"
-                  aria-label={isAr ? "نسبة الإشغال المقدرة" : "Average occupancy rate"}
                   type="range"
                   min={30}
                   max={100}
@@ -442,7 +449,9 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
                   {annualSavings.toLocaleString()} {isAr ? "ريال سعودي" : "SAR"}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: "#475569" }}>
-                  {content.roiCalculator.footnote}
+                  {isAr
+                    ? "* بحساب تحويل 35% من الحجوزات إلى المنصة المباشرة بعمولة 18%."
+                    : "* Assuming 35% direct conversion capture vs 18% OTA fee."}
                 </div>
               </div>
             </div>
@@ -451,12 +460,7 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
       )}
 
       {activeTab === "bilingual-parity" && (
-        <div
-          className={styles.featureSpotlight}
-          id="showcase-panel-bilingual-parity"
-          role="tabpanel"
-          aria-labelledby="showcase-tab-bilingual-parity"
-        >
+        <div className={styles.featureSpotlight}>
           <div className={styles.featureCopy}>
             <div className={styles.sectionBadge}>
               <Languages size={14} />
@@ -559,12 +563,7 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
       )}
 
       {activeTab === "headless-cms" && (
-        <div
-          className={styles.featureSpotlight}
-          id="showcase-panel-headless-cms"
-          role="tabpanel"
-          aria-labelledby="showcase-tab-headless-cms"
-        >
+        <div className={styles.featureSpotlight}>
           <div className={styles.featureCopy}>
             <div className={styles.sectionBadge}>
               <Sliders size={14} />
@@ -660,12 +659,7 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
       )}
 
       {activeTab === "multi-property" && (
-        <div
-          className={styles.featureSpotlight}
-          id="showcase-panel-multi-property"
-          role="tabpanel"
-          aria-labelledby="showcase-tab-multi-property"
-        >
+        <div className={styles.featureSpotlight}>
           <div className={styles.featureCopy}>
             <div className={styles.sectionBadge}>
               <Building2 size={14} />
@@ -745,12 +739,7 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
       )}
 
       {activeTab === "performance-seo" && (
-        <div
-          className={styles.featureSpotlight}
-          id="showcase-panel-performance-seo"
-          role="tabpanel"
-          aria-labelledby="showcase-tab-performance-seo"
-        >
+        <div className={styles.featureSpotlight}>
           <div className={styles.featureCopy}>
             <div className={styles.sectionBadge}>
               <Zap size={14} />
@@ -829,19 +818,15 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
         <div
           className={styles.modalBackdrop}
           onClick={() => setIsModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
         >
-          <div
-            className={styles.modalBox}
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="showcase-demo-title"
-          >
+          <div className={styles.modalBox} onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
               className={styles.modalCloseBtn}
               onClick={() => setIsModalOpen(false)}
-              aria-label={isAr ? "إغلاق" : "Close"}
+              aria-label="إغلاق"
             >
               <X size={18} />
             </button>
@@ -852,7 +837,7 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
                   <Sparkles size={14} />
                   <span>{modalInterest || (isAr ? "طلب عرض المنصة" : "Platform Inquiry")}</span>
                 </div>
-                <h3 id="showcase-demo-title" style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", marginBottom: "0.5rem" }}>
+                <h3 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", marginBottom: "0.5rem" }}>
                   {isAr ? "احصل على عرض مخصص لمنشأتك" : "Schedule a Personalized Demo"}
                 </h3>
                 <p style={{ fontSize: "0.875rem", color: "#475569", marginBottom: "1.5rem" }}>
@@ -863,29 +848,74 @@ export function OverviewInteractive({ locale, content: providedContent }: Overvi
 
                 <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                   <div>
-                    <label htmlFor="demo-name" style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
+                    <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
                       {isAr ? "الاسم الكامل *" : "Full Name *"}
                     </label>
-                    <input id="demo-name" type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder={isAr ? "مثال: عبد الله الغامدي" : "e.g. Abdullah Al-Ghamdi"} className={styles.formInput} />
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder={isAr ? "مثال: عبد الله الغامدي" : "e.g. Abdullah Al-Ghamdi"}
+                      className={styles.formInput}
+                    />
                   </div>
+
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
                     <div>
-                      <label htmlFor="demo-email" style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>{isAr ? "البريد الإلكتروني *" : "Work Email *"}</label>
-                      <input id="demo-email" type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="name@company.com" className={styles.formInput} />
+                      <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
+                        {isAr ? "البريد الإلكتروني *" : "Work Email *"}
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="name@company.com"
+                        className={styles.formInput}
+                      />
                     </div>
                     <div>
-                      <label htmlFor="demo-phone" style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>{isAr ? "رقم الجوال / واتساب *" : "Phone / WhatsApp *"}</label>
-                      <input id="demo-phone" type="tel" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="+966 5x xxx xxxx" className={styles.formInput} />
+                      <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
+                        {isAr ? "رقم الجوال / واتساب *" : "Phone / WhatsApp *"}
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="+966 5x xxx xxxx"
+                        className={styles.formInput}
+                      />
                     </div>
                   </div>
+
                   <div>
-                    <label htmlFor="demo-company" style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>{isAr ? "اسم الشركة / الفندق" : "Company / Hotel Property"}</label>
-                    <input id="demo-company" type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} placeholder={isAr ? "اسم المنشأة أو المجموعة" : "Property or Group Name"} className={styles.formInput} />
+                    <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
+                      {isAr ? "اسم الشركة / الفندق" : "Company / Hotel Property"}
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      placeholder={isAr ? "اسم المنشأة أو المجموعة" : "Property or Group Name"}
+                      className={styles.formInput}
+                    />
                   </div>
-                  {formError && <p role="alert" style={{ color: "#b91c1c", fontSize: "0.8125rem", fontWeight: 600 }}>{formError}</p>}
-                  <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting} className={styles.heroPrimaryBtn} style={{ background: "#2b6fe8", color: "#ffffff", justifyContent: "center", marginTop: "0.5rem", boxShadow: "0 4px 14px rgba(43, 111, 232, 0.35)" }}>
+
+                  <button
+                    type="submit"
+                    className={styles.heroPrimaryBtn}
+                    style={{
+                      background: "#2b6fe8",
+                      color: "#ffffff",
+                      justifyContent: "center",
+                      marginTop: "0.5rem",
+                      boxShadow: "0 4px 14px rgba(43, 111, 232, 0.35)",
+                    }}
+                  >
                     <Send size={16} />
-                    <span>{isSubmitting ? (isAr ? "جارٍ الإرسال..." : "Sending...") : (isAr ? "إرسال طلب العرض التجريبي" : "Submit Demo Request")}</span>
+                    <span>{isAr ? "إرسال طلب العرض التجريبي" : "Submit Demo Request"}</span>
                   </button>
                 </form>
               </div>
@@ -989,34 +1019,25 @@ export function OpenModalButton({
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", company: "" });
-  const [submitError, setSubmitError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const isAr = locale === "ar";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitError("");
-    setIsSubmitting(true);
     try {
-      await submitB2bLead({
-        company: formData.company || "Saudi Hospitality Showcase Lead",
-        contact: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        requestType: interest,
-        message: "Lead submitted from Saudi Hospitality showcase",
-        locale,
+      await fetch("/api/forms/b2b", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          companyName: formData.company || "Product Overview Lead",
+          contactPerson: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          companyType: interest,
+          requestType: "Platform Demo & Partnership",
+        }),
       });
-      setIsSubmitted(true);
-    } catch {
-      setSubmitError(
-        isAr
-          ? "تعذر إرسال الطلب. يرجى المحاولة مرة أخرى."
-          : "We could not send your request. Please try again.",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    } catch {}
+    setIsSubmitted(true);
   };
 
   return (
@@ -1040,21 +1061,14 @@ export function OpenModalButton({
         {isAr ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
       </button>
 
-      {isOpen && createPortal(
+      {isOpen && (
         <div className={styles.modalBackdrop} onClick={() => setIsOpen(false)}>
-          <div
-            className={styles.modalBox}
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="quick-demo-title"
-          >
+          <div className={styles.modalBox} onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
               className={styles.modalCloseBtn}
               onClick={() => setIsOpen(false)}
             >
-              aria-label={isAr ? "إغلاق" : "Close"}
               <X size={18} />
             </button>
 
@@ -1064,7 +1078,7 @@ export function OpenModalButton({
                   <Sparkles size={14} />
                   <span>{interest}</span>
                 </div>
-                <h3 id="quick-demo-title" style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", marginBottom: "0.5rem" }}>
+                <h3 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", marginBottom: "0.5rem" }}>
                   {isAr ? "طلب عرض تجريبي واستشارة فندقية" : "Request Platform Demo & Consultation"}
                 </h3>
                 <p style={{ fontSize: "0.875rem", color: "#475569", marginBottom: "1.5rem" }}>
@@ -1075,31 +1089,75 @@ export function OpenModalButton({
 
                 <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                   <div>
-                    <label htmlFor="quick-demo-name" style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>{isAr ? "الاسم الكامل *" : "Full Name *"}</label>
-                    <input id="quick-demo-name" type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder={isAr ? "الاسم الكريم" : "Your Name"} className={styles.formInput} />
+                    <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
+                      {isAr ? "الاسم الكامل *" : "Full Name *"}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder={isAr ? "الاسم الكريم" : "Your Name"}
+                      className={styles.formInput}
+                    />
                   </div>
+
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
                     <div>
-                      <label htmlFor="quick-demo-email" style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>{isAr ? "البريد الإلكتروني *" : "Email *"}</label>
-                      <input id="quick-demo-email" type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="name@company.com" className={styles.formInput} />
+                      <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
+                        {isAr ? "البريد الإلكتروني *" : "Email *"}
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="name@company.com"
+                        className={styles.formInput}
+                      />
                     </div>
                     <div>
-                      <label htmlFor="quick-demo-phone" style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>{isAr ? "رقم الهاتف / واتساب *" : "Phone / WhatsApp *"}</label>
-                      <input id="quick-demo-phone" type="tel" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="+966 5x xxx xxxx" className={styles.formInput} />
+                      <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
+                        {isAr ? "رقم الهاتف / واتساب *" : "Phone / WhatsApp *"}
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="+966 5x xxx xxxx"
+                        className={styles.formInput}
+                      />
                     </div>
                   </div>
+
                   <div>
-                    <label htmlFor="quick-demo-company" style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>{isAr ? "اسم المنشأة / الفندق" : "Property / Company Name"}</label>
-                    <input id="quick-demo-company" type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} placeholder={isAr ? "اسم المنشأة" : "Company Name"} className={styles.formInput} />
+                    <label style={{ fontSize: "0.8125rem", fontWeight: 600, color: "#374151" }}>
+                      {isAr ? "اسم المنشأة / الفندق" : "Property / Company Name"}
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      placeholder={isAr ? "اسم المنشأة" : "Company Name"}
+                      className={styles.formInput}
+                    />
                   </div>
-                  {submitError && <p role="alert" style={{ color: "#b91c1c", fontSize: "0.8125rem", fontWeight: 600 }}>{submitError}</p>}
-                  <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting} className={styles.heroPrimaryBtn} style={{ background: "#2b6fe8", color: "#ffffff", justifyContent: "center", marginTop: "0.5rem" }}>
+
+                  <button
+                    type="submit"
+                    className={styles.heroPrimaryBtn}
+                    style={{
+                      background: "#2b6fe8",
+                      color: "#ffffff",
+                      justifyContent: "center",
+                      marginTop: "0.5rem",
+                    }}
+                  >
                     <Send size={16} />
-                    <span>{isSubmitting ? (isAr ? "جارٍ الإرسال..." : "Sending...") : (isAr ? "إرسال البيانات الآن" : "Submit Inquiry")}</span>
+                    <span>{isAr ? "إرسال البيانات الآن" : "Submit Inquiry"}</span>
                   </button>
                 </form>
-                    disabled={isSubmitting}
-                    aria-busy={isSubmitting}
               </div>
             ) : (
               <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
@@ -1137,8 +1195,7 @@ export function OpenModalButton({
               </div>
             )}
           </div>
-        </div>,
-        document.body,
+        </div>
       )}
     </>
   );

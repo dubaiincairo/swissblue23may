@@ -27,14 +27,10 @@ export const corporateRequestType = defineType({
       name: "status",
       title: "Status",
       type: "string",
-      options: {
-        list: ["new", "contacted", "demo_scheduled", "partnered", "archived"],
-      },
+      options: { list: ["new", "reviewed"] },
       initialValue: "new",
     }),
     defineField({ name: "createdAt", title: "Submitted at", type: "datetime" }),
-    defineField({ name: "notes", title: "Internal CRM notes", type: "text", rows: 4 }),
-    defineField({ name: "updatedAt", title: "Last updated", type: "datetime" }),
   ],
   orderings: [
     {

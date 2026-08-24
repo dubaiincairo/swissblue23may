@@ -62,19 +62,8 @@ export async function POST(request: Request) {
     return String(raw);
   };
 
-  const company = value("company");
-  const contact = value("contact");
-  const email = value("email").toLowerCase();
-  const phone = value("phone");
-
-  if (!company || !contact || !email) {
+  if (!value("company") || !value("contact") || !value("email")) {
     return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
-  }
-  if (company.length > 160 || contact.length > 120 || email.length > 254 || phone.length > 40) {
-    return NextResponse.json({ error: "One or more fields are too long." }, { status: 400 });
-  }
-  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
-    return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
   }
 
   const client = getFormsClient();
@@ -93,10 +82,6 @@ export async function POST(request: Request) {
 
   try {
     await client.create(doc);
-  doc.company = company;
-  doc.contact = contact;
-  doc.email = email;
-  doc.phone = phone;
   } catch {
     return NextResponse.json({ error: "Could not save the request." }, { status: 502 });
   }
