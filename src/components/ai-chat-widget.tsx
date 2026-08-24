@@ -448,7 +448,7 @@ export default function AiChatWidget({
               value={message}
               onChange={(event) => setMessage(event.target.value.slice(0, 800))}
               onKeyDown={(event) => {
-                if (event.key === "Enter" && !event.shiftKey) {
+                if (event.key === "Enter" && !event.shiftKey && !event.altKey) {
                   event.preventDefault();
                   event.currentTarget.form?.requestSubmit();
                 }

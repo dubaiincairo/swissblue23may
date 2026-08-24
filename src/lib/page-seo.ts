@@ -35,6 +35,7 @@ export const PAGE_NAMES: Record<string, { en: string; ar: string }> = {
   "social-responsibility": { en: "Social Responsibility", ar: "المسؤولية الاجتماعية" },
   "central-reservation": { en: "Central Reservation", ar: "الحجز المركزي" },
   feedback: { en: "Feedback", ar: "آراء الضيوف" },
+  "product-overview": { en: "Product Overview & Platform Showcase", ar: "ملف المنظومة الرقمية والعرض التسويقي" },
 };
 
 /** All per-page SEO keys (used to seed the editable map / iterate). */
