@@ -147,9 +147,7 @@ export default async function RootLayout({
   const locale = requestHeaders.get("x-locale") === "ar" ? "ar" : "en";
   const pathname = requestHeaders.get("x-pathname") || "";
   const isAdmin =
-    pathname.startsWith("/admin") ||
-    pathname.startsWith("/studio") ||
-    pathname.startsWith("/saudihospitalityweb/admin");
+    pathname.startsWith("/admin") || pathname.startsWith("/studio");
   const dir = locale === "ar" ? "rtl" : "ltr";
   const currentSeo = locale === "ar" ? ar.seo : en.seo;
   const otherSeo = locale === "ar" ? en.seo : ar.seo;
@@ -177,16 +175,11 @@ export default async function RootLayout({
         {children}
         {!isAdmin ? (
           <PromotionalPopup
-            locale={locale}
             settings={{ ar: ar.promotionalPopups, en: en.promotionalPopups }}
           />
         ) : null}
-        {!isAdmin ? (
-          <>
-            <AiChatWidget settings={{ ar: ar.chatAssistant, en: en.chatAssistant }} />
-            <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />
-          </>
-        ) : null}
+        <AiChatWidget settings={{ ar: ar.chatAssistant, en: en.chatAssistant }} />
+        <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />
       </body>
     </html>
   );
