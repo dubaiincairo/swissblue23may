@@ -183,6 +183,11 @@
   text-wrap: balance;
 }
 
+[dir="rtl"] .heroTitle {
+  line-height: 1.32;
+  letter-spacing: 0;
+}
+
 .heroSubtitle {
   font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   line-height: 1.7;
@@ -190,6 +195,20 @@
   max-width: 52rem;
   margin: 0 auto 2.5rem;
   text-wrap: balance;
+}
+
+[dir="rtl"] .heroSubtitle {
+  line-height: 1.8;
+  letter-spacing: 0;
+}
+
+[dir="rtl"] .heroPill,
+[dir="rtl"] .brandBadge,
+[dir="rtl"] .sectionBadge,
+[dir="rtl"] .pillarBadge,
+[dir="rtl"] .heroPrimaryBtn,
+[dir="rtl"] .heroSecondaryBtn {
+  letter-spacing: 0;
 }
 
 .heroCtas {
