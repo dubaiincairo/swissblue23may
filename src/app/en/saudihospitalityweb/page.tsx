@@ -4,12 +4,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import {
   Bot,
-  CalendarCheck,
   Languages,
   Sliders,
   Building2,
   Zap,
-  CheckCircle2,
   Sparkles,
   TrendingUp,
   ShieldCheck,
@@ -17,7 +15,6 @@ import {
   Briefcase,
   Users,
   Award,
-  Globe2,
   ExternalLink,
   ArrowRight,
   Layers,

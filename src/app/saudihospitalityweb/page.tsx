@@ -4,12 +4,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import {
   Bot,
-  CalendarCheck,
   Languages,
   Sliders,
   Building2,
   Zap,
-  CheckCircle2,
   Sparkles,
   TrendingUp,
   ShieldCheck,
@@ -17,11 +15,7 @@ import {
   Briefcase,
   Users,
   Award,
-  Globe2,
   ExternalLink,
-  Phone,
-  Mail,
-  ArrowRight,
   ArrowLeft,
   Layers,
   Settings,
@@ -317,7 +311,7 @@ export default async function SaudiHospitalityArabicPage() {
               </div>
               <h3 className={styles.pillarTitle}>إدارة محتوى سحابية فورية (Sanity)</h3>
               <p className={styles.pillarDesc}>
-                لوحة تحكم مرنة تتيح لفريق التسويق إطلاق العروض الموسمية، تعديل الأسعار، وتحديث شارات الخدمات (مثل "قريباً") في ثوانٍ بدون تدخل تقني.
+                لوحة تحكم مرنة تتيح لفريق التسويق إطلاق العروض الموسمية، تعديل الأسعار، وتحديث شارات الخدمات (مثل &apos;قريباً&apos;) في ثوانٍ بدون تدخل تقني.
               </p>
               <div className={styles.pillarBadge}>تحديث فوري بدون توقف</div>
             </div>

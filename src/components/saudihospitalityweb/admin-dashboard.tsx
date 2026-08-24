@@ -1,33 +1,19 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import Image from "next/image";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import Link from "next/link";
 import {
   Sparkles,
   Download,
   ExternalLink,
   Plus,
-  CheckCircle2,
-  Clock,
   MessageSquare,
-  Search,
-  Trash2,
-  Save,
-  Globe2,
-  Calendar,
   Layers,
   Bot,
   TrendingUp,
-  Languages,
-  Sliders,
   Building2,
-  Zap,
   Award,
   ShieldCheck,
-  Users,
-  ChevronRight,
-  ChevronLeft,
   X,
   Menu,
 } from "lucide-react";
@@ -178,8 +164,24 @@ export default function SaudiHospitalityAdminDashboard() {
   const [lang, setLang] = useState<AdminLang>("ar");
   const [selectedSectionId, setSelectedSectionId] = useState<string>("hero");
   const [query, setQuery] = useState<string>("");
-  const [store, setStore] = useState<BilingualSaudiHospitalityStore>(initialSaudiHospitalityContent);
-  const [leads, setLeads] = useState<InboundLead[]>(sampleInitialLeads);
+  const [store, setStore] = useState<BilingualSaudiHospitalityStore>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("shw_full_store");
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return initialSaudiHospitalityContent;
+  });
+  const [leads, setLeads] = useState<InboundLead[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("shw_leads");
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return sampleInitialLeads;
+  });
   const [statusTone, setStatusTone] = useState<"ready" | "dirty" | "saving" | "saved">("ready");
   const [searchLeadQuery, setSearchLeadQuery] = useState<string>("");
   const [leadStatusFilter, setLeadStatusFilter] = useState<string>("all");
@@ -197,19 +199,19 @@ export default function SaudiHospitalityAdminDashboard() {
   const activeContent = store[lang];
   const isLanguageSwitching = languageMotion !== "idle";
 
-  // Load store and leads from localStorage on mount
-  useEffect(() => {
+  const saveChanges = useCallback(() => {
+    setStatusTone("saving");
     try {
-      const savedStore = localStorage.getItem("shw_full_store");
-      if (savedStore) {
-        setStore(JSON.parse(savedStore));
-      }
-      const savedLeads = localStorage.getItem("shw_leads");
-      if (savedLeads) {
-        setLeads(JSON.parse(savedLeads));
-      }
-    } catch {}
-  }, []);
+      localStorage.setItem("shw_full_store", JSON.stringify(store));
+      localStorage.setItem("shw_leads", JSON.stringify(leads));
+      setTimeout(() => {
+        setStatusTone("saved");
+        setTimeout(() => setStatusTone("ready"), 2500);
+      }, 400);
+    } catch {
+      setStatusTone("dirty");
+    }
+  }, [store, leads]);
 
   // Language switch timers cleanup
   useEffect(() => {
@@ -228,7 +230,7 @@ export default function SaudiHospitalityAdminDashboard() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  });
+  }, [saveChanges]);
 
   // Animated language switch matching Swiss Blue main admin panel
   const switchLanguage = (nextLang: AdminLang) => {
@@ -271,24 +273,13 @@ export default function SaudiHospitalityAdminDashboard() {
     });
   };
 
-  const saveChanges = () => {
-    setStatusTone("saving");
-    try {
-      localStorage.setItem("shw_full_store", JSON.stringify(store));
-      localStorage.setItem("shw_leads", JSON.stringify(leads));
-      setTimeout(() => {
-        setStatusTone("saved");
-        setTimeout(() => setStatusTone("ready"), 2500);
-      }, 400);
-    } catch {
-      setStatusTone("dirty");
-    }
-  };
-
-  const updateSectionField = <K extends keyof SaudiHospitalityContent>(
+  const updateSectionField = <
+    K extends keyof SaudiHospitalityContent,
+    F extends keyof SaudiHospitalityContent[K],
+  >(
     section: K,
-    field: keyof SaudiHospitalityContent[K],
-    value: any,
+    field: F,
+    value: SaudiHospitalityContent[K][F],
   ) => {
     setStore((prev) => ({
       ...prev,

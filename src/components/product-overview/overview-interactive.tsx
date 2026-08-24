@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import {
   Bot,
-  CalendarCheck,
   Languages,
   Sliders,
   Building2,
@@ -16,12 +15,7 @@ import {
   ChevronRight,
   ChevronLeft,
   X,
-  PhoneCall,
   Send,
-  ShieldCheck,
-  BarChart3,
-  Layers,
-  ArrowUpRight,
 } from "lucide-react";
 import styles from "./overview.module.css";
 
