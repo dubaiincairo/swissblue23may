@@ -1,0 +1,59 @@
+{
+  "name": "SwissBlue & Connectors Cloud Dev (Europe West)",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "forwardPorts": [3000, 3333, 8069, 5432],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js Web Preview",
+      "onAutoForward": "openBrowser"
+    },
+    "3333": {
+      "label": "Sanity Studio",
+      "onAutoForward": "silent"
+    },
+    "8069": {
+      "label": "Odoo Server",
+      "onAutoForward": "silent"
+    },
+    "5432": {
+      "label": "PostgreSQL Database",
+      "onAutoForward": "silent"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "codespaces.defaultIdleTimeoutMinutes": 5,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
+        },
+        "errorLens.enabled": true,
+        "errorLens.fontStyleItalic": true
+      },
+      "extensions": [
+        "openai.chatgpt",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "formulahendry.auto-rename-tag",
+        "yoavbls.pretty-ts-errors",
+        "mikestead.dotenv",
+        "usernamehw.errorlens",
+        "github.vscode-pull-request-github",
+        "charliermarsh.ruff",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "redhat.vscode-xml",
+        "humao.rest-client",
+        "ms-ossdata.vscode-postgresql",
+        "cweijan.vscode-database-client2"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install"
+}
