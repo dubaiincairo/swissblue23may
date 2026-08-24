@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -28,6 +28,8 @@ import {
   Users,
   ChevronRight,
   ChevronLeft,
+  X,
+  Menu,
 } from "lucide-react";
 import {
   BilingualSaudiHospitalityStore,
@@ -155,12 +157,22 @@ const SECTIONS: NavSection[] = [
   },
 ];
 
+const GROUP_ORDER = [
+  "Homepage & Pitch",
+  "Interactive Capabilities",
+  "Portfolio & Tech",
+  "CRM & Leads",
+];
+
 const GROUP_LABELS: Record<string, { ar: string; en: string }> = {
   "Homepage & Pitch": { ar: "الصفحة الرئيسية والعرض", en: "Homepage & Pitch" },
   "Interactive Capabilities": { ar: "القدرات والمحاكيات التفاعلية", en: "Interactive Capabilities" },
   "Portfolio & Tech": { ar: "المحفظة والمواصفات التقنية", en: "Portfolio & Technical Specs" },
   "CRM & Leads": { ar: "العملاء والشركاء", en: "CRM & Inbound Leads" },
 };
+
+const LANGUAGE_FADE_OUT_MS = 120;
+const LANGUAGE_FADE_IN_MS = 260;
 
 export default function SaudiHospitalityAdminDashboard() {
   const [lang, setLang] = useState<AdminLang>("ar");
@@ -174,8 +186,16 @@ export default function SaudiHospitalityAdminDashboard() {
   const [isManualLeadOpen, setIsManualLeadOpen] = useState<boolean>(false);
   const [manualLead, setManualLead] = useState({ name: "", company: "", email: "", phone: "", interest: "عرض المنصة للشركاء", notes: "" });
 
+  // Animation states
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(GROUP_ORDER));
+  const [mobileNavigationOpen, setMobileNavigationOpen] = useState<boolean>(false);
+  const [languageMotion, setLanguageMotion] = useState<"idle" | "out" | "in">("idle");
+  const [pendingLanguage, setPendingLanguage] = useState<AdminLang | null>(null);
+  const languageSwitchTimers = useRef<number[]>([]);
+
   const isAr = lang === "ar";
   const activeContent = store[lang];
+  const isLanguageSwitching = languageMotion !== "idle";
 
   // Load store and leads from localStorage on mount
   useEffect(() => {
@@ -191,6 +211,13 @@ export default function SaudiHospitalityAdminDashboard() {
     } catch {}
   }, []);
 
+  // Language switch timers cleanup
+  useEffect(() => {
+    return () => {
+      languageSwitchTimers.current.forEach((t) => window.clearTimeout(t));
+    };
+  }, []);
+
   // Save shortcut (Ctrl+S / Cmd+S)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -202,6 +229,47 @@ export default function SaudiHospitalityAdminDashboard() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   });
+
+  // Animated language switch matching Swiss Blue main admin panel
+  const switchLanguage = (nextLang: AdminLang) => {
+    if (nextLang === lang || isLanguageSwitching) return;
+
+    languageSwitchTimers.current.forEach((t) => window.clearTimeout(t));
+    languageSwitchTimers.current = [];
+    setPendingLanguage(nextLang);
+
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLang(nextLang);
+      setPendingLanguage(null);
+      return;
+    }
+
+    setLanguageMotion("out");
+    languageSwitchTimers.current.push(
+      window.setTimeout(() => {
+        setLang(nextLang);
+        setLanguageMotion("in");
+        languageSwitchTimers.current.push(
+          window.setTimeout(() => {
+            setLanguageMotion("idle");
+            setPendingLanguage(null);
+          }, LANGUAGE_FADE_IN_MS),
+        );
+      }, LANGUAGE_FADE_OUT_MS),
+    );
+  };
+
+  const toggleGroup = (group: string) => {
+    setOpenGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(group)) {
+        next.delete(group);
+      } else {
+        next.add(group);
+      }
+      return next;
+    });
+  };
 
   const saveChanges = () => {
     setStatusTone("saving");
@@ -320,9 +388,35 @@ export default function SaudiHospitalityAdminDashboard() {
   });
 
   return (
-    <div className="admin-shell" dir={isAr ? "rtl" : "ltr"}>
+    <main
+      className={`admin-shell${isLanguageSwitching ? ` is-language-${languageMotion}` : ""}`}
+      dir={isAr ? "rtl" : "ltr"}
+      lang={isAr ? "ar" : "en"}
+      aria-busy={isLanguageSwitching}
+    >
+      {/* Mobile Drawer Backdrop */}
+      {mobileNavigationOpen && (
+        <button
+          type="button"
+          className="admin-mobile-nav-backdrop"
+          aria-label={isAr ? "إغلاق القائمة" : "Close navigation"}
+          onClick={() => setMobileNavigationOpen(false)}
+        />
+      )}
+
       {/* Sidebar Navigation matching Swiss Blue main admin panel */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar${mobileNavigationOpen ? " is-mobile-open" : ""}`}>
+        {mobileNavigationOpen && (
+          <button
+            type="button"
+            className="admin-mobile-nav-close"
+            aria-label={isAr ? "إغلاق" : "Close"}
+            onClick={() => setMobileNavigationOpen(false)}
+          >
+            <X size={18} />
+          </button>
+        )}
+
         <div className="admin-brand">
           <span className="admin-brand-mark">SB</span>
           <div>
@@ -331,27 +425,44 @@ export default function SaudiHospitalityAdminDashboard() {
           </div>
         </div>
 
-        {/* Bilingual Language Switcher */}
-        <div className="admin-language">
-          <button
-            type="button"
-            className={lang === "ar" ? "active" : ""}
-            onClick={() => setLang("ar")}
+        {/* Mode Card & Language Switcher with Animated Tabs */}
+        <div className="admin-mode-card">
+          <span>{isAr ? "لغة التحرير والمعاينة" : "Content Language"}</span>
+          <div
+            className="admin-language"
+            role="group"
+            aria-label={isAr ? "لغة التحرير" : "Editing language"}
           >
-            <span>AR</span>
-            العربية
-          </button>
-          <button
-            type="button"
-            className={lang === "en" ? "active" : ""}
-            onClick={() => setLang("en")}
-          >
-            <span>EN</span>
-            English
-          </button>
+            <button
+              type="button"
+              className={[
+                lang === "ar" ? "active" : "",
+                pendingLanguage === "ar" ? "is-pending" : "",
+              ].filter(Boolean).join(" ")}
+              aria-pressed={lang === "ar"}
+              disabled={isLanguageSwitching}
+              onClick={() => switchLanguage("ar")}
+            >
+              <span>AR</span>
+              العربية
+            </button>
+            <button
+              type="button"
+              className={[
+                lang === "en" ? "active" : "",
+                pendingLanguage === "en" ? "is-pending" : "",
+              ].filter(Boolean).join(" ")}
+              aria-pressed={lang === "en"}
+              disabled={isLanguageSwitching}
+              onClick={() => switchLanguage("en")}
+            >
+              <span>EN</span>
+              English
+            </button>
+          </div>
         </div>
 
-        {/* Section Search */}
+        {/* Section Search Input */}
         <label className="admin-search">
           <span>{isAr ? "البحث في أقسام المنظومة" : "Search sections"}</span>
           <input
@@ -362,41 +473,51 @@ export default function SaudiHospitalityAdminDashboard() {
           />
         </label>
 
-        {/* Section Groups & Links */}
+        {/* Section Groups & Links with morphing + / - indicator */}
         <nav className="admin-section-list" aria-label="أقسام لوحة الإدارة">
-          {Object.keys(GROUP_LABELS).map((groupKey) => {
+          {GROUP_ORDER.map((groupKey) => {
             const items = groupedSections[groupKey] ?? [];
             if (items.length === 0) return null;
             const groupTitle = isAr ? GROUP_LABELS[groupKey].ar : GROUP_LABELS[groupKey].en;
+            const isOpen = query.trim().length > 0 || openGroups.has(groupKey);
 
             return (
-              <div className="admin-nav-group is-open" key={groupKey}>
-                <div className="admin-nav-group-toggle" style={{ cursor: "default" }}>
-                  <span className="admin-nav-group-indicator" />
+              <div className={`admin-nav-group${isOpen ? " is-open" : ""}`} key={groupKey}>
+                <button
+                  type="button"
+                  className="admin-nav-group-toggle"
+                  onClick={() => toggleGroup(groupKey)}
+                  aria-expanded={isOpen}
+                >
+                  <span className="admin-nav-group-indicator" aria-hidden="true" />
                   <span>{groupTitle}</span>
-                </div>
+                </button>
 
-                {items.map((sec) => {
-                  const isSelected = selectedSectionId === sec.id;
-                  const label = isAr ? sec.labelAr : sec.labelEn;
-                  const desc = isAr ? sec.descAr : sec.descEn;
+                {isOpen &&
+                  items.map((sec) => {
+                    const isSelected = selectedSectionId === sec.id;
+                    const label = isAr ? sec.labelAr : sec.labelEn;
+                    const desc = isAr ? sec.descAr : sec.descEn;
 
-                  return (
-                    <div
-                      key={sec.id}
-                      className={`admin-section-nav-row ${isSelected ? "active" : ""}`}
-                    >
-                      <button
-                        type="button"
-                        className="admin-section-trigger"
-                        onClick={() => setSelectedSectionId(sec.id)}
+                    return (
+                      <div
+                        key={sec.id}
+                        className={`admin-section-nav-row ${isSelected ? "active" : ""}`}
                       >
-                        <span>{label}</span>
-                        <small>{desc}</small>
-                      </button>
-                    </div>
-                  );
-                })}
+                        <button
+                          type="button"
+                          className="admin-section-trigger"
+                          onClick={() => {
+                            setSelectedSectionId(sec.id);
+                            setMobileNavigationOpen(false);
+                          }}
+                        >
+                          <span>{label}</span>
+                          <small>{desc}</small>
+                        </button>
+                      </div>
+                    );
+                  })}
               </div>
             );
           })}
@@ -428,6 +549,22 @@ export default function SaudiHospitalityAdminDashboard() {
 
       {/* Main Workspace matching Swiss Blue admin layout */}
       <section className="admin-workspace">
+        {/* Mobile section bar */}
+        <div className="admin-mobile-section-bar">
+          <button
+            type="button"
+            className="admin-mobile-nav-trigger"
+            aria-label={isAr ? "فتح الأقسام" : "Open sections"}
+            onClick={() => setMobileNavigationOpen(true)}
+          >
+            <Menu size={18} />
+          </button>
+          <div>
+            <p>{isAr ? GROUP_LABELS[selectedSection.group]?.ar : selectedSection.group}</p>
+            <strong>{isAr ? selectedSection.labelAr : selectedSection.labelEn}</strong>
+          </div>
+        </div>
+
         {/* Top Action Bar */}
         <header className="admin-topbar">
           <div>
@@ -462,16 +599,18 @@ export default function SaudiHospitalityAdminDashboard() {
           {selectedSectionId === "hero" && (
             <div className="space-y-6">
               <div className="admin-card">
-                <h3 className="text-base font-extrabold text-slate-900 mb-4 flex items-center gap-2">
-                  <Sparkles size={18} className="text-[#2b6fe8]" />
-                  <span>{isAr ? "نصوص البانر الرئيسي والترحاب" : "Hero Headlines & Welcoming Copy"}</span>
-                </h3>
+                <div className="admin-field-label-row mb-3">
+                  <span className="text-sm font-extrabold text-[#1246a8] flex items-center gap-1.5">
+                    <Sparkles size={16} />
+                    <span>{isAr ? "نصوص البانر الرئيسي والترحاب" : "Hero Headlines & Welcoming Copy"}</span>
+                  </span>
+                </div>
 
                 <div className="space-y-4">
-                  <div className="admin-field-row">
-                    <label className="block text-xs font-extrabold text-slate-700 mb-1">
-                      {isAr ? "شارة الهيدر (Eyebrow Badge):" : "Hero Eyebrow Badge:"}
-                    </label>
+                  <div className="admin-field">
+                    <div className="admin-field-label-row">
+                      <span>{isAr ? "شارة الهيدر (Eyebrow Badge)" : "Hero Eyebrow Badge"}</span>
+                    </div>
                     <input
                       type="text"
                       value={activeContent.hero.badge}
@@ -480,10 +619,10 @@ export default function SaudiHospitalityAdminDashboard() {
                     />
                   </div>
 
-                  <div className="admin-field-row">
-                    <label className="block text-xs font-extrabold text-slate-700 mb-1">
-                      {isAr ? "العنوان الرئيسي (Hero Title):" : "Main Title:"}
-                    </label>
+                  <div className="admin-field">
+                    <div className="admin-field-label-row">
+                      <span>{isAr ? "العنوان الرئيسي (Hero Title)" : "Main Title"}</span>
+                    </div>
                     <input
                       type="text"
                       value={activeContent.hero.title}
@@ -492,10 +631,10 @@ export default function SaudiHospitalityAdminDashboard() {
                     />
                   </div>
 
-                  <div className="admin-field-row">
-                    <label className="block text-xs font-extrabold text-slate-700 mb-1">
-                      {isAr ? "الوصف والفقرة الاستراتيجية (Subtitle):" : "Strategic Narrative Subtitle:"}
-                    </label>
+                  <div className="admin-field">
+                    <div className="admin-field-label-row">
+                      <span>{isAr ? "الوصف والفقرة الاستراتيجية (Subtitle)" : "Strategic Narrative Subtitle"}</span>
+                    </div>
                     <textarea
                       rows={3}
                       value={activeContent.hero.subtitle}
@@ -505,10 +644,10 @@ export default function SaudiHospitalityAdminDashboard() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                    <div>
-                      <label className="block text-xs font-extrabold text-slate-700 mb-1">
-                        {isAr ? "زر الإجراء الأساسي:" : "Primary CTA Label:"}
-                      </label>
+                    <div className="admin-field">
+                      <div className="admin-field-label-row">
+                        <span>{isAr ? "زر الإجراء الأساسي" : "Primary CTA Label"}</span>
+                      </div>
                       <input
                         type="text"
                         value={activeContent.hero.primaryCta}
@@ -516,10 +655,10 @@ export default function SaudiHospitalityAdminDashboard() {
                         className="admin-input"
                       />
                     </div>
-                    <div>
-                      <label className="block text-xs font-extrabold text-slate-700 mb-1">
-                        {isAr ? "زر الإجراء الثانوي (PDF):" : "Secondary CTA (PDF):"}
-                      </label>
+                    <div className="admin-field">
+                      <div className="admin-field-label-row">
+                        <span>{isAr ? "زر الإجراء الثانوي (PDF)" : "Secondary CTA (PDF)"}</span>
+                      </div>
                       <input
                         type="text"
                         value={activeContent.hero.secondaryCta}
@@ -527,10 +666,10 @@ export default function SaudiHospitalityAdminDashboard() {
                         className="admin-input"
                       />
                     </div>
-                    <div>
-                      <label className="block text-xs font-extrabold text-slate-700 mb-1">
-                        {isAr ? "زر معاينة الموقع:" : "Live Preview CTA:"}
-                      </label>
+                    <div className="admin-field">
+                      <div className="admin-field-label-row">
+                        <span>{isAr ? "زر معاينة الموقع" : "Live Preview CTA"}</span>
+                      </div>
                       <input
                         type="text"
                         value={activeContent.hero.livePreviewCta}
@@ -540,10 +679,10 @@ export default function SaudiHospitalityAdminDashboard() {
                     </div>
                   </div>
 
-                  <div className="admin-field-row pt-2">
-                    <label className="block text-xs font-extrabold text-slate-700 mb-1">
-                      {isAr ? "رابط صورة الخلفية السينمائية (Hero Image URL):" : "Hero Backdrop Image URL:"}
-                    </label>
+                  <div className="admin-field pt-2">
+                    <div className="admin-field-label-row">
+                      <span>{isAr ? "رابط صورة الخلفية السينمائية (Hero Image URL)" : "Hero Backdrop Image URL"}</span>
+                    </div>
                     <input
                       type="url"
                       value={activeContent.hero.heroImage}
@@ -559,12 +698,11 @@ export default function SaudiHospitalityAdminDashboard() {
           {/* SECTION 2: METRICS */}
           {selectedSectionId === "metrics" && (
             <div className="admin-card space-y-6">
-              <h3 className="text-base font-extrabold text-slate-900 mb-2">
-                {isAr ? "إحصاءات المنظومة الأربع" : "Four Core Metric Counters"}
-              </h3>
-              <p className="text-xs text-slate-500 mb-4">
-                {isAr ? "الأرقام الترويجية البارزة التي تظهر أسفل الهيدر مباشرة." : "Key impact numbers displayed prominently below the hero."}
-              </p>
+              <div className="admin-field-label-row">
+                <span className="text-sm font-extrabold text-[#1246a8]">
+                  {isAr ? "إحصاءات المنظومة الأربع" : "Four Core Metric Counters"}
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Metric 1 */}
@@ -585,7 +723,7 @@ export default function SaudiHospitalityAdminDashboard() {
                       updateSectionField("metrics", "aiSpeed", { ...activeContent.metrics.aiSpeed, label: e.target.value })
                     }
                     className="admin-input text-xs"
-                    placeholder="العنوان التوضيحي"
+                    placeholder={isAr ? "العنوان التوضيحي" : "Label"}
                   />
                   <input
                     type="text"
@@ -594,7 +732,7 @@ export default function SaudiHospitalityAdminDashboard() {
                       updateSectionField("metrics", "aiSpeed", { ...activeContent.metrics.aiSpeed, hint: e.target.value })
                     }
                     className="admin-input text-xs text-slate-500"
-                    placeholder="الشارة الفرعية"
+                    placeholder={isAr ? "الشارة الفرعية" : "Hint"}
                   />
                 </div>
 
@@ -616,7 +754,7 @@ export default function SaudiHospitalityAdminDashboard() {
                       updateSectionField("metrics", "directFee", { ...activeContent.metrics.directFee, label: e.target.value })
                     }
                     className="admin-input text-xs"
-                    placeholder="العنوان التوضيحي"
+                    placeholder={isAr ? "العنوان التوضيحي" : "Label"}
                   />
                   <input
                     type="text"
@@ -625,7 +763,7 @@ export default function SaudiHospitalityAdminDashboard() {
                       updateSectionField("metrics", "directFee", { ...activeContent.metrics.directFee, hint: e.target.value })
                     }
                     className="admin-input text-xs text-slate-500"
-                    placeholder="الشارة الفرعية"
+                    placeholder={isAr ? "الشارة الفرعية" : "Hint"}
                   />
                 </div>
 
@@ -647,7 +785,7 @@ export default function SaudiHospitalityAdminDashboard() {
                       updateSectionField("metrics", "propertiesCount", { ...activeContent.metrics.propertiesCount, label: e.target.value })
                     }
                     className="admin-input text-xs"
-                    placeholder="العنوان التوضيحي"
+                    placeholder={isAr ? "العنوان التوضيحي" : "Label"}
                   />
                   <input
                     type="text"
@@ -656,7 +794,7 @@ export default function SaudiHospitalityAdminDashboard() {
                       updateSectionField("metrics", "propertiesCount", { ...activeContent.metrics.propertiesCount, hint: e.target.value })
                     }
                     className="admin-input text-xs text-slate-500"
-                    placeholder="الشارة الفرعية"
+                    placeholder={isAr ? "الشارة الفرعية" : "Hint"}
                   />
                 </div>
 
@@ -678,7 +816,7 @@ export default function SaudiHospitalityAdminDashboard() {
                       updateSectionField("metrics", "pageSpeed", { ...activeContent.metrics.pageSpeed, label: e.target.value })
                     }
                     className="admin-input text-xs"
-                    placeholder="العنوان التوضيحي"
+                    placeholder={isAr ? "العنوان التوضيحي" : "Label"}
                   />
                   <input
                     type="text"
@@ -687,7 +825,7 @@ export default function SaudiHospitalityAdminDashboard() {
                       updateSectionField("metrics", "pageSpeed", { ...activeContent.metrics.pageSpeed, hint: e.target.value })
                     }
                     className="admin-input text-xs text-slate-500"
-                    placeholder="الشارة الفرعية"
+                    placeholder={isAr ? "الشارة الفرعية" : "Hint"}
                   />
                 </div>
               </div>
@@ -698,14 +836,16 @@ export default function SaudiHospitalityAdminDashboard() {
           {selectedSectionId === "aiConcierge" && (
             <div className="space-y-6">
               <div className="admin-card space-y-4">
-                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                  <Bot size={18} className="text-[#2b6fe8]" />
-                  <span>{isAr ? "نصوص ومزايا المساعد الذكي (سارة)" : "AI Concierge Copy & Bullets"}</span>
-                </h3>
+                <div className="admin-field-label-row">
+                  <span className="text-sm font-extrabold text-[#1246a8] flex items-center gap-1.5">
+                    <Bot size={16} />
+                    <span>{isAr ? "نصوص ومزايا المساعد الذكي (سارة)" : "AI Concierge Copy & Bullets"}</span>
+                  </span>
+                </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "الشارة:" : "Badge:"}</label>
+                  <div className="admin-field">
+                    <div className="admin-field-label-row"><span>{isAr ? "الشارة:" : "Badge:"}</span></div>
                     <input
                       type="text"
                       value={activeContent.aiConcierge.badge}
@@ -713,8 +853,8 @@ export default function SaudiHospitalityAdminDashboard() {
                       className="admin-input"
                     />
                   </div>
-                  <div>
-                    <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "زر الإجراء:" : "CTA Button:"}</label>
+                  <div className="admin-field">
+                    <div className="admin-field-label-row"><span>{isAr ? "زر الإجراء:" : "CTA Button:"}</span></div>
                     <input
                       type="text"
                       value={activeContent.aiConcierge.ctaText}
@@ -724,8 +864,8 @@ export default function SaudiHospitalityAdminDashboard() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "عنوان الميزة:" : "Feature Headline:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "عنوان الميزة:" : "Feature Headline:"}</span></div>
                   <input
                     type="text"
                     value={activeContent.aiConcierge.title}
@@ -734,8 +874,8 @@ export default function SaudiHospitalityAdminDashboard() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "الوصف التفصيلي:" : "Description:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "الوصف التفصيلي:" : "Description:"}</span></div>
                   <textarea
                     rows={3}
                     value={activeContent.aiConcierge.description}
@@ -744,8 +884,8 @@ export default function SaudiHospitalityAdminDashboard() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "رسالة الترحيب الافتراضية للمساعد:" : "Initial Bot Greeting:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "رسالة الترحيب الافتراضية للمساعد:" : "Initial Bot Greeting:"}</span></div>
                   <textarea
                     rows={2}
                     value={activeContent.aiConcierge.initialGreeting}
@@ -757,9 +897,11 @@ export default function SaudiHospitalityAdminDashboard() {
 
               {/* Sample Prompts */}
               <div className="admin-card space-y-4">
-                <h3 className="text-sm font-extrabold text-slate-900">
-                  {isAr ? "أسئلة وردود المحاكي التفاعلي" : "Interactive Chat Simulator Prompts"}
-                </h3>
+                <div className="admin-field-label-row">
+                  <span className="text-sm font-extrabold text-[#1246a8]">
+                    {isAr ? "أسئلة وردود المحاكي التفاعلي" : "Interactive Chat Simulator Prompts"}
+                  </span>
+                </div>
 
                 {activeContent.aiConcierge.prompts.map((p, idx) => (
                   <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
@@ -775,7 +917,7 @@ export default function SaudiHospitalityAdminDashboard() {
                         updateSectionField("aiConcierge", "prompts", updated);
                       }}
                       className="admin-input font-semibold text-xs"
-                      placeholder="السؤال"
+                      placeholder={isAr ? "السؤال" : "Question"}
                     />
                     <textarea
                       rows={2}
@@ -786,7 +928,7 @@ export default function SaudiHospitalityAdminDashboard() {
                         updateSectionField("aiConcierge", "prompts", updated);
                       }}
                       className="admin-textarea text-xs"
-                      placeholder="الرد التلقائي"
+                      placeholder={isAr ? "الرد التلقائي" : "Bot response"}
                     />
                   </div>
                 ))}
@@ -797,14 +939,16 @@ export default function SaudiHospitalityAdminDashboard() {
           {/* SECTION 4: ROI CALCULATOR */}
           {selectedSectionId === "roiCalculator" && (
             <div className="admin-card space-y-5">
-              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                <TrendingUp size={18} className="text-[#2b6fe8]" />
-                <span>{isAr ? "معايير وإعدادات حاسبة العائد المالي (ROI)" : "Direct Booking ROI Calculator Settings"}</span>
-              </h3>
+              <div className="admin-field-label-row">
+                <span className="text-sm font-extrabold text-[#1246a8] flex items-center gap-1.5">
+                  <TrendingUp size={16} />
+                  <span>{isAr ? "معايير وإعدادات حاسبة العائد المالي (ROI)" : "Direct Booking ROI Calculator Settings"}</span>
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "عنوان الحاسبة:" : "Calculator Title:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "عنوان الحاسبة:" : "Calculator Title:"}</span></div>
                   <input
                     type="text"
                     value={activeContent.roiCalculator.cardTitle}
@@ -812,8 +956,8 @@ export default function SaudiHospitalityAdminDashboard() {
                     className="admin-input font-bold"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "عنوان القسم:" : "Section Title:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "عنوان القسم:" : "Section Title:"}</span></div>
                   <input
                     type="text"
                     value={activeContent.roiCalculator.title}
@@ -824,8 +968,8 @@ export default function SaudiHospitalityAdminDashboard() {
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "عدد الغرف الافتراضي:" : "Default Rooms:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "عدد الغرف الافتراضي:" : "Default Rooms:"}</span></div>
                   <input
                     type="number"
                     value={activeContent.roiCalculator.defaultRooms}
@@ -833,8 +977,8 @@ export default function SaudiHospitalityAdminDashboard() {
                     className="admin-input font-bold"
                   />
                 </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "متوسط السعر (ADR):" : "Default ADR (SAR):"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "متوسط السعر (ADR):" : "Default ADR (SAR):"}</span></div>
                   <input
                     type="number"
                     value={activeContent.roiCalculator.defaultAdr}
@@ -842,8 +986,8 @@ export default function SaudiHospitalityAdminDashboard() {
                     className="admin-input font-bold"
                   />
                 </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "عمولة الـ OTA (%):" : "OTA Fee (%):"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "عمولة الـ OTA (%):" : "OTA Fee (%):"}</span></div>
                   <input
                     type="number"
                     value={activeContent.roiCalculator.otaCommissionRate}
@@ -851,8 +995,8 @@ export default function SaudiHospitalityAdminDashboard() {
                     className="admin-input font-bold"
                   />
                 </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "الحجز المباشر (%):" : "Direct Share (%):"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "الحجز المباشر (%):" : "Direct Share (%):"}</span></div>
                   <input
                     type="number"
                     value={activeContent.roiCalculator.directShareRate}
@@ -862,8 +1006,8 @@ export default function SaudiHospitalityAdminDashboard() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "ملاحظة الحسابات والتنويه:" : "Calculation Footnote:"}</label>
+              <div className="admin-field">
+                <div className="admin-field-label-row"><span>{isAr ? "ملاحظة الحسابات والتنويه:" : "Calculation Footnote:"}</span></div>
                 <input
                   type="text"
                   value={activeContent.roiCalculator.footnote}
@@ -877,14 +1021,16 @@ export default function SaudiHospitalityAdminDashboard() {
           {/* SECTION 5: PILLARS */}
           {selectedSectionId === "pillars" && (
             <div className="admin-card space-y-5">
-              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                <Layers size={18} className="text-[#2b6fe8]" />
-                <span>{isAr ? "الركائز الست للمنظومة" : "Six Core Architectural Pillars"}</span>
-              </h3>
+              <div className="admin-field-label-row">
+                <span className="text-sm font-extrabold text-[#1246a8] flex items-center gap-1.5">
+                  <Layers size={16} />
+                  <span>{isAr ? "الركائز الست للمنظومة" : "Six Core Architectural Pillars"}</span>
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "عنوان قسم الركائز:" : "Pillars Title:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "عنوان قسم الركائز:" : "Pillars Title:"}</span></div>
                   <input
                     type="text"
                     value={activeContent.pillars.title}
@@ -892,8 +1038,8 @@ export default function SaudiHospitalityAdminDashboard() {
                     className="admin-input font-bold"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "الوصف الفرعي:" : "Subtitle:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "الوصف الفرعي:" : "Subtitle:"}</span></div>
                   <input
                     type="text"
                     value={activeContent.pillars.subtitle}
@@ -918,7 +1064,7 @@ export default function SaudiHospitalityAdminDashboard() {
                         updateSectionField("pillars", "items", updated);
                       }}
                       className="admin-input font-bold text-xs"
-                      placeholder="عنوان الركيزة"
+                      placeholder={isAr ? "عنوان الركيزة" : "Pillar Title"}
                     />
                     <textarea
                       rows={2}
@@ -929,7 +1075,7 @@ export default function SaudiHospitalityAdminDashboard() {
                         updateSectionField("pillars", "items", updated);
                       }}
                       className="admin-textarea text-xs"
-                      placeholder="الوصف"
+                      placeholder={isAr ? "الوصف" : "Description"}
                     />
                     <input
                       type="text"
@@ -940,7 +1086,7 @@ export default function SaudiHospitalityAdminDashboard() {
                         updateSectionField("pillars", "items", updated);
                       }}
                       className="admin-input text-xs text-blue-600 font-semibold"
-                      placeholder="الشارة"
+                      placeholder={isAr ? "الشارة" : "Badge"}
                     />
                   </div>
                 ))}
@@ -951,10 +1097,12 @@ export default function SaudiHospitalityAdminDashboard() {
           {/* SECTION 6: PROPERTIES PORTFOLIO */}
           {selectedSectionId === "propertiesSection" && (
             <div className="admin-card space-y-5">
-              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                <Building2 size={18} className="text-[#2b6fe8]" />
-                <span>{isAr ? "محفظة الفنادق والشقق المعروضة في المنظومة" : "Properties Portfolio & Inventory"}</span>
-              </h3>
+              <div className="admin-field-label-row">
+                <span className="text-sm font-extrabold text-[#1246a8] flex items-center gap-1.5">
+                  <Building2 size={16} />
+                  <span>{isAr ? "محفظة الفنادق والشقق المعروضة في المنظومة" : "Properties Portfolio & Inventory"}</span>
+                </span>
+              </div>
 
               <div className="space-y-4">
                 {activeContent.propertiesSection.items.map((prop, idx) => (
@@ -965,8 +1113,8 @@ export default function SaudiHospitalityAdminDashboard() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "اسم المنشأة:" : "Property Title:"}</label>
+                      <div className="admin-field">
+                        <div className="admin-field-label-row"><span>{isAr ? "اسم المنشأة:" : "Property Title:"}</span></div>
                         <input
                           type="text"
                           value={prop.title}
@@ -978,8 +1126,8 @@ export default function SaudiHospitalityAdminDashboard() {
                           className="admin-input text-xs font-bold"
                         />
                       </div>
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "المدينة:" : "City:"}</label>
+                      <div className="admin-field">
+                        <div className="admin-field-label-row"><span>{isAr ? "المدينة:" : "City:"}</span></div>
                         <input
                           type="text"
                           value={prop.city}
@@ -991,8 +1139,8 @@ export default function SaudiHospitalityAdminDashboard() {
                           className="admin-input text-xs"
                         />
                       </div>
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "عدد الوحدات:" : "Units Count:"}</label>
+                      <div className="admin-field">
+                        <div className="admin-field-label-row"><span>{isAr ? "عدد الوحدات:" : "Units Count:"}</span></div>
                         <input
                           type="text"
                           value={prop.units}
@@ -1006,8 +1154,8 @@ export default function SaudiHospitalityAdminDashboard() {
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "الوصف الترويجي:" : "Summary:"}</label>
+                    <div className="admin-field">
+                      <div className="admin-field-label-row"><span>{isAr ? "الوصف الترويجي:" : "Summary:"}</span></div>
                       <textarea
                         rows={2}
                         value={prop.summary}
@@ -1020,8 +1168,8 @@ export default function SaudiHospitalityAdminDashboard() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">{isAr ? "رابط الصورة:" : "Image URL:"}</label>
+                    <div className="admin-field">
+                      <div className="admin-field-label-row"><span>{isAr ? "رابط الصورة:" : "Image URL:"}</span></div>
                       <input
                         type="url"
                         value={prop.image}
@@ -1042,17 +1190,19 @@ export default function SaudiHospitalityAdminDashboard() {
           {/* SECTION 7: STAKEHOLDER MATRIX */}
           {selectedSectionId === "advantageMatrix" && (
             <div className="admin-card space-y-5">
-              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                <Award size={18} className="text-[#2b6fe8]" />
-                <span>{isAr ? "مصفوفة القيمة والمزايا للشركاء" : "Stakeholder Advantage Matrix"}</span>
-              </h3>
+              <div className="admin-field-label-row">
+                <span className="text-sm font-extrabold text-[#1246a8] flex items-center gap-1.5">
+                  <Award size={16} />
+                  <span>{isAr ? "مصفوفة القيمة والمزايا للشركاء" : "Stakeholder Advantage Matrix"}</span>
+                </span>
+              </div>
 
               <div className="space-y-4">
                 {activeContent.advantageMatrix.rows.map((row, idx) => (
                   <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
                     <div className="font-extrabold text-xs text-[#2b6fe8]">{row.role}</div>
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1">{isAr ? "التحدي التقليدي:" : "Traditional Problem:"}</label>
+                    <div className="admin-field">
+                      <div className="admin-field-label-row"><span>{isAr ? "التحدي التقليدي:" : "Traditional Problem:"}</span></div>
                       <textarea
                         rows={2}
                         value={row.problem}
@@ -1064,8 +1214,8 @@ export default function SaudiHospitalityAdminDashboard() {
                         className="admin-textarea text-xs"
                       />
                     </div>
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1">{isAr ? "الحل في سويس بلو:" : "Swiss Blue Solution:"}</label>
+                    <div className="admin-field">
+                      <div className="admin-field-label-row"><span>{isAr ? "الحل في سويس بلو:" : "Swiss Blue Solution:"}</span></div>
                       <textarea
                         rows={2}
                         value={row.solution}
@@ -1086,10 +1236,12 @@ export default function SaudiHospitalityAdminDashboard() {
           {/* SECTION 8: TECH SPECS */}
           {selectedSectionId === "techSpecs" && (
             <div className="admin-card space-y-5">
-              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                <ShieldCheck size={18} className="text-[#2b6fe8]" />
-                <span>{isAr ? "المواصفات والمعايير التقنية السحابية" : "Enterprise Technical Specs"}</span>
-              </h3>
+              <div className="admin-field-label-row">
+                <span className="text-sm font-extrabold text-[#1246a8] flex items-center gap-1.5">
+                  <ShieldCheck size={16} />
+                  <span>{isAr ? "المواصفات والمعايير التقنية السحابية" : "Enterprise Technical Specs"}</span>
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {activeContent.techSpecs.specs.map((spec, idx) => (
@@ -1123,12 +1275,14 @@ export default function SaudiHospitalityAdminDashboard() {
           {/* SECTION 9: CTA & FOOTER */}
           {selectedSectionId === "ctaFooter" && (
             <div className="admin-card space-y-4">
-              <h3 className="text-base font-extrabold text-slate-900">
-                {isAr ? "بانر الاتصال الختامي والفوتر" : "Closing CTA Pitch & Footer"}
-              </h3>
+              <div className="admin-field-label-row">
+                <span className="text-sm font-extrabold text-[#1246a8]">
+                  {isAr ? "بانر الاتصال الختامي والفوتر" : "Closing CTA Pitch & Footer"}
+                </span>
+              </div>
 
-              <div>
-                <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "العنوان الختامي:" : "Closing Title:"}</label>
+              <div className="admin-field">
+                <div className="admin-field-label-row"><span>{isAr ? "العنوان الختامي:" : "Closing Title:"}</span></div>
                 <input
                   type="text"
                   value={activeContent.ctaFooter.title}
@@ -1137,8 +1291,8 @@ export default function SaudiHospitalityAdminDashboard() {
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "الوصف الختامي:" : "Subtitle:"}</label>
+              <div className="admin-field">
+                <div className="admin-field-label-row"><span>{isAr ? "الوصف الختامي:" : "Subtitle:"}</span></div>
                 <textarea
                   rows={2}
                   value={activeContent.ctaFooter.subtitle}
@@ -1148,8 +1302,8 @@ export default function SaudiHospitalityAdminDashboard() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "حقوق النشر:" : "Copyright Tag:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "حقوق النشر:" : "Copyright Tag:"}</span></div>
                   <input
                     type="text"
                     value={activeContent.ctaFooter.copyright}
@@ -1157,8 +1311,8 @@ export default function SaudiHospitalityAdminDashboard() {
                     className="admin-input text-xs"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-700 mb-1">{isAr ? "مدن التشغيل في الفوتر:" : "Location Tagline:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "مدن التشغيل في الفوتر:" : "Location Tagline:"}</span></div>
                   <input
                     type="text"
                     value={activeContent.ctaFooter.locationTag}
@@ -1282,7 +1436,7 @@ export default function SaudiHospitalityAdminDashboard() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="p-1.5 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition-colors"
-                              title="مراسلة عبر واتساب"
+                              title={isAr ? "مراسلة عبر واتساب" : "Message on WhatsApp"}
                             >
                               <MessageSquare size={14} />
                             </a>
@@ -1320,8 +1474,8 @@ export default function SaudiHospitalityAdminDashboard() {
             </h3>
 
             <form onSubmit={handleAddManualLead} className="space-y-3">
-              <div>
-                <label className="text-xs font-bold text-slate-700">{isAr ? "الاسم الكامل:" : "Full Name:"}</label>
+              <div className="admin-field">
+                <div className="admin-field-label-row"><span>{isAr ? "الاسم الكامل:" : "Full Name:"}</span></div>
                 <input
                   type="text"
                   required
@@ -1332,8 +1486,8 @@ export default function SaudiHospitalityAdminDashboard() {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs font-bold text-slate-700">{isAr ? "البريد الإلكتروني:" : "Email:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "البريد الإلكتروني:" : "Email:"}</span></div>
                   <input
                     type="email"
                     required
@@ -1342,8 +1496,8 @@ export default function SaudiHospitalityAdminDashboard() {
                     className="admin-input"
                   />
                 </div>
-                <div>
-                  <label className="text-xs font-bold text-slate-700">{isAr ? "رقم الجوال:" : "Phone:"}</label>
+                <div className="admin-field">
+                  <div className="admin-field-label-row"><span>{isAr ? "رقم الجوال:" : "Phone:"}</span></div>
                   <input
                     type="tel"
                     required
@@ -1354,8 +1508,8 @@ export default function SaudiHospitalityAdminDashboard() {
                 </div>
               </div>
 
-              <div>
-                <label className="text-xs font-bold text-slate-700">{isAr ? "اسم المنشأة أو الشركة:" : "Property or Company:"}</label>
+              <div className="admin-field">
+                <div className="admin-field-label-row"><span>{isAr ? "اسم المنشأة أو الشركة:" : "Property or Company:"}</span></div>
                 <input
                   type="text"
                   value={manualLead.company}
@@ -1364,8 +1518,8 @@ export default function SaudiHospitalityAdminDashboard() {
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-bold text-slate-700">{isAr ? "ملاحظات واهتمام العميل:" : "Notes & Interest:"}</label>
+              <div className="admin-field">
+                <div className="admin-field-label-row"><span>{isAr ? "ملاحظات واهتمام العميل:" : "Notes & Interest:"}</span></div>
                 <textarea
                   rows={2}
                   value={manualLead.notes}
@@ -1390,6 +1544,6 @@ export default function SaudiHospitalityAdminDashboard() {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }
