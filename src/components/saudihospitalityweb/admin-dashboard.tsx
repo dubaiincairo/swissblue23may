@@ -4,10 +4,7 @@ import React, { useState, useEffect, useMemo, useRef, useCallback } from "react"
 import Link from "next/link";
 import {
   Sparkles,
-  Download,
   ExternalLink,
-  Plus,
-  MessageSquare,
   Layers,
   Bot,
   TrendingUp,
@@ -19,10 +16,7 @@ import {
 } from "lucide-react";
 import {
   BilingualSaudiHospitalityStore,
-  InboundLead,
   SaudiHospitalityContent,
-  initialSaudiHospitalityContent,
-  sampleInitialLeads,
 } from "@/lib/saudihospitalityweb-store";
 
 type AdminLang = "ar" | "en";
@@ -160,33 +154,16 @@ const GROUP_LABELS: Record<string, { ar: string; en: string }> = {
 const LANGUAGE_FADE_OUT_MS = 120;
 const LANGUAGE_FADE_IN_MS = 260;
 
-export default function SaudiHospitalityAdminDashboard() {
+export default function SaudiHospitalityAdminDashboard({
+  initialStore,
+}: {
+  initialStore: BilingualSaudiHospitalityStore;
+}) {
   const [lang, setLang] = useState<AdminLang>("ar");
   const [selectedSectionId, setSelectedSectionId] = useState<string>("hero");
   const [query, setQuery] = useState<string>("");
-  const [store, setStore] = useState<BilingualSaudiHospitalityStore>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem("shw_full_store");
-        if (saved) return JSON.parse(saved);
-      } catch {}
-    }
-    return initialSaudiHospitalityContent;
-  });
-  const [leads, setLeads] = useState<InboundLead[]>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem("shw_leads");
-        if (saved) return JSON.parse(saved);
-      } catch {}
-    }
-    return sampleInitialLeads;
-  });
+  const [store, setStore] = useState<BilingualSaudiHospitalityStore>(initialStore);
   const [statusTone, setStatusTone] = useState<"ready" | "dirty" | "saving" | "saved">("ready");
-  const [searchLeadQuery, setSearchLeadQuery] = useState<string>("");
-  const [leadStatusFilter, setLeadStatusFilter] = useState<string>("all");
-  const [isManualLeadOpen, setIsManualLeadOpen] = useState<boolean>(false);
-  const [manualLead, setManualLead] = useState({ name: "", company: "", email: "", phone: "", interest: "عرض المنصة للشركاء", notes: "" });
 
   // Animation states
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(GROUP_ORDER));
@@ -199,19 +176,21 @@ export default function SaudiHospitalityAdminDashboard() {
   const activeContent = store[lang];
   const isLanguageSwitching = languageMotion !== "idle";
 
-  const saveChanges = useCallback(() => {
+  const saveChanges = useCallback(async () => {
     setStatusTone("saving");
     try {
-      localStorage.setItem("shw_full_store", JSON.stringify(store));
-      localStorage.setItem("shw_leads", JSON.stringify(leads));
-      setTimeout(() => {
-        setStatusTone("saved");
-        setTimeout(() => setStatusTone("ready"), 2500);
-      }, 400);
+      const response = await fetch("/api/admin/saudi-hospitality", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: store }),
+      });
+      if (!response.ok) throw new Error("Unable to save content");
+      setStatusTone("saved");
+      window.setTimeout(() => setStatusTone("ready"), 2500);
     } catch {
       setStatusTone("dirty");
     }
-  }, [store, leads]);
+  }, [store]);
 
   // Language switch timers cleanup
   useEffect(() => {
@@ -294,59 +273,6 @@ export default function SaudiHospitalityAdminDashboard() {
     setStatusTone("dirty");
   };
 
-  const updateLeadStatus = (id: string, newStatus: InboundLead["status"]) => {
-    const updated = leads.map((l) => (l.id === id ? { ...l, status: newStatus } : l));
-    setLeads(updated);
-    try {
-      localStorage.setItem("shw_leads", JSON.stringify(updated));
-    } catch {}
-  };
-
-  const handleAddManualLead = (e: React.FormEvent) => {
-    e.preventDefault();
-    const created: InboundLead = {
-      id: `lead-${Date.now()}`,
-      name: manualLead.name,
-      company: manualLead.company,
-      email: manualLead.email,
-      phone: manualLead.phone,
-      interest: manualLead.interest,
-      source: "/saudihospitalityweb/admin",
-      status: "new",
-      notes: manualLead.notes,
-      createdAt: new Date().toISOString(),
-    };
-    const updated = [created, ...leads];
-    setLeads(updated);
-    try {
-      localStorage.setItem("shw_leads", JSON.stringify(updated));
-    } catch {}
-    setIsManualLeadOpen(false);
-    setManualLead({ name: "", company: "", email: "", phone: "", interest: "عرض المنصة للشركاء", notes: "" });
-  };
-
-  const exportLeadsCSV = () => {
-    const headers = ["ID", "Name", "Company", "Email", "Phone", "Interest", "Status", "Date", "Notes"];
-    const rows = leads.map((l) => [
-      l.id,
-      `"${l.name}"`,
-      `"${l.company}"`,
-      l.email,
-      l.phone,
-      `"${l.interest}"`,
-      l.status,
-      l.createdAt,
-      `"${l.notes || ""}"`,
-    ]);
-    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
-    const link = document.createElement("a");
-    link.setAttribute("href", encodeURI(csvContent));
-    link.setAttribute("download", `saudi-hospitality-leads-${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   const filteredSections = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return SECTIONS;
@@ -367,16 +293,6 @@ export default function SaudiHospitalityAdminDashboard() {
   }, [filteredSections]);
 
   const selectedSection = SECTIONS.find((s) => s.id === selectedSectionId) ?? SECTIONS[0];
-
-  const filteredLeads = leads.filter((l) => {
-    const matchQ =
-      l.name.toLowerCase().includes(searchLeadQuery.toLowerCase()) ||
-      l.company.toLowerCase().includes(searchLeadQuery.toLowerCase()) ||
-      l.phone.includes(searchLeadQuery) ||
-      l.email.toLowerCase().includes(searchLeadQuery.toLowerCase());
-    const matchS = leadStatusFilter === "all" || l.status === leadStatusFilter;
-    return matchQ && matchS;
-  });
 
   return (
     <main
@@ -1317,224 +1233,28 @@ export default function SaudiHospitalityAdminDashboard() {
 
           {/* SECTION 10: INBOUND LEADS CRM */}
           {selectedSectionId === "leads" && (
-            <div className="space-y-6">
-              {/* Action Toolbar */}
-              <div className="admin-card flex items-center justify-between gap-4 flex-wrap">
-                <div className="flex items-center gap-3 flex-wrap flex-grow">
-                  <input
-                    type="search"
-                    placeholder={isAr ? "بحث بالاسم، المنشأة، الجوال..." : "Search by name, company, phone..."}
-                    value={searchLeadQuery}
-                    onChange={(e) => setSearchLeadQuery(e.target.value)}
-                    className="admin-input max-w-xs"
-                  />
-
-                  <select
-                    value={leadStatusFilter}
-                    onChange={(e) => setLeadStatusFilter(e.target.value)}
-                    className="admin-input max-w-xs text-xs font-semibold"
-                  >
-                    <option value="all">{isAr ? "كافة الحالات" : "All Statuses"}</option>
-                    <option value="new">{isAr ? "جديد (New)" : "New"}</option>
-                    <option value="contacted">{isAr ? "تم التواصل" : "Contacted"}</option>
-                    <option value="demo_scheduled">{isAr ? "عرض مجدول" : "Demo Scheduled"}</option>
-                    <option value="partnered">{isAr ? "تم الاتفاق" : "Partnered"}</option>
-                  </select>
+            <div className="admin-card space-y-4">
+              <div className="flex items-start justify-between gap-6 flex-wrap">
+                <div className="space-y-2 max-w-2xl">
+                  <h3 className="font-extrabold text-lg text-slate-900">
+                    {isAr ? "إدارة طلبات الشركاء والعملاء" : "Inbound Leads & Partner CRM"}
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-7">
+                    {isAr
+                      ? "تُحفظ جميع الطلبات في قاعدة بيانات المنصة. افتح مركز الطلبات لتحديث الحالات والملاحظات أو التصدير إلى CSV والتواصل عبر واتساب."
+                      : "Every request is stored in the platform database. Open Submissions to update status and notes, export CSV, or follow up through WhatsApp."}
+                  </p>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={exportLeadsCSV}
-                    className="btn btn-secondary text-xs font-bold gap-1"
-                  >
-                    <Download size={14} />
-                    <span>{isAr ? "تصدير CSV" : "Export CSV"}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsManualLeadOpen(true)}
-                    className="btn btn-primary text-xs font-bold gap-1"
-                  >
-                    <Plus size={15} />
-                    <span>{isAr ? "إضافة عميل يدوياً" : "Add Lead"}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Leads Table */}
-              <div className="admin-card overflow-hidden p-0">
-                <table className="w-full text-start border-collapse">
-                  <thead>
-                    <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-[11px] font-extrabold uppercase">
-                      <th className="p-3.5 ps-5">{isAr ? "بيانات العميل" : "Lead Name & Property"}</th>
-                      <th className="p-3.5">{isAr ? "الاتصال" : "Contact"}</th>
-                      <th className="p-3.5">{isAr ? "الاهتمام والملاحظات" : "Interest & Notes"}</th>
-                      <th className="p-3.5">{isAr ? "التاريخ" : "Date"}</th>
-                      <th className="p-3.5">{isAr ? "الحالة والإجراء" : "Status & Action"}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 text-xs">
-                    {filteredLeads.map((lead) => (
-                      <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
-                        <td className="p-3.5 ps-5">
-                          <div className="font-extrabold text-slate-900 text-sm">{lead.name}</div>
-                          <div className="text-slate-500">{lead.company}</div>
-                          <div className="text-[10px] text-blue-600 font-mono mt-0.5">{lead.source}</div>
-                        </td>
-                        <td className="p-3.5">
-                          <div className="font-semibold text-slate-800">{lead.phone}</div>
-                          <div className="text-slate-500">{lead.email}</div>
-                        </td>
-                        <td className="p-3.5 max-w-xs">
-                          <div className="font-bold text-slate-900">{lead.interest}</div>
-                          {lead.notes && (
-                            <div className="text-[11px] text-slate-600 bg-slate-100/70 p-1.5 rounded mt-1">
-                              {lead.notes}
-                            </div>
-                          )}
-                        </td>
-                        <td className="p-3.5 text-slate-500 whitespace-nowrap">
-                          <div>{new Date(lead.createdAt).toLocaleDateString(isAr ? "ar-SA" : "en-US")}</div>
-                          <div className="text-[10px] text-slate-400">
-                            {new Date(lead.createdAt).toLocaleTimeString(isAr ? "ar-SA" : "en-US", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </div>
-                        </td>
-                        <td className="p-3.5">
-                          <div className="flex items-center gap-2">
-                            <select
-                              value={lead.status}
-                              onChange={(e) => updateLeadStatus(lead.id, e.target.value as InboundLead["status"])}
-                              className="admin-input text-xs py-1 px-2 font-medium"
-                            >
-                              <option value="new">{isAr ? "جديد" : "New"}</option>
-                              <option value="contacted">{isAr ? "تم التواصل" : "Contacted"}</option>
-                              <option value="demo_scheduled">{isAr ? "عرض مجدول" : "Scheduled"}</option>
-                              <option value="partnered">{isAr ? "تم الاتفاق" : "Partnered"}</option>
-                              <option value="archived">{isAr ? "أرشيف" : "Archived"}</option>
-                            </select>
-
-                            <a
-                              href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                                isAr
-                                  ? `مرحباً أستاذ ${lead.name}، معك فريق سويس بلو للضيافة بخصوص استفسارك عن المنظومة الرقمية.`
-                                  : `Hello ${lead.name}, this is Swiss Blue Hospitality following up on your digital platform inquiry.`,
-                              )}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition-colors"
-                              title={isAr ? "مراسلة عبر واتساب" : "Message on WhatsApp"}
-                            >
-                              <MessageSquare size={14} />
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                    {filteredLeads.length === 0 && (
-                      <tr>
-                        <td colSpan={5} className="text-center py-8 text-slate-400 font-semibold">
-                          {isAr ? "لا توجد طلبات مطابقة للبحث." : "No matching leads found."}
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                <Link href="/admin/submissions/b2b" className="btn btn-primary gap-2">
+                  <ExternalLink size={16} />
+                  {isAr ? "فتح مركز الطلبات" : "Open Submissions"}
+                </Link>
               </div>
             </div>
           )}
         </div>
       </section>
 
-      {/* Manual Lead Modal */}
-      {isManualLeadOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
-          onClick={() => setIsManualLeadOpen(false)}
-        >
-          <div
-            className="bg-white rounded-2xl p-6 max-w-lg w-full shadow-2xl relative space-y-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="font-extrabold text-lg text-slate-900">
-              {isAr ? "تسجيل شريك أو عميل جديد يدوياً" : "Add New Lead Manually"}
-            </h3>
-
-            <form onSubmit={handleAddManualLead} className="space-y-3">
-              <div className="admin-field">
-                <div className="admin-field-label-row"><span>{isAr ? "الاسم الكامل:" : "Full Name:"}</span></div>
-                <input
-                  type="text"
-                  required
-                  value={manualLead.name}
-                  onChange={(e) => setManualLead({ ...manualLead, name: e.target.value })}
-                  className="admin-input"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="admin-field">
-                  <div className="admin-field-label-row"><span>{isAr ? "البريد الإلكتروني:" : "Email:"}</span></div>
-                  <input
-                    type="email"
-                    required
-                    value={manualLead.email}
-                    onChange={(e) => setManualLead({ ...manualLead, email: e.target.value })}
-                    className="admin-input"
-                  />
-                </div>
-                <div className="admin-field">
-                  <div className="admin-field-label-row"><span>{isAr ? "رقم الجوال:" : "Phone:"}</span></div>
-                  <input
-                    type="tel"
-                    required
-                    value={manualLead.phone}
-                    onChange={(e) => setManualLead({ ...manualLead, phone: e.target.value })}
-                    className="admin-input"
-                  />
-                </div>
-              </div>
-
-              <div className="admin-field">
-                <div className="admin-field-label-row"><span>{isAr ? "اسم المنشأة أو الشركة:" : "Property or Company:"}</span></div>
-                <input
-                  type="text"
-                  value={manualLead.company}
-                  onChange={(e) => setManualLead({ ...manualLead, company: e.target.value })}
-                  className="admin-input"
-                />
-              </div>
-
-              <div className="admin-field">
-                <div className="admin-field-label-row"><span>{isAr ? "ملاحظات واهتمام العميل:" : "Notes & Interest:"}</span></div>
-                <textarea
-                  rows={2}
-                  value={manualLead.notes}
-                  onChange={(e) => setManualLead({ ...manualLead, notes: e.target.value })}
-                  className="admin-textarea"
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-2 pt-3">
-                <button
-                  type="button"
-                  onClick={() => setIsManualLeadOpen(false)}
-                  className="btn btn-secondary text-xs"
-                >
-                  {isAr ? "إلغاء" : "Cancel"}
-                </button>
-                <button type="submit" className="btn btn-primary text-xs">
-                  {isAr ? "حفظ العميل" : "Save Lead"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </main>
   );
 }

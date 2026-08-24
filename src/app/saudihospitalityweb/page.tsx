@@ -3,17 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
-  Bot,
-  Languages,
-  Sliders,
   Building2,
   Zap,
   Sparkles,
-  TrendingUp,
   ShieldCheck,
-  BarChart3,
-  Briefcase,
-  Users,
   Award,
   ExternalLink,
   ArrowLeft,
@@ -28,6 +21,7 @@ import {
 import styles from "@/components/product-overview/overview.module.css";
 import { usableLogo, getEditableContent } from "@/lib/editable-content";
 import { heroImage } from "@/lib/content";
+import { getSaudiHospitalityStore } from "@/lib/saudihospitalityweb-content";
 
 export const metadata: Metadata = {
   title: "منظومة الضيافة الرقمية | Saudi Hospitality Web Platform",
@@ -44,8 +38,10 @@ export const metadata: Metadata = {
 
 export default async function SaudiHospitalityArabicPage() {
   const { ar, en } = await getEditableContent();
+  const showcaseStore = await getSaudiHospitalityStore();
+  const content = showcaseStore.ar;
   const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
-  const heroBg = ar.media.mainHero || heroImage;
+  const heroBg = content.hero.heroImage || ar.media.mainHero || heroImage;
   const properties = ar.homepage.properties.items;
 
   return (
@@ -125,22 +121,17 @@ export default async function SaudiHospitalityArabicPage() {
         <div className={styles.heroContent}>
           <div className={styles.heroPill}>
             <Sparkles size={15} />
-            <span>المنظومة الرقمية المتطورة للضيافة الفندقية في المملكة العربية السعودية</span>
+            <span>{content.hero.badge}</span>
           </div>
 
-          <h1 className={styles.heroTitle}>
-            الجيل الجديد من منصات الضيافة الرقمية الذكية
-          </h1>
+          <h1 className={styles.heroTitle}>{content.hero.title}</h1>
 
-          <p className={styles.heroSubtitle}>
-            منصة فندقية متكاملة تعتمد الهوية البصرية الفاخرة لسويس بلو، تجمع بين الذكاء الاصطناعي على مدار الساعة،
-            محرك حجز مباشر لتعظيم الإيرادات وهوامش الأرباح، وتجربة ضيافة سعودية أصيلة تجمع بين الفنادق والشقق المخدومة.
-          </p>
+          <p className={styles.heroSubtitle}>{content.hero.subtitle}</p>
 
           <div className={styles.heroCtas}>
             <OpenModalButton
               locale="ar"
-              label="طلب استعراض حي للمنصة"
+              label={content.hero.primaryCta}
               interest="عرض المنصة للشركاء"
               variant="primary"
             />
@@ -152,32 +143,32 @@ export default async function SaudiHospitalityArabicPage() {
               rel="noopener noreferrer"
             >
               <ExternalLink size={17} />
-              <span>معاينة الموقع المباشر</span>
+              <span>{content.hero.livePreviewCta}</span>
             </Link>
           </div>
 
           {/* Key Metric Counters */}
           <div className={styles.statGrid}>
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>&lt; 2s</div>
-              <div className={styles.statLabel}>سرعة استجابة المساعد الذكي</div>
-              <div className={styles.statHint}>رد فوري ومبيعات آلية 24/7</div>
+              <div className={styles.statNumber}>{content.metrics.aiSpeed.val}</div>
+              <div className={styles.statLabel}>{content.metrics.aiSpeed.label}</div>
+              <div className={styles.statHint}>{content.metrics.aiSpeed.hint}</div>
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>0%</div>
-              <div className={styles.statLabel}>عمولات وسيط على الحجز المباشر</div>
-              <div className={styles.statHint}>توفير 18% مقارنة بمنصات OTA</div>
+              <div className={styles.statNumber}>{content.metrics.directFee.val}</div>
+              <div className={styles.statLabel}>{content.metrics.directFee.label}</div>
+              <div className={styles.statHint}>{content.metrics.directFee.hint}</div>
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>6</div>
-              <div className={styles.statLabel}>منشآت في محفظة موحدة</div>
-              <div className={styles.statHint}>جدة • الرياض • جازان</div>
+              <div className={styles.statNumber}>{content.metrics.propertiesCount.val}</div>
+              <div className={styles.statLabel}>{content.metrics.propertiesCount.label}</div>
+              <div className={styles.statHint}>{content.metrics.propertiesCount.hint}</div>
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>0.8s</div>
+              <div className={styles.statNumber}>{content.metrics.pageSpeed.val}</div>
               <div className={styles.statLabel}>زمن تحميل الصفحة القياسي</div>
               <div className={styles.statHint}>Next.js 16 + Vercel Edge</div>
             </div>
@@ -200,7 +191,7 @@ export default async function SaudiHospitalityArabicPage() {
           </p>
         </div>
 
-        <OverviewInteractive locale="ar" />
+        <OverviewInteractive locale="ar" content={content} />
       </section>
 
       {/* Real Portfolio Showcase Grid with Website Visuals */}
@@ -259,84 +250,19 @@ export default async function SaudiHospitalityArabicPage() {
       <section style={{ background: "#ffffff", borderBottom: "1px solid #e5e7eb" }}>
         <div className={styles.sectionWrapper}>
           <div className={styles.sectionHeader}>
-            <div className={styles.sectionBadge}>
-              <Layers size={14} />
-              <span>المنظومة السداسية المتكاملة</span>
-            </div>
-            <h2 className={styles.sectionTitle}>
-              ركائز القوة الست في تجربة سويس بلو الرقمية
-            </h2>
-            <p className={styles.sectionSubtitle}>
-              بنية متناغمة تغطي كافة جوانب التسويق الفندقي، خدمة العملاء، إدارة الحجوزات، والربط المؤسسي.
-            </p>
+            <div className={styles.sectionBadge}><Layers size={14} /><span>{content.pillars.badge}</span></div>
+            <h2 className={styles.sectionTitle}>{content.pillars.title}</h2>
+            <p className={styles.sectionSubtitle}>{content.pillars.subtitle}</p>
           </div>
-
           <div className={styles.pillarGrid}>
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <Bot size={26} />
+            {content.pillars.items.map((pillar) => (
+              <div className={styles.pillarCard} key={pillar.title}>
+                <div className={styles.pillarIconWrap}><Layers size={26} /></div>
+                <h3 className={styles.pillarTitle}>{pillar.title}</h3>
+                <p className={styles.pillarDesc}>{pillar.description}</p>
+                <div className={styles.pillarBadge}>{pillar.badge}</div>
               </div>
-              <h3 className={styles.pillarTitle}>المرشد الذكي الفندقي (سارة)</h3>
-              <p className={styles.pillarDesc}>
-                مساعد محادثة فندقي مدعوم بالذكاء الاصطناعي، يوجه الضيوف لاختيار الغرفة الأنسب، يوضح وسائل الراحة، ويجمع بيانات الحجز وفرص المبيعات فورياً.
-              </p>
-              <div className={styles.pillarBadge}>دعم عربي/إنجليزي فوري 24/7</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <TrendingUp size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>محرك حجز مباشر عالي التحويل</h3>
-              <p className={styles.pillarDesc}>
-                تجربة حجز مبسطة في خطوتين مع تقويم تواريخ متقدم، دعم للأكواد الترويجية، وربط مباشر مع محركات الـ PMS لتقليل الاعتماد على عمولات الوسطاء.
-              </p>
-              <div className={styles.pillarBadge}>توفير حتى 20% في العمولات</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <Languages size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>هوية ثنائية وتناغم ثقافي</h3>
-              <p className={styles.pillarDesc}>
-                تصميم متقن يدعم الخطوط العربية الفاخرة وتوجيه الـ RTL الأصيل، يمنح النزيل المحلي والدولي تجربة راقية تعكس الضيافة السعودية الحديثة.
-              </p>
-              <div className={styles.pillarBadge}>100% تطابق وتناغم بصري</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <Sliders size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>إدارة محتوى سحابية فورية (Sanity)</h3>
-              <p className={styles.pillarDesc}>
-                لوحة تحكم مرنة تتيح لفريق التسويق إطلاق العروض الموسمية، تعديل الأسعار، وتحديث شارات الخدمات (مثل &apos;قريباً&apos;) في ثوانٍ بدون تدخل تقني.
-              </p>
-              <div className={styles.pillarBadge}>تحديث فوري بدون توقف</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <Briefcase size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>بوابة عقود الشركات ومجموعات العمل</h3>
-              <p className={styles.pillarDesc}>
-                قنوات مخصصة لاستقبال طلبات الشركات والجهات الحكومية وحجوزات الوفود والمناسبات، مع توجيه آلي لفرق المبيعات لإغلاق الصفقات.
-              </p>
-              <div className={styles.pillarBadge}>مسار مبيعات B2B آلي</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <BarChart3 size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>أرشفة Google SEO وتحليلات GA4</h3>
-              <p className={styles.pillarDesc}>
-                بيانات هيكلية Schema JSON-LD متوافقة مع محركات البحث لصدارة نتائج Google، مع تتبع دقيق لسلوك النزلاء ومعدلات التحويل عبر GA4.
-              </p>
-              <div className={styles.pillarBadge}>صدارة محركات البحث</div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -344,70 +270,21 @@ export default async function SaudiHospitalityArabicPage() {
       {/* Stakeholder Advantage Matrix */}
       <section className={styles.sectionWrapper}>
         <div className={styles.sectionHeader}>
-          <div className={styles.sectionBadge}>
-            <Award size={14} />
-            <span>مصفوفة القيمة المضافة</span>
-          </div>
-          <h2 className={styles.sectionTitle}>
-            كيف تصنع المنصة فارقاً استراتيجياً لكل طرف؟
-          </h2>
-          <p className={styles.sectionSubtitle}>
-            عائد استثماري واضح وتجربة رقمية استثنائية لملاك الفنادق، الشركات، والنزلاء على حد سواء.
-          </p>
+          <div className={styles.sectionBadge}><Award size={14} /><span>{content.advantageMatrix.badge}</span></div>
+          <h2 className={styles.sectionTitle}>{content.advantageMatrix.title}</h2>
+          <p className={styles.sectionSubtitle}>{content.advantageMatrix.subtitle}</p>
         </div>
-
         <div className={styles.matrixWrapper}>
           <table className={styles.matrixTable}>
-            <thead>
-              <tr>
-                <th style={{ width: "22%" }}>الفئة المستفيدة</th>
-                <th style={{ width: "38%" }}>أهم التحديات التقليدية</th>
-                <th style={{ width: "40%" }}>الحل الاستراتيجي في منصة سويس بلو</th>
-              </tr>
-            </thead>
+            <thead><tr><th>{content.advantageMatrix.headers.role}</th><th>{content.advantageMatrix.headers.problem}</th><th>{content.advantageMatrix.headers.solution}</th></tr></thead>
             <tbody>
-              <tr>
-                <td>
-                  <div className={styles.matrixRoleBadge}>
-                    <Building2 size={16} />
-                    <span>ملاك الفنادق والمستثمرون</span>
-                  </div>
-                </td>
-                <td>
-                  نزيف العمولات المرتفعة لمنصات الـ OTA (15-20%)، صعوبة تحديث الأسعار والعروض، وفقدان بيانات العملاء المباشرة.
-                </td>
-                <td style={{ color: "#0f172a", fontWeight: 600 }}>
-                  تحويل 35%+ من الحجوزات إلى القناة المباشرة، إدارة محتوى فورية من Sanity، وامتلاك قاعدة بيانات ولاء متكاملة.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className={styles.matrixRoleBadge}>
-                    <Briefcase size={16} />
-                    <span>الشركات والجهات الحكومية</span>
-                  </div>
-                </td>
-                <td>
-                  بطء معالجة طلبات الإقامات الطويلة، غياب الشفافية في الأسعار المؤسسية، وصعوبة تنسيق حجوزات الوفود.
-                </td>
-                <td style={{ color: "#0f172a", fontWeight: 600 }}>
-                  بوابة B2B مخصصة لاستقبال العقود وتوفير أسعار تفضيلية فورية، مع متابعة مركزية عبر فريق المبيعات والمساعد الذكي.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className={styles.matrixRoleBadge}>
-                    <Users size={16} />
-                    <span>النزلاء والمسافرون</span>
-                  </div>
-                </td>
-                <td>
-                  مواقع بطيئة، ترجمات آلية ركيكة، صعوبة المقارنة بين الشقق الفندقية والغرف، وعدم توفر ردود فورية خارج أوقات العمل.
-                </td>
-                <td style={{ color: "#0f172a", fontWeight: 600 }}>
-                  تصفح فائق السرعة في أقل من ثانية، مساعد ذكي يجيب على مدار الساعة، ومقارنة واضحة لجميع وحدات الإقامة.
-                </td>
-              </tr>
+              {content.advantageMatrix.rows.map((row) => (
+                <tr key={row.role}>
+                  <td><div className={styles.matrixRoleBadge}><Building2 size={16} /><span>{row.role}</span></div></td>
+                  <td>{row.problem}</td>
+                  <td style={{ color: "#0f172a", fontWeight: 600 }}>{row.solution}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -417,74 +294,17 @@ export default async function SaudiHospitalityArabicPage() {
       <section style={{ background: "#09204e", color: "#ffffff", padding: "5rem 1.5rem" }}>
         <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
           <div className={styles.sectionHeader} style={{ color: "#ffffff" }}>
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.375rem",
-                fontSize: "0.8125rem",
-                fontWeight: 700,
-                color: "#93c5fd",
-                background: "rgba(255, 255, 255, 0.1)",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                padding: "0.25rem 0.875rem",
-                borderRadius: "9999px",
-                marginBottom: "0.875rem",
-              }}
-            >
-              <ShieldCheck size={14} />
-              <span>المواصفات والمعايير التقنية</span>
-            </div>
-            <h2 style={{ fontSize: "clamp(1.85rem, 3.5vw, 2.6rem)", fontWeight: 800, marginBottom: "0.875rem" }}>
-              بنية سحابية مبنية بأحدث معايير الويب العالمية
-            </h2>
-            <p style={{ color: "rgba(255, 255, 255, 0.82)", fontSize: "1.0625rem" }}>
-              تقنيات متقدمة تضمن أعلى درجات الأمان، التوفر السحابي، والتكامل السلس مع أنظمة الضيافة.
-            </p>
+            <div className={styles.sectionBadge}><ShieldCheck size={14} /><span>{content.techSpecs.badge}</span></div>
+            <h2 style={{ fontSize: "clamp(1.85rem, 3.5vw, 2.6rem)", fontWeight: 800, marginBottom: "0.875rem" }}>{content.techSpecs.title}</h2>
+            <p style={{ color: "rgba(255, 255, 255, 0.82)", fontSize: "1.0625rem" }}>{content.techSpecs.subtitle}</p>
           </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
-            <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
-              <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                Next.js 16 App Router
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
+            {content.techSpecs.specs.map((spec) => (
+              <div key={spec.title} style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
+                <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>{spec.title}</div>
+                <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>{spec.description}</p>
               </div>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
-                محرك عرض فائق الحداثة مع Turbopack يضمن تحميلاً فورياً وتجاوباً مثالياً على كافة المتصفحات.
-              </p>
-            </div>
-
-            <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
-              <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                Vercel Global Edge Network
-              </div>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
-                توزيع جغرافي ذكي يضمن استجابة فائقة السرعة للزوار في المملكة ودول الخليج وحول العالم.
-              </p>
-            </div>
-
-            <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
-              <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                Sanity Studio v3 (Headless)
-              </div>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
-                إدارة محتوى مرنة بدون خادم تضمن أمان البيانات وتحديث العروض فورياً دون إعادة نشر الكود.
-              </p>
-            </div>
-
-            <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
-              <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                ERP & PMS Integration Ready
-              </div>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
-                جاهزية كاملة للربط مع أنظمة إدارة الفنادق eZee Absolute وبرامج التخطيط المالي Odoo ERP.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -492,39 +312,12 @@ export default async function SaudiHospitalityArabicPage() {
       {/* Closing Call to Action */}
       <section style={{ background: "linear-gradient(135deg, #1246a8 0%, #1e5fd1 100%)", color: "#ffffff", padding: "5rem 1.5rem", textAlign: "center" }}>
         <div style={{ maxWidth: "50rem", margin: "0 auto" }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.375rem",
-              fontSize: "0.8125rem",
-              fontWeight: 700,
-              background: "rgba(255, 255, 255, 0.15)",
-              padding: "0.35rem 0.875rem",
-              borderRadius: "9999px",
-              marginBottom: "1.25rem",
-            }}
-          >
-            <Sparkles size={14} />
-            <span>خطوتك القادمة نحو الريادة الرقمية</span>
-          </span>
-
-          <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, marginBottom: "1rem", lineHeight: 1.2 }}>
-            جاهز لترقية حضور منشأتك وتحقيق أعلى معدلات حجز مباشر؟
-          </h2>
-
-          <p style={{ fontSize: "1.1rem", color: "rgba(255, 255, 255, 0.9)", marginBottom: "2.5rem", lineHeight: 1.7 }}>
-            تواصل معنا اليوم لاستعراض حي للمنصة والاطلاع على كيفية تطبيق هذه الحلول المتقدمة لخدمة أهدافك الفندقية والاستثمارية.
-          </p>
-
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
-            <OpenModalButton
-              locale="ar"
-              label="طلب استشارة وعرض تجريبي"
-              interest="استشارة فندقية رقمية"
-              variant="primary"
-            />
-            <PrintDeckButton locale="ar" label="طباعة أو تصدير ملف العرض" variant="hero" />
+          <span className={styles.sectionBadge}><Sparkles size={14} /><span>{content.ctaFooter.badge}</span></span>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, margin: "1.25rem 0 1rem" }}>{content.ctaFooter.title}</h2>
+          <p style={{ fontSize: "1.1rem", color: "rgba(255, 255, 255, 0.9)", marginBottom: "2.5rem", lineHeight: 1.7 }}>{content.ctaFooter.subtitle}</p>
+          <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
+            <OpenModalButton locale="ar" label={content.ctaFooter.primaryCta} interest={content.ctaFooter.title} variant="primary" />
+            <PrintDeckButton locale="ar" label={content.ctaFooter.secondaryCta} variant="hero" />
           </div>
         </div>
       </section>

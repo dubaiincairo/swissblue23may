@@ -3,17 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
-  Bot,
-  Languages,
-  Sliders,
   Building2,
   Zap,
   Sparkles,
-  TrendingUp,
   ShieldCheck,
-  BarChart3,
-  Briefcase,
-  Users,
   Award,
   ExternalLink,
   ArrowRight,
@@ -28,6 +21,7 @@ import {
 import styles from "@/components/product-overview/overview.module.css";
 import { usableLogo, getEditableContent } from "@/lib/editable-content";
 import { heroImage } from "@/lib/content";
+import { getSaudiHospitalityStore } from "@/lib/saudihospitalityweb-content";
 
 export const metadata: Metadata = {
   title: "Saudi Hospitality Web Platform | Swiss Blue Hospitality",
@@ -44,8 +38,10 @@ export const metadata: Metadata = {
 
 export default async function SaudiHospitalityEnglishPage() {
   const { en } = await getEditableContent();
+  const showcaseStore = await getSaudiHospitalityStore();
+  const content = showcaseStore.en;
   const logo = usableLogo(en.media.logo);
-  const heroBg = en.media.mainHero || heroImage;
+  const heroBg = content.hero.heroImage || en.media.mainHero || heroImage;
   const properties = en.homepage.properties.items;
 
   return (
@@ -125,22 +121,17 @@ export default async function SaudiHospitalityEnglishPage() {
         <div className={styles.heroContent}>
           <div className={styles.heroPill}>
             <Sparkles size={15} />
-            <span>Next-Generation Saudi Hospitality Ecosystem</span>
+            <span>{content.hero.badge}</span>
           </div>
 
-          <h1 className={styles.heroTitle}>
-            The Intelligent Digital Platform for Modern Saudi Hospitality
-          </h1>
+          <h1 className={styles.heroTitle}>{content.hero.title}</h1>
 
-          <p className={styles.heroSubtitle}>
-            A high-converting digital powerhouse reflecting Swiss Blue&apos;s luxury art direction,
-            blending 24/7 AI Concierge intelligence, frictionless direct booking, and authentic bilingual resonance across Jeddah, Riyadh, and Jazan.
-          </p>
+          <p className={styles.heroSubtitle}>{content.hero.subtitle}</p>
 
           <div className={styles.heroCtas}>
             <OpenModalButton
               locale="en"
-              label="Schedule a Live Demo"
+              label={content.hero.primaryCta}
               interest="Platform Demo Request"
               variant="primary"
             />
@@ -152,32 +143,32 @@ export default async function SaudiHospitalityEnglishPage() {
               rel="noopener noreferrer"
             >
               <ExternalLink size={17} />
-              <span>Preview Live Website</span>
+              <span>{content.hero.livePreviewCta}</span>
             </Link>
           </div>
 
           {/* Key Metric Counters */}
           <div className={styles.statGrid}>
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>&lt; 2s</div>
-              <div className={styles.statLabel}>AI Concierge Speed</div>
-              <div className={styles.statHint}>Instant 24/7 guest answers</div>
+              <div className={styles.statNumber}>{content.metrics.aiSpeed.val}</div>
+              <div className={styles.statLabel}>{content.metrics.aiSpeed.label}</div>
+              <div className={styles.statHint}>{content.metrics.aiSpeed.hint}</div>
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>0%</div>
-              <div className={styles.statLabel}>Direct Channel Fees</div>
-              <div className={styles.statHint}>Save up to 18% vs OTAs</div>
+              <div className={styles.statNumber}>{content.metrics.directFee.val}</div>
+              <div className={styles.statLabel}>{content.metrics.directFee.label}</div>
+              <div className={styles.statHint}>{content.metrics.directFee.hint}</div>
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>6</div>
-              <div className={styles.statLabel}>Integrated Properties</div>
-              <div className={styles.statHint}>Jeddah • Riyadh • Jazan</div>
+              <div className={styles.statNumber}>{content.metrics.propertiesCount.val}</div>
+              <div className={styles.statLabel}>{content.metrics.propertiesCount.label}</div>
+              <div className={styles.statHint}>{content.metrics.propertiesCount.hint}</div>
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>0.8s</div>
+              <div className={styles.statNumber}>{content.metrics.pageSpeed.val}</div>
               <div className={styles.statLabel}>Average Page Load Speed</div>
               <div className={styles.statHint}>Next.js 16 + Vercel Edge</div>
             </div>
@@ -200,7 +191,7 @@ export default async function SaudiHospitalityEnglishPage() {
           </p>
         </div>
 
-        <OverviewInteractive locale="en" />
+        <OverviewInteractive locale="en" content={content} />
       </section>
 
       {/* Real Portfolio Showcase Grid with Website Visuals */}
@@ -259,84 +250,19 @@ export default async function SaudiHospitalityEnglishPage() {
       <section style={{ background: "#ffffff", borderBottom: "1px solid #e5e7eb" }}>
         <div className={styles.sectionWrapper}>
           <div className={styles.sectionHeader}>
-            <div className={styles.sectionBadge}>
-              <Layers size={14} />
-              <span>Six Architectural Pillars</span>
-            </div>
-            <h2 className={styles.sectionTitle}>
-              Engineered for Direct Hospitality Growth
-            </h2>
-            <p className={styles.sectionSubtitle}>
-              A synchronized digital infrastructure uniting marketing, booking operations, customer support, and enterprise sales.
-            </p>
+            <div className={styles.sectionBadge}><Layers size={14} /><span>{content.pillars.badge}</span></div>
+            <h2 className={styles.sectionTitle}>{content.pillars.title}</h2>
+            <p className={styles.sectionSubtitle}>{content.pillars.subtitle}</p>
           </div>
-
           <div className={styles.pillarGrid}>
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <Bot size={26} />
+            {content.pillars.items.map((pillar) => (
+              <div className={styles.pillarCard} key={pillar.title}>
+                <div className={styles.pillarIconWrap}><Layers size={26} /></div>
+                <h3 className={styles.pillarTitle}>{pillar.title}</h3>
+                <p className={styles.pillarDesc}>{pillar.description}</p>
+                <div className={styles.pillarBadge}>{pillar.badge}</div>
               </div>
-              <h3 className={styles.pillarTitle}>24/7 AI Concierge (Sarah)</h3>
-              <p className={styles.pillarDesc}>
-                Native conversational AI assistant answering property queries, recommending suites, and automatically qualifying guest and B2B leads.
-              </p>
-              <div className={styles.pillarBadge}>Instant AR & EN Support</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <TrendingUp size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>High-Conversion Direct Booking</h3>
-              <p className={styles.pillarDesc}>
-                Streamlined 2-step reservation flow with dynamic calendar, promo code engine, and deep integration with hotel PMS systems.
-              </p>
-              <div className={styles.pillarBadge}>Cut OTA Commissions</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <Languages size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>Bilingual RTL/LTR Parity</h3>
-              <p className={styles.pillarDesc}>
-                Bespoke typography (Noto Kufi / Cairo & Geist) and flawless mirrored layouts ensuring cultural resonance for GCC and international guests.
-              </p>
-              <div className={styles.pillarBadge}>100% Visual Symmetry</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <Sliders size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>Real-Time Headless CMS (Sanity)</h3>
-              <p className={styles.pillarDesc}>
-                Agile singleton studio allowing marketing teams to update seasonal rates, badges (e.g. &apos;Soon&apos;), and banners instantly without code deployments.
-              </p>
-              <div className={styles.pillarBadge}>Zero-Downtime Agility</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <Briefcase size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>Corporate B2B & Group Funnels</h3>
-              <p className={styles.pillarDesc}>
-                Dedicated RFQ ingestion pipelines for corporate accounts, government delegations, long-term contractor stays, and event bookings.
-              </p>
-              <div className={styles.pillarBadge}>Automated Inquiries</div>
-            </div>
-
-            <div className={styles.pillarCard}>
-              <div className={styles.pillarIconWrap}>
-                <BarChart3 size={26} />
-              </div>
-              <h3 className={styles.pillarTitle}>Google Schema SEO & GA4</h3>
-              <p className={styles.pillarDesc}>
-                Structured JSON-LD schema (Hotel, LodgingBusiness, FAQPage) for Google Rich Snippets, coupled with GA4 conversion telemetry.
-              </p>
-              <div className={styles.pillarBadge}>Search Dominance</div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -344,70 +270,21 @@ export default async function SaudiHospitalityEnglishPage() {
       {/* Stakeholder Advantage Matrix */}
       <section className={styles.sectionWrapper}>
         <div className={styles.sectionHeader}>
-          <div className={styles.sectionBadge}>
-            <Award size={14} />
-            <span>Value Creation Matrix</span>
-          </div>
-          <h2 className={styles.sectionTitle}>
-            Strategic Advantages Across Key Stakeholders
-          </h2>
-          <p className={styles.sectionSubtitle}>
-            How the Swiss Blue digital ecosystem solves core friction points for hotel owners, enterprise partners, and guests.
-          </p>
+          <div className={styles.sectionBadge}><Award size={14} /><span>{content.advantageMatrix.badge}</span></div>
+          <h2 className={styles.sectionTitle}>{content.advantageMatrix.title}</h2>
+          <p className={styles.sectionSubtitle}>{content.advantageMatrix.subtitle}</p>
         </div>
-
         <div className={styles.matrixWrapper}>
           <table className={styles.matrixTable}>
-            <thead>
-              <tr>
-                <th style={{ width: "22%" }}>Stakeholder</th>
-                <th style={{ width: "38%" }}>Traditional Friction Points</th>
-                <th style={{ width: "40%" }}>Swiss Blue Solution</th>
-              </tr>
-            </thead>
+            <thead><tr><th>{content.advantageMatrix.headers.role}</th><th>{content.advantageMatrix.headers.problem}</th><th>{content.advantageMatrix.headers.solution}</th></tr></thead>
             <tbody>
-              <tr>
-                <td>
-                  <div className={styles.matrixRoleBadge}>
-                    <Building2 size={16} />
-                    <span>Hotel Owners & Investors</span>
-                  </div>
-                </td>
-                <td>
-                  High OTA commission bleed (15-20%), lack of direct guest relationships, and slow manual website updates.
-                </td>
-                <td style={{ color: "#0f172a", fontWeight: 600 }}>
-                  Captures 35%+ direct revenue, offers instant Sanity CMS promotional agility, and builds persistent brand loyalty.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className={styles.matrixRoleBadge}>
-                    <Briefcase size={16} />
-                    <span>Corporate & Government Accounts</span>
-                  </div>
-                </td>
-                <td>
-                  Clunky booking processes for long-term project teams, delayed RFP quotes, and disjointed group invoicing.
-                </td>
-                <td style={{ color: "#0f172a", fontWeight: 600 }}>
-                  Dedicated B2B contract portal with preferential tier discounts, rapid response workflows, and dedicated accounts.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className={styles.matrixRoleBadge}>
-                    <Users size={16} />
-                    <span>Guests & Extended Travelers</span>
-                  </div>
-                </td>
-                <td>
-                  Slow mobile websites, awkward machine translations, and unanswered inquiries during off-hours.
-                </td>
-                <td style={{ color: "#0f172a", fontWeight: 600 }}>
-                  Sub-second loading, authentic cultural tone of voice, clear serviced apartment unit previews, and 24/7 AI guidance.
-                </td>
-              </tr>
+              {content.advantageMatrix.rows.map((row) => (
+                <tr key={row.role}>
+                  <td><div className={styles.matrixRoleBadge}><Building2 size={16} /><span>{row.role}</span></div></td>
+                  <td>{row.problem}</td>
+                  <td style={{ color: "#0f172a", fontWeight: 600 }}>{row.solution}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -417,74 +294,17 @@ export default async function SaudiHospitalityEnglishPage() {
       <section style={{ background: "#09204e", color: "#ffffff", padding: "5rem 1.5rem" }}>
         <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
           <div className={styles.sectionHeader} style={{ color: "#ffffff" }}>
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.375rem",
-                fontSize: "0.8125rem",
-                fontWeight: 700,
-                color: "#93c5fd",
-                background: "rgba(255, 255, 255, 0.1)",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                padding: "0.25rem 0.875rem",
-                borderRadius: "9999px",
-                marginBottom: "0.875rem",
-              }}
-            >
-              <ShieldCheck size={14} />
-              <span>Enterprise Technical Standards</span>
-            </div>
-            <h2 style={{ fontSize: "clamp(1.85rem, 3.5vw, 2.6rem)", fontWeight: 800, marginBottom: "0.875rem" }}>
-              Engineered with Modern Web & Cloud Best Practices
-            </h2>
-            <p style={{ color: "rgba(255, 255, 255, 0.82)", fontSize: "1.0625rem" }}>
-              High-performance, secure, and ready for seamless integration with hotel hospitality software.
-            </p>
+            <div className={styles.sectionBadge}><ShieldCheck size={14} /><span>{content.techSpecs.badge}</span></div>
+            <h2 style={{ fontSize: "clamp(1.85rem, 3.5vw, 2.6rem)", fontWeight: 800, marginBottom: "0.875rem" }}>{content.techSpecs.title}</h2>
+            <p style={{ color: "rgba(255, 255, 255, 0.82)", fontSize: "1.0625rem" }}>{content.techSpecs.subtitle}</p>
           </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
-            <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
-              <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                Next.js 16 App Router
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
+            {content.techSpecs.specs.map((spec) => (
+              <div key={spec.title} style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
+                <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>{spec.title}</div>
+                <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>{spec.description}</p>
               </div>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
-                Cutting-edge React server components and Turbopack compiler delivering frictionless transitions.
-              </p>
-            </div>
-
-            <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
-              <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                Vercel Global Edge Network
-              </div>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
-                Ultra-low latency edge CDN serving regional GCC and worldwide travelers within milliseconds.
-              </p>
-            </div>
-
-            <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
-              <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                Sanity Studio v3 (Headless)
-              </div>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
-                Structured headless content management with live previews, media asset pipelines, and AI copy assistance.
-              </p>
-            </div>
-
-            <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "1.25rem", padding: "1.75rem" }}>
-              <div style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                ERP & PMS Connector Suite
-              </div>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
-                Engineered for synchronization with eZee Absolute PMS and Odoo 19 Enterprise financial suites.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -492,39 +312,12 @@ export default async function SaudiHospitalityEnglishPage() {
       {/* Closing Call to Action */}
       <section style={{ background: "linear-gradient(135deg, #1246a8 0%, #1e5fd1 100%)", color: "#ffffff", padding: "5rem 1.5rem", textAlign: "center" }}>
         <div style={{ maxWidth: "50rem", margin: "0 auto" }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.375rem",
-              fontSize: "0.8125rem",
-              fontWeight: 700,
-              background: "rgba(255, 255, 255, 0.15)",
-              padding: "0.35rem 0.875rem",
-              borderRadius: "9999px",
-              marginBottom: "1.25rem",
-            }}
-          >
-            <Sparkles size={14} />
-            <span>Accelerate Your Digital Presence</span>
-          </span>
-
-          <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, marginBottom: "1rem", lineHeight: 1.2 }}>
-            Ready to Experience the Platform in Action?
-          </h2>
-
-          <p style={{ fontSize: "1.1rem", color: "rgba(255, 255, 255, 0.9)", marginBottom: "2.5rem", lineHeight: 1.7 }}>
-            Connect with our team to arrange a live platform walkthrough and explore how Swiss Blue&apos;s digital architecture drives superior direct booking conversion.
-          </p>
-
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
-            <OpenModalButton
-              locale="en"
-              label="Request Live Demo"
-              interest="Platform Demo Request"
-              variant="primary"
-            />
-            <PrintDeckButton locale="en" label="Export Presentation Deck" variant="hero" />
+          <span className={styles.sectionBadge}><Sparkles size={14} /><span>{content.ctaFooter.badge}</span></span>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, margin: "1.25rem 0 1rem" }}>{content.ctaFooter.title}</h2>
+          <p style={{ fontSize: "1.1rem", color: "rgba(255, 255, 255, 0.9)", marginBottom: "2.5rem", lineHeight: 1.7 }}>{content.ctaFooter.subtitle}</p>
+          <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
+            <OpenModalButton locale="en" label={content.ctaFooter.primaryCta} interest={content.ctaFooter.title} variant="primary" />
+            <PrintDeckButton locale="en" label={content.ctaFooter.secondaryCta} variant="hero" />
           </div>
         </div>
       </section>
