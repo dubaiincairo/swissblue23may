@@ -8,7 +8,7 @@ import { BOOKING_URL } from "@/lib/content";
 import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import type { EditableSiteContent } from "@/lib/editable-content";
 
-type Property = { slug: string; title: string; city: string };
+type Property = { slug: string; title: string; city: string; bookingUrl: string };
 
 type Locale = "ar" | "en";
 
@@ -307,7 +307,8 @@ export default function BookingBar({
 
   function search() {
     trackAnalyticsEvent("booking_cta_click", { locale, property_slug: slug, placement: "booking_bar" });
-    window.location.assign(BOOKING_URL);
+    const bookingUrl = properties.find((property) => property.slug === slug)?.bookingUrl?.trim();
+    window.location.assign(bookingUrl || BOOKING_URL);
   }
 
   return (
