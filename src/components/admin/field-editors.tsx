@@ -260,7 +260,7 @@ export function StringFieldEditor({
   onChange: (path: Array<string | number>, value: JsonValue) => void;
   isNumber?: boolean;
 }) {
-  const isUrl = ["href", "image", "secondaryHref", "source", "ctaHref"].includes(name);
+  const isUrl = ["href", "image", "secondaryHref", "source", "ctaHref", "bookingUrl"].includes(name);
   const isOpaque = ["slug", "type", "kind", "mapQuery"].includes(name);
   const fieldLabel = fieldLabelFor(name, path, language);
 

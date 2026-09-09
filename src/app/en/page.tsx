@@ -60,6 +60,7 @@ export default async function EnglishHomePage() {
                     slug: hotel.slug,
                     title: hotel.title,
                     city: hotel.city,
+                    bookingUrl: hotel.bookingUrl,
                   }))}
                 locale="en"
                 labels={en.ui.bookingBar}

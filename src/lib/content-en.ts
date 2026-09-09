@@ -120,6 +120,7 @@ export const propertyAmenitiesEn = [
 export const hotelsEn = [
   {
     slug: "swiss-blue-jeddah",
+    bookingUrl: "https://letsbook.me/booking/swissbluehera",
     title: "Swiss Blue Hotel Jeddah",
     city: "Jeddah",
     type: "Hotel",
@@ -190,6 +191,7 @@ export const hotelsEn = [
   },
   {
     slug: "swiss-blue-jazan",
+    bookingUrl: "",
     title: "Swiss Blue Apart-Hotel Jazan",
     city: "Jazan",
     type: "Apart-hotel",
@@ -232,6 +234,7 @@ export const hotelsEn = [
   },
   {
     slug: "al-zahraa-serviced-apartments",
+    bookingUrl: "https://letsbook.me/booking/swissbluealzahra",
     title: "Al Zahraa Serviced Apartments",
     city: "Jeddah",
     type: "Serviced apartments",
@@ -278,6 +281,7 @@ export const hotelsEn = [
   },
   {
     slug: "al-samer-serviced-apartments",
+    bookingUrl: "https://letsbook.me/booking/swissbluealsamer",
     title: "Al Samer Serviced Apartments",
     city: "Jeddah",
     type: "Serviced apartments",
@@ -325,6 +329,7 @@ export const hotelsEn = [
   },
   {
     slug: "vinas-riyadh-serviced-apartments",
+    bookingUrl: "https://letsbook.me/booking/vinashotel",
     title: "Vinas Riyadh Serviced Apartments",
     city: "Riyadh",
     type: "Serviced apartments",
@@ -378,6 +383,7 @@ export const hotelsEn = [
   },
   {
     slug: "tulip-alrawdah-serviced-apartments",
+    bookingUrl: "https://letsbook.me/booking/tuliphotel",
     title: "Tulip Alrawdah Serviced Apartments",
     city: "Riyadh",
     type: "Apart-hotel",
