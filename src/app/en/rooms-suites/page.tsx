@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { rich } from "@/components/rich-text";
 import { CtaBandEn, PageHeroEn, PageShellEn } from "@/components/site-en";
 import { getEditableContent, isSectionHidden } from "@/lib/editable-content";
@@ -6,12 +7,15 @@ export const dynamic = "force-dynamic";
 
 export default async function RoomsSuitesPageEn() {
   const { en, hiddenSections } = await getEditableContent();
+
+  if (isSectionHidden(hiddenSections, "roomsSuitesPage")) {
+    notFound();
+  }
+
   const content = en.subpages.roomsSuites;
 
   return (
     <PageShellEn>
-      {!isSectionHidden(hiddenSections, "roomsSuitesPage") && (
-        <>
       <PageHeroEn
         eyebrow={content.hero.eyebrow}
         title={content.hero.title}
@@ -98,8 +102,6 @@ export default async function RoomsSuitesPageEn() {
       </section>
 
       <CtaBandEn eyebrow={en.closingCtas.eyebrow} title={en.closingCtas.pages.roomsSuites.title} text={en.closingCtas.defaultText} cta={en.closingCtas.pages.roomsSuites.cta} />
-        </>
-      )}
     </PageShellEn>
   );
 }

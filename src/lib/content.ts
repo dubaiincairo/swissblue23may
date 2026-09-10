@@ -23,7 +23,6 @@ export const propertyGallerySupplement = [
 
 export const navItems = [
   { label: "منشآت الضيافة", href: "/hotels" },
-  { label: "الغرف والأجنحة", href: "/rooms-suites" },
   { label: "العروض والتخفيضات", href: "/offers" },
   { label: "برنامج الولاء", href: "/loyalty" },
   { label: "الخدمات", href: "/amenities-services" },
@@ -85,7 +84,6 @@ export const footerSections = [
     title: "استكشف سويس بلو",
     links: [
       { label: "منشآت الضيافة", href: "/hotels" },
-      { label: "الغرف والأجنحة", href: "/rooms-suites" },
       { label: "العروض والتخفيضات", href: "/offers" },
       { label: "برنامج الولاء", href: "/loyalty" },
       { label: "الوجهات / المدن", href: "/destinations" },
