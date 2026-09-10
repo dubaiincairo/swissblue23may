@@ -5,6 +5,7 @@ import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import SocialShare from "@/components/social-share";
 import BookingBar from "@/components/booking-bar";
+import NavBookingMenu from "@/components/nav-booking-menu";
 import HomepageGallery from "@/components/homepage-gallery";
 import { PartnersSection } from "@/components/partners-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
@@ -46,9 +47,15 @@ export default async function Home() {
                 {rich(home.hero.text)}
               </p>
               <div className="home-hero-actions reveal-slide-up" style={{ "--delay": "300ms" } as React.CSSProperties}>
-                <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
-                  {rich(home.hero.primaryCta)}
-                </a>
+                <NavBookingMenu
+                  properties={home.properties.items}
+                  label={rich(home.hero.primaryCta)}
+                  locale="ar"
+                  fallbackUrl={BOOKING_URL}
+                  buttonClassName="btn btn-primary btn-hero"
+                  dropdownClassName="hero-booking-dropdown"
+                  menuClassName="hero-booking-dropdown-menu"
+                />
                 <Link className="btn btn-glass" href={home.hero.secondaryHref}>
                   {rich(home.hero.secondaryCta)}
                 </Link>
