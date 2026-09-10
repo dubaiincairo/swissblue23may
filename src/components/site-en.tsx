@@ -4,6 +4,7 @@ import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content-e
 import { LanguageToggle } from "@/components/site";
 import { rich } from "@/components/rich-text";
 import MobileNav from "@/components/mobile-nav";
+import NavBookingMenu from "@/components/nav-booking-menu";
 import PaymentMethods from "@/components/payment-methods";
 import { SocialLinks, mergeSocial } from "@/components/social-links";
 import { getEditableContent, usableLogo } from "@/lib/editable-content";
@@ -71,9 +72,12 @@ export async function SiteHeaderEn() {
           </div>
           <div className="nav-actions">
             <LanguageToggle current="en" />
-            <a className="btn btn-primary nav-book-btn" href={BOOKING_URL}>
-              {en.ui.bookNow}
-            </a>
+            <NavBookingMenu
+              properties={en.homepage.properties.items}
+              label={en.ui.bookNow}
+              locale="en"
+              fallbackUrl={BOOKING_URL}
+            />
             <MobileNav
               groups={mobileGroups}
               locale="en"
