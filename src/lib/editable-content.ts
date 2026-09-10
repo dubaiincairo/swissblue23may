@@ -6156,6 +6156,11 @@ function mergeContent(
           roomsSuites: {
             ...defaultSiteContent.ar.subpages.roomsSuites,
             ...(content?.ar?.subpages?.roomsSuites ?? {}),
+            classifications:
+              Array.isArray(content?.ar?.subpages?.roomsSuites?.classifications) &&
+              content.ar.subpages.roomsSuites.classifications.length > 0
+                ? content.ar.subpages.roomsSuites.classifications
+                : defaultSiteContent.ar.subpages.roomsSuites.classifications,
           },
           servicedApartments: {
             ...defaultSiteContent.ar.subpages.servicedApartments,
@@ -6280,6 +6285,11 @@ function mergeContent(
           roomsSuites: {
             ...defaultSiteContent.en.subpages.roomsSuites,
             ...(content?.en?.subpages?.roomsSuites ?? {}),
+            classifications:
+              Array.isArray(content?.en?.subpages?.roomsSuites?.classifications) &&
+              content.en.subpages.roomsSuites.classifications.length > 0
+                ? content.en.subpages.roomsSuites.classifications
+                : defaultSiteContent.en.subpages.roomsSuites.classifications,
           },
           servicedApartments: {
             ...defaultSiteContent.en.subpages.servicedApartments,
