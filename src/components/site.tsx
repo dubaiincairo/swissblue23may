@@ -6,7 +6,7 @@ import NavBookingMenu from "@/components/nav-booking-menu";
 import PaymentMethods from "@/components/payment-methods";
 import { SocialLinks, mergeSocial } from "@/components/social-links";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
-import { getEditableContent, usableLogo } from "@/lib/editable-content";
+import { getEditableContent, isSectionHidden, usableLogo } from "@/lib/editable-content";
 
 function resolveMediaImage(
   image: string,
@@ -40,9 +40,21 @@ function arabicHref(href: string) {
 }
 
 export async function SiteHeader() {
-  const { ar, en } = await getEditableContent();
+  const { ar, en, hiddenSections } = await getEditableContent();
   const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
-  const mobileGroups = ar.navGroups.map((group) => ({
+  const hideRoomsSuites = isSectionHidden(hiddenSections, "roomsSuitesPage");
+
+  const filterLinks = (links: { href: string; label: string }[]) =>
+    links.filter((item) => !(hideRoomsSuites && item.href.includes("rooms-suites")));
+
+  const navGroups = ar.navGroups
+    .map((group) => ({
+      label: group.label,
+      links: filterLinks(group.links),
+    }))
+    .filter((group) => group.links.length > 0);
+
+  const mobileGroups = navGroups.map((group) => ({
     label: group.label,
     links: group.links.map((item) => ({ href: arabicHref(item.href), label: item.label })),
   }));
@@ -69,7 +81,7 @@ export async function SiteHeader() {
           </Link>
           <div className="nav-side">
             <div className="nav-group-row">
-              {ar.navGroups.map((group) => (
+              {navGroups.map((group) => (
                 <div className="nav-dropdown" key={group.label}>
                   <button className="nav-parent" type="button" aria-haspopup="true">
                     {rich(group.label)}
@@ -142,9 +154,20 @@ export function SiteFooter() {
 }
 
 async function SiteFooterContent() {
-  const { ar, en } = await getEditableContent();
+  const { ar, en, hiddenSections } = await getEditableContent();
   const logo = usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo);
   const social = mergeSocial(ar.social, en.social);
+  const hideRoomsSuites = isSectionHidden(hiddenSections, "roomsSuitesPage");
+
+  const filterLinks = (links: { href: string; label: string }[]) =>
+    links.filter((item) => !(hideRoomsSuites && item.href.includes("rooms-suites")));
+
+  const footerSections = ar.footerSections
+    .map((section) => ({
+      ...section,
+      links: filterLinks(section.links),
+    }))
+    .filter((section) => section.links.length > 0);
 
   return (
     <footer className="site-footer border-t border-[var(--border)] bg-white" aria-label="تذييل الموقع">
@@ -174,7 +197,7 @@ async function SiteFooterContent() {
         </div>
 
         <nav className="footer-links" aria-label="روابط التذييل">
-          {ar.footerSections
+          {footerSections
             .filter((section) => section.links.length > 0)
             .map((section) => (
               <div key={section.title}>

@@ -12,7 +12,6 @@ export const jeddahImage =
 
 export const navItemsEn = [
   { label: "Hospitality Properties", href: "/en/hotels" },
-  { label: "Rooms & Suites", href: "/en/rooms-suites" },
   { label: "Offers & Discounts", href: "/en/offers" },
   { label: "Loyalty Program", href: "/en/loyalty" },
   { label: "Services", href: "/en/amenities-services" },
@@ -74,7 +73,6 @@ export const footerSectionsEn = [
     title: "Explore Swiss Blue",
     links: [
       { label: "Hospitality Properties", href: "/en/hotels" },
-      { label: "Rooms & Suites", href: "/en/rooms-suites" },
       { label: "Offers & Discounts", href: "/en/offers" },
       { label: "Loyalty Program", href: "/en/loyalty" },
       { label: "Destinations / Cities", href: "/en/destinations" },
