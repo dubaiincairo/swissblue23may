@@ -14,33 +14,40 @@ export const ADMIN_AUTH_BACKDROP_PHOTO_COUNT = 6;
 
 const DEFAULT_PHOTOS: AdminAuthBackdropPhoto[] = [
   {
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/King_Fahd%E2%80%99s_Fountain.jpg/1280px-King_Fahd%E2%80%99s_Fountain.jpg",
+    image: "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-saad-alaiyadhi-131639221-10141408-scaled.jpg",
     focus: "bottom",
   },
   {
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Riyadh_Skyline.jpg/1280px-Riyadh_Skyline.jpg",
+    image: "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1400&q=80",
     focus: "center",
   },
   {
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Hegra%2C_Al-Ula%2C_Saudi_Arabia.png/1280px-Hegra%2C_Al-Ula%2C_Saudi_Arabia.png",
-    focus: "right",
+    image: "https://images.unsplash.com/photo-1578895101408-1a36b834405b?auto=format&fit=crop&w=1400&q=80",
+    focus: "center",
   },
   {
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Sarawat_Mountains%2C_Asir_Region%2C_Saudi_Arabia_%282%29.jpg/1280px-Sarawat_Mountains%2C_Asir_Region%2C_Saudi_Arabia_%282%29.jpg",
+    image: "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-jepoyous-18500929-2.jpg",
     focus: "bottom",
   },
   {
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Uruq_Bani_Ma%27arid_Reserve%2C_Saudi_Arabia_%282025%29.jpg/1280px-Uruq_Bani_Ma%27arid_Reserve%2C_Saudi_Arabia_%282025%29.jpg",
+    image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80",
     focus: "center",
   },
   {
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Old_Jeddah_%28Al_Balad%29%2C_Saudi_Arabia_in_November_2022.jpg/1280px-Old_Jeddah_%28Al_Balad%29%2C_Saudi_Arabia_in_November_2022.jpg",
+    image: "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-abdullah-alallah-314142096-28506330.jpg",
     focus: "center",
   },
 ];
 
+const BROKEN_LEGACY_IMAGES = new Set([
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Hegra%2C_Al-Ula%2C_Saudi_Arabia.png/1280px-Hegra%2C_Al-Ula%2C_Saudi_Arabia.png",
+]);
+
 function nonEmptyString(value: unknown, fallback: string) {
-  return typeof value === "string" && value.trim() ? value : fallback;
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed || BROKEN_LEGACY_IMAGES.has(trimmed)) return fallback;
+  return trimmed;
 }
 
 export function createDefaultAdminAuthBackdrop(): AdminAuthBackdrop {
