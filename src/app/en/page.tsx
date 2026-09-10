@@ -11,6 +11,7 @@ import { TestimonialsSection } from "@/components/testimonials-section";
 import { rich } from "@/components/rich-text";
 import { ServiceTiles } from "@/components/service-tiles";
 import { InsightCards } from "@/components/insight-cards";
+import NavBookingMenu from "@/components/nav-booking-menu";
 import { BOOKING_URL, getEditableContent, isSectionHidden } from "@/lib/editable-content";
 import { comingSoonLabel, isComingSoonCity, isComingSoonProperty } from "@/lib/property-availability";
 
@@ -43,9 +44,15 @@ export default async function EnglishHomePage() {
                 {rich(home.hero.text)}
               </p>
               <div className="home-hero-actions reveal-slide-up" style={{ "--delay": "300ms" } as React.CSSProperties}>
-                <a className="btn btn-primary btn-hero" href={BOOKING_URL}>
-                  {rich(home.hero.primaryCta)}
-                </a>
+                <NavBookingMenu
+                  properties={home.properties.items}
+                  label={rich(home.hero.primaryCta)}
+                  locale="en"
+                  fallbackUrl={BOOKING_URL}
+                  buttonClassName="btn btn-primary btn-hero"
+                  dropdownClassName="hero-booking-dropdown"
+                  menuClassName="hero-booking-dropdown-menu"
+                />
                 <Link className="btn btn-glass" href={home.hero.secondaryHref}>
                   {rich(home.hero.secondaryCta)}
                 </Link>
