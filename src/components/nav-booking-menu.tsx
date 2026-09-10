@@ -41,8 +41,11 @@ export default function NavBookingMenu({
 
       <div className="nav-menu nav-booking-menu" aria-label={chooseLabel} dir={locale === "ar" ? "rtl" : "ltr"}>
         {bookableProperties.map((property) => (
-          <a href={property.bookingUrl} key={property.slug}>
-            {property.title} — {property.city}
+          <a className="nav-booking-option" href={property.bookingUrl} key={property.slug}>
+            <span className="nav-booking-option-copy">
+              <strong>{property.title}</strong>
+              <small>{property.city}</small>
+            </span>
           </a>
         ))}
       </div>
