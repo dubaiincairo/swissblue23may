@@ -639,6 +639,83 @@ summary:focus:not(:focus-visible) {
   transform: translateY(0) scale(1);
 }
 
+.nav-booking-dropdown::after {
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  width: 100%;
+}
+
+.nav-booking-trigger {
+  gap: 7px;
+}
+
+.nav-booking-chevron {
+  flex: 0 0 auto;
+  transition: transform 180ms ease;
+}
+
+.nav-booking-dropdown:focus-within .nav-booking-chevron,
+.nav-booking-dropdown:hover .nav-booking-chevron {
+  transform: rotate(180deg);
+}
+
+.nav-booking-menu {
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  min-width: min(320px, calc(100vw - 24px));
+  transform-origin: top right;
+}
+
+[dir="rtl"] .nav-booking-menu {
+  transform-origin: top left;
+}
+
+.nav-menu a.nav-booking-option {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  white-space: normal;
+}
+
+.nav-booking-option-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.nav-booking-option-copy strong {
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.nav-booking-option-copy small {
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.nav-booking-arrow {
+  color: var(--primary);
+  flex: 0 0 auto;
+  transition: transform 160ms ease;
+}
+
+[dir="rtl"] .nav-booking-arrow {
+  transform: scaleX(-1);
+}
+
+.nav-booking-option:hover .nav-booking-arrow,
+.nav-booking-option:focus-visible .nav-booking-arrow {
+  transform: translateX(3px);
+}
+
+[dir="rtl"] .nav-booking-option:hover .nav-booking-arrow,
+[dir="rtl"] .nav-booking-option:focus-visible .nav-booking-arrow {
+  transform: scaleX(-1) translateX(3px);
+}
+
 /* ===== Mobile navigation (off-canvas, accessible) ===== */
 .mobile-nav-toggle {
   align-items: center;

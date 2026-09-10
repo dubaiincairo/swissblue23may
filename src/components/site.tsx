@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { rich } from "@/components/rich-text";
 import MobileNav from "@/components/mobile-nav";
+import NavBookingMenu from "@/components/nav-booking-menu";
 import PaymentMethods from "@/components/payment-methods";
 import { SocialLinks, mergeSocial } from "@/components/social-links";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
@@ -86,9 +87,12 @@ export async function SiteHeader() {
           </div>
           <div className="nav-actions">
             <LanguageToggle current="ar" />
-            <a className="btn btn-primary nav-book-btn" href={BOOKING_URL}>
-              {ar.ui.bookNow}
-            </a>
+            <NavBookingMenu
+              properties={ar.homepage.properties.items}
+              label={ar.ui.bookNow}
+              locale="ar"
+              fallbackUrl={BOOKING_URL}
+            />
             <MobileNav
               groups={mobileGroups}
               locale="ar"
