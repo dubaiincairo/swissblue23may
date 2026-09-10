@@ -656,6 +656,45 @@ summary:focus:not(:focus-visible) {
   transform-origin: top left;
 }
 
+.hero-booking-dropdown {
+  display: inline-flex;
+  position: relative;
+}
+
+.hero-booking-dropdown::after {
+  inset-inline-end: auto;
+  inset-inline-start: 0;
+  width: 100%;
+}
+
+.hero-booking-dropdown-menu {
+  inset-inline-end: auto;
+  inset-inline-start: 0;
+  min-width: 250px;
+  transform-origin: top left;
+  z-index: 70;
+}
+
+[dir="rtl"] .hero-booking-dropdown-menu {
+  transform-origin: top right;
+}
+
+@media (max-width: 639px) {
+  .hero-booking-dropdown {
+    flex: 1 1 148px;
+    width: 100%;
+  }
+
+  .hero-booking-dropdown .btn-hero {
+    width: 100%;
+  }
+
+  .hero-booking-dropdown-menu {
+    max-width: calc(100vw - 32px);
+    width: 100%;
+  }
+}
+
 .nav-menu a.nav-booking-option {
   display: block;
   padding: 8px 12px;
