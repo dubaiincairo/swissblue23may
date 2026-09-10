@@ -111,7 +111,7 @@ const categories: ReadonlyArray<Category> = [
   },
   {
     key: "wellness",
-    title: "العافية والترفيه",
+    title: "الاسترخاء والترفيه",
     titleEn: "Wellness & leisure",
     description: "خيارات للحفاظ على نمط حياة نشط أو الاسترخاء قليلا أثناء الإقامة.",
     descriptionEn: "Options to stay active or simply unwind during the stay.",
