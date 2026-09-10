@@ -131,6 +131,7 @@ export const propertyAmenities = [
 export const hotels = [
   {
     slug: "swiss-blue-jeddah",
+    bookingUrl: "https://letsbook.me/booking/swissbluehera",
     title: "فندق سويس بلو جدة",
     city: "جدة",
     type: "فندق",
@@ -192,6 +193,7 @@ export const hotels = [
   },
   {
     slug: "swiss-blue-jazan",
+    bookingUrl: "",
     title: "سويس بلو للشقق المخدومة جازان",
     city: "جازان",
     type: "شقق مخدومة",
@@ -242,6 +244,7 @@ export const hotels = [
   },
   {
     slug: "al-zahraa-serviced-apartments",
+    bookingUrl: "https://letsbook.me/booking/swissbluealzahra",
     title: "شقق الزهراء المخدومة",
     city: "جدة",
     type: "شقق مخدومة",
@@ -292,6 +295,7 @@ export const hotels = [
   },
   {
     slug: "al-samer-serviced-apartments",
+    bookingUrl: "https://letsbook.me/booking/swissbluealsamer",
     title: "شقق السامر المخدومة",
     city: "جدة",
     type: "شقق مخدومة",
@@ -341,6 +345,7 @@ export const hotels = [
   },
   {
     slug: "vinas-riyadh-serviced-apartments",
+    bookingUrl: "https://letsbook.me/booking/vinashotel",
     title: "شقق فيناس الرياض المخدومة",
     city: "الرياض",
     type: "شقق مخدومة",
@@ -396,6 +401,7 @@ export const hotels = [
   },
   {
     slug: "tulip-alrawdah-serviced-apartments",
+    bookingUrl: "https://letsbook.me/booking/tuliphotel",
     title: "شقق توليب الروضة المخدومة",
     city: "الرياض",
     type: "شقق مخدومة",

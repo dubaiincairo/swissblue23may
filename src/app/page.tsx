@@ -63,6 +63,7 @@ export default async function Home() {
                     slug: hotel.slug,
                     title: hotel.title,
                     city: hotel.city,
+                    bookingUrl: hotel.bookingUrl,
                   }))}
                 locale="ar"
                 labels={ar.ui.bookingBar}

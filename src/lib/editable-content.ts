@@ -5028,6 +5028,14 @@ function syncPropertyOverviewImages(
         : editedLanguage === "en"
           ? enProperty.image
           : enProperty.image || property.image;
+    const bookingUrl =
+      (editedLanguage === "ar"
+        ? property.bookingUrl
+        : editedLanguage === "en"
+          ? enProperty.bookingUrl
+          : enProperty.bookingUrl || property.bookingUrl) ||
+      arDefault.bookingUrl ||
+      enDefault.bookingUrl;
     return {
       ...withoutPropertyGallery(arDefault),
       ...withoutPropertyGallery(property),
@@ -5037,6 +5045,7 @@ function syncPropertyOverviewImages(
         "ar",
       ),
       image,
+      bookingUrl,
     };
   });
 
@@ -5061,6 +5070,14 @@ function syncPropertyOverviewImages(
         : editedLanguage === "en"
           ? property.image
           : property.image || arProperty.image;
+    const bookingUrl =
+      (editedLanguage === "ar"
+        ? arProperty.bookingUrl
+        : editedLanguage === "en"
+          ? property.bookingUrl
+          : property.bookingUrl || arProperty.bookingUrl) ||
+      enDefault.bookingUrl ||
+      arDefault.bookingUrl;
     return {
       ...withoutPropertyGallery(enDefault),
       ...withoutPropertyGallery(property),
@@ -5070,6 +5087,7 @@ function syncPropertyOverviewImages(
         "en",
       ),
       image,
+      bookingUrl,
     };
   });
 
