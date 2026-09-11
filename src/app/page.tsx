@@ -27,14 +27,14 @@ export default async function Home() {
       <SiteHeader />
 
       {show("hero") && (
-      <section id="top" className="hotel-hero home-hero relative overflow-hidden">
+      <section id="top" className="hotel-hero home-hero relative">
         <HeroMediaCarousel
           slides={ar.media.mainHeroSlides}
           fallbackImage={ar.media.mainHero}
           fallbackAlt="إطلالة ساحلية على البحر الأحمر بالقرب من وجهات سويس بلو"
         />
         <div className="home-hero-overlay home-hero-overlay-rtl" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
 
         <div className="home-hero-shell">
           <div className="home-hero-layout">

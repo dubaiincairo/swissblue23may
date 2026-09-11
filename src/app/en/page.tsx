@@ -25,14 +25,14 @@ export default async function EnglishHomePage() {
   return (
     <PageShellEn>
       {show("hero") && (
-      <section className="hotel-hero home-hero relative overflow-hidden">
+      <section className="hotel-hero home-hero relative">
         <HeroMediaCarousel
           slides={en.media.mainHeroSlides}
           fallbackImage={en.media.mainHero}
           fallbackAlt="Red Sea coastline near Swiss Blue Hotels"
         />
         <div className="home-hero-overlay home-hero-overlay-ltr" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
         <div className="home-hero-shell">
           <div className="home-hero-layout">
             <div className="home-hero-copy text-white">
