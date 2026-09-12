@@ -121,8 +121,8 @@ export function OverviewInteractive({ locale }: OverviewInteractiveProps) {
 
   const samplePromptsAr = [
     {
-      q: "ما هي مزايا شقق فيناس بالرياض؟",
-      a: "تتميز شقق فيناس الرياض بموقع استراتيجي بالقرب من واجهة الرياض والبوليفارد، مع وحدات مجهزة بالكامل ومطابخ حديثة وخدمة واي فاي فائقة السرعة، ومثالية للإقامات الطويلة ورحلات الأعمال.",
+      q: "ما هي مزايا ڤيناس للشقق المخدومة؟",
+      a: "تتميز ڤيناس للشقق المخدومة بموقع استراتيجي بالقرب من واجهة الرياض والبوليفارد، مع وحدات مجهزة بالكامل ومطابخ حديثة وخدمة واي فاي فائقة السرعة، ومثالية للإقامات الطويلة ورحلات الأعمال.",
     },
     {
       q: "هل توجد أسعار خاصة لتعاقدات الشركات؟",
@@ -136,8 +136,8 @@ export function OverviewInteractive({ locale }: OverviewInteractiveProps) {
 
   const samplePromptsEn = [
     {
-      q: "What makes Vinas Riyadh ideal for business?",
-      a: "Vinas Riyadh Serviced Apartments offer strategic access to Riyadh Front and the business district, featuring full kitchens, high-speed fiber Wi-Fi, and 24/7 dedicated support for corporate travelers.",
+      q: "What makes Vinas ideal for business?",
+      a: "Vinas Serviced Apartments offer strategic access to Riyadh Front and the business district, featuring full kitchens, high-speed fiber Wi-Fi, and 24/7 dedicated support for corporate travelers.",
     },
     {
       q: "Do you offer corporate rates & long stays?",
@@ -725,13 +725,13 @@ export function OverviewInteractive({ locale }: OverviewInteractiveProps) {
               </div>
               <div style={{ background: "#ffffff", padding: "0.875rem", borderRadius: "0.75rem", border: "1px solid #e2e8f0" }}>
                 <div style={{ fontSize: "0.75rem", color: "#16a34a", fontWeight: 700 }}>{isAr ? "شقق فندقية" : "Aparthotel"} • {isAr ? "الرياض" : "Riyadh"}</div>
-                <div style={{ fontWeight: 700, fontSize: "0.9375rem", color: "#0f172a" }}>Vinas Riyadh</div>
+                <div style={{ fontWeight: 700, fontSize: "0.9375rem", color: "#0f172a" }}>Vinas</div>
                 <div style={{ fontSize: "0.75rem", color: "#64748b" }}>{isAr ? "طريق المطار • إقامات طويلة" : "Airport Road • Long Stays"}</div>
               </div>
               <div style={{ background: "#ffffff", padding: "0.875rem", borderRadius: "0.75rem", border: "1px solid #e2e8f0" }}>
                 <div style={{ fontSize: "0.75rem", color: "#16a34a", fontWeight: 700 }}>{isAr ? "شقق فندقية" : "Aparthotel"} • {isAr ? "جدة" : "Jeddah"}</div>
-                <div style={{ fontWeight: 700, fontSize: "0.9375rem", color: "#0f172a" }}>Tulip Alrawdah</div>
-                <div style={{ fontSize: "0.75rem", color: "#64748b" }}>{isAr ? "حي الروضة • 36 وحدة" : "Alrawdah • 36 Apartments"}</div>
+                <div style={{ fontWeight: 700, fontSize: "0.9375rem", color: "#0f172a" }}>Tulip Alrawda</div>
+                <div style={{ fontSize: "0.75rem", color: "#64748b" }}>{isAr ? "حي الروضة • 36 وحدة" : "Alrawda • 36 Apartments"}</div>
               </div>
             </div>
           </div>

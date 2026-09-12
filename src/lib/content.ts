@@ -192,7 +192,7 @@ export const hotels = [
   {
     slug: "swiss-blue-jazan",
     bookingUrl: "",
-    title: "سويس بلو للشقق المخدومة جازان",
+    title: "سويس بلو جازان",
     city: "جازان",
     type: "شقق مخدومة",
     units: "55 شقة مخدومة",
@@ -344,7 +344,7 @@ export const hotels = [
   {
     slug: "vinas-riyadh-serviced-apartments",
     bookingUrl: "https://letsbook.me/booking/vinashotel",
-    title: "شقق فيناس الرياض المخدومة",
+    title: "ڤيناس للشقق المخدومة",
     city: "الرياض",
     type: "شقق مخدومة",
     units: "35 شقة",
@@ -352,7 +352,7 @@ export const hotels = [
     summary:
       "شقق مخدومة في الرياض بخيارات غرفة وغرفتين وثلاث غرف للضيوف الذين يحتاجون إلى إقامة أطول ومساحة أكبر.",
     positioning:
-      "توفر شقق فيناس الرياض قاعدة مريحة في العاصمة لضيوف الأعمال والعائلات والإقامات الطويلة. تركز التجربة على المساحة والخصوصية والقدرة على الاستقرار لفترة أطول مع دعم فندقي عملي.",
+      "توفر ڤيناس للشقق المخدومة قاعدة مريحة في العاصمة لضيوف الأعمال والعائلات والإقامات الطويلة. تركز التجربة على المساحة والخصوصية والقدرة على الاستقرار لفترة أطول مع دعم فندقي عملي.",
     unitTypes: [
       {
         title: "شقق غرفة نوم",
@@ -400,7 +400,7 @@ export const hotels = [
   {
     slug: "tulip-alrawdah-serviced-apartments",
     bookingUrl: "https://letsbook.me/booking/tuliphotel",
-    title: "شقق توليب الروضة المخدومة",
+    title: "توليب الروضة للشقق المخدومة",
     city: "الرياض",
     type: "شقق مخدومة",
     units: "36 شقة",
@@ -408,7 +408,7 @@ export const hotels = [
     summary:
       "استوديوهات وشقق بغرفة وغرفتين في الرياض مع خيارات بإطلالة المدينة للإقامات العملية والعائلية.",
     positioning:
-      "تجمع شقق توليب الروضة بين مرونة الشقق المخدومة والخدمات اليومية التي يحتاجها الضيف. تناسب الوجهة الإقامات القصيرة والمتوسطة، خصوصا للضيوف الذين يبحثون عن خيارات متعددة للمساحة داخل الرياض.",
+      "تجمع توليب الروضة للشقق المخدومة بين مرونة الشقق المخدومة والخدمات اليومية التي يحتاجها الضيف. تناسب الوجهة الإقامات القصيرة والمتوسطة، خصوصا للضيوف الذين يبحثون عن خيارات متعددة للمساحة داخل الرياض.",
     unitTypes: [
       {
         title: "استوديوهات",
@@ -453,7 +453,7 @@ export const hotels = [
       "الخدمات اليومية",
     ],
     gallery: [jazanImage, jeddahImage, heroImage],
-    mapQuery: "Tulip Al Rawdah Riyadh Saudi Arabia",
+    mapQuery: "Tulip Alrawda Riyadh Saudi Arabia",
     source: "https://swissbluehotels.com/",
   },
 ];
@@ -547,7 +547,7 @@ export const roomClassifications = [
     ],
   },
   {
-    property: "سويس بلو للشقق المخدومة جازان",
+    property: "سويس بلو جازان",
     total: "55 وحدة",
     rows: [
       {
@@ -797,7 +797,7 @@ export const roomClassifications = [
     ],
   },
   {
-    property: "شقق فيناس الرياض المخدومة",
+    property: "ڤيناس للشقق المخدومة",
     total: "35 وحدة",
     rows: [
       {
@@ -883,7 +883,7 @@ export const roomClassifications = [
     ],
   },
   {
-    property: "شقق توليب الروضة المخدومة",
+    property: "توليب الروضة للشقق المخدومة",
     total: "37 وحدة",
     rows: [
       {

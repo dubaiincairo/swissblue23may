@@ -2066,19 +2066,19 @@ export const defaultSiteContent = {
             slug: "al-samer-serviced-apartments",
           },
           {
-            name: "سويس بلو للشقق المخدومة جازان",
+            name: "سويس بلو جازان",
             city: "جازان",
             units: "55 شقة",
             slug: "swiss-blue-jazan",
           },
           {
-            name: "شقق فيناس الرياض المخدومة",
+            name: "ڤيناس للشقق المخدومة",
             city: "الرياض",
             units: "35 شقة",
             slug: "vinas-riyadh-serviced-apartments",
           },
           {
-            name: "شقق توليب الروضة المخدومة",
+            name: "توليب الروضة للشقق المخدومة",
             city: "الرياض",
             units: "37 شقة",
             slug: "tulip-alrawdah-serviced-apartments",
@@ -3160,19 +3160,19 @@ export const defaultSiteContent = {
             slug: "al-samer-serviced-apartments",
           },
           {
-            name: "Swiss Blue Serviced Apartments Jazan",
+            name: "Swiss Blue Jazan",
             city: "Jazan",
             units: "55 apartments",
             slug: "swiss-blue-jazan",
           },
           {
-            name: "Vinas Riyadh Serviced Apartments",
+            name: "Vinas Serviced Apartments",
             city: "Riyadh",
             units: "35 apartments",
             slug: "vinas-riyadh-serviced-apartments",
           },
           {
-            name: "Tulip Al Rawdah Serviced Apartments",
+            name: "Tulip Alrawda Serviced Apartments",
             city: "Riyadh",
             units: "37 apartments",
             slug: "tulip-alrawdah-serviced-apartments",
@@ -4555,11 +4555,11 @@ function normalizeClientFacingContent(
 }
 
 const ARABIC_SERVICED_APARTMENT_REPLACEMENTS = [
-  ["سويس بلو للشقق الفندقية جازان", "سويس بلو للشقق المخدومة جازان"],
+  ["سويس بلو للشقق الفندقية جازان", "سويس بلو جازان"],
   ["شقق الزهراء الفندقية", "شقق الزهراء المخدومة"],
   ["شقق السامر الفندقية", "شقق السامر المخدومة"],
-  ["شقق فيناس الرياض الفندقية", "شقق فيناس الرياض المخدومة"],
-  ["شقق توليب الروضة الفندقية", "شقق توليب الروضة المخدومة"],
+  ["شقق فيناس الرياض الفندقية", "ڤيناس للشقق المخدومة"],
+  ["شقق توليب الروضة الفندقية", "توليب الروضة للشقق المخدومة"],
   ["الشقة الفندقية", "الشقة المخدومة"],
   ["شقق فندقية", "شقق مخدومة"],
   ["شقة فندقية", "شقة مخدومة"],

@@ -42,8 +42,8 @@ const PROPERTY_ALIASES_BY_SLUG: Record<string, string[]> = {
   "swiss-blue-jazan": ["swiss blue jazan", "jazan", "jizan", "سويس بلو جازان", "جازان"],
   "al-zahraa-serviced-apartments": ["al zahraa", "zahraa", "الزهراء", "زهراء"],
   "al-samer-serviced-apartments": ["al samer", "samer", "السامر", "سامر"],
-  "vinas-riyadh-serviced-apartments": ["vinas", "vinas riyadh", "فيناس", "فيناس الرياض"],
-  "tulip-alrawdah-serviced-apartments": ["tulip", "alrawdah", "al rawdah", "توليب", "الروضه", "الروضة"],
+  "vinas-riyadh-serviced-apartments": ["vinas", "vinas riyadh", "ڤيناس", "فيناس", "فيناس الرياض"],
+  "tulip-alrawdah-serviced-apartments": ["tulip", "alrawda", "alrawdah", "al rawdah", "توليب", "الروضه", "الروضة"],
 };
 
 function cleanText(value: string) {
