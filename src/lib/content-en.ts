@@ -190,7 +190,7 @@ export const hotelsEn = [
   {
     slug: "swiss-blue-jazan",
     bookingUrl: "",
-    title: "Swiss Blue Apart-Hotel Jazan",
+    title: "Swiss Blue Jazan",
     city: "Jazan",
     type: "Apart-hotel",
     units: "55 serviced apartments",
@@ -328,7 +328,7 @@ export const hotelsEn = [
   {
     slug: "vinas-riyadh-serviced-apartments",
     bookingUrl: "https://letsbook.me/booking/vinashotel",
-    title: "Vinas Riyadh Serviced Apartments",
+    title: "Vinas Serviced Apartments",
     city: "Riyadh",
     type: "Serviced apartments",
     units: "35 apartments",
@@ -336,7 +336,7 @@ export const hotelsEn = [
     summary:
       "Riyadh serviced apartments with one-, two-, and three-bedroom options for longer stays and larger groups.",
     positioning:
-      "Vinas Riyadh provides a comfortable capital-city base for business guests, families, and long-stay needs. The experience focuses on space, privacy, and the ability to settle in longer with practical hotel support.",
+      "Vinas provides a comfortable capital-city base for business guests, families, and long-stay needs. The experience focuses on space, privacy, and the ability to settle in longer with practical hotel support.",
     unitTypes: [
       {
         title: "One-Bedroom Apartments",
@@ -382,7 +382,7 @@ export const hotelsEn = [
   {
     slug: "tulip-alrawdah-serviced-apartments",
     bookingUrl: "https://letsbook.me/booking/tuliphotel",
-    title: "Tulip Alrawdah Serviced Apartments",
+    title: "Tulip Alrawda Serviced Apartments",
     city: "Riyadh",
     type: "Apart-hotel",
     units: "36 apartments",
@@ -390,7 +390,7 @@ export const hotelsEn = [
     summary:
       "Studios, one-bedroom, and two-bedroom apartments in Riyadh with selected city-view options for practical family and business stays.",
     positioning:
-      "Tulip Alrawdah combines serviced-apartment flexibility with the daily support guests expect. It suits short and medium stays, especially for guests who need multiple layout choices in Riyadh.",
+      "Tulip Alrawda combines serviced-apartment flexibility with the daily support guests expect. It suits short and medium stays, especially for guests who need multiple layout choices in Riyadh.",
     unitTypes: [
       {
         title: "Studios",
@@ -430,7 +430,7 @@ export const hotelsEn = [
       "Daily services",
     ],
     gallery: [jazanImage, jeddahImage, heroImage],
-    mapQuery: "Tulip Al Rawdah Riyadh Saudi Arabia",
+    mapQuery: "Tulip Alrawda Riyadh Saudi Arabia",
     source: "https://swissbluehotels.com/",
   },
 ];
@@ -749,7 +749,7 @@ export const roomClassificationsEn = [
     ],
   },
   {
-    property: "Swiss Blue Apart-Hotel Jazan",
+    property: "Swiss Blue Jazan",
     total: "55 units",
     rows: [
       {
@@ -999,7 +999,7 @@ export const roomClassificationsEn = [
     ],
   },
   {
-    property: "Vinas Riyadh Serviced Apartments",
+    property: "Vinas Serviced Apartments",
     total: "35 units",
     rows: [
       {
@@ -1085,7 +1085,7 @@ export const roomClassificationsEn = [
     ],
   },
   {
-    property: "Tulip Alrawdah Serviced Apartments",
+    property: "Tulip Alrawda Serviced Apartments",
     total: "36 units",
     rows: [
       {
