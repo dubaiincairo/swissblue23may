@@ -85,7 +85,6 @@ export const footerSectionsEn = [
       { label: "Dining Experience", href: "/en/dining" },
       { label: "Corporate Deals", href: "/en/corporate-deals" },
       { label: "Group Bookings", href: "/en/group-bookings" },
-      { label: "FAQ", href: "/en/faq" },
     ],
   },
   {
@@ -93,6 +92,7 @@ export const footerSectionsEn = [
     links: [
       { label: "About Us", href: "/en/about" },
       { label: "Contact Us", href: "/en/contact" },
+      { label: "FAQ", href: "/en/faq" },
       { label: "Hotel Policy", href: "/en/policy" },
     ],
   },

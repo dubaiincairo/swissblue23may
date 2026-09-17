@@ -96,7 +96,6 @@ export const footerSections = [
       { label: "تجربة الطعام", href: "/dining" },
       { label: "تعاقدات الشركات", href: "/corporate-deals" },
       { label: "حجوزات المجموعات", href: "/group-bookings" },
-      { label: "الأسئلة الشائعة", href: "/faq" },
     ],
   },
   {
@@ -104,6 +103,7 @@ export const footerSections = [
     links: [
       { label: "من نحن؟", href: "/about" },
       { label: "تواصل معنا", href: "/contact" },
+      { label: "الأسئلة الشائعة", href: "/faq" },
       { label: "سياسة الفنادق", href: "/policy" },
     ],
   },
