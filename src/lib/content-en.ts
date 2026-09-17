@@ -94,7 +94,6 @@ export const footerSectionsEn = [
       { label: "About Us", href: "/en/about" },
       { label: "Contact Us", href: "/en/contact" },
       { label: "Hotel Policy", href: "/en/policy" },
-      { label: "Direct Booking", href: BOOKING_URL },
     ],
   },
 ];

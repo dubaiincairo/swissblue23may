@@ -105,7 +105,6 @@ export const footerSections = [
       { label: "من نحن؟", href: "/about" },
       { label: "تواصل معنا", href: "/contact" },
       { label: "سياسة الفنادق", href: "/policy" },
-      { label: "الحجز المباشر", href: BOOKING_URL },
     ],
   },
 ];
