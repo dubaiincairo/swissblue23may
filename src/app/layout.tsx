@@ -152,19 +152,46 @@ export default async function RootLayout({
   const currentSeo = locale === "ar" ? ar.seo : en.seo;
   const otherSeo = locale === "ar" ? en.seo : ar.seo;
   const analytics = currentSeo.analytics ?? otherSeo.analytics;
+  const gtmId =
+    analytics?.googleTagManagerId?.trim() ||
+    process.env.NEXT_PUBLIC_GTM_CONTAINER_ID?.trim() ||
+    "GTM-TXF4KBPZ";
   return (
     <html
       lang={locale}
       dir={dir}
       className={`${arabicSans.variable} ${latinSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        {!isAdmin && gtmId ? (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${gtmId}');`,
+            }}
+          />
+        ) : null}
+      </head>
       <body className="min-h-full flex flex-col">
+        {!isAdmin && gtmId ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        ) : null}
         <LiveContentRefresh />
         <NavScrollState />
         <ScrollObserver />
         {!isAdmin ? (
           <Ga4Analytics
-            containerId={analytics?.googleTagManagerId}
+            containerId={gtmId}
             measurementId={
               analytics?.ga4MeasurementId ||
               process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID
