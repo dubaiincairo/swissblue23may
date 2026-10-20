@@ -47,31 +47,46 @@ export default function Ga4Analytics({
   useEffect(() => {
     if (!enabled) return;
 
+    if (typeof window !== "undefined") {
+      const w = window as unknown as { dataLayer?: Array<Record<string, unknown>> };
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({
+        event: "sb_cookie_consent_accepted",
+      });
+    }
+
     function trackBookingLink(event: MouseEvent) {
       const anchor = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[href]");
       if (!anchor || !anchor.href.includes("letsbook.me/booking/")) return;
-      window.gtag?.("event", "booking_cta_click", {
-        page_path: window.location.pathname,
-        placement: "booking_link",
-      });
+
+      if (typeof window !== "undefined") {
+        const w = window as unknown as {
+          dataLayer?: Array<Record<string, unknown>>;
+          gtag?: (command: string, eventName: string, params: Record<string, unknown>) => void;
+        };
+        w.dataLayer = w.dataLayer || [];
+        w.dataLayer.push({
+          event: "booking_cta_click",
+          page_path: window.location.pathname,
+          placement: "booking_link",
+        });
+        w.gtag?.("event", "booking_cta_click", {
+          page_path: window.location.pathname,
+          placement: "booking_link",
+        });
+      }
     }
 
     document.addEventListener("click", trackBookingLink);
     return () => document.removeEventListener("click", trackBookingLink);
   }, [enabled]);
 
-  if ((!ga4Id && !gtmId) || !enabled) return null;
-
-  // GTM owns all downstream tags when configured, avoiding a duplicate GA4 page view.
+  // When GTM is configured, the container snippet is rendered in the root layout <head> and <body>.
   if (gtmId) {
-    return (
-      <>
-        <Script id="swiss-blue-gtm" strategy="afterInteractive">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
-        </Script>
-      </>
-    );
+    return null;
   }
+
+  if (!ga4Id || !enabled) return null;
 
   return (
     <>

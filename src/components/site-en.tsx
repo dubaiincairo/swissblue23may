@@ -116,7 +116,11 @@ async function SiteFooterEnContent() {
   const hideRoomsSuites = isSectionHidden(hiddenSections, "roomsSuitesPage");
 
   const filterLinks = (links: { href: string; label: string }[]) =>
-    links.filter((item) => !(hideRoomsSuites && item.href.includes("rooms-suites")));
+    links.filter(
+      (item) =>
+        !(hideRoomsSuites && item.href.includes("rooms-suites")) &&
+        !item.href.includes("/booking/yanoljacloudsolution"),
+    );
 
   const footerSections = en.footerSections
     .map((section) => ({
