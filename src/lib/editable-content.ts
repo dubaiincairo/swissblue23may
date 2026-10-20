@@ -1766,7 +1766,7 @@ export const defaultSiteContent = {
       themeColor: "#2b6fe8",
       siteUrl: "https://swissblue.sa",
       analytics: {
-        googleTagManagerId: "",
+        googleTagManagerId: "GTM-TXF4KBPZ",
         ga4MeasurementId: "",
         ga4PropertyId: "",
         requireCookieConsent: true,
@@ -2859,7 +2859,7 @@ export const defaultSiteContent = {
       themeColor: "#2b6fe8",
       siteUrl: "https://swissblue.sa",
       analytics: {
-        googleTagManagerId: "",
+        googleTagManagerId: "GTM-TXF4KBPZ",
         ga4MeasurementId: "",
         ga4PropertyId: "",
         requireCookieConsent: true,
