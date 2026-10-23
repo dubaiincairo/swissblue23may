@@ -58,6 +58,8 @@ export default function Ga4Analytics({
     function trackBookingLink(event: MouseEvent) {
       const anchor = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[href]");
       if (!anchor || !anchor.href.includes("letsbook.me/booking/")) return;
+      // Links that send their own richer booking_cta_click opt out to avoid double counting.
+      if (anchor.dataset.analyticsTracked) return;
 
       if (typeof window !== "undefined") {
         const w = window as unknown as {
