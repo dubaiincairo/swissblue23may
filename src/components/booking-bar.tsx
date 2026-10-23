@@ -305,10 +305,12 @@ export default function BookingBar({
     trackAnalyticsEvent("property_selected", { locale, property_slug: nextSlug });
   }
 
-  function search() {
+  const bookingUrl = properties.find((property) => property.slug === slug)?.bookingUrl?.trim() || BOOKING_URL;
+
+  // A real link (not a scripted redirect) lets the Google tag append its _gl
+  // cross-domain parameter, so the letsbook.me session stays tied to the ad click.
+  function trackSearch() {
     trackAnalyticsEvent("booking_cta_click", { locale, property_slug: slug, placement: "booking_bar" });
-    const bookingUrl = properties.find((property) => property.slug === slug)?.bookingUrl?.trim();
-    window.location.assign(bookingUrl || BOOKING_URL);
   }
 
   return (
@@ -334,10 +336,11 @@ export default function BookingBar({
         />
       </div>
 
-      <button
-        type="button"
+      <a
+        href={bookingUrl}
         className="btn btn-primary booking-search min-h-[54px] justify-center"
-        onClick={search}
+        data-analytics-tracked="booking_bar"
+        onClick={trackSearch}
       >
         <span>{bookNowLabel}</span>
         <svg
@@ -353,7 +356,7 @@ export default function BookingBar({
         >
           <path d="M5 12h14M13 6l6 6-6 6" />
         </svg>
-      </button>
+      </a>
 
       <div
         className="booking-assurance"
