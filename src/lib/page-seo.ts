@@ -31,6 +31,7 @@ export const PAGE_NAMES: Record<string, { en: string; ar: string }> = {
   contact: { en: "Contact Us", ar: "اتصل بنا" },
   faq: { en: "FAQ", ar: "الأسئلة الشائعة" },
   policy: { en: "Hotel Policy", ar: "سياسة الفندق" },
+  "privacy-policy": { en: "Privacy Policy", ar: "سياسة الخصوصية" },
   careers: { en: "Careers", ar: "الوظائف" },
   "social-responsibility": { en: "Social Responsibility", ar: "المسؤولية الاجتماعية" },
   "central-reservation": { en: "Central Reservation", ar: "الحجز المركزي" },
