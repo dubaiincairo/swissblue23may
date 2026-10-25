@@ -12222,3 +12222,37 @@ html[dir="rtl"] .sb-ai-chat-header {
     justify-content: space-between;
   }
 }
+
+/* Floating WhatsApp button: bottom-start corner, so it never overlaps the AI chat
+   launcher (.sb-ai-chat), which sits at bottom-end. Same z-index and bottom offset. */
+.sb-wa-button {
+  align-items: center;
+  background: #25d366;
+  border-radius: 50%;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  box-shadow: 0 12px 26px rgba(37, 211, 102, 0.32);
+  color: #fff;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  left: 20px;
+  position: fixed;
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  width: 48px;
+  z-index: 90;
+}
+html[dir="rtl"] .sb-wa-button {
+  left: auto;
+  right: 20px;
+}
+.sb-wa-button:hover,
+.sb-wa-button:focus-visible {
+  background: #1ebe5d;
+  box-shadow: 0 16px 32px rgba(37, 211, 102, 0.4);
+  transform: translateY(-2px);
+}
+.sb-wa-button svg {
+  fill: currentColor;
+  height: 26px;
+  width: 26px;
+}
