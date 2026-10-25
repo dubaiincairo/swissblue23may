@@ -47,7 +47,7 @@ export default function CookieBanner({ copy }: { copy: { ar: CookieCopy; en: Coo
   const isAdmin = isAdminPath(pathname);
   const locale = pathname?.startsWith("/en") ? "en" : "ar";
   const t = copy[locale];
-  const policyHref = locale === "en" ? "/en/policy" : "/policy";
+  const policyHref = locale === "en" ? "/en/privacy-policy" : "/privacy-policy";
   const consent = useSyncExternalStore(
     subscribeToConsent,
     getConsentSnapshot,
