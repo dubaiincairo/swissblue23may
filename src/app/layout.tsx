@@ -3,6 +3,7 @@ import { cache } from "react";
 import { Geist_Mono, Inter, Noto_Kufi_Arabic } from "next/font/google";
 import { headers } from "next/headers";
 import AiChatWidget from "@/components/ai-chat-widget";
+import ClickIdForwarder from "@/components/click-id-forwarder";
 import CookieBanner from "@/components/cookie-banner";
 import LiveContentRefresh from "@/components/live-content-refresh";
 import NavScrollState from "@/components/nav-scroll-state";
@@ -189,6 +190,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <LiveContentRefresh />
         <NavScrollState />
         <ScrollObserver />
+        {!isAdmin ? <ClickIdForwarder /> : null}
         {!isAdmin ? (
           <Ga4Analytics
             containerId={gtmId}
