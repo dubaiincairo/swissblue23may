@@ -10,6 +10,7 @@ import NavScrollState from "@/components/nav-scroll-state";
 import PromotionalPopup from "@/components/promotional-popup";
 import ScrollObserver from "@/components/scroll-observer";
 import Ga4Analytics from "@/components/ga4-analytics";
+import WhatsAppButton from "@/components/whatsapp-button";
 import { getEditableContent } from "@/lib/editable-content";
 import { defaultPageTitle, pageKeyFromPath } from "@/lib/page-seo";
 import "./globals.css";
@@ -207,6 +208,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             settings={{ ar: ar.promotionalPopups, en: en.promotionalPopups }}
           />
         ) : null}
+        {!isAdmin ? <WhatsAppButton locale={locale} /> : null}
         <AiChatWidget settings={{ ar: ar.chatAssistant, en: en.chatAssistant }} />
         <CookieBanner copy={{ ar: ar.ui.cookie, en: en.ui.cookie }} />
       </body>
