@@ -54,3 +54,16 @@ patterns, and booking flow** — but **KEEP the Swiss Blue blue brand** (`--prim
 reference component, translate its orange accents to the Swiss Blue blue (and keep green for
 savings/offers + red for warnings as functional accents only). The reference governs
 structure and interaction patterns; Swiss Blue governs color/brand.
+
+# 📈 Google Ads, tracking & Claude memory (added 26 Oct 2026)
+
+- The Google Ads / GTM / tracking work for Swiss Blue is run from the sister repo
+  `dubaiincairo/swissbluechatwoot`. Its `CLAUDE.md` holds the standing approvals and the current state;
+  its `handoff-swissblue-chatwoot.md` is the full source of truth. Read them before any tracking or ads task.
+- In this repo the tracking pieces are: `src/lib/click-id.ts` + `src/components/click-id-forwarder.tsx`
+  (carry `gclid`/UTM to letsbook.me as a URL hash), `src/components/whatsapp-button.tsx` (floating WhatsApp
+  button, bottom-start, must not overlap the chatbot icon at bottom-end), both mounted in `src/app/layout.tsx`.
+- GTM container GTM-TXF4KBPZ and GA4 G-GDX46G5J8F are injected on swissblue.sa and on the letsbook.me booking
+  pages; WhatsApp/phone-click and booking conversions fire from GTM to all five Google Ads accounts.
+- Standing approvals: merge `claude/*` into `staging` without asking; `main` only when the user says
+  "deploy to production". Never print or commit secrets.
