@@ -101,7 +101,7 @@ export default async function HotelDetailPageEn({
               </div>
             </div>
           </div>
-          <a className="btn btn-primary mt-8" href={BOOKING_URL}>
+          <a className="btn btn-primary mt-8" href={hotel.bookingUrl || BOOKING_URL}>
             Check availability
           </a>
         </div>
@@ -217,6 +217,7 @@ export default async function HotelDetailPageEn({
       )}
 
       <CtaBandEn
+        href={hotel.bookingUrl || BOOKING_URL}
         eyebrow={en.closingCtas.eyebrow}
         title={en.closingCtas.hotelDetail.titleTemplate.replace(
           "{hotel}",

@@ -8,7 +8,7 @@ import { SocialLinks, mergeSocial } from "@/components/social-links";
 import { BOOKING_URL, heroImage, jazanImage, jeddahImage } from "@/lib/content";
 import { getEditableContent, isSectionHidden, usableLogo } from "@/lib/editable-content";
 
-function resolveMediaImage(
+export function resolveMediaImage(
   image: string,
   media: Awaited<ReturnType<typeof getEditableContent>>["ar"]["media"],
 ) {
@@ -288,12 +288,14 @@ export function CtaBand({
   eyebrow = "احجز مباشرة",
   title = "جاهزون لاستقبالكم",
   text = "قارن بين الغرف والأجنحة والشقق المخدومة ضمن تجربة حجز واضحة تليق بضيوف الضيافة الحديثة.",
+  href = BOOKING_URL,
   cta = "احجز الآن",
 }: {
   eyebrow?: string;
   title?: string;
   text?: string;
   cta?: string;
+  href?: string;
 }) {
   return (
     <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -306,7 +308,7 @@ export function CtaBand({
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
             {rich(text)}
           </p>
-          <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
+          <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={href}>
             {rich(cta)}
           </a>
         </div>
