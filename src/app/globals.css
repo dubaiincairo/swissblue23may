@@ -12342,7 +12342,7 @@ html[dir="rtl"] .sb-wa-button {
   max-width: 80rem;
 }
 .stay-footer-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.stay-footer-actions .btn { min-height: 44px; }
+.stay-footer-actions .btn { gap: 6px; min-height: 44px; }
 .stay-footer .footer-social { margin: 0; }
 .stay-footer-copy {
   color: var(--text-secondary);
