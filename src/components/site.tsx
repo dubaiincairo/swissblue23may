@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { rich } from "@/components/rich-text";
+import LanguageToggle from "@/components/language-toggle";
 import MobileNav from "@/components/mobile-nav";
 import NavBookingMenu from "@/components/nav-booking-menu";
 import PaymentMethods from "@/components/payment-methods";
@@ -120,34 +121,7 @@ export async function SiteHeader() {
   );
 }
 
-export function LanguageToggle({
-  current,
-}: {
-  current: "ar" | "en";
-}) {
-  return (
-    <div
-      className="language-toggle"
-      aria-label="تبديل اللغة"
-      dir="ltr"
-    >
-      <Link
-        className={current === "ar" ? "active" : ""}
-        href="/ar"
-        aria-current={current === "ar" ? "page" : undefined}
-      >
-        AR
-      </Link>
-      <Link
-        className={current === "en" ? "active" : ""}
-        href="/en"
-        aria-current={current === "en" ? "page" : undefined}
-      >
-        EN
-      </Link>
-    </div>
-  );
-}
+export { LanguageToggle };
 
 export function SiteFooter() {
   return <SiteFooterContent />;
