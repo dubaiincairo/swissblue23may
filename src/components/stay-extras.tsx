@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { rich } from "@/components/rich-text";
 import { SocialLinks, mergeSocial } from "@/components/social-links";
-import { getEditableContent, usableLogo } from "@/lib/editable-content";
-import { whatsappNumber } from "@/lib/whatsapp-numbers";
+import PaymentMethods from "@/components/payment-methods";
+import { getEditableContent, isSectionHidden, usableLogo } from "@/lib/editable-content";
 
 // Shared pieces of the /stay ad landing pages: fixed amenity list, hotline banner and compact footer.
 
@@ -33,33 +33,62 @@ export function StayHotlineBanner({ locale }: { locale: "ar" | "en" }) {
   );
 }
 
+function localHref(href: string, isAr: boolean) {
+  if (!isAr || href.startsWith("/ar") || href.startsWith("/en") || href.startsWith("http")) return href;
+  return href === "/" ? "/ar" : `/ar${href}`;
+}
+
+// Same content as the site footer (brand, link columns, payments, copyright) in a tighter layout.
+// Phone and WhatsApp are left out on purpose: the page already has the hotline button and the WhatsApp float.
 export async function StayFooter({ locale }: { locale: "ar" | "en" }) {
-  const { ar, en } = await getEditableContent();
+  const { ar, en, hiddenSections } = await getEditableContent();
   const isAr = locale === "ar";
   const content = isAr ? ar : en;
   const logo = isAr
     ? usableLogo(ar.media.arabicLogo) || usableLogo(en.media.logo)
     : usableLogo(en.media.logo) || usableLogo(ar.media.arabicLogo);
   const social = isAr ? mergeSocial(ar.social, en.social) : mergeSocial(en.social, ar.social);
-  const wa = whatsappNumber();
+  const hideRoomsSuites = isSectionHidden(hiddenSections, "roomsSuitesPage");
+  const sections = content.footerSections
+    .map((section) => ({
+      ...section,
+      links: section.links.filter(
+        (item) =>
+          !(hideRoomsSuites && item.href.includes("rooms-suites")) &&
+          !item.href.includes("/booking/yanoljacloudsolution"),
+      ),
+    }))
+    .filter((section) => section.links.length > 0);
 
   return (
     <footer className="stay-footer" aria-label={isAr ? "تذييل الموقع" : "Site footer"}>
-      <div className="stay-footer-row">
-        <Link href={isAr ? "/ar" : "/en"} aria-label="Swiss Blue">
-          {logo ? <Image className="h-10 w-auto" src={logo} alt="Swiss Blue" width={160} height={64} /> : null}
-        </Link>
-        <div className="stay-footer-actions">
-          <a className="btn btn-secondary" href={`tel:${HOTLINE}`}>
-            {isAr ? "اتصل" : "Call"} <span dir="ltr">{HOTLINE}</span>
-          </a>
-          <a className="btn btn-secondary" href={`https://wa.me/${wa}`} target="_blank" rel="noopener">
-            {isAr ? "واتساب" : "WhatsApp"}
-          </a>
+      <div className="stay-footer-inner">
+        <div className="stay-footer-brand">
+          <Link href={isAr ? "/ar" : "/en"} aria-label="Swiss Blue">
+            {logo ? <Image className="h-10 w-auto" src={logo} alt="Swiss Blue" width={160} height={64} /> : null}
+          </Link>
+          <p className="stay-footer-desc">{rich(content.footerMeta.description)}</p>
+          <SocialLinks social={social} />
         </div>
-        <SocialLinks social={social} />
+        <nav className="stay-footer-links" aria-label={isAr ? "روابط التذييل" : "Footer links"}>
+          {sections.map((section) => (
+            <div key={section.title}>
+              <h3 className="stay-footer-title">{rich(section.title)}</h3>
+              <ul>
+                {section.links.map((item) => (
+                  <li key={`${section.title}-${item.href}`}>
+                    <Link href={localHref(item.href, isAr)}>{rich(item.label)}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
       </div>
-      <p className="stay-footer-copy">{rich(content.footerMeta.copyright)}</p>
+      <div className="stay-footer-bottom">
+        <PaymentMethods locale={locale} label={content.ui.payments.label} />
+        <p className="stay-footer-copy">{rich(content.footerMeta.copyright)}</p>
+      </div>
     </footer>
   );
 }
