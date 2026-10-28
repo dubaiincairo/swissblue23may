@@ -17,6 +17,4 @@ export function findAdLandingBranch(slug: string): AdLandingBranch | undefined {
   return AD_LANDING_BRANCHES.find((branch) => branch.slug === slug);
 }
 
-export const HOTLINE_DISPLAY = "920019474";
-export const HOTLINE_TEL = "tel:920019474";
 export const DIRECT_BOOKING_DISCOUNT = "10%";
