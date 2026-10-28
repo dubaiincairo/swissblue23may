@@ -1,14 +1,9 @@
 // Floating WhatsApp button (bottom-start corner, opposite the AI chat launcher which
-// sits bottom-end), linking to the group's main WhatsApp number. Clicks are picked up
+// sits bottom-end), linking to the group's unified WhatsApp number (src/lib/whatsapp-numbers.ts). Clicks are picked up
 // by Tag Manager's WhatsApp link-click trigger (GA4 whatsapp_click + Google Ads
 // "WhatsApp click (website)" conversions), so no tracking code is needed here.
 
-const DEFAULT_WHATSAPP_NUMBER = "966507074949"; // +966 50 707 4949, Swiss Blue main number
-
-function whatsappNumber() {
-  const raw = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
-  return raw && raw.length >= 9 ? raw : DEFAULT_WHATSAPP_NUMBER;
-}
+import { whatsappNumber } from "@/lib/whatsapp-numbers";
 
 export default function WhatsAppButton({ locale }: { locale: "ar" | "en" }) {
   const isArabic = locale === "ar";
