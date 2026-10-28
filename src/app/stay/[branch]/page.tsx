@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import BookingBar from "@/components/booking-bar";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import GalleryPreview from "@/components/gallery-preview";
+import { STAY_AMENITIES, StayFooter, StayHotlineBanner } from "@/components/stay-extras";
 import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { rich } from "@/components/rich-text";
 import { PageShell, resolveMediaImage } from "@/components/site";
@@ -12,7 +13,7 @@ import {
   DIRECT_BOOKING_DISCOUNT,
   findAdLandingBranch,
 } from "@/lib/ad-landing-branches";
-import { getEditableContent, normalizePropertyAmenities } from "@/lib/editable-content";
+import { getEditableContent } from "@/lib/editable-content";
 import { isComingSoonProperty } from "@/lib/property-availability";
 
 // Google Ads landing page for one branch: the homepage hero and booking widget (same markup and
@@ -75,7 +76,7 @@ export default async function StayLandingPage({
     }));
 
   return (
-    <PageShell>
+    <PageShell footer={<StayFooter locale="ar" />}>
       <section id="top" className="hotel-hero home-hero relative">
         <HeroMediaCarousel
           fallbackImage={resolveMediaImage(hotel.image, ar.media)}
@@ -87,7 +88,12 @@ export default async function StayLandingPage({
         <div className="home-hero-shell">
           <div className="home-hero-layout">
             <div className="home-hero-copy text-white">
-              <span className="hero-kicker reveal-slide-down">{rich(`${hotel.city} | ${hotel.type}`)}</span>
+              <div className="stay-kicker-row reveal-slide-down">
+                <span className="hero-kicker">{rich(`${hotel.city} | ${hotel.type}`)}</span>
+                <Link className="hero-kicker" href={`/en/stay/${branch.slug}`} hrefLang="en" lang="en">
+                  English
+                </Link>
+              </div>
               <h1 className="t-hero reveal-slide-up">{rich(hotel.title)}</h1>
               <p
                 className="home-hero-summary reveal-slide-up"
@@ -104,9 +110,6 @@ export default async function StayLandingPage({
                 </a>
                 <Link className="btn btn-glass" href="#photos">
                   ألبوم الصور
-                </Link>
-                <Link className="btn btn-glass" href={`/en/stay/${branch.slug}`} hrefLang="en" lang="en">
-                  English
                 </Link>
               </div>
             </div>
@@ -136,11 +139,13 @@ export default async function StayLandingPage({
           </h2>
         </div>
         <FeatureChipGrid
-          items={normalizePropertyAmenities(hotel.slug, hotel.amenities, "ar")}
+          items={STAY_AMENITIES.ar}
           variant="check"
           columns={2}
         />
       </section>
+
+      <StayHotlineBanner locale="ar" />
     </PageShell>
   );
 }
