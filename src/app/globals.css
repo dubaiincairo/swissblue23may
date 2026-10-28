@@ -12406,3 +12406,4 @@ html[dir="rtl"] .sb-wa-button {
 @media (max-width: 380px) {
   .stay-amenities .feature-chip-label { white-space: normal; word-break: keep-all; overflow-wrap: normal; }
 }
+.stay-footer-numbers { display: flex; flex-wrap: wrap; font-size: 13px; font-weight: 700; gap: 4px 16px; margin: 0; color: var(--text-primary); }
