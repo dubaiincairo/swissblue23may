@@ -12286,3 +12286,70 @@ html[dir="rtl"] .sb-wa-button {
   flex-wrap: wrap;
   gap: 8px;
 }
+
+/* /stay ad landing pages: hotline banner + compact footer */
+.stay-hotline {
+  align-items: center;
+  background: linear-gradient(135deg, var(--bluehost-deep), var(--primary));
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(18, 70, 168, 0.22);
+  color: #fff;
+  display: flex;
+  gap: 16px;
+  padding: 18px 20px;
+  text-decoration: none;
+}
+.stay-hotline-icon {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 52px;
+  justify-content: center;
+  width: 52px;
+}
+.stay-hotline-icon svg { height: 26px; width: 26px; }
+.stay-hotline-copy { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.stay-hotline-label { font-size: 14px; font-weight: 700; opacity: 0.85; }
+.stay-hotline-number { font-size: clamp(24px, 6vw, 34px); font-weight: 800; letter-spacing: 0.02em; text-align: start; }
+.stay-hotline-cta {
+  background: #fff;
+  border-radius: 999px;
+  color: var(--primary);
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 10px 18px;
+}
+@media (max-width: 420px) {
+  .stay-hotline { gap: 12px; padding: 14px; }
+  .stay-hotline-icon { height: 44px; width: 44px; }
+  .stay-hotline-cta { display: none; }
+}
+.stay-footer {
+  background: #fff;
+  border-top: 1px solid var(--border);
+  padding: 20px 16px 96px;
+}
+.stay-footer-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 80rem;
+}
+.stay-footer-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.stay-footer-actions .btn { min-height: 44px; }
+.stay-footer .footer-social { margin: 0; }
+.stay-footer-copy {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  margin: 14px auto 0;
+  max-width: 80rem;
+  text-align: center;
+}
+@media (min-width: 768px) { .stay-footer { padding-bottom: 24px; } }
