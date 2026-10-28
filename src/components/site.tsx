@@ -317,12 +317,18 @@ export function CtaBand({
   );
 }
 
-export function PageShell({ children }: { children: React.ReactNode }) {
+export function PageShell({
+  children,
+  footer,
+}: {
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+}) {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]" dir="rtl">
       <SiteHeader />
       {children}
-      <SiteFooter />
+      {footer ?? <SiteFooter />}
     </main>
   );
 }

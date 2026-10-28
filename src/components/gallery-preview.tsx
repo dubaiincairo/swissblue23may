@@ -9,9 +9,11 @@ type GalleryImage = { image: string; title: string; showHeadline?: boolean };
 // so long albums do not push the rest of the page far down on phones.
 export default function GalleryPreview({
   images,
+  locale = "ar",
   initial = 9,
 }: {
   images: GalleryImage[];
+  locale?: "ar" | "en";
   initial?: number;
 }) {
   const [showAll, setShowAll] = useState(false);
@@ -19,11 +21,11 @@ export default function GalleryPreview({
 
   return (
     <>
-      <PhotoGalleryLightbox images={shown} locale="ar" variant="property" />
+      <PhotoGalleryLightbox images={shown} locale={locale} variant="property" />
       {!showAll && images.length > initial ? (
         <div className="mt-6 flex justify-center">
           <button className="btn btn-secondary" type="button" onClick={() => setShowAll(true)}>
-            عرض كل الصور ({images.length})
+            {locale === "ar" ? "عرض كل الصور" : "Show all photos"} ({images.length})
           </button>
         </div>
       ) : null}

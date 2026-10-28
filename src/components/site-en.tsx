@@ -9,7 +9,7 @@ import PaymentMethods from "@/components/payment-methods";
 import { SocialLinks, mergeSocial } from "@/components/social-links";
 import { getEditableContent, isSectionHidden, usableLogo } from "@/lib/editable-content";
 
-function resolveMediaImage(
+export function resolveMediaImage(
   image: string,
   media: Awaited<ReturnType<typeof getEditableContent>>["en"]["media"],
 ) {
@@ -266,12 +266,18 @@ export function CtaBandEn({
   );
 }
 
-export function PageShellEn({ children }: { children: React.ReactNode }) {
+export function PageShellEn({
+  children,
+  footer,
+}: {
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+}) {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]" dir="ltr">
       <SiteHeaderEn />
       {children}
-      <SiteFooterEn />
+      {footer ?? <SiteFooterEn />}
     </main>
   );
 }
