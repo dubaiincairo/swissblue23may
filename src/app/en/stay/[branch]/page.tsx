@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import BookingBar from "@/components/booking-bar";
 import { FeatureChipGrid } from "@/components/feature-chip";
 import GalleryPreview from "@/components/gallery-preview";
-import { STAY_AMENITIES, StayFooter, StayHotlineBanner } from "@/components/stay-extras";
+import { stayAmenities, StayFooter, StayHotlineBanner } from "@/components/stay-extras";
 import HeroMediaCarousel from "@/components/hero-media-carousel";
 import { rich } from "@/components/rich-text";
 import { PageShellEn, resolveMediaImage } from "@/components/site-en";
@@ -13,7 +13,7 @@ import {
   DIRECT_BOOKING_DISCOUNT,
   findAdLandingBranch,
 } from "@/lib/ad-landing-branches";
-import { getEditableContent } from "@/lib/editable-content";
+import { getEditableContent, normalizePropertyAmenities } from "@/lib/editable-content";
 import { isComingSoonProperty } from "@/lib/property-availability";
 
 // English Google Ads landing page for one branch (Arabic: src/app/stay/[branch]): the homepage hero and booking widget (same markup and
@@ -139,7 +139,7 @@ export default async function StayLandingPageEn({
           </h2>
         </div>
         <FeatureChipGrid
-          items={STAY_AMENITIES.en}
+          items={stayAmenities(normalizePropertyAmenities(hotel.slug, hotel.amenities, "en"))}
           variant="check"
           columns={2}
           className="stay-amenities"

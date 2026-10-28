@@ -9,10 +9,45 @@ import { getEditableContent, isSectionHidden, usableLogo } from "@/lib/editable-
 
 export const HOTLINE = "920019474";
 
-export const STAY_AMENITIES = {
-  ar: ["واي فاي مجاني", "خدمة سيارات", "ميني بار", "استقبال 24/7", "مسبح داخلي", "نادي رياضي"],
-  en: ["Free Wi-Fi", "Car service", "Mini bar", "24/7 reception", "Indoor pool", "Fitness gym"],
-} as const;
+// Two-word card labels for the property amenities, keeping each branch's own list and order.
+const SHORT_LABELS: Record<string, string> = {
+  "إنترنت عالي السرعة": "واي فاي مجاني",
+  "خدمة سيارات الأجرة": "خدمة سيارات",
+  "قهوة وشاي وميني بار": "ميني بار",
+  "استقبال ودعم للضيوف": "استقبال 24/7",
+  "نادي رياضي مجهز": "نادي رياضي",
+  "مسبح داخلي في وجهة مختارة": "مسبح داخلي",
+  "خدمة تنظيف دورية": "خدمة تنظيف",
+  "دعم للحجوزات الطويلة": "إقامات طويلة",
+  "دعم للإقامة الشهرية": "إقامة شهرية",
+  "خيارات إقامة شهرية": "إقامة شهرية",
+  "خدمات مناسبة للشركات": "خدمات الشركات",
+  "High-speed Wi-Fi": "Free Wi-Fi",
+  "Taxi service": "Car service",
+  "Coffee, tea, and minibar": "Mini bar",
+  "Guest reception and support": "24/7 reception",
+  "Fully equipped gym": "Fitness gym",
+  "Indoor pool at selected property": "Indoor pool",
+  "Scheduled housekeeping": "Housekeeping",
+  "Long-stay booking support": "Long stays",
+  "Monthly-stay support": "Monthly stays",
+  "Monthly-stay options": "Monthly stays",
+  "Corporate-friendly services": "Corporate services",
+};
+
+// Dropped first when a list has an odd count, so the two-column grid stays even.
+const LEAST_IMPORTANT = ["قاعات اجتماعات", "Meeting rooms", "مواقف قريبة", "Nearby parking", "خزنة آمنة", "Safe locker"];
+
+export function stayAmenities(items: readonly string[]): string[] {
+  const short = items.map((item) => {
+    const match = item.match(/^(.*?)(\s*\((?:Soon|قريباً)\))?$/i);
+    const label = match?.[1] ?? item;
+    return (SHORT_LABELS[label] ?? label) + (match?.[2] ?? "");
+  });
+  if (short.length % 2 === 0) return short;
+  const drop = LEAST_IMPORTANT.map((label) => short.indexOf(label)).find((index) => index >= 0);
+  return short.filter((_, index) => index !== (drop ?? short.length - 1));
+}
 
 const PhoneIcon = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -83,6 +118,14 @@ export async function StayFooter({ locale }: { locale: "ar" | "en" }) {
               </ul>
             </div>
           ))}
+          <div>
+            <h3 className="stay-footer-title">{isAr ? "مدننا" : "Our cities"}</h3>
+            <ul className="stay-footer-cities">
+              {content.footerMeta.cityBadges.map((city) => (
+                <li key={city}>{rich(city)}</li>
+              ))}
+            </ul>
+          </div>
         </nav>
       </div>
       <div className="stay-footer-bottom">
