@@ -2593,14 +2593,14 @@ export const defaultSiteContent = {
         channels: [
           {
             title: "اتصل بنا",
-            value: "+966 59 597 9064",
-            href: "tel:+966595979064",
+            value: "920019474",
+            href: "tel:920019474",
             text: "أفضل خيار للحجز العاجل أو عندما ترغب في مقارنة أكثر من منشأة بسرعة مع مختص حجوزات.",
           },
           {
             title: "واتساب",
-            value: "+966 59 597 9064",
-            href: "https://wa.me/966595979064",
+            value: "+966 12 679 0008",
+            href: "https://wa.me/966126790008",
             text: "أرسل التواريخ وعدد الضيوف والمدينة المطلوبة، وسيصلك عرض واضح بالخيارات والأسعار.",
           },
           {
@@ -2731,11 +2731,11 @@ export const defaultSiteContent = {
         channels: [
           {
             title: "اتصل بنا",
-            text: "اتصل على +966 59 597 9064 في أي وقت أثناء إقامتك للأمور العاجلة، واطلب مدير الخدمة المناوب.",
+            text: "اتصل على الرقم الموحد 920019474 في أي وقت أثناء إقامتك للأمور العاجلة، واطلب مدير الخدمة المناوب.",
           },
           {
             title: "واتساب",
-            text: "راسلنا على واتساب +966 59 597 9064 مع رقم الحجز وصور إن لزم، وسنفتح لك تذكرة متابعة فوراً.",
+            text: "راسلنا على واتساب +966 12 679 0008 مع رقم الحجز وصور إن لزم، وسنفتح لك تذكرة متابعة فوراً.",
           },
           {
             title: "البريد الإلكتروني",
@@ -3688,14 +3688,14 @@ export const defaultSiteContent = {
         channels: [
           {
             title: "Call us",
-            value: "+966 59 597 9064",
-            href: "tel:+966595979064",
+            value: "920019474",
+            href: "tel:920019474",
             text: "Best for urgent bookings or when you want a specialist to compare more than one property quickly.",
           },
           {
             title: "WhatsApp",
-            value: "+966 59 597 9064",
-            href: "https://wa.me/966595979064",
+            value: "+966 12 679 0008",
+            href: "https://wa.me/966126790008",
             text: "Send dates, guest count, and preferred city. We will reply with clear options and rates in writing.",
           },
           {
@@ -3827,11 +3827,11 @@ export const defaultSiteContent = {
         channels: [
           {
             title: "Call us",
-            text: "Call +966 59 597 9064 any time during your stay for anything urgent, and ask for the duty service manager.",
+            text: "Call our hotline 920019474 any time during your stay for anything urgent, and ask for the duty service manager.",
           },
           {
             title: "WhatsApp",
-            text: "WhatsApp +966 59 597 9064 with your booking reference and photos if relevant — we'll open a tracked ticket right away.",
+            text: "WhatsApp +966 12 679 0008 with your booking reference and photos if relevant — we'll open a tracked ticket right away.",
           },
           {
             title: "Email",
