@@ -23,16 +23,13 @@ const PhoneIcon = (
 export function StayHotlineBanner({ locale }: { locale: "ar" | "en" }) {
   const ar = locale === "ar";
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-      <a className="stay-hotline reveal-scale-up" href={`tel:${HOTLINE}`}>
+    <div className="stay-hotline-wrap">
+      <a className="stay-hotline reveal-scale-up" href={`tel:${HOTLINE}`} aria-label={ar ? `الخط الساخن ${HOTLINE}` : `Hotline ${HOTLINE}`}>
         <span className="stay-hotline-icon">{PhoneIcon}</span>
-        <span className="stay-hotline-copy">
-          <span className="stay-hotline-label">{ar ? "الخط الساخن" : "Hotline"}</span>
-          <span className="stay-hotline-number" dir="ltr">{HOTLINE}</span>
-        </span>
-        <span className="stay-hotline-cta">{ar ? "اتصل الآن" : "Call now"}</span>
+        <span className="stay-hotline-label">{ar ? "الخط الساخن" : "Hotline"}</span>
+        <span className="stay-hotline-number" dir="ltr">{HOTLINE}</span>
       </a>
-    </section>
+    </div>
   );
 }
 
