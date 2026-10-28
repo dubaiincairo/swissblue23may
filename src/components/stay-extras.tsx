@@ -4,6 +4,7 @@ import { rich } from "@/components/rich-text";
 import { SocialLinks, mergeSocial } from "@/components/social-links";
 import PaymentMethods from "@/components/payment-methods";
 import { getEditableContent, isSectionHidden, usableLogo } from "@/lib/editable-content";
+import { whatsappNumber } from "@/lib/whatsapp-numbers";
 
 // Shared pieces of the /stay ad landing pages: fixed amenity list, hotline banner and compact footer.
 
@@ -68,6 +69,12 @@ export function StayHotlineBanner({ locale }: { locale: "ar" | "en" }) {
   );
 }
 
+/** 966126790008 -> +966 12 679 0008 */
+function formatWhatsapp(digits: string): string {
+  const m = digits.match(/^966(\d{2})(\d{3})(\d{4})$/);
+  return m ? `+966 ${m[1]} ${m[2]} ${m[3]}` : `+${digits}`;
+}
+
 function localHref(href: string, isAr: boolean) {
   if (!isAr || href.startsWith("/ar") || href.startsWith("/en") || href.startsWith("http")) return href;
   return href === "/" ? "/ar" : `/ar${href}`;
@@ -103,6 +110,11 @@ export async function StayFooter({ locale }: { locale: "ar" | "en" }) {
             {logo ? <Image className="h-10 w-auto" src={logo} alt="Swiss Blue" width={160} height={64} /> : null}
           </Link>
           <p className="stay-footer-desc">{rich(content.footerMeta.description)}</p>
+          {/* Numbers as plain text: Google verifies the ads' call and WhatsApp assets against the landing page text. */}
+          <p className="stay-footer-numbers">
+            <span>{isAr ? "الخط الساخن" : "Hotline"}: <span dir="ltr">{HOTLINE}</span></span>
+            <span>{isAr ? "واتساب" : "WhatsApp"}: <span dir="ltr">{formatWhatsapp(whatsappNumber())}</span></span>
+          </p>
           <SocialLinks social={social} />
         </div>
         <nav className="stay-footer-links" aria-label={isAr ? "روابط التذييل" : "Footer links"}>
