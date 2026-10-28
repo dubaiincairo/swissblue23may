@@ -241,12 +241,14 @@ export function CtaBandEn({
   eyebrow = "Book direct",
   title = "Find your next Swiss Blue stay.",
   text = "Compare rooms, suites, and serviced apartments with a clear booking journey built for modern hospitality guests.",
+  href = BOOKING_URL,
   cta = "Book now",
 }: {
   eyebrow?: string;
   title?: string;
   text?: string;
   cta?: string;
+  href?: string;
 }) {
   return (
     <section className="closing-cta mx-auto mb-12 max-w-7xl px-4 sm:px-6 lg:px-8" dir="ltr">
@@ -255,7 +257,7 @@ export function CtaBandEn({
           <span className="eyebrow text-white/72">{rich(eyebrow)}</span>
           <h2 className="t-h2 mt-4">{rich(title)}</h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">{rich(text)}</p>
-          <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={BOOKING_URL}>
+          <a className="btn btn-hero mt-8 bg-white text-[var(--primary)]" href={href}>
             {rich(cta)}
           </a>
         </div>
