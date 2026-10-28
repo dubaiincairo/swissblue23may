@@ -12256,3 +12256,33 @@ html[dir="rtl"] .sb-wa-button {
   height: 26px;
   width: 26px;
 }
+
+/* Mobile fixes (28 Oct 2026): the cookie banner sits above the floating WhatsApp button so its buttons stay
+   tappable, and on 320–360px phones the header logo shrinks so the menu button stays on screen. */
+.cookie-banner {
+  z-index: 95;
+}
+
+@media (max-width: 360px) {
+  .nav-logo {
+    max-width: 118px;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  .nav-logo-image {
+    height: 32px;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+}
+
+/* Ad landing pages (/stay, /en/stay): city label and language switch share one row. */
+.stay-kicker-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

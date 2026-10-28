@@ -87,7 +87,12 @@ export default async function StayLandingPageEn({
         <div className="home-hero-shell">
           <div className="home-hero-layout">
             <div className="home-hero-copy text-white">
-              <span className="hero-kicker reveal-slide-down">{rich(`${hotel.city} | ${hotel.type}`)}</span>
+              <div className="stay-kicker-row reveal-slide-down">
+                <span className="hero-kicker">{rich(`${hotel.city} | ${hotel.type}`)}</span>
+                <Link className="hero-kicker" href={`/stay/${branch.slug}`} hrefLang="ar" lang="ar">
+                  العربية
+                </Link>
+              </div>
               <h1 className="t-hero reveal-slide-up">{rich(hotel.title)}</h1>
               <p
                 className="home-hero-summary reveal-slide-up"
@@ -104,9 +109,6 @@ export default async function StayLandingPageEn({
                 </a>
                 <Link className="btn btn-glass" href="#photos">
                   Photo album
-                </Link>
-                <Link className="btn btn-glass" href={`/stay/${branch.slug}`} hrefLang="ar" lang="ar">
-                  العربية
                 </Link>
               </div>
             </div>
