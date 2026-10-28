@@ -142,6 +142,7 @@ export default async function StayLandingPage({
           items={STAY_AMENITIES.ar}
           variant="check"
           columns={2}
+          className="stay-amenities"
         />
       </section>
 
