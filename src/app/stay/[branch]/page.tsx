@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BookingBar from "@/components/booking-bar";
 import { FeatureChipGrid } from "@/components/feature-chip";
-import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
+import GalleryPreview from "@/components/gallery-preview";
 import PropertyMap from "@/components/property-map";
 import { rich } from "@/components/rich-text";
 import { PageShell, resolveMediaImage } from "@/components/site";
@@ -131,7 +131,7 @@ export default async function StayLandingPage({
           <p>صور حقيقية للغرف والشقق والمرافق. اضغط على أي صورة لتكبيرها.</p>
         </div>
         <div className="mt-8">
-          <PhotoGalleryLightbox images={galleryImages} locale="ar" variant="property" />
+          <GalleryPreview images={galleryImages} />
         </div>
       </section>
 
