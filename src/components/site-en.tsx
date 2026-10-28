@@ -9,7 +9,7 @@ import PaymentMethods from "@/components/payment-methods";
 import { SocialLinks, mergeSocial } from "@/components/social-links";
 import { getEditableContent, isSectionHidden, usableLogo } from "@/lib/editable-content";
 
-function resolveMediaImage(
+export function resolveMediaImage(
   image: string,
   media: Awaited<ReturnType<typeof getEditableContent>>["en"]["media"],
 ) {

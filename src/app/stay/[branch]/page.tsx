@@ -105,6 +105,9 @@ export default async function StayLandingPage({
                 <Link className="btn btn-glass" href="#photos">
                   ألبوم الصور
                 </Link>
+                <Link className="btn btn-glass" href={`/en/stay/${branch.slug}`} hrefLang="en" lang="en">
+                  English
+                </Link>
               </div>
             </div>
 
