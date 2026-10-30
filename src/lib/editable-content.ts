@@ -2599,8 +2599,8 @@ export const defaultSiteContent = {
           },
           {
             title: "واتساب",
-            value: "+966 12 679 0008",
-            href: "https://wa.me/966126790008",
+            value: "+966 50 707 4949",
+            href: "https://wa.me/966507074949",
             text: "أرسل التواريخ وعدد الضيوف والمدينة المطلوبة، وسيصلك عرض واضح بالخيارات والأسعار.",
           },
           {
@@ -2735,7 +2735,7 @@ export const defaultSiteContent = {
           },
           {
             title: "واتساب",
-            text: "راسلنا على واتساب +966 12 679 0008 مع رقم الحجز وصور إن لزم، وسنفتح لك تذكرة متابعة فوراً.",
+            text: "راسلنا على واتساب +966 50 707 4949 مع رقم الحجز وصور إن لزم، وسنفتح لك تذكرة متابعة فوراً.",
           },
           {
             title: "البريد الإلكتروني",
@@ -3694,8 +3694,8 @@ export const defaultSiteContent = {
           },
           {
             title: "WhatsApp",
-            value: "+966 12 679 0008",
-            href: "https://wa.me/966126790008",
+            value: "+966 50 707 4949",
+            href: "https://wa.me/966507074949",
             text: "Send dates, guest count, and preferred city. We will reply with clear options and rates in writing.",
           },
           {
@@ -3831,7 +3831,7 @@ export const defaultSiteContent = {
           },
           {
             title: "WhatsApp",
-            text: "WhatsApp +966 12 679 0008 with your booking reference and photos if relevant — we'll open a tracked ticket right away.",
+            text: "WhatsApp +966 50 707 4949 with your booking reference and photos if relevant — we'll open a tracked ticket right away.",
           },
           {
             title: "Email",

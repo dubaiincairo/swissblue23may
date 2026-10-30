@@ -1,8 +1,8 @@
 // Group WhatsApp numbers (international format, digits only).
-// PRIMARY: +966 12 679 0008, the unified Swiss Blue WhatsApp line connected to the Chatwoot team inbox.
-// STANDBY: +966 50 707 4949, the old main number; kept for when its WhatsApp registration is fixed. Not used anywhere yet.
-export const WHATSAPP_PRIMARY_NUMBER = "966126790008";
-export const WHATSAPP_STANDBY_NUMBER = "966507074949";
+// PRIMARY: +966 50 707 4949, the main Swiss Blue WhatsApp line (Chatwoot team inbox), live again since 29 Oct 2026.
+// STANDBY: +966 12 679 0008, the KSA line that stood in while 4949 was down; still connected to Chatwoot. Not used anywhere.
+export const WHATSAPP_PRIMARY_NUMBER = "966507074949";
+export const WHATSAPP_STANDBY_NUMBER = "966126790008";
 
 /** Number used by every WhatsApp button; NEXT_PUBLIC_WHATSAPP_NUMBER can override it without a code change. */
 export function whatsappNumber(): string {
