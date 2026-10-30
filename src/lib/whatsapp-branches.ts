@@ -1,5 +1,6 @@
 // Branches reachable from the Google Ads WhatsApp sitelinks (/wa/<branch>). Every branch now uses the unified
-// group WhatsApp line (Chatwoot inbox); the greeting names the branch so reception routes the chat.
+// group WhatsApp line (Chatwoot inbox); the greeting names the branch, so the Chatwoot menu bot hands the chat
+// straight to that branch team without showing the branch menu.
 
 import { whatsappNumber } from "@/lib/whatsapp-numbers";
 
@@ -9,19 +10,19 @@ export type WhatsAppBranch = {
 };
 
 export const WHATSAPP_BRANCHES: WhatsAppBranch[] = [
-  { slug: "heraa", nameAr: "سويس بلو حراء" },
+  { slug: "heraa", nameAr: "فندق سويس بلو حراء" },
   { slug: "alzahraa", nameAr: "سويس بلو الزهراء" },
   { slug: "alsamer", nameAr: "سويس بلو السامر" },
-  { slug: "vinas", nameAr: "فيناس" },
-  { slug: "tulip", nameAr: "توليب" },
+  { slug: "vinas", nameAr: "ڤيناس الحمراء" },
+  { slug: "tulip", nameAr: "توليب الروضة" },
 ];
 
 export function findWhatsAppBranch(slug: string): WhatsAppBranch | undefined {
   return WHATSAPP_BRANCHES.find((branch) => branch.slug === slug);
 }
 
-/** wa.me link with a greeting that tells reception the guest came from a Google ad. */
+/** wa.me link with a greeting that names the branch (the ad source is already tracked by the conversion tag). */
 export function branchWhatsAppHref(branch: WhatsAppBranch): string {
-  const text = `مرحباً، وصلت من إعلان جوجل وأرغب بالاستفسار عن الحجز في ${branch.nameAr}.`;
+  const text = `مرحبا، حابّ أستفسر عن ${branch.nameAr}`;
   return `https://wa.me/${whatsappNumber()}?text=${encodeURIComponent(text)}`;
 }
