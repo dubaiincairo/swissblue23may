@@ -33,8 +33,9 @@ import {
 import styles from "@/components/product-overview/overview.module.css";
 import { usableLogo, getEditableContent } from "@/lib/editable-content";
 import { heroImage } from "@/lib/content";
+import { pageMetadata } from "@/lib/site-metadata";
 
-export const metadata: Metadata = {
+const PRODUCT_OVERVIEW_SEO: Metadata = {
   title: "العرض التسويقي الشامل للمنظومة الرقمية | فنادق سويس بلو للضيافة",
   description:
     "استعراض شامل لمزايا وقدرات المنصة الرقمية لفنادق سويس بلو: المساعد الذكي الفندقي، محرك الحجز المباشر، الهوية الثنائية، وإدارة المحتوى الفورية.",
@@ -46,6 +47,24 @@ export const metadata: Metadata = {
     },
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const base = await pageMetadata("ar", "/product-overview");
+  return {
+    ...base,
+    ...PRODUCT_OVERVIEW_SEO,
+    openGraph: {
+      ...base.openGraph,
+      title: PRODUCT_OVERVIEW_SEO.title as string,
+      description: PRODUCT_OVERVIEW_SEO.description ?? undefined,
+    },
+    twitter: {
+      ...base.twitter,
+      title: PRODUCT_OVERVIEW_SEO.title as string,
+      description: PRODUCT_OVERVIEW_SEO.description ?? undefined,
+    },
+  };
+}
 
 export default async function ProductOverviewArabicPage() {
   const { ar, en } = await getEditableContent();

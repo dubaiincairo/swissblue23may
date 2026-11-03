@@ -27,6 +27,9 @@ export async function generateMetadata({
   return pageMetadata("ar", `/hotels/${slug}`);
 }
 
+// Unknown slugs are a static 404 (no render), so URL scans cost nothing.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return hotels
     .filter((hotel) => !isComingSoonProperty(hotel.slug))

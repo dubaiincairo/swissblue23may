@@ -34,6 +34,9 @@ export async function generateMetadata({
   };
 }
 
+// Unknown slugs are a static 404 (no render), so URL scans cost nothing.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return AD_LANDING_BRANCHES.map((branch) => ({ branch: branch.slug }));
 }

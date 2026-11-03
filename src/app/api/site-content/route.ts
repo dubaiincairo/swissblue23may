@@ -5,11 +5,15 @@ import {
   saveEditableContent,
   type EditableSiteContent,
 } from "@/lib/editable-content";
+import { requireApiAuthority } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const { hiddenSections, ...content } = await getEditableContent();
+  const auth = await requireApiAuthority("content-any");
+  if (auth.error) return auth.error;
+
+  const { hiddenSections, ...content } = await getEditableContent({ fresh: true });
 
   return NextResponse.json(
     { content, hiddenSections },
@@ -22,6 +26,9 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
+  const auth = await requireApiAuthority("content-any");
+  if (auth.error) return auth.error;
+
   let body: {
     content?: EditableSiteContent;
     hiddenSections?: string[];

@@ -18,7 +18,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site-metadata";
 
 export function generateMetadata(): Promise<Metadata> {
-  return pageMetadata("ar", "/");
+  return pageMetadata("ar", "/ar");
 }
 
 export default async function Home() {

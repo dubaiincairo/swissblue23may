@@ -13,7 +13,7 @@ export default async function LoyaltyLayoutsPage({
     await requireAuthority("content-any");
   }
   const initialLocale = (await searchParams).locale === "ar" ? "ar" : "en";
-  const { ar, en } = await getEditableContent();
+  const { ar, en } = await getEditableContent({ fresh: true });
 
   return (
     <LoyaltyLayoutLab

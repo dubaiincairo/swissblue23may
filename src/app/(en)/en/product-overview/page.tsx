@@ -30,8 +30,9 @@ import {
 import styles from "@/components/product-overview/overview.module.css";
 import { usableLogo, getEditableContent } from "@/lib/editable-content";
 import { heroImage } from "@/lib/content";
+import { pageMetadata } from "@/lib/site-metadata";
 
-export const metadata: Metadata = {
+const PRODUCT_OVERVIEW_SEO: Metadata = {
   title: "Digital Platform Marketing Overview | Swiss Blue Hospitality",
   description:
     "Explore the strategic capabilities of Swiss Blue's digital hospitality platform: 24/7 AI Concierge, direct booking engine, bilingual parity, and real-time headless CMS.",
@@ -43,6 +44,24 @@ export const metadata: Metadata = {
     },
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const base = await pageMetadata("en", "/en/product-overview");
+  return {
+    ...base,
+    ...PRODUCT_OVERVIEW_SEO,
+    openGraph: {
+      ...base.openGraph,
+      title: PRODUCT_OVERVIEW_SEO.title as string,
+      description: PRODUCT_OVERVIEW_SEO.description ?? undefined,
+    },
+    twitter: {
+      ...base.twitter,
+      title: PRODUCT_OVERVIEW_SEO.title as string,
+      description: PRODUCT_OVERVIEW_SEO.description ?? undefined,
+    },
+  };
+}
 
 export default async function ProductOverviewEnglishPage() {
   const { en } = await getEditableContent();

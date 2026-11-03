@@ -41,7 +41,8 @@ const nextConfig: NextConfig = {
     return [
       // Arabic compatibility URLs: "/ar" and "/ar/*" serve the root (Arabic) tree.
       { source: "/ar", destination: "/" },
-      { source: "/ar/:path*", destination: "/:path*" },
+      // Protected prefixes are excluded here as well, so the proxy matcher stays the single gate.
+      { source: "/ar/:path((?!(?:admin|studio|api|en)(?:/|$)).*)", destination: "/:path" },
     ];
   },
   async headers() {

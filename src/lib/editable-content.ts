@@ -6471,13 +6471,24 @@ export const SITE_CONTENT_CACHE_TAG = "site-content";
 /** Public pages re-fetch content at most this often unless a save expires them first. */
 export const SITE_CONTENT_REVALIDATE_SECONDS = 300;
 
-export async function getEditableContent(): Promise<
-  EditableSiteContent & { hiddenSections: string[] }
-> {
+export type EditableContentOptions = {
+  /**
+   * Bypass the data cache. Use from admin pages and API routes that must see the
+   * latest save (force-dynamic alone does not override an explicit revalidate).
+   * Never use from public pages: a no-store fetch makes the whole route dynamic.
+   */
+  fresh?: boolean;
+};
+
+const DEFAULT_CONTENT = () => ({ ...mergeContent(null), hiddenSections: [] });
+
+export async function getEditableContent(
+  options: EditableContentOptions = {},
+): Promise<EditableSiteContent & { hiddenSections: string[] }> {
   const client = getSanityClient(readToken());
 
   if (!client) {
-    return { ...mergeContent(null), hiddenSections: [] };
+    return DEFAULT_CONTENT();
   }
 
   try {
@@ -6489,14 +6500,16 @@ export async function getEditableContent(): Promise<
     }> = await client.fetch(
       `*[_id in $ids]{_id, content, hiddenSections}`,
       { ids },
-      // Cached with the page so public routes can be served from the CDN.
-      // Admin pages and API routes are force-dynamic, so they always see fresh data.
-      {
-        next: {
-          revalidate: SITE_CONTENT_REVALIDATE_SECONDS,
-          tags: [SITE_CONTENT_CACHE_TAG],
-        },
-      },
+      // Cached with the page so public routes can be served from the CDN;
+      // admin/API callers pass { fresh: true } to read the latest save.
+      options.fresh
+        ? { cache: "no-store" }
+        : {
+            next: {
+              revalidate: SITE_CONTENT_REVALIDATE_SECONDS,
+              tags: [SITE_CONTENT_CACHE_TAG],
+            },
+          },
     );
 
     const byId = new Map(
@@ -6519,8 +6532,14 @@ export async function getEditableContent(): Promise<
       ...mergeContent(partial),
       hiddenSections: Array.isArray(hidden) ? (hidden as string[]) : [],
     };
-  } catch {
-    return { ...mergeContent(null), hiddenSections: [] };
+  } catch (error) {
+    // At build time (or without Sanity) fall back to the bundled defaults. At
+    // runtime rethrow instead: a cached page must never be replaced by defaults,
+    // and on a failed background regeneration Next keeps serving the last good page.
+    if (process.env.NEXT_PHASE === "phase-production-build") {
+      return DEFAULT_CONTENT();
+    }
+    throw error;
   }
 }
 
@@ -6532,28 +6551,6 @@ export function isSectionHidden(
   return Array.isArray(hiddenSections) && hiddenSections.includes(id);
 }
 
-export async function getEditableContentVersion() {
-  const client = getSanityClient(readToken());
-
-  if (!client) {
-    return "default";
-  }
-
-  try {
-    const document = await client.fetch(
-      `*[_id in $ids]{_id, updatedAt, _updatedAt}`,
-      { ids: [METADATA_ID, documentId] },
-      { cache: "no-store" },
-    );
-    const meta =
-      document?.find((d: { _id: string }) => d._id === METADATA_ID) ??
-      document?.find((d: { _id: string }) => d._id === documentId);
-
-    return meta?.updatedAt ?? meta?._updatedAt ?? "default";
-  } catch {
-    return "default";
-  }
-}
 
 export async function saveEditableContent(
   content: EditableSiteContent,

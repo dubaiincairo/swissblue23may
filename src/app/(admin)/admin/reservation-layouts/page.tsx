@@ -19,7 +19,7 @@ export default async function ReservationLayoutsPage({
 }) {
   await requireAuthority("content-any");
   const initialLocale = (await searchParams).locale === "ar" ? "ar" : "en";
-  const { ar, en } = await getEditableContent();
+  const { ar, en } = await getEditableContent({ fresh: true });
   const arHome = ar.homepage;
   const enHome = en.homepage;
   const logo = usableLogo(en.media.logo) || usableLogo(ar.media.arabicLogo) || "";

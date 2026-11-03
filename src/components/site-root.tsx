@@ -1,4 +1,3 @@
-import { Geist_Mono, Inter, Noto_Kufi_Arabic } from "next/font/google";
 import AiChatWidget from "@/components/ai-chat-widget";
 import ClickIdForwarder from "@/components/click-id-forwarder";
 import CookieBanner from "@/components/cookie-banner";
@@ -8,28 +7,9 @@ import ScrollObserver from "@/components/scroll-observer";
 import Ga4Analytics from "@/components/ga4-analytics";
 import WhatsAppButton from "@/components/whatsapp-button";
 import type { PageLocale } from "@/lib/page-seo";
+import { HTML_CLASS_NAMES } from "@/lib/fonts";
 import { loadSiteContent } from "@/lib/site-metadata";
 import "@/app/globals.css";
-
-const arabicSans = Noto_Kufi_Arabic({
-  variable: "--font-arabic-sans",
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-// Latin-optimized font used on the English (/en) tree; Arabic keeps Noto Kufi Arabic.
-const latinSans = Inter({
-  variable: "--font-latin-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const FONT_CLASS_NAMES = `${arabicSans.variable} ${latinSans.variable} ${geistMono.variable} h-full antialiased`;
 
 /**
  * The `<html>`/`<body>` shell shared by the three root layouts (Arabic site,
@@ -56,7 +36,7 @@ export default async function SiteRoot({
     process.env.NEXT_PUBLIC_GTM_CONTAINER_ID?.trim() ||
     "GTM-TXF4KBPZ";
   return (
-    <html lang={locale} dir={dir} className={FONT_CLASS_NAMES}>
+    <html lang={locale} dir={dir} className={HTML_CLASS_NAMES}>
       <head>
         {!isAdmin && gtmId ? (
           <script

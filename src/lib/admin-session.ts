@@ -13,6 +13,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { SESSION_COOKIE, ENV_OWNER_UID, readSession, ownerPerms, type SessionInfo } from "@/lib/auth";
 import { getUserByKey } from "@/lib/admin-users";
 import { firstAllowedPath, hasAnyContentAuthority, hasAuthority, type AuthorityId } from "@/lib/authorities";
@@ -72,4 +73,22 @@ export async function requireAuthority(required: RequiredAuthority): Promise<Ses
     redirect(firstAllowedPath(session.perms) ?? "/admin/login?denied=1");
   }
   return session;
+}
+
+/**
+ * Route-handler guard (second layer behind the proxy): a fresh session with the
+ * given authority, or the JSON error response to return. Keeps the content API safe
+ * even if the proxy matcher or the "/ar/*" rewrites change.
+ */
+export async function requireApiAuthority(
+  required: RequiredAuthority,
+): Promise<{ session: SessionInfo; error?: undefined } | { session?: undefined; error: NextResponse }> {
+  const session = await getFreshAdminSession();
+  if (!session) {
+    return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  }
+  if (!sessionHas(session, required)) {
+    return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
+  }
+  return { session };
 }

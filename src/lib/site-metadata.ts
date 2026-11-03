@@ -70,6 +70,15 @@ async function resolveSeo(locale: PageLocale, pathname: string) {
   };
 }
 
+/**
+ * The same page in both language trees: the Arabic tree lives at the root (public
+ * URL "/ar/..." so it never collides with the "/" -> "/en" redirect) and English under "/en".
+ */
+function localeVariants(pathname: string): { ar: string; en: string } {
+  const stripped = pathname.replace(/^\/(en|ar)(?=\/|$)/, "");
+  return { ar: `/ar${stripped}`, en: `/en${stripped}` };
+}
+
 /** `<meta name="theme-color">` for a locale tree. */
 export async function siteViewport(locale: PageLocale): Promise<Viewport> {
   const seo = await resolveSeo(locale, "/");
@@ -85,9 +94,16 @@ export async function pageMetadata(locale: PageLocale, pathname?: string): Promi
   const base = toUrl(seo.siteUrl);
   const card = seo.twitterCard === "summary" ? "summary" : "summary_large_image";
   let canonical: string | undefined;
+  let languages: Record<string, string> | undefined;
   if (base && pathname) {
     try {
       canonical = new URL(pathname, base).toString();
+      const { ar, en } = localeVariants(pathname);
+      languages = {
+        ar: new URL(ar, base).toString(),
+        en: new URL(en, base).toString(),
+        "x-default": new URL(en, base).toString(),
+      };
     } catch {
       canonical = base.toString();
     }
@@ -97,7 +113,7 @@ export async function pageMetadata(locale: PageLocale, pathname?: string): Promi
     description: seo.description || undefined,
     keywords: seo.keywords || undefined,
     ...(base ? { metadataBase: base } : {}),
-    ...(canonical ? { alternates: { canonical } } : {}),
+    ...(canonical ? { alternates: { canonical, ...(languages ? { languages } : {}) } } : {}),
     openGraph: {
       title: seo.title,
       description: seo.ogDescription || undefined,
