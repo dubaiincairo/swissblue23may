@@ -1,0 +1,242 @@
+import { notFound } from "next/navigation";
+import { FaqAccordion } from "@/components/faq-accordion";
+import { FeatureChipGrid } from "@/components/feature-chip";
+import { AccessibleStayPanel } from "@/components/accessible-stay-panel";
+import PhotoGalleryLightbox from "@/components/photo-gallery-lightbox";
+import PropertyMap from "@/components/property-map";
+import { rich } from "@/components/rich-text";
+import { CtaBand, PageHero, PageShell } from "@/components/site";
+import SocialShare from "@/components/social-share";
+import { hotels } from "@/lib/content";
+import {
+  getEditableContent,
+  isSectionHidden,
+  normalizePropertyAmenities,
+  BOOKING_URL,
+} from "@/lib/editable-content";
+import { isComingSoonProperty } from "@/lib/property-availability";
+import { pageMetadata } from "@/lib/site-metadata";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  return pageMetadata("ar", `/hotels/${slug}`);
+}
+
+export function generateStaticParams() {
+  return hotels
+    .filter((hotel) => !isComingSoonProperty(hotel.slug))
+    .map((hotel) => ({ slug: hotel.slug }));
+}
+
+export default async function HotelDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  if (isComingSoonProperty(slug)) {
+    notFound();
+  }
+
+  const { ar, hiddenSections } = await getEditableContent();
+  const hotel = ar.homepage.properties.items.find((item) => item.slug === slug);
+  const classification = ar.subpages.roomsSuites.classifications.find(
+    (item) => item.property === hotel?.title,
+  );
+
+  if (!hotel) {
+    notFound();
+  }
+
+  const propertyGallery = ar.media.propertyGalleries.items.find(
+    (item) => item.slug === slug,
+  );
+  const galleryImages = (
+    propertyGallery?.gallery ?? []
+  )
+    .filter((item) => {
+      const image = typeof item === "string" ? item : item.image;
+
+      return image && image !== hotel.image;
+    })
+    .map((item, index) => ({
+      image: typeof item === "string" ? item : item.image,
+      title:
+        typeof item === "string"
+          ? `${hotel.title} صورة ${index + 1}`
+          : item.title || `${hotel.title} صورة ${index + 1}`,
+      showHeadline:
+        typeof item === "string" ? false : item.showHeadline === true,
+    }));
+
+  return (
+    <PageShell>
+      <PageHero
+        eyebrow={`${hotel.city} | ${hotel.type}`}
+        title={hotel.title}
+        text={hotel.summary}
+        image={hotel.image}
+      />
+
+      <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+        <SocialShare label="شارك" copiedLabel="تم نسخ الرابط!" />
+      </div>
+
+      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
+        <div className="feature-panel reveal-scale-up">
+          <span className="eyebrow">تموضع الوجهة</span>
+          <h2>{rich(hotel.title)}</h2>
+          <p>{rich(hotel.positioning)}</p>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            <div className="stat-tile">
+              <div className="text-2xl font-bold text-[var(--primary)]">
+                {rich(hotel.units)}
+              </div>
+              <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
+                إجمالي الوحدات
+              </div>
+            </div>
+            <div className="stat-tile">
+              <div className="text-2xl font-bold text-[var(--primary)]">
+                {rich(hotel.city)}
+              </div>
+              <div className="mt-1 text-sm font-semibold text-[var(--text-secondary)]">
+                المدينة
+              </div>
+            </div>
+          </div>
+          <a className="btn btn-primary mt-8" href={hotel.bookingUrl || BOOKING_URL}>
+            تحقق من التوفر
+          </a>
+        </div>
+
+        <div className="grid gap-4">
+          <div
+            className="content-card reveal-slide-up"
+            style={{ "--delay": "100ms" } as React.CSSProperties}
+          >
+            <span className="eyebrow">إبراز الموقع</span>
+            <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
+              {rich(hotel.locationHighlight)}
+            </p>
+          </div>
+          <div
+            className="content-card reveal-slide-up"
+            style={{ "--delay": "200ms" } as React.CSSProperties}
+          >
+            <span className="eyebrow">معالم قريبة</span>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {hotel.landmarks.map((item) => (
+                <li key={item}>{rich(item)}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">أنواع الوحدات</span>
+          <h2>فئات إقامة واضحة مع عدد الوحدات لكل فئة.</h2>
+          <p>
+            تساعد هذه الفئات الضيف أو مسؤول الحجز على اختيار المساحة المناسبة
+            حسب مدة الإقامة وعدد الضيوف وسبب الرحلة.
+          </p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {(classification?.rows ?? hotel.unitTypes).map((unit, index) => (
+            <article
+              className="unit-card reveal-slide-up"
+              key={"type" in unit ? `${unit.type}-${unit.rooms}` : unit.title}
+              style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+            >
+              <span>
+                {rich(
+                  "totalUnits" in unit ? `${unit.totalUnits} وحدة` : unit.count,
+                )}
+              </span>
+              <h3>{rich("type" in unit ? unit.type : unit.title)}</h3>
+              <p>
+                {rich(
+                  "type" in unit
+                    ? `${unit.bedrooms} غرفة نوم | ${unit.bedConfig} | ${unit.view} | أرقام الغرف: ${unit.rooms}`
+                    : unit.description,
+                )}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
+        <div className="reveal-slide-up">
+          <span className="eyebrow">المرافق والخدمات</span>
+          <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[46px]">
+            ما يحتاجه الضيف داخل هذه الوجهة.
+          </h2>
+          <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
+            تعرض كل صفحة فندق الخدمات المتوقعة في الوجهة نفسها حتى تصبح المقارنة
+            بين الفنادق والشقق أكثر وضوحا.
+          </p>
+        </div>
+        <FeatureChipGrid
+          items={normalizePropertyAmenities(hotel.slug, hotel.amenities, "ar")}
+          variant="check"
+          columns={2}
+        />
+      </section>
+
+      <AccessibleStayPanel locale="ar" />
+
+      <PropertyMap
+        city={hotel.city}
+        locale="ar"
+        query={hotel.mapQuery}
+        title={hotel.title}
+      />
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-up">
+          <span className="eyebrow">معرض الصور</span>
+          <h2>لمحة بصرية عن تجربة الإقامة.</h2>
+        </div>
+        <div className="mt-8">
+          <PhotoGalleryLightbox
+            images={galleryImages}
+            locale="ar"
+            variant="property"
+          />
+        </div>
+      </section>
+
+      {!isSectionHidden(hiddenSections, "propertyFaq") && (
+        <section
+          className="faq-section mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8"
+          dir="rtl"
+        >
+          <div className="faq-heading reveal-slide-up">
+            <span className="eyebrow">أسئلة هذا الفرع</span>
+            <h2>معلومات مهمة عن {rich(hotel.title)}.</h2>
+          </div>
+          <FaqAccordion items={ar.faq.property} />
+        </section>
+      )}
+
+      <CtaBand
+        href={hotel.bookingUrl || BOOKING_URL}
+        eyebrow={ar.closingCtas.eyebrow}
+        title={ar.closingCtas.hotelDetail.titleTemplate.replace(
+          "{hotel}",
+          hotel.title,
+        )}
+        text={ar.closingCtas.defaultText}
+        cta={ar.closingCtas.hotelDetail.cta}
+      />
+    </PageShell>
+  );
+}

@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import {
   getEditableContent,
@@ -74,6 +75,10 @@ export async function PUT(request: Request) {
     hiddenSections,
     editedLanguage,
   );
+
+  // Expire every cached public page (and the content fetch behind it) so the
+  // next visit renders the saved content instead of waiting for the 5-minute window.
+  revalidatePath("/", "layout");
 
   return NextResponse.json({
     ok: true,

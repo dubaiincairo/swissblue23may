@@ -6466,6 +6466,11 @@ function assembleChunks(
   return found ? (out as Partial<EditableSiteContent>) : null;
 }
 
+/** Cache tag carried by the public content fetch (see /api/site-content PUT). */
+export const SITE_CONTENT_CACHE_TAG = "site-content";
+/** Public pages re-fetch content at most this often unless a save expires them first. */
+export const SITE_CONTENT_REVALIDATE_SECONDS = 300;
+
 export async function getEditableContent(): Promise<
   EditableSiteContent & { hiddenSections: string[] }
 > {
@@ -6484,7 +6489,14 @@ export async function getEditableContent(): Promise<
     }> = await client.fetch(
       `*[_id in $ids]{_id, content, hiddenSections}`,
       { ids },
-      { cache: "no-store" },
+      // Cached with the page so public routes can be served from the CDN.
+      // Admin pages and API routes are force-dynamic, so they always see fresh data.
+      {
+        next: {
+          revalidate: SITE_CONTENT_REVALIDATE_SECONDS,
+          tags: [SITE_CONTENT_CACHE_TAG],
+        },
+      },
     );
 
     const byId = new Map(

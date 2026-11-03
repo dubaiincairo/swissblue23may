@@ -110,60 +110,14 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // --- Locale routing + tagging ---
-  // The Arabic site is the root tree (also reachable at /ar/*); English lives under /en.
-  // Tag every page request with `x-locale` so the shared root layout can emit the correct
-  // <html lang/dir> during SSR (important for accessibility and SEO). Admin/api keep the
-  // English default (their UI is LTR) to avoid any change to existing behavior.
-  const isArabicHomeRewrite = pathname === "/" && url.searchParams.get("__sb_locale") === "ar";
-  const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
-  const isAdmin =
-    pathname.startsWith("/admin") ||
-    pathname.startsWith("/studio") ||
-    pathname.startsWith("/api");
-  const publicPathname =
-    isArabicHomeRewrite || pathname === "/ar"
-      ? "/"
-      : pathname.startsWith("/ar/")
-        ? pathname.replace(/^\/ar/, "") || "/"
-        : pathname;
-  const locale = isArabicHomeRewrite || (!isEnglish && !isAdmin) ? "ar" : "en";
-  const localeHeaders = new Headers(request.headers);
-  localeHeaders.set("x-locale", locale);
-  // Tag the page path so the root layout can emit per-page SEO metadata.
-  localeHeaders.set("x-pathname", publicPathname);
-
-  // Let the /ar compatibility rewrite render the Arabic root without falling
-  // through to the public English-root redirect below.
-  if (pathname === "/" && isArabicHomeRewrite) {
-    return NextResponse.next({ request: { headers: localeHeaders } });
-  }
-
-  if (pathname === "/ar") {
-    url.pathname = "/";
-    url.searchParams.set("__sb_locale", "ar");
-    return NextResponse.rewrite(url, { request: { headers: localeHeaders } });
-  }
-
-  if (pathname.startsWith("/ar/")) {
-    url.pathname = publicPathname;
-    return NextResponse.rewrite(url, { request: { headers: localeHeaders } });
-  }
-
-  if (pathname === "/" && !isArabicHomeRewrite) {
-    url.pathname = "/en";
-    return NextResponse.redirect(url);
-  }
-
-  return NextResponse.next({ request: { headers: localeHeaders } });
+  return NextResponse.next();
 }
 
 export const config = {
+  // Only session-gated surfaces run the proxy. Public pages are served from the
+  // cache without it: locale/direction come from the (ar)/(en) route groups and
+  // the "/" -> "/en" redirect and legacy "/ar/*" rewrites live in next.config.ts.
   matcher: [
-    // All page routes (Arabic root tree + /en) so the layout can tag <html lang/dir>.
-    // Excludes Next internals, static files, and /api (API auth handled by the entries below).
-    "/((?!api/|_next/|.*\\..*).*)",
-    // Canonical admin + legacy redirect handling, plus content API authentication.
     "/admin",
     "/admin/:path*",
     "/secretpanel",

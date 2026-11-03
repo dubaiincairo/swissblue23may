@@ -26,6 +26,24 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["localhost", "127.0.0.1"],
   // Don't advertise the framework/version in responses.
   poweredByHeader: false,
+  // Multiple root layouts ((ar), (en), (admin)) need the global 404 convention.
+  experimental: { globalNotFound: true },
+  async redirects() {
+    return [
+      // The public root is the English site; the Arabic tree is reachable at "/ar".
+      { source: "/", destination: "/en", permanent: false },
+      // Legacy "/ar/<admin|studio|api|en>" must not be rewritten onto the root tree.
+      { source: "/ar/:prefix(admin|studio|api|en)", destination: "/:prefix", permanent: true },
+      { source: "/ar/:prefix(admin|studio|api|en)/:rest*", destination: "/:prefix/:rest*", permanent: true },
+    ];
+  },
+  async rewrites() {
+    return [
+      // Arabic compatibility URLs: "/ar" and "/ar/*" serve the root (Arabic) tree.
+      { source: "/ar", destination: "/" },
+      { source: "/ar/:path*", destination: "/:path*" },
+    ];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
