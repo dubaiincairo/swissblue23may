@@ -65,6 +65,11 @@ structure and interaction patterns; Swiss Blue governs color/brand.
   button, bottom-start, must not overlap the chatbot icon at bottom-end), both mounted in `src/components/site-root.tsx`
   (the `<html>/<body>` shell shared by the `(ar)`, `(en)` and `(admin)` root layouts).
 
+- GTM container GTM-TXF4KBPZ and GA4 G-GDX46G5J8F are injected on swissblue.sa and on the letsbook.me booking
+  pages; WhatsApp/phone-click and booking conversions fire from GTM to all five Google Ads accounts.
+- Standing approvals: merge `claude/*` into `staging` without asking; `main` only when the user says
+  "deploy to production". Never print or commit secrets.
+
 # ⚡ Caching rules (added 3 Nov 2026, after the Vercel free-tier CPU alert)
 
 - Public pages are **static/ISR** (`revalidate = 300` in `src/app/(ar)/layout.tsx` and `src/app/(en)/layout.tsx`); a CMS
@@ -75,7 +80,3 @@ structure and interaction patterns; Swiss Blue governs color/brand.
   studio and protected API paths; `/` → `/en` and the legacy `/ar/*` rewrites live in `next.config.ts`.
 - Per-page SEO: every public page exports `generateMetadata` built with `pageMetadata(locale, pathname)` from
   `src/lib/site-metadata.ts`. Unknown URLs get the static `src/app/global-not-found.tsx`.
-- GTM container GTM-TXF4KBPZ and GA4 G-GDX46G5J8F are injected on swissblue.sa and on the letsbook.me booking
-  pages; WhatsApp/phone-click and booking conversions fire from GTM to all five Google Ads accounts.
-- Standing approvals: merge `claude/*` into `staging` without asking; `main` only when the user says
-  "deploy to production". Never print or commit secrets.
