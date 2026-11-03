@@ -5,6 +5,7 @@ import {
   maxImageBytes,
   uploadAssetToSanity,
 } from "@/sanity/lib/asset-upload";
+import { requireApiAuthority } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 
@@ -92,6 +93,9 @@ async function fetchAllowedSource(
 }
 
 export async function POST(request: Request) {
+  const auth = await requireApiAuthority("content-any");
+  if (auth.error) return auth.error;
+
   if (!isUploadConfigured()) {
     return NextResponse.json({ error: "CMS upload is not configured." }, { status: 500 });
   }

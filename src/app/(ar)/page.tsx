@@ -1,0 +1,381 @@
+import Image from "next/image";
+import Link from "next/link";
+import { FaqAccordion } from "@/components/faq-accordion";
+import HeroMediaCarousel from "@/components/hero-media-carousel";
+import { SiteFooter, SiteHeader } from "@/components/site";
+import SocialShare from "@/components/social-share";
+import BookingBar from "@/components/booking-bar";
+import NavBookingMenu from "@/components/nav-booking-menu";
+import HomepageGallery from "@/components/homepage-gallery";
+import { PartnersSection } from "@/components/partners-section";
+import { TestimonialsSection } from "@/components/testimonials-section";
+import { rich } from "@/components/rich-text";
+import { ServiceTiles } from "@/components/service-tiles";
+import { InsightCards } from "@/components/insight-cards";
+import { BOOKING_URL, getEditableContent, isSectionHidden } from "@/lib/editable-content";
+import { comingSoonLabel, isComingSoonCity, isComingSoonProperty } from "@/lib/property-availability";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("ar", "/ar");
+}
+
+export default async function Home() {
+  const { ar, hiddenSections } = await getEditableContent();
+  const home = ar.homepage;
+  const show = (id: string) => !isSectionHidden(hiddenSections, id);
+
+  return (
+    <main className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]" dir="rtl">
+      <SiteHeader />
+
+      {show("hero") && (
+      <section id="top" className="hotel-hero home-hero relative">
+        <HeroMediaCarousel
+          slides={ar.media.mainHeroSlides}
+          fallbackImage={ar.media.mainHero}
+          fallbackAlt="إطلالة ساحلية على البحر الأحمر بالقرب من وجهات سويس بلو"
+        />
+        <div className="home-hero-overlay home-hero-overlay-rtl" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,var(--background))]" />
+
+        <div className="home-hero-shell">
+          <div className="home-hero-layout">
+            <div className="home-hero-copy text-white">
+              <span className="hero-kicker reveal-slide-down">{rich(home.hero.eyebrow)}</span>
+              <h1 className="t-hero reveal-slide-up">
+                {rich(home.hero.title)}
+              </h1>
+              <p className="home-hero-summary reveal-slide-up" style={{ "--delay": "150ms" } as React.CSSProperties}>
+                {rich(home.hero.text)}
+              </p>
+              <div className="home-hero-actions reveal-slide-up" style={{ "--delay": "300ms" } as React.CSSProperties}>
+                <NavBookingMenu
+                  properties={home.properties.items}
+                  label={rich(home.hero.primaryCta)}
+                  locale="ar"
+                  fallbackUrl={BOOKING_URL}
+                  buttonClassName="btn btn-primary btn-hero"
+                  dropdownClassName="hero-booking-dropdown"
+                  menuClassName="hero-booking-dropdown-menu"
+                />
+                <Link className="btn btn-glass" href={home.hero.secondaryHref}>
+                  {rich(home.hero.secondaryCta)}
+                </Link>
+              </div>
+            </div>
+
+            <div className="home-hero-booking">
+              <BookingBar
+                properties={home.properties.items
+                  .filter((hotel) => !isComingSoonProperty(hotel.slug))
+                  .map((hotel) => ({
+                    slug: hotel.slug,
+                    title: hotel.title,
+                    city: hotel.city,
+                    bookingUrl: hotel.bookingUrl,
+                  }))}
+                locale="ar"
+                labels={ar.ui.bookingBar}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {show("highlights") && (
+      <section className="section-lg mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <InsightCards items={home.highlights} />
+      </section>
+      )}
+
+      {show("properties") && (
+      <section className="section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-right">
+          <span className="eyebrow">{rich(home.properties.eyebrow)}</span>
+          <h2>{rich(home.properties.title)}</h2>
+          <p>{rich(home.properties.text)}</p>
+        </div>
+
+        <div className="mt-8 grid gap-5 lg:grid-cols-3">
+          {home.properties.items.map((hotel, index) => {
+            const comingSoon = isComingSoonProperty(hotel.slug);
+
+            return (
+            <article
+              className={`property-card reveal-slide-up${comingSoon ? " is-coming-soon" : ""}`}
+              key={hotel.slug}
+              style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
+            >
+              <figure className="relative h-72 overflow-hidden">
+                <Image
+                  className="object-cover transition duration-500 hover:scale-105"
+                  src={hotel.image}
+                  alt={hotel.title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                />
+                {comingSoon ? <span className="property-status-badge">{comingSoonLabel("ar")}</span> : null}
+              </figure>
+              <div className="p-5">
+                <div className="flex items-center justify-between gap-4 text-xs font-bold text-[var(--primary)]">
+                  <span>{rich(hotel.city)}</span>
+                  <span>{rich(hotel.units)}</span>
+                </div>
+                <p className="mt-3 text-xs font-bold text-[var(--text-tertiary)]">
+                  {rich(hotel.type)}
+                </p>
+                <h3 className="mt-3 text-2xl font-extrabold">{rich(hotel.title)}</h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                  {rich(hotel.summary)}
+                </p>
+                {comingSoon ? (
+                  <span className="property-coming-soon-note">الحجوزات ستتوفر عند الافتتاح</span>
+                ) : (
+                  <Link
+                    className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
+                    href={`/hotels/${hotel.slug}`}
+                  >
+                    عرض التفاصيل
+                  </Link>
+                )}
+              </div>
+            </article>
+            );
+          })}
+        </div>
+      </section>
+      )}
+
+      {show("loyalty") && (
+      <section className="brand-band section">
+        <div className="loyalty-layout mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+          <div className="loyalty-intro reveal-slide-right">
+            <span className="eyebrow text-white/72">{rich(home.loyalty.subtitle)}</span>
+            <h2 className="t-h2 mt-4 text-white">
+              {rich(home.loyalty.title)}
+            </h2>
+            <p className="mt-4 max-w-xl text-sm leading-7 text-white/76">
+              {rich(home.loyalty.description)}
+            </p>
+            <div className="loyalty-actions mt-7">
+              <span className="loyalty-status">قريباً</span>
+            </div>
+          </div>
+          <div className="loyalty-benefits grid gap-4 sm:grid-cols-2">
+            {home.loyalty.benefits.map((benefit, index) => (
+              <div
+                className="brand-point reveal-elastic-pop"
+                key={benefit}
+                style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
+              >
+                <span className="brand-point-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
+                <span className="brand-point-text">{rich(benefit)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      )}
+
+      {show("hospitalityGallery") && (
+        <HomepageGallery images={ar.media.gallery} locale="ar" />
+      )}
+
+      {show("destinations") && (
+      <section className="section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-right">
+          <span className="eyebrow">{rich(home.destinations.eyebrow)}</span>
+          <h2>{rich(home.destinations.title)}</h2>
+          <p>{rich(home.destinations.text)}</p>
+        </div>
+        <div className="mt-8 grid gap-5 lg:grid-cols-3">
+          {home.destinations.items.map((destination, index) => {
+            const comingSoon = isComingSoonCity(destination.title);
+
+            return (
+            <article
+              className={`property-card reveal-slide-up${comingSoon ? " is-coming-soon" : ""}`}
+              key={destination.title}
+              style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
+            >
+              <figure className="relative h-64 overflow-hidden">
+                <Image
+                  className="object-cover"
+                  src={destination.image}
+                  alt={destination.title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                />
+                {comingSoon ? <span className="property-status-badge">{comingSoonLabel("ar")}</span> : null}
+              </figure>
+              <div className="p-5">
+                <h3 className="text-2xl font-extrabold">{rich(destination.title)}</h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                  {rich(destination.text)}
+                </p>
+                {comingSoon ? (
+                  <span className="property-coming-soon-note">سنعلن تفاصيل الافتتاح قريباً</span>
+                ) : (
+                  <Link
+                    className="mt-6 inline-flex text-sm font-bold text-[var(--primary)]"
+                    href="/destinations"
+                  >
+                    اكتشف الوجهة
+                  </Link>
+                )}
+              </div>
+            </article>
+            );
+          })}
+        </div>
+      </section>
+      )}
+
+      {show("offers") && (
+      <section className="section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
+          <div className="feature-panel reveal-slide-right">
+            <span className="eyebrow">{rich(home.offers.eyebrow)}</span>
+            <h2>{rich(home.offers.title)}</h2>
+            <p>{rich(home.offers.text)}</p>
+            <Link className="btn btn-primary mt-8" href={home.offers.href}>
+              {rich(home.offers.cta)}
+            </Link>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {home.offers.items.map((offer, index) => (
+              <article
+                className="offer-card reveal-slide-left"
+                key={offer.title}
+                style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
+              >
+                <span className="offer-card-index" aria-hidden="true">{`0${index + 1}`}</span>
+                <h3>{rich(offer.title)}</h3>
+                <p>{rich(offer.text)}</p>
+                <Link className="offer-card-link" href={home.offers.href}>
+                  اكتشف العرض
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      )}
+
+      {show("services") && (
+      <section className="home-services section mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
+        <div className="services-intro reveal-slide-right">
+          <span className="eyebrow">{rich(home.services.eyebrow)}</span>
+          <h2 className="t-h2 mt-4">
+            {rich(home.services.title)}
+          </h2>
+          <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
+            {rich(home.services.text)}
+          </p>
+          <Link className="btn btn-secondary services-cta mt-7" href="/amenities-services">
+            استكشف كل الخدمات
+          </Link>
+        </div>
+        <ServiceTiles items={home.services.items.slice(0, 9)} locale="ar" />
+      </section>
+      )}
+
+      {show("categories") && (
+      <section className="section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="section-heading reveal-slide-right">
+          <span className="eyebrow">{rich(home.categories.eyebrow)}</span>
+          <h2>{rich(home.categories.title)}</h2>
+          <p>{rich(home.categories.text)}</p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {home.categories.items.map((category, index) => (
+            <article
+              className="stay-card reveal-slide-up"
+              key={category.title}
+              style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
+            >
+              <span>فئة إقامة</span>
+              <h3>{rich(category.title)}</h3>
+              <p>{rich(category.text)}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      )}
+
+      <PartnersSection content={home.partners} locale="ar" />
+
+      {show("testimonials") && (
+        <TestimonialsSection content={home.testimonials} locale="ar" />
+      )}
+
+      {show("homepageFaq") && (
+      <section className="faq-section section mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" dir="rtl">
+        <div className="faq-heading reveal-slide-right">
+          <span className="eyebrow">الأسئلة الشائعة</span>
+          <h2>إجابات مختصرة قبل الحجز.</h2>
+        </div>
+        <FaqAccordion items={ar.faq.homepage} />
+      </section>
+      )}
+
+      {show("cta") && (
+      <section className="closing-cta section-lg mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="closing-cta-card relative overflow-hidden rounded-[28px] bg-[var(--bluehost-deep)] px-6 py-12 text-white sm:px-10 lg:px-14 reveal-scale-up">
+          <div className="closing-cta-grid relative">
+            <div className="closing-cta-main">
+              <span className="eyebrow text-white/72">{rich(home.cta.eyebrow)}</span>
+              <h2 className="t-h2 mt-4">
+                {rich(home.cta.title)}
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-white/76">
+                {rich(home.cta.text)}
+              </p>
+              <div className="closing-cta-actions mt-8">
+                <a className="btn btn-hero bg-white text-[var(--primary)]" href={BOOKING_URL}>
+                  {rich(home.cta.button)}
+                </a>
+                <Link className="btn btn-glass" href="/central-reservation">
+                  الحجز المركزي
+                </Link>
+              </div>
+            </div>
+            <div className="closing-cta-panel">
+              <span className="closing-cta-panel-title">ابدأ من هنا</span>
+              {[
+                { href: "/hotels", label: "الفنادق والأجنحة" },
+                { href: "/serviced-apartments", label: "الشقق المخدومة" },
+                { href: "/offers", label: "العروض والمناسبات" },
+                { href: "/contact", label: "تواصل مع فريق الحجوزات" },
+              ].map((item) => (
+                <Link className="closing-cta-link" href={item.href} key={item.href}>
+                  <span>{item.label}</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
+
+      <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+        <SocialShare label="شارك هذه الصفحة" copiedLabel="تم نسخ الرابط!" />
+      </div>
+
+      <SiteFooter />
+    </main>
+  );
+}

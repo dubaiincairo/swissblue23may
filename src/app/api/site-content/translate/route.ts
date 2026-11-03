@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateEditorialText } from "@/lib/openai-text";
+import { requireApiAuthority } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,9 @@ function badRequest(message: string, status = 400) {
 }
 
 export async function POST(request: Request) {
+  const auth = await requireApiAuthority("content-any");
+  if (auth.error) return auth.error;
+
   if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json({ error: "Translation isn't configured." }, { status: 503 });
   }
