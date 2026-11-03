@@ -6466,7 +6466,7 @@ function assembleChunks(
   return found ? (out as Partial<EditableSiteContent>) : null;
 }
 
-/** Cache tag carried by the public content fetch (see /api/site-content PUT). */
+/** Cache tag on the public content fetch, reserved for on-demand invalidation by tag (a save uses revalidatePath). */
 export const SITE_CONTENT_CACHE_TAG = "site-content";
 /** Public pages re-fetch content at most this often unless a save expires them first. */
 export const SITE_CONTENT_REVALIDATE_SECONDS = 300;
@@ -6478,6 +6478,8 @@ export type EditableContentOptions = {
    * Never use from public pages: a no-store fetch makes the whole route dynamic.
    */
   fresh?: boolean;
+  /** Return the bundled defaults instead of throwing when Sanity is unreachable. */
+  fallback?: boolean;
 };
 
 const DEFAULT_CONTENT = () => ({ ...mergeContent(null), hiddenSections: [] });
@@ -6536,7 +6538,7 @@ export async function getEditableContent(
     // At build time (or without Sanity) fall back to the bundled defaults. At
     // runtime rethrow instead: a cached page must never be replaced by defaults,
     // and on a failed background regeneration Next keeps serving the last good page.
-    if (process.env.NEXT_PHASE === "phase-production-build") {
+    if (options.fallback || process.env.NEXT_PHASE === "phase-production-build") {
       return DEFAULT_CONTENT();
     }
     throw error;

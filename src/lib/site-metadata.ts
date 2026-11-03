@@ -15,7 +15,6 @@ import { defaultPageTitle, pageKeyFromPath, type PageLocale } from "@/lib/page-s
 
 const DEFAULT_SOCIAL_IMAGE = "/opengraph-image";
 const DEFAULT_FAVICON = "/icon.png";
-const PRODUCTION_SITE_URL = "https://swissblue.sa";
 
 /** One content fetch shared by metadata, viewport and the root layout within a render. */
 export const loadSiteContent = cache(getEditableContent);
@@ -71,13 +70,16 @@ async function resolveSeo(locale: PageLocale, pathname: string) {
 }
 
 /**
- * The same page in both language trees: the Arabic tree lives at the root (public
- * URL "/ar/..." so it never collides with the "/" -> "/en" redirect) and English under "/en".
+ * The same page in both language trees. Arabic canonical URLs are the root paths
+ * ("/about"), as indexed today; only the Arabic home is "/ar" because "/" redirects
+ * to "/en". English lives under "/en". The hreflang value must equal the canonical.
  */
 function localeVariants(pathname: string): { ar: string; en: string } {
   const stripped = pathname.replace(/^\/(en|ar)(?=\/|$)/, "");
-  return { ar: `/ar${stripped}`, en: `/en${stripped}` };
+  return { ar: stripped || "/ar", en: `/en${stripped}` };
 }
+
+export const PRODUCTION_SITE_URL = "https://swissblue.sa";
 
 /** `<meta name="theme-color">` for a locale tree. */
 export async function siteViewport(locale: PageLocale): Promise<Viewport> {

@@ -438,7 +438,8 @@ export async function POST(request: Request) {
   const wantsStream = body.stream === true;
   const query = conversationQuery(message, history, pagePath);
 
-  const content = await getEditableContent();
+  // The chat must keep answering during a CMS outage: fall back to the bundled content.
+  const content = await getEditableContent().catch(() => getEditableContent({ fallback: true }));
   const priorUserContext = history.filter((turn) => turn.role === "user").slice(-3).map((turn) => turn.content).join(" ");
   const fastAnswer = fastWebsiteAnswer(content, locale, message, priorUserContext);
   if (fastAnswer) {

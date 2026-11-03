@@ -12,18 +12,22 @@ export default function NotFoundView({
   locale,
   logo,
   background,
+  as: Landmark = "main",
 }: {
   locale: PageLocale;
   logo?: string | null;
   background?: string | null;
+  /** Use "section" when a second copy is rendered next to the main one (global 404). */
+  as?: "main" | "section";
 }) {
   const isArabic = locale === "ar";
+  const headingId = `not-found-title-${locale}`;
   const homeHref = isArabic ? "/ar" : "/en";
   const hotelsHref = isArabic ? "/ar/hotels" : "/en/hotels";
   const DirectionArrow = isArabic ? ArrowRight : ArrowLeft;
 
   return (
-    <main className={styles.page} dir={isArabic ? "rtl" : "ltr"}>
+    <Landmark className={styles.page} dir={isArabic ? "rtl" : "ltr"}>
       {background ? (
         <Image
           className={styles.background}
@@ -53,12 +57,12 @@ export default function NotFoundView({
         </Link>
       </header>
 
-      <section className={styles.content} aria-labelledby="not-found-title">
+      <section className={styles.content} aria-labelledby={headingId}>
         <span className={styles.code} aria-hidden="true">404</span>
         <p className={styles.eyebrow}>
           {isArabic ? "يبدو أن هذه الوجهة غير متاحة" : "This destination is not available"}
         </p>
-        <h1 id="not-found-title">
+        <h1 id={headingId}>
           {isArabic ? "لنُعِدك إلى المسار الصحيح." : "Let’s get you back on the right route."}
         </h1>
         <p>
@@ -85,6 +89,6 @@ export default function NotFoundView({
       <p className={styles.brandNote}>
         {isArabic ? "فنادق سويس بلو" : "Swiss Blue Hotels"}
       </p>
-    </main>
+    </Landmark>
   );
 }

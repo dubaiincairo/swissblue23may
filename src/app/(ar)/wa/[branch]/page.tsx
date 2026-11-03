@@ -18,10 +18,13 @@ export async function generateMetadata({
   params: Promise<{ branch: string }>;
 }): Promise<Metadata> {
   const { branch } = await params;
+  const base = await pageMetadata("ar", `/wa/${branch}`);
   return {
-    ...(await pageMetadata("ar", `/wa/${branch}`)),
+    ...base,
     title: "WhatsApp",
     robots: { index: false, follow: false },
+    // No English twin exists for this route, so advertise no language alternates.
+    alternates: base.alternates?.canonical ? { canonical: base.alternates.canonical } : undefined,
   };
 }
 

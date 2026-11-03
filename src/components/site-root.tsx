@@ -19,13 +19,16 @@ import "@/app/globals.css";
 export default async function SiteRoot({
   locale,
   variant = "site",
+  content,
   children,
 }: Readonly<{
   locale: PageLocale;
   variant?: "site" | "admin";
+  /** Pass already-loaded content (admin layout reads it fresh); public layouts use the cached read. */
+  content?: Awaited<ReturnType<typeof loadSiteContent>>;
   children: React.ReactNode;
 }>) {
-  const { ar, en } = await loadSiteContent();
+  const { ar, en } = content ?? (await loadSiteContent());
   const isAdmin = variant === "admin";
   const dir = locale === "ar" ? "rtl" : "ltr";
   const currentSeo = locale === "ar" ? ar.seo : en.seo;

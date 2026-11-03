@@ -77,11 +77,16 @@ export async function PUT(request: Request) {
       ? body.editedLanguage
       : undefined;
 
-  const saved = await saveEditableContent(
-    content,
-    hiddenSections,
-    editedLanguage,
-  );
+  let saved: Awaited<ReturnType<typeof saveEditableContent>>;
+  try {
+    saved = await saveEditableContent(content, hiddenSections, editedLanguage);
+  } catch (error) {
+    console.error("site-content save failed", error);
+    return NextResponse.json(
+      { error: "Saving failed. The content store did not accept the change; nothing was published." },
+      { status: 500 },
+    );
+  }
 
   // Expire every cached public page (and the content fetch behind it) so the
   // next visit renders the saved content instead of waiting for the 5-minute window.
