@@ -191,7 +191,7 @@
         </ul>
         <div class="note tip"><b>Why this design is clever:</b> most of the site is fast, version-controlled code, but the
         bits that change weekly (a price, a hero photo, a tagline) are editable live by non-coders — and updates appear on
-        the public site within ~5 seconds, with <i>no re-deploy</i>. You get the safety of code and the speed of a CMS.</div>
+        the public site on the next page load, with <i>no re-deploy</i>. You get the safety of code and the speed of a CMS.</div>
       </div>
 
       <div class="card">
@@ -331,11 +331,11 @@
           <div class="step"><h4>The server writes one document to Sanity</h4><p><code>saveEditableContent()</code> calls
             <code>createOrReplace()</code> on a single fixed document (<code>site-content-singleton</code>) and stamps a new
             <code>updatedAt</code> timestamp. Everything lives in that one record.</p></div>
-          <div class="step"><h4>Every visitor's page is quietly watching</h4><p><code>LiveContentRefresh</code> (mounted in
-            the root layout) polls <code>GET /api/site-content/version</code> every 5 seconds. It only reads the timestamp.</p></div>
-          <div class="step"><h4>The live site updates itself</h4><p>When the timestamp changes, the poller calls
-            <code>router.refresh()</code>. Next.js re-renders the page on the server with the new content and swaps it in —
-            no full reload, no re-deploy. The edit is live in ~5 seconds.</p></div>
+          <div class="step"><h4>Public pages are cached</h4><p>Every public page is rendered once and served from Vercel's
+            cache for up to 5 minutes (<code>revalidate = 300</code> in the <code>(ar)</code> and <code>(en)</code> layouts), so visits
+            and bots cost no server time.</p></div>
+          <div class="step"><h4>A save expires the cache</h4><p>After the save, the API calls <code>revalidatePath("/", "layout")</code>.
+            The next visit to any page renders it with the new content and caches it again — no reload timer, no re-deploy.</p></div>
         </div>
       </div>
 
@@ -525,8 +525,8 @@ const TREE = [{
         { n:"app", k:"folder", b:"key", o:true,
           i:`The <b>App Router</b>. In Next.js 16 every folder in here becomes a URL, and a <code>page.tsx</code> inside it is what renders at that URL. Special folders (<code>api/</code>, <code>studio/</code>, <code>en/</code>) have dedicated jobs.`,
           c:[
-            { n:"layout.tsx", k:"file", b:"key", i:`The <b>shell wrapped around every page</b>: the &lt;html&gt; tag, the two fonts (Noto Kufi Arabic + Geist Mono), the tab title/description, and three always-on helpers — <code>LiveContentRefresh</code>, <code>NavScrollState</code>, <code>ScrollObserver</code>. A page's output appears where it writes <code>{children}</code>.` },
-            { n:"page.tsx", k:"file", b:"key", i:`The <b>Arabic homepage</b> (served at <code>/</code>, right-to-left). An async Server Component: it awaits <code>getEditableContent()</code>, takes the <code>.ar</code> half, and feeds it to the hero carousel, gallery, service tiles, testimonials and FAQ. Marked <code>force-dynamic</code> so it always shows the freshest content.` },
+            { n:"(ar)/layout.tsx · (en)/layout.tsx · (admin)/layout.tsx", k:"file", b:"key", i:`Three <b>root layouts</b>, one per language tree plus the admin. Each renders <code>components/site-root.tsx</code>: the &lt;html lang/dir&gt; tag, the fonts, GTM, and the always-on helpers <code>NavScrollState</code>, <code>ScrollObserver</code>. The public ones export <code>revalidate = 300</code> so pages are cached. A page's output appears where it writes <code>{children}</code>.` },
+            { n:"page.tsx", k:"file", b:"key", i:`The <b>Arabic homepage</b> (served at <code>/</code>, right-to-left). An async Server Component: it awaits <code>getEditableContent()</code>, takes the <code>.ar</code> half, and feeds it to the hero carousel, gallery, service tiles, testimonials and FAQ. Cached for 5 minutes and expired by every CMS save.` },
             { n:"globals.css", k:"file", i:`Global styles plus the Tailwind import. Defines the brand CSS variables (the deep navy/blue you see in the hero) and the base look shared by every page.` },
             { n:"favicon.ico", k:"file", b:"gen", i:`The little icon in the browser tab. A static asset.` },
             { n:"Arabic content pages", k:"folder",
@@ -581,7 +581,6 @@ const TREE = [{
                 { n:"rephrase/route.ts", k:"file", i:`<code>POST</code> — sends text to <b>Google Gemini</b> and returns a rewritten version in a luxury-hospitality tone. Powers the "Rephrase" button.` },
                 { n:"translate/route.ts", k:"file", i:`<code>POST</code> — sends text to <b>DeepL</b> and returns it in the other language (AR↔EN). Powers the "Translate" button.` },
                 { n:"upload/route.ts", k:"file", i:`<code>POST</code> — receives an uploaded image/video file and stores it in Sanity, returning its URL. Enforces allowed types and size limits.` },
-                { n:"version/route.ts", k:"file", i:`<code>GET</code> — returns only the content's <code>updatedAt</code> timestamp. The live-refresh poller hits this every 5s; it's deliberately tiny.` },
                 { n:"stock-search/route.ts", k:"file", i:`<code>GET</code> — searches <b>Unsplash + Pexels</b> and returns normalised photo results for the picker.` },
                 { n:"stock-import/route.ts", k:"file", i:`<code>POST</code> — downloads a chosen stock photo and re-uploads it into Sanity so the site owns its own copy.` }
               ]
@@ -596,7 +595,6 @@ const TREE = [{
             { n:"secret-panel.tsx", k:"file", b:"key", i:`The big one (~1,800 lines). The whole staff editor: loads content, renders an editable field for every section, wires up rephrase/translate/photo tools, tracks "dirty/saving/saved" status, and PUTs changes back. A Client Component (<code>"use client"</code>).` },
             { n:"rich-editor.tsx", k:"file", i:`The <b>TipTap</b> rich-text box (bold, italic, links) used inside the editor.` },
             { n:"rich-text.tsx", k:"file", i:`Exports the <code>rich()</code> helper that safely turns stored formatted text into rendered React, used all over the pages.` },
-            { n:"live-content-refresh.tsx", k:"file", b:"key", i:`The quiet hero. Mounted once in the layout; every 5s it checks the content version and, if it changed, calls <code>router.refresh()</code> so edits appear live without a reload.` },
             { n:"hero-media-carousel.tsx", k:"file", i:`The rotating hero image/video slideshow at the top of the homepage.` },
             { n:"homepage-gallery.tsx", k:"file", i:`The hospitality photo gallery block on the homepage.` },
             { n:"photo-gallery-lightbox.tsx", k:"file", i:`A click-to-enlarge photo viewer (lightbox).` },
@@ -756,8 +754,7 @@ const GLOSS = [
   {t:"defaultSiteContent",a:"This project",d:`The complete set of built-in content assembled from <code>src/lib</code>. The safety net shown when nothing has been edited.`},
   {t:"saveEditableContent()",a:"This project",d:`Writes the whole content object back to Sanity via <code>createOrReplace</code>, stamping a new <code>updatedAt</code>.`},
   {t:"Singleton document",a:"This project",d:`The single fixed Sanity record (<code>site-content-singleton</code>) that holds all editable content. "Singleton" = there's exactly one.`},
-  {t:"LiveContentRefresh",a:"This project",d:`The component (in the layout) that polls the version endpoint every 5s and calls <code>router.refresh()</code> when content changes — making edits go live without a reload.`},
-  {t:"Polling",a:"This project",d:`Repeatedly asking "has anything changed?" on a timer. Here, every 5 seconds against <code>/api/site-content/version</code>.`},
+  {t:"ISR (cached pages)",a:"This project",d:`Public pages are rendered once and served from the cache for up to 5 minutes; a CMS save expires them so the next visit shows the new content. Removed in Nov 2026: the 5-second polling that used to refresh open tabs.`},
   {t:"/secretpanel",a:"This project",d:`The custom, friendly staff editor tailored to this site, with AI rephrase/translate and stock-photo tools.`},
   {t:"/studio",a:"This project",d:`The full standard Sanity Studio dashboard — the power-user editing door.`},
   {t:"rich() helper",a:"This project",d:`A small function (in <code>rich-text.tsx</code>) that safely renders stored formatted text into React on the pages.`},

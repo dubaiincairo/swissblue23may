@@ -33,7 +33,10 @@ async function brandMark() {
 }
 
 export default async function OpenGraphImage() {
-  const [{ en }, logo] = await Promise.all([getEditableContent(), brandMark()]);
+  const [{ en }, logo] = await Promise.all([
+    getEditableContent().catch(() => getEditableContent({ fallback: true })),
+    brandMark(),
+  ]);
   const hero = en.homepage.hero;
   const image = heroPhoto(en.media.mainHeroSlides, en.media.mainHero);
 

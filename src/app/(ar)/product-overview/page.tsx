@@ -326,7 +326,7 @@ export default async function ProductOverviewArabicPage() {
               </div>
               <h3 className={styles.pillarTitle}>إدارة محتوى سحابية فورية (Sanity)</h3>
               <p className={styles.pillarDesc}>
-                لوحة تحكم مرنة تتيح لفريق التسويق إطلاق العروض الموسمية، تعديل الأسعار، وتحديث شارات الخدمات (مثل "قريباً") في ثوانٍ بدون تدخل تقني.
+                لوحة تحكم مرنة تتيح لفريق التسويق إطلاق العروض الموسمية، تعديل الأسعار، وتحديث شارات الخدمات (مثل &quot;قريباً&quot;) في ثوانٍ بدون تدخل تقني.
               </p>
               <div className={styles.pillarBadge}>تحديث فوري بدون توقف</div>
             </div>
