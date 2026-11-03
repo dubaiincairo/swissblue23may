@@ -62,8 +62,21 @@ structure and interaction patterns; Swiss Blue governs color/brand.
   its `handoff-swissblue-chatwoot.md` is the full source of truth. Read them before any tracking or ads task.
 - In this repo the tracking pieces are: `src/lib/click-id.ts` + `src/components/click-id-forwarder.tsx`
   (carry `gclid`/UTM to letsbook.me as a URL hash), `src/components/whatsapp-button.tsx` (floating WhatsApp
-  button, bottom-start, must not overlap the chatbot icon at bottom-end), both mounted in `src/app/layout.tsx`.
+  button, bottom-start, must not overlap the chatbot icon at bottom-end), both mounted in `src/components/site-root.tsx`
+  (the `<html>/<body>` shell shared by the `(ar)`, `(en)` and `(admin)` root layouts).
+
 - GTM container GTM-TXF4KBPZ and GA4 G-GDX46G5J8F are injected on swissblue.sa and on the letsbook.me booking
   pages; WhatsApp/phone-click and booking conversions fire from GTM to all five Google Ads accounts.
 - Standing approvals: merge `claude/*` into `staging` without asking; `main` only when the user says
   "deploy to production". Never print or commit secrets.
+
+# ⚡ Caching rules (added 3 Nov 2026, after the Vercel free-tier CPU alert)
+
+- Public pages are **static/ISR** (`revalidate = 300` in `src/app/(ar)/layout.tsx` and `src/app/(en)/layout.tsx`); a CMS
+  save calls `revalidatePath("/", "layout")` in `src/app/api/site-content/route.ts`, so edits appear on the next visit.
+- Never call `headers()`, `cookies()` or `force-dynamic` in public pages, layouts or the components they render; that
+  turns every visit into a serverless function run. Only `(admin)`, Studio and `/api/*` are dynamic.
+- Locale and direction come from the route group, not from the proxy. The proxy (`src/proxy.ts`) only runs on admin,
+  studio and protected API paths; `/` → `/en` and the legacy `/ar/*` rewrites live in `next.config.ts`.
+- Per-page SEO: every public page exports `generateMetadata` built with `pageMetadata(locale, pathname)` from
+  `src/lib/site-metadata.ts`. Unknown URLs get the static `src/app/global-not-found.tsx`.

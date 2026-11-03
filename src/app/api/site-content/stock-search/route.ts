@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireApiAuthority } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 
@@ -136,6 +137,9 @@ async function searchPexels(query: string, page: number): Promise<NormalizedResp
 }
 
 export async function GET(request: Request) {
+  const auth = await requireApiAuthority("content-any");
+  if (auth.error) return auth.error;
+
   const { searchParams } = new URL(request.url);
   const source = searchParams.get("source");
   const query = searchParams.get("q")?.trim() ?? "";

@@ -1,14 +1,19 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import {
   getEditableContent,
   saveEditableContent,
   type EditableSiteContent,
 } from "@/lib/editable-content";
+import { requireApiAuthority } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const { hiddenSections, ...content } = await getEditableContent();
+  const auth = await requireApiAuthority("content-any");
+  if (auth.error) return auth.error;
+
+  const { hiddenSections, ...content } = await getEditableContent({ fresh: true });
 
   return NextResponse.json(
     { content, hiddenSections },
@@ -21,6 +26,9 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
+  const auth = await requireApiAuthority("content-any");
+  if (auth.error) return auth.error;
+
   let body: {
     content?: EditableSiteContent;
     hiddenSections?: string[];
@@ -69,11 +77,20 @@ export async function PUT(request: Request) {
       ? body.editedLanguage
       : undefined;
 
-  const saved = await saveEditableContent(
-    content,
-    hiddenSections,
-    editedLanguage,
-  );
+  let saved: Awaited<ReturnType<typeof saveEditableContent>>;
+  try {
+    saved = await saveEditableContent(content, hiddenSections, editedLanguage);
+  } catch (error) {
+    console.error("site-content save failed", error);
+    return NextResponse.json(
+      { error: "Saving failed. The content store did not accept the change; nothing was published." },
+      { status: 500 },
+    );
+  }
+
+  // Expire every cached public page (and the content fetch behind it) so the
+  // next visit renders the saved content instead of waiting for the 5-minute window.
+  revalidatePath("/", "layout");
 
   return NextResponse.json({
     ok: true,

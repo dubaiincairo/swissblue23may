@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!hasAuthority(session.perms, "analytics")) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const range = parseOverviewRange(new URL(request.url).searchParams.get("range"));
-  const content = await getEditableContent();
+  const content = await getEditableContent({ fresh: true });
   const propertyId = content.en.seo.analytics?.ga4PropertyId || content.ar.seo.analytics?.ga4PropertyId;
   return NextResponse.json(await getAdminOverview(range, propertyId), { headers: { "Cache-Control": "private, no-store" } });
 }
