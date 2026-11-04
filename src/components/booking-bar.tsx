@@ -308,7 +308,7 @@ export default function BookingBar({
   const bookingUrl = properties.find((property) => property.slug === slug)?.bookingUrl?.trim() || BOOKING_URL;
 
   // A real link (not a scripted redirect) lets the Google tag append its _gl
-  // cross-domain parameter, so the letsbook.me session stays tied to the ad click.
+  // cross-domain parameter, so the booking-engine session stays tied to the ad click.
   function trackSearch() {
     trackAnalyticsEvent("booking_cta_click", { locale, property_slug: slug, placement: "booking_bar" });
   }

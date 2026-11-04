@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Script from "next/script";
 import { CONSENT_EVENT, CONSENT_STORAGE_KEY } from "@/lib/consent";
+import { isBookingUrl } from "@/lib/click-id";
 
 function validMeasurementId(value?: string) {
   return /^G-[A-Z0-9]+$/i.test(value?.trim() ?? "") ? value?.trim() : undefined;
@@ -57,7 +58,7 @@ export default function Ga4Analytics({
 
     function trackBookingLink(event: MouseEvent) {
       const anchor = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[href]");
-      if (!anchor || !anchor.href.includes("letsbook.me/booking/")) return;
+      if (!anchor || !isBookingUrl(anchor.href)) return;
       // Links that send their own richer booking_cta_click opt out to avoid double counting.
       if (anchor.dataset.analyticsTracked) return;
 

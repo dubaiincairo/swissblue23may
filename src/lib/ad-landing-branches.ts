@@ -6,11 +6,11 @@ export type AdLandingBranch = {
 };
 
 export const AD_LANDING_BRANCHES: AdLandingBranch[] = [
-  { slug: "heraa", propertySlug: "swiss-blue-jeddah", bookingUrl: "https://letsbook.me/booking/swissbluehera" },
-  { slug: "alzahraa", propertySlug: "al-zahraa-serviced-apartments", bookingUrl: "https://letsbook.me/booking/swissbluealzahra" },
-  { slug: "alsamer", propertySlug: "al-samer-serviced-apartments", bookingUrl: "https://letsbook.me/booking/swissbluealsamer" },
-  { slug: "vinas", propertySlug: "vinas-riyadh-serviced-apartments", bookingUrl: "https://letsbook.me/booking/vinashotel" },
-  { slug: "tulip", propertySlug: "tulip-alrawdah-serviced-apartments", bookingUrl: "https://letsbook.me/booking/tuliphotel" },
+  { slug: "heraa", propertySlug: "swiss-blue-jeddah", bookingUrl: "https://book.swissblue.sa/booking/swissbluehera" },
+  { slug: "alzahraa", propertySlug: "al-zahraa-serviced-apartments", bookingUrl: "https://book.swissblue.sa/booking/swissbluealzahra" },
+  { slug: "alsamer", propertySlug: "al-samer-serviced-apartments", bookingUrl: "https://book.swissblue.sa/booking/swissbluealsamer" },
+  { slug: "vinas", propertySlug: "vinas-riyadh-serviced-apartments", bookingUrl: "https://book.swissblue.sa/booking/vinashotel" },
+  { slug: "tulip", propertySlug: "tulip-alrawdah-serviced-apartments", bookingUrl: "https://book.swissblue.sa/booking/tuliphotel" },
 ];
 
 export function findAdLandingBranch(slug: string): AdLandingBranch | undefined {

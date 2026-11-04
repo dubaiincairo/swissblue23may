@@ -1,5 +1,5 @@
 export const BOOKING_URL =
-  "https://letsbook.me/booking/swissbluehera?checkin=2026-07-13&checkout=2026-07-14&adults=2&children=0";
+  "https://book.swissblue.sa/booking/swissbluehera?checkin=2026-07-13&checkout=2026-07-14&adults=2&children=0";
 
 export const heroImage =
   "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-saad-alaiyadhi-131639221-10141408-scaled.jpg";
@@ -117,7 +117,7 @@ export const propertyAmenitiesEn = [
 export const hotelsEn = [
   {
     slug: "swiss-blue-jeddah",
-    bookingUrl: "https://letsbook.me/booking/swissbluehera",
+    bookingUrl: "https://book.swissblue.sa/booking/swissbluehera",
     title: "Swiss Blue Hotel Jeddah",
     city: "Jeddah",
     type: "Hotel",
@@ -231,7 +231,7 @@ export const hotelsEn = [
   },
   {
     slug: "al-zahraa-serviced-apartments",
-    bookingUrl: "https://letsbook.me/booking/swissbluealzahra",
+    bookingUrl: "https://book.swissblue.sa/booking/swissbluealzahra",
     title: "Al Zahraa Serviced Apartments",
     city: "Jeddah",
     type: "Serviced apartments",
@@ -278,7 +278,7 @@ export const hotelsEn = [
   },
   {
     slug: "al-samer-serviced-apartments",
-    bookingUrl: "https://letsbook.me/booking/swissbluealsamer",
+    bookingUrl: "https://book.swissblue.sa/booking/swissbluealsamer",
     title: "Al Samer Serviced Apartments",
     city: "Jeddah",
     type: "Serviced apartments",
@@ -326,7 +326,7 @@ export const hotelsEn = [
   },
   {
     slug: "vinas-riyadh-serviced-apartments",
-    bookingUrl: "https://letsbook.me/booking/vinashotel",
+    bookingUrl: "https://book.swissblue.sa/booking/vinashotel",
     title: "Vinas Serviced Apartments",
     city: "Riyadh",
     type: "Serviced apartments",
@@ -380,7 +380,7 @@ export const hotelsEn = [
   },
   {
     slug: "tulip-alrawdah-serviced-apartments",
-    bookingUrl: "https://letsbook.me/booking/tuliphotel",
+    bookingUrl: "https://book.swissblue.sa/booking/tuliphotel",
     title: "Tulip Alrawda Serviced Apartments",
     city: "Riyadh",
     type: "Apart-hotel",

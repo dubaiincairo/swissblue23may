@@ -1,17 +1,20 @@
-// Carries the Google Ads click id from swissblue.sa to the letsbook.me booking engine.
+// Carries the Google Ads click id from swissblue.sa to the eZee booking engine
+// (book.swissblue.sa, formerly letsbook.me).
 //
-// Why: bookings happen on letsbook.me (a different domain). The Google tag's normal
-// cross-domain linker (`_gl=1*...`) is rejected by letsbook.me's firewall (HTTP 403),
-// and letsbook.me drops unknown query parameters such as `gclid` the moment its app
-// boots, before any tag can read them. The URL hash is the one part of the address it
-// keeps, so the click id travels there (`#gclid=...`) and a Tag Manager tag on
-// letsbook.me reads it on load. See docs/GA4_ADS_TRACKING.md in the chatwoot repo.
+// Why: the engine's app drops unknown query parameters such as `gclid` the moment it
+// boots, before any tag can read them, and its firewall rejects the Google tag's
+// cross-domain linker (`_gl=1*...`, HTTP 403). The URL hash is the one part of the
+// address it keeps, so the click id travels there (`#gclid=...`) and a Tag Manager tag
+// on the engine reads it on load. Since 4 Nov 2026 the engine lives on the
+// book.swissblue.sa CNAME, so the `_gcl_aw` cookie on `.swissblue.sa` is shared too;
+// the hash stays as the explicit hand-off. See docs/GA4_ADS_TRACKING.md (chatwoot repo).
 
 const STORAGE_KEY = "sb-click-id-v1";
 const MAX_AGE_MS = 90 * 24 * 60 * 60 * 1000; // Google Ads click-through window
 const CLICK_PARAMS = ["gclid", "gbraid", "wbraid"] as const;
 const CAMPAIGN_PARAMS = ["utm_source", "utm_medium", "utm_campaign"] as const;
-const BOOKING_HOST = "letsbook.me/booking/";
+// Booking-engine hosts: the CNAME (current) and letsbook.me (old links that may still be stored in the CMS).
+const BOOKING_HOSTS = ["book.swissblue.sa/booking/", "letsbook.me/booking/"];
 
 export type StoredClickId = Partial<Record<(typeof CLICK_PARAMS)[number] | (typeof CAMPAIGN_PARAMS)[number], string>> & {
   ts: number;
@@ -80,10 +83,10 @@ export function captureClickId(): StoredClickId | null {
 }
 
 export function isBookingUrl(href: string | null | undefined): boolean {
-  return typeof href === "string" && href.includes(BOOKING_HOST);
+  return typeof href === "string" && BOOKING_HOSTS.some((host) => href.includes(host));
 }
 
-/** Append the stored click id (and campaign tags) to a letsbook.me booking URL as a hash fragment. */
+/** Append the stored click id (and campaign tags) to a booking-engine URL as a hash fragment. */
 export function decorateBookingUrl(href: string, stored: StoredClickId | null = readStorage()): string {
   if (!stored || !isBookingUrl(href)) return href;
   let url: URL;
@@ -106,7 +109,7 @@ export function decorateBookingUrl(href: string, stored: StoredClickId | null = 
   return url.toString();
 }
 
-/** Rewrite booking links at click time so the id is added only when someone actually leaves for letsbook.me. */
+/** Rewrite booking links at click time so the id is added only when someone actually leaves for the booking engine. */
 export function installBookingLinkDecorator(): () => void {
   if (typeof document === "undefined") return () => {};
   const handler = (event: MouseEvent) => {
