@@ -55,17 +55,26 @@ reference component, translate its orange accents to the Swiss Blue blue (and ke
 savings/offers + red for warnings as functional accents only). The reference governs
 structure and interaction patterns; Swiss Blue governs color/brand.
 
+# 🏨 Booking engine & property status (updated 4 Nov 2026)
+
+- The eZee/Yanolja booking engine now runs on the CNAME `https://book.swissblue.sa/booking/<slug>` (slugs: swissbluehera,
+  swissbluealzahra, swissbluealsamer, vinashotel, tuliphotel). `letsbook.me/booking/<slug>` still works for old links and is
+  still recognised by `src/lib/click-id.ts`. Booking URLs live in `src/lib/content*.ts` (defaults), `src/lib/ad-landing-branches.ts`
+  and in the Sanity site-content chunks (`site-content--<lang>--homepage` properties, `--shell` promotional popups); update both.
+- "Coming soon" properties are listed in `src/lib/property-availability.ts` (Jazan, and Alsamer since 4 Nov 2026): badge on the
+  cards, no links, `/hotels/<slug>` and `/stay/<branch>` return 404, excluded from the booking widgets.
+
 # 📈 Google Ads, tracking & Claude memory (added 26 Oct 2026)
 
 - The Google Ads / GTM / tracking work for Swiss Blue is run from the sister repo
   `dubaiincairo/swissbluechatwoot`. Its `CLAUDE.md` holds the standing approvals and the current state;
   its `handoff-swissblue-chatwoot.md` is the full source of truth. Read them before any tracking or ads task.
 - In this repo the tracking pieces are: `src/lib/click-id.ts` + `src/components/click-id-forwarder.tsx`
-  (carry `gclid`/UTM to letsbook.me as a URL hash), `src/components/whatsapp-button.tsx` (floating WhatsApp
+  (carry `gclid`/UTM to the booking engine book.swissblue.sa as a URL hash), `src/components/whatsapp-button.tsx` (floating WhatsApp
   button, bottom-start, must not overlap the chatbot icon at bottom-end), both mounted in `src/components/site-root.tsx`
   (the `<html>/<body>` shell shared by the `(ar)`, `(en)` and `(admin)` root layouts).
 
-- GTM container GTM-TXF4KBPZ and GA4 G-GDX46G5J8F are injected on swissblue.sa and on the letsbook.me booking
+- GTM container GTM-TXF4KBPZ and GA4 G-GDX46G5J8F are injected on swissblue.sa and on the book.swissblue.sa booking-engine
   pages; WhatsApp/phone-click and booking conversions fire from GTM to all five Google Ads accounts.
 - Standing approvals: merge `claude/*` into `staging` without asking; `main` only when the user says
   "deploy to production". Never print or commit secrets.

@@ -19,7 +19,7 @@ import { pageMetadata } from "@/lib/site-metadata";
 
 // Google Ads landing page for one branch: the homepage hero and booking widget (same markup and
 // component, this branch preselected), then the branch photo album, then amenities and services.
-// Booking links go to the branch's letsbook.me page; the click-id forwarder in the layout adds the ad click id.
+// Booking links go to the branch's booking-engine page (book.swissblue.sa); the click-id forwarder in the layout adds the ad click id.
 
 // Ad landing pages carry the site metadata but stay out of search results.
 export async function generateMetadata({
@@ -38,7 +38,10 @@ export async function generateMetadata({
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return AD_LANDING_BRANCHES.map((branch) => ({ branch: branch.slug }));
+  // Coming-soon branches (Alsamer) have no landing page: with dynamicParams=false the URL is a static 404.
+  return AD_LANDING_BRANCHES.filter((branch) => !isComingSoonProperty(branch.propertySlug)).map((branch) => ({
+    branch: branch.slug,
+  }));
 }
 
 export default async function StayLandingPage({
@@ -48,7 +51,7 @@ export default async function StayLandingPage({
 }) {
   const { branch: slug } = await params;
   const branch = findAdLandingBranch(slug);
-  if (!branch) {
+  if (!branch || isComingSoonProperty(branch.propertySlug)) {
     notFound();
   }
 

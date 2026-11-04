@@ -1,5 +1,5 @@
 export const BOOKING_URL =
-  "https://letsbook.me/booking/swissbluehera?checkin=2026-07-13&checkout=2026-07-14&adults=2&children=0";
+  "https://book.swissblue.sa/booking/swissbluehera?checkin=2026-07-13&checkout=2026-07-14&adults=2&children=0";
 
 export const heroImage =
   "https://swissbluehotels.com/wp-content/uploads/2025/07/pexels-saad-alaiyadhi-131639221-10141408-scaled.jpg";
@@ -128,7 +128,7 @@ export const propertyAmenities = [
 export const hotels = [
   {
     slug: "swiss-blue-jeddah",
-    bookingUrl: "https://letsbook.me/booking/swissbluehera",
+    bookingUrl: "https://book.swissblue.sa/booking/swissbluehera",
     title: "فندق سويس بلو جدة",
     city: "جدة",
     type: "فندق",
@@ -241,7 +241,7 @@ export const hotels = [
   },
   {
     slug: "al-zahraa-serviced-apartments",
-    bookingUrl: "https://letsbook.me/booking/swissbluealzahra",
+    bookingUrl: "https://book.swissblue.sa/booking/swissbluealzahra",
     title: "شقق الزهراء المخدومة",
     city: "جدة",
     type: "شقق مخدومة",
@@ -292,7 +292,7 @@ export const hotels = [
   },
   {
     slug: "al-samer-serviced-apartments",
-    bookingUrl: "https://letsbook.me/booking/swissbluealsamer",
+    bookingUrl: "https://book.swissblue.sa/booking/swissbluealsamer",
     title: "شقق السامر المخدومة",
     city: "جدة",
     type: "شقق مخدومة",
@@ -342,7 +342,7 @@ export const hotels = [
   },
   {
     slug: "vinas-riyadh-serviced-apartments",
-    bookingUrl: "https://letsbook.me/booking/vinashotel",
+    bookingUrl: "https://book.swissblue.sa/booking/vinashotel",
     title: "ڤيناس للشقق المخدومة",
     city: "الرياض",
     type: "شقق مخدومة",
@@ -398,7 +398,7 @@ export const hotels = [
   },
   {
     slug: "tulip-alrawdah-serviced-apartments",
-    bookingUrl: "https://letsbook.me/booking/tuliphotel",
+    bookingUrl: "https://book.swissblue.sa/booking/tuliphotel",
     title: "توليب الروضة للشقق المخدومة",
     city: "الرياض",
     type: "شقق مخدومة",
