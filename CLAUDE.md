@@ -63,6 +63,8 @@ structure and interaction patterns; Swiss Blue governs color/brand.
   and in the Sanity site-content chunks (`site-content--<lang>--homepage` properties, `--shell` promotional popups); update both.
 - "Coming soon" properties are listed in `src/lib/property-availability.ts` (Jazan, and Alsamer since 4 Nov 2026): badge on the
   cards, no links, `/hotels/<slug>` and `/stay/<branch>` return 404, excluded from the booking widgets.
+- **The group has 4 live, bookable hotels, not 5** (user instruction, 4 Nov 2026): Heraa and Alzahraa in Jeddah, Vinas and
+  Tulip in Riyadh. Alsamer and Jazan are "coming soon" and not bookable. Use 4 in counts, copy, menus and reports.
 
 # 📈 Google Ads, tracking & Claude memory (added 26 Oct 2026)
 
