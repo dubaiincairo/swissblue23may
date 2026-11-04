@@ -1,4 +1,5 @@
 import type React from "react";
+import { isComingSoonProperty } from "@/lib/property-availability";
 
 type BookingProperty = {
   slug: string;
@@ -24,7 +25,9 @@ export default function NavBookingMenu({
   dropdownClassName?: string;
   menuClassName?: string;
 }) {
-  const bookableProperties = properties.filter((property) => property.bookingUrl.trim());
+  const bookableProperties = properties.filter(
+    (property) => property.bookingUrl.trim() && !isComingSoonProperty(property.slug),
+  );
 
   if (!bookableProperties.length) {
     return (

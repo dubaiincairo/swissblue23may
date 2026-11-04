@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-// Meta Conversions API relay. The GTM Meta pixel tags (swissblue.sa and the letsbook.me booking pages) send each
+// Meta Conversions API relay. The GTM Meta pixel tags (swissblue.sa and the booking-engine pages on book.swissblue.sa, formerly letsbook.me) send each
 // event to the browser pixel and, with the same event_id, here via navigator.sendBeacon; this route forwards it
 // server-side so Meta can deduplicate the pair and still count events the browser pixel lost (iOS, blockers).
 // Needs Vercel env META_CAPI_TOKEN (Events Manager → dataset → Settings → Conversions API → Generate access token);
@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 const PIXEL_ID = process.env.META_PIXEL_ID || "1030509523387234";
 const GRAPH_VERSION = "v23.0";
 const EVENTS = new Set(["PageView", "ViewContent", "InitiateCheckout", "Purchase", "Lead", "Contact"]);
-const ALLOWED_ORIGINS = [/^https:\/\/(www\.)?swissblue\.sa$/, /^https:\/\/([a-z0-9-]+\.)?letsbook\.me$/, /^https:\/\/[a-z0-9-]+\.vercel\.app$/];
+const ALLOWED_ORIGINS = [/^https:\/\/(www\.)?swissblue\.sa$/, /^https:\/\/([a-z0-9-]+\.)?letsbook\.me$/, /^https:\/\/book\.swissblue\.sa$/, /^https:\/\/[a-z0-9-]+\.vercel\.app$/];
 
 type Incoming = {
   event_name?: unknown;
