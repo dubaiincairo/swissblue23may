@@ -69,8 +69,9 @@ export function StayHotlineBanner({ locale }: { locale: "ar" | "en" }) {
   );
 }
 
-/** 966126790008 -> +966 12 679 0008 */
+/** 966920019474 -> 920019474 (unified number, written as guests dial it); 966507074949 -> +966 50 707 4949 */
 function formatWhatsapp(digits: string): string {
+  if (/^9669200\d{5}$/.test(digits)) return digits.slice(3);
   const m = digits.match(/^966(\d{2})(\d{3})(\d{4})$/);
   return m ? `+966 ${m[1]} ${m[2]} ${m[3]}` : `+${digits}`;
 }
