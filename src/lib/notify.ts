@@ -10,7 +10,13 @@
  *     BREVO_API_KEY          - Brevo API key (starts with "xkeysib-")
  *     BREVO_FROM_EMAIL       - sender on an authenticated domain, e.g. notifications@swissblue.sa
  *     BREVO_FROM_NAME        - sender display name (default "Swiss Blue")
- *   WhatsApp (Meta Cloud API):
+ *   Team alert in the WhatsApp 9200 inbox (preferred; owner, 15 Nov 2026):
+ *     FORM_ALERT_URL         - https://whatsapp.swissblue.sa/swissblue-bot/form-alert (Swiss Blue menu bot)
+ *     FORM_ALERT_KEY         - shared key, sent as header x-form-alert-key
+ *     The bot opens a chat in the Chatwoot inbox "SwissBlue WhatsApp (9200)" with the details as an internal note
+ *     (label نموذج-الموقع). Nothing is sent on WhatsApp. When set, the WhatsApp template below is not used:
+ *     Meta delivers a template sent to another business number as "unsupported" (no text).
+ *   WhatsApp template (Meta Cloud API, fallback when FORM_ALERT_* is not set):
  *     WHATSAPP_PHONE_NUMBER_ID  - sender phone-number id
  *     WHATSAPP_ACCESS_TOKEN     - permanent (system-user) access token
  *     WHATSAPP_TO               - recipient in E.164 (e.g. 9665XXXXXXXX)
@@ -170,6 +176,26 @@ export async function sendWhatsAppTemplate(params: string[]): Promise<void> {
   }
 }
 
+/** Team alert: the 9200 inbox through the menu bot when configured, otherwise the WhatsApp template. */
+export async function sendTeamAlert(params: string[]): Promise<void> {
+  const url = env("FORM_ALERT_URL");
+  const key = env("FORM_ALERT_KEY");
+  if (!url || !key) return sendWhatsAppTemplate(params);
+
+  // Plain text (newlines kept, empty fields left empty so the bot can skip them).
+  const [type, name, email, phone, summary] = params.map((value) => text(value).slice(0, 1500));
+  const res = await fetchWithTimeout(
+    url,
+    {
+      method: "POST",
+      headers: { "x-form-alert-key": key, "Content-Type": "application/json" },
+      body: JSON.stringify({ type, name, email, phone, summary }),
+    },
+    10000,
+  );
+  if (!res.ok) throw new Error(`Form alert ${res.status}`);
+}
+
 // ---------------------------------------------------------------------------
 // Shared rendering
 // ---------------------------------------------------------------------------
@@ -257,7 +283,7 @@ export async function notifyCareerApplication(
         replyTo: email || undefined,
         attachments: cv ? [{ filename: cv.filename, content: cv.base64, contentType: cv.contentType }] : undefined,
       }),
-      sendWhatsAppTemplate([
+      sendTeamAlert([
         "Job Application",
         fullName,
         email,
@@ -308,7 +334,7 @@ export async function notifyCorporateRequest(doc: Record<string, unknown>): Prom
         html,
         replyTo: email || undefined,
       }),
-      sendWhatsAppTemplate([
+      sendTeamAlert([
         "B2B Request",
         [company, contact ? `(${contact})` : ""].filter(Boolean).join(" "),
         email,
@@ -362,7 +388,7 @@ export async function notifyChatLead(doc: Record<string, unknown>): Promise<void
         html,
         replyTo: email || undefined,
       }),
-      sendWhatsAppTemplate([
+      sendTeamAlert([
         `Chat Lead: ${label}`,
         fullName,
         email || contact,
