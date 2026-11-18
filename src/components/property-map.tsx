@@ -13,11 +13,14 @@ const DirectionsIcon = (
 
 export default function PropertyMap({
   city,
+  directionsTo,
   locale,
   query,
   title,
 }: {
   city: string;
+  /** Exact "lat,lng" for the directions button when the Google listing routes drivers elsewhere. */
+  directionsTo?: string;
   locale: "ar" | "en";
   query?: string;
   title: string;
@@ -26,7 +29,7 @@ export default function PropertyMap({
   const mapQuery = query?.trim() || `${title} ${city}`;
   const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`;
   const openMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}`;
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(directionsTo || mapQuery)}`;
 
   return (
     <section
