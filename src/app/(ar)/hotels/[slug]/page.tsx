@@ -15,6 +15,7 @@ import {
   BOOKING_URL,
 } from "@/lib/editable-content";
 import { isComingSoonProperty } from "@/lib/property-availability";
+import { directionsDestination } from "@/lib/property-directions";
 import { pageMetadata } from "@/lib/site-metadata";
 import type { Metadata } from "next";
 
@@ -198,6 +199,7 @@ export default async function HotelDetailPage({
 
       <PropertyMap
         city={hotel.city}
+        directionsTo={directionsDestination(hotel.slug)}
         locale="ar"
         query={hotel.mapQuery}
         title={hotel.title}
