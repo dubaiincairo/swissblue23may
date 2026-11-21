@@ -83,7 +83,7 @@ structure and interaction patterns; Swiss Blue governs color/brand.
 
 # ⚡ Caching rules (added 3 Nov 2026, after the Vercel free-tier CPU alert)
 
-- Public pages are **static/ISR** (`revalidate = 300` in `src/app/(ar)/layout.tsx` and `src/app/(en)/layout.tsx`); a CMS
+- Public pages are **static/ISR** (`revalidate = 86400` in `src/app/(ar)/layout.tsx` and `src/app/(en)/layout.tsx`; it was 300 until the Vercel team was paused for Fluid Active CPU on 20 Nov 2026 — never lower it again); a CMS
   save calls `revalidatePath("/", "layout")` in `src/app/api/site-content/route.ts`, so edits appear on the next visit.
 - Never call `headers()`, `cookies()` or `force-dynamic` in public pages, layouts or the components they render; that
   turns every visit into a serverless function run. Only `(admin)`, Studio and `/api/*` are dynamic.
