@@ -8,6 +8,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 - **User Context**: The user is the sole operator and owner of `dubaiincairo` and is strictly **price-sensitive**.
 - **Maximum Cost-Frugality**: All workflows, agent actions, tools, and background processes must strictly minimize resource consumption, API bills, and cloud compute charges.
+- **Workflow tool (multi-agent orchestration)**: only for complicated or multi-layer tasks, and only after suggesting it to the owner (what it would do, rough cost) and getting approval (owner, 20 Nov 2026). Otherwise work directly in the session.
 - **Codespace Economy**: Ensure idle timeouts are minimal (5–15 mins), stop unused containers immediately, avoid running unneeded persistent processes, and switch to 2-core / lower specs when doing non-intensive work.
 - **Host Memory & Performance (8 GB RAM MacBook)**:
   - NEVER run long-lived local dev servers (`npm run dev`) or dev daemons locally.
